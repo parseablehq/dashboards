@@ -1,0 +1,1051 @@
+{
+  "tags": [
+    "audit",
+    "parseable",
+    "logs"
+  ],
+  "variables": [
+    {
+      "name": "dataset",
+      "label": "Dataset",
+      "type": "dataset",
+      "defaultValue": "audit-logs"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KW95114ZCSQ6W45NKWP9YPEQ",
+      "title": "Overview",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KW9S8R68QCBRSPJFC293DFAR",
+      "title": "Request Trends",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3",
+      "title": "Status & Auth",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KW9D06JP6E0FMJWQWA0RKP4B",
+      "title": "Users & Streams",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KW9FNPMFRCCAT7K4R5EV65EZ",
+      "title": "API Paths",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KW9XFV7GR7K2CWTDB0RC0AQG",
+      "title": "Failures",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KW9M8CK0GAGB2J5360GRFECD",
+      "title": "Recent Events",
+      "isExpanded": true
+    }
+  ],
+  "tiles": [
+    {
+      "chartQuery": "SELECT COUNT(*) AS requests\nFROM $dataset",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Total Requests",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44K0N60HS7V2R3E7HJ",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW95114ZCSQ6W45NKWP9YPEQ"
+    },
+    {
+      "chartQuery": "SELECT COUNT(*) AS errors\nFROM $dataset\nWHERE status_code >= 400",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Error Requests",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44MSBXDMAVDWT5VB2D",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9S8R68QCBRSPJFC293DFAR"
+    },
+    {
+      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE status_code >= 400) * 100.0 / NULLIF(COUNT(*), 0), 2) AS error_pct\nFROM $dataset",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Error Rate",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_pct",
+            "title": "Error Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT441TQX15QG1NHCACEQ",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW95114ZCSQ6W45NKWP9YPEQ"
+    },
+    {
+      "chartQuery": "SELECT ROUND(AVG(content_length), 2) AS avg_content_length\nFROM $dataset\nWHERE content_length IS NOT NULL",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Avg Request Size",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "B",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_content_length",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44TJF3XBQWKFKNMD5W",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW95114ZCSQ6W45NKWP9YPEQ"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY time_bin, method\nORDER BY time_bin ASC, method ASC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Request Volume Over Time",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "method"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44Q6PDX1670GWESS9D",
+        "x": 3,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9S8R68QCBRSPJFC293DFAR"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(*) FILTER (WHERE status_code >= 400) AS errors,\n       COUNT(*) FILTER (WHERE status_code >= 500) AS server_errors\nFROM $dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Error Trend",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "errors",
+              "server_errors"
+            ],
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44N9GZ8YZEK2DVADCK",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9S8R68QCBRSPJFC293DFAR"
+    },
+    {
+      "chartQuery": "SELECT CAST(status_code AS INT) AS status_code,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY status_code\nORDER BY requests DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Status Code Mix",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "status_code",
+            "title": "Status",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44P1QVP10Q8H2SR6XH",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY method\nORDER BY requests DESC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Requests by Method",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "requests",
+            "title": "Method",
+            "display": true
+          },
+          "y": {
+            "field": "method",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT449BBG5DT7ZQKX9SP9",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(authorization_method, 'unknown') AS auth_method,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY auth_method\nORDER BY requests DESC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Auth Methods",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "requests",
+            "title": "Method",
+            "display": true
+          },
+          "y": {
+            "field": "auth_method",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT448ZTGEZBM7W2M1TF8",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(path, 'unknown') AS path,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY path\nORDER BY requests DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Top Paths",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "path",
+            "title": "Path",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44Z2Y2JD55CGWWF1RD",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9FNPMFRCCAT7K4R5EV65EZ"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(path, 'unknown') AS path,\n       COUNT(*) AS errors\nFROM $dataset\nWHERE status_code >= 400\nGROUP BY path\nORDER BY errors DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Top Error Paths",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "path",
+            "title": "Path",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44AP6EGXAGNHSAW9WW",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9XFV7GR7K2CWTDB0RC0AQG"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(NULLIF(username, ''), user_id, 'unknown') AS user,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY user\nORDER BY requests DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Top Users",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "user",
+            "title": "User",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT446ZCDQYFDFM83S421",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9D06JP6E0FMJWQWA0RKP4B"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(stream_name, \"headers_x-p-stream\", 'unknown') AS stream,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY stream\nORDER BY requests DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Top Streams",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "stream",
+            "title": "Stream",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44Z7AE2DZSJ7HQP9ZD",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9D06JP6E0FMJWQWA0RKP4B"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(server_mode, 'unknown') AS server_mode,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY server_mode\nORDER BY requests DESC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Server Mode",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "requests",
+            "title": "Mode",
+            "display": true
+          },
+          "y": {
+            "field": "server_mode",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44CS58JH7GH7E69PP1",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3"
+    },
+    {
+      "chartQuery": "SELECT p_timestamp, method, path, status_code, username, tenant_id, stream_name, error\nFROM $dataset\nWHERE status_code >= 400 OR error IS NOT NULL\nORDER BY p_timestamp DESC\nLIMIT 50",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Recent Failed Requests",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "status_code",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT44D5RHY10DYAPS9G82",
+        "x": 0,
+        "y": 8,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9XFV7GR7K2CWTDB0RC0AQG"
+    },
+    {
+      "chartQuery": "SELECT p_timestamp, method, path, status_code, username, tenant_id, stream_name, authorization_method, server_mode\nFROM $dataset\nORDER BY p_timestamp DESC\nLIMIT 50",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Recent Audit Events",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "status_code",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW42MT441ZBKF7H2BXVK2ESV",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M8CK0GAGB2J5360GRFECD"
+    }
+  ]
+}

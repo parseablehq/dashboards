@@ -1,0 +1,4988 @@
+{
+  "tags": [
+    "swe-agent",
+    "genai",
+    "sql"
+  ],
+  "variables": [
+    {
+      "name": "log_dataset",
+      "label": "Log Dataset",
+      "type": "dataset",
+      "defaultValue": "swe-agent-genai-logs"
+    },
+    {
+      "name": "trace_dataset",
+      "label": "Trace Dataset",
+      "type": "dataset",
+      "defaultValue": "swe-agent-traces"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWAT91Y43N4Q3GM18RZFPDHM",
+      "title": "Cost",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A",
+      "title": "Performance and latency",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KW94PZYT2K07YTJPDSPX2PKQ",
+      "title": "Tokens",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34",
+      "title": "Tools",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KW9EJXFMNB2S5QVTNZ1E2V0T",
+      "title": "Submissions & Outcomes",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KW9F6VSGZZX6D6BVQYBP8EM2",
+      "title": "Details",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWAGCKVTY1W44MBG10Q07BKQ",
+      "title": "Cost Trends",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWAQNE6N3B9VAKWRYJHX67P7",
+      "title": "Invocation Cost",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66",
+      "title": "Ren3 Demo",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "chartQuery": "SELECT COUNT(*) AS invocations\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Total invocations",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "invocations",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9N3T8EZDV70SAE0F4S",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R"
+    },
+    {
+      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE span_status_code = 2) * 100.0 / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Error rate",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_rate_pct",
+            "title": "Error Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9N9PC47FJ4115VPCWJ",
+        "x": 3,
+        "y": 0,
+        "w": 2,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R"
+    },
+    {
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns / 1000000000.0), 2) AS avg_duration_s\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Average agent run duration",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_duration_s",
+            "title": "Duration (ms)",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9N07GJRGEQDMQNTMCV",
+        "x": 5,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R"
+    },
+    {
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 2) AS p95_duration_s\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "P95 agent run duration",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_duration_s",
+            "title": "Duration (ms)",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9N6Y1RNWSBYVT27THV",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', \"p_timestamp\", '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"gen_ai.agent.name\", 'unknown') AS agent_name,\n       COUNT(*) AS runs\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'\nGROUP BY time_bin, agent_name\nORDER BY time_bin ASC, agent_name ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Agents run over time",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "runs",
+            "title": "runs",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9N4J4ZSE5F8CT20Z6D",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', \"p_timestamp\", '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(*) FILTER (WHERE span_status_code = 2) AS errors\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Errors",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9NGB7864VS5EBWHAXG",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 minute', \"p_timestamp\", '1970-01-01T00:00:00Z') AS time_bin,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.50), 2) AS p50,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.75), 2) AS p75,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.90), 2) AS p90,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.95), 2) AS p95,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.99), 2) AS p99,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.999), 2) AS p999,\n       ROUND(AVG(span_duration_ns), 2) AS avg\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\"='invoke_agent'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Tool latency",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ns",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg",
+              "p50",
+              "p75",
+              "p90",
+              "p95",
+              "p99",
+              "p999"
+            ],
+            "title": "Latency",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9NVXRZXQYDCSHZM9VG",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', \"p_timestamp\", '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"gen_ai.request.model\", 'unknown') AS model,\n       SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) + SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\n  AND \"gen_ai.request.model\" IS NOT NULL\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Token consumption by Model",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "tokens",
+            "title": "tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9N70P6H174XK1ETR5X",
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW94PZYT2K07YTJPDSPX2PKQ"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', \"p_timestamp\", '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"gen_ai.tool.name\", \"tool.name\") AS tool,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.tool.name\", \"tool.name\") IS NOT NULL\nGROUP BY time_bin, tool\nORDER BY time_bin ASC, tool ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Tool P95 Latency",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "Duration (ms)",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "tool"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9NTKHKHEE525VA8KRC",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', \"p_timestamp\", '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"gen_ai.tool.name\", \"tool.name\") AS tool,\n       COUNT(*) AS calls\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.tool.name\", \"tool.name\") IS NOT NULL\nGROUP BY time_bin, tool\nORDER BY time_bin ASC, tool ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Tool Calls Over Time",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "tool"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9N4C6M7HXEH6W1XQ6T",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", 'unknown') AS model, COUNT(*) AS chat_calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\n  AND \"gen_ai.request.model\" IS NOT NULL\nGROUP BY model\nORDER BY chat_calls DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Model Chat Calls",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "chat_calls",
+            "title": "Model",
+            "display": true
+          },
+          "y": {
+            "field": "model",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9NW1NSMZ7DKZXWJBJS",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW94PZYT2K07YTJPDSPX2PKQ"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"gen_ai.tool.name\", \"tool.name\") AS tool,\n       COUNT(*) AS calls\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.tool.name\", \"tool.name\") IS NOT NULL\nGROUP BY tool\nORDER BY calls DESC\nLIMIT 15",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Top Tools",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "Tool",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9PNB9AFN7SQBXKKG2R",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(body_exit_status, 'unknown') AS exit_status,\n       COUNT(*) AS invocations\nFROM $log_dataset\nWHERE \"gen_ai.event.name\" = 'gen_ai.agent.finish'\nGROUP BY exit_status\nORDER BY invocations DESC",
+      "dbName": [
+        "$log_dataset"
+      ],
+      "title": "Finish Status",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "invocations",
+            "title": "Status",
+            "display": true
+          },
+          "y": {
+            "field": "exit_status",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9PHH76R7Q1FPZM81CE",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9EJXFMNB2S5QVTNZ1E2V0T"
+    },
+    {
+      "chartQuery": "SELECT \"gen_ai.operation.name\" AS operation,\n       COUNT(*) AS spans,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.50), 2) AS p50,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.75), 2) AS p75,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.90), 2) AS p90,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.95), 2) AS p95,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.99), 2) AS p99,\n       ROUND(approx_percentile_cont(span_duration_ns, 0.999), 2) AS p999,\n       ROUND(AVG(span_duration_ns), 2) AS avg\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" IS NOT NULL\nGROUP BY operation\nORDER BY spans DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Overall agent latency",
+      "chartType": "line",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ns",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "operation",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg",
+              "operation",
+              "p50",
+              "p75",
+              "p90",
+              "p95",
+              "p99",
+              "p999"
+            ],
+            "title": "Latency",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9PBGX61CV0BJNNA38D",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "chartQuery": "WITH roots AS (\n  SELECT span_trace_id, span_span_id, span_start_time_unix_nano, span_duration_ns, span_status_code,\n         \"gen_ai.request.model\" AS model\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'invoke_agent'\n), trace_stats AS (\n  SELECT span_trace_id,\n         COUNT(*) FILTER (WHERE \"gen_ai.operation.name\" = 'chat') AS chat_calls,\n         COUNT(*) FILTER (WHERE COALESCE(\"gen_ai.tool.name\", \"tool.name\") IS NOT NULL OR \"gen_ai.operation.name\" = 'execute_tool') AS tool_calls\n  FROM $trace_dataset\n  GROUP BY span_trace_id\n), trace_cost AS (\n  SELECT span_trace_id,\n         ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n         SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS total_input_tokens,\n         SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_output_tokens\n  FROM $trace_dataset\n  WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n    AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n    AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n)\nSELECT r.span_start_time_unix_nano AS start_time, r.span_trace_id, r.model,\n       ROUND(r.span_duration_ns / 1000000000.0, 2) AS duration_s,\n       CASE WHEN r.span_status_code = 2 THEN true ELSE false END AS errored,\n       COALESCE(ts.chat_calls, 0) AS chat_calls,\n       COALESCE(ts.tool_calls, 0) AS tool_calls,\n       tc.cost_usd,\n       tc.total_input_tokens,\n       tc.total_output_tokens\nFROM roots r\nLEFT JOIN trace_stats ts ON r.span_trace_id = ts.span_trace_id\nLEFT JOIN trace_cost tc ON tc.span_trace_id = r.span_trace_id\nORDER BY r.span_duration_ns DESC\nLIMIT 25",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Slowest Invocations",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "start_time",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9PRME7GN0CX1YQRBN1",
+        "x": 0,
+        "y": 32,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "chartQuery": "SELECT p_timestamp,\n       span_trace_id,\n       COALESCE(\"gen_ai.tool.name\", \"tool.name\") AS tool,\n       span_name,\n       ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms,\n       span_status_code,\n       \"swe_agent.tool.exit_code\" AS exit_code,\n       COALESCE(\"error.message\", span_status_message) AS error_message\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.tool.name\", \"tool.name\") IS NOT NULL\n  AND (span_status_code = 2 OR (\"swe_agent.tool.exit_code\" IS NOT NULL AND \"swe_agent.tool.exit_code\" != '0') OR \"error.message\" IS NOT NULL)\nORDER BY p_timestamp DESC\nLIMIT 25",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Tool Failures",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9PZ4JA343M5QCWZ2P3",
+        "x": 6,
+        "y": 25,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34"
+    },
+    {
+      "chartQuery": "WITH roots AS (\n  SELECT span_trace_id, span_span_id, span_start_time_unix_nano, span_duration_ns, span_status_code,\n         \"gen_ai.request.model\" AS model,\n         \"gen_ai.response.finish_reasons\" AS finish_reasons\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'invoke_agent'\n), trace_stats AS (\n  SELECT span_trace_id,\n         COUNT(*) FILTER (WHERE \"gen_ai.operation.name\" = 'chat') AS chat_calls,\n         COUNT(*) FILTER (WHERE COALESCE(\"gen_ai.tool.name\", \"tool.name\") IS NOT NULL OR \"gen_ai.operation.name\" = 'execute_tool') AS tool_calls\n  FROM $trace_dataset\n  GROUP BY span_trace_id\n), trace_cost AS (\n  SELECT span_trace_id,\n         ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n         SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS total_input_tokens,\n         SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_output_tokens\n  FROM $trace_dataset\n  WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n    AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n    AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n)\nSELECT r.span_start_time_unix_nano AS start_time, r.span_trace_id, r.model,\n       ROUND(r.span_duration_ns / 1000000000.0, 2) AS duration_s,\n       CASE WHEN r.span_status_code = 2 THEN true ELSE false END AS errored,\n       COALESCE(ts.chat_calls, 0) AS chat_calls,\n       COALESCE(ts.tool_calls, 0) AS tool_calls,\n       r.finish_reasons,\n       tc.cost_usd,\n       tc.total_input_tokens,\n       tc.total_output_tokens\nFROM roots r\nLEFT JOIN trace_stats ts ON r.span_trace_id = ts.span_trace_id\nLEFT JOIN trace_cost tc ON tc.span_trace_id = r.span_trace_id\nORDER BY r.span_start_time_unix_nano DESC\nLIMIT 50",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Recent Invocation Detail",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "start_time",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVZ1EE9PJQDEK9JWY327CTRG",
+        "x": 0,
+        "y": 40,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       ROUND(COUNT(*) FILTER (WHERE body_submission_present = true) * 100.0 / NULLIF(COUNT(*), 0), 2) AS submission_rate_pct,\n       COUNT(*) AS finished_invocations\nFROM $log_dataset\nWHERE \"gen_ai.event.name\" = 'gen_ai.agent.finish'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$log_dataset"
+      ],
+      "title": "Submission Rate Over Time",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "submission_rate_pct",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3YS1AG1A4YFFZJ4E1ZKTWD",
+        "x": 4,
+        "y": 0,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9EJXFMNB2S5QVTNZ1E2V0T"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(body_exit_status, 'unknown') AS exit_status,\n       COUNT(*) AS invocations\nFROM $log_dataset\nWHERE \"gen_ai.event.name\" = 'gen_ai.agent.finish'\nGROUP BY time_bin, exit_status\nORDER BY time_bin ASC, exit_status ASC",
+      "dbName": [
+        "$log_dataset"
+      ],
+      "title": "Exit Status Over Time",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "invocations",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "exit_status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3YS1AGH745Z1SWJ8YTG99F",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9EJXFMNB2S5QVTNZ1E2V0T"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"gen_ai.tool.name\", \"tool.name\") AS tool,\n       COUNT(*) AS calls,\n       COUNT(*) FILTER (WHERE span_status_code = 2 OR (\"swe_agent.tool.exit_code\" IS NOT NULL AND \"swe_agent.tool.exit_code\" != '0') OR \"error.message\" IS NOT NULL) AS failures,\n       ROUND(COUNT(*) FILTER (WHERE span_status_code = 2 OR (\"swe_agent.tool.exit_code\" IS NOT NULL AND \"swe_agent.tool.exit_code\" != '0') OR \"error.message\" IS NOT NULL) * 100.0 / NULLIF(COUNT(*), 0), 2) AS failure_rate_pct\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.tool.name\", \"tool.name\") IS NOT NULL\nGROUP BY tool\nHAVING COUNT(*) > 0\nORDER BY failure_rate_pct DESC, calls DESC\nLIMIT 15",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Tool Failure Rate by Tool",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "Tool",
+            "display": true
+          },
+          "y": {
+            "field": "failure_rate_pct",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3YS1AGFR75YZX05SG6H4FY",
+        "x": 0,
+        "y": 25,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"swe_agent.problem.id\", 'unknown') AS problem_id,\n       COUNT(*) AS invocations,\n       ROUND(AVG(span_duration_ns / 1000000000.0), 2) AS avg_duration_s,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 2) AS p95_duration_s,\n       ROUND(COUNT(*) FILTER (WHERE \"swe_agent.submission.present\" = true) * 100.0 / NULLIF(COUNT(*), 0), 2) AS submission_rate_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'\nGROUP BY problem_id\nORDER BY invocations DESC\nLIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Problem Hotspots",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "problem_id",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "invocations",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3YS1AGFGQTAEA7N4Y6FCAY",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9F6VSGZZX6D6BVQYBP8EM2"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"swe_agent.env.name\", 'unknown') AS env_name,\n       COALESCE(\"swe_agent.version\", 'unknown') AS version,\n       COUNT(*) AS invocations,\n       ROUND(AVG(span_duration_ns / 1000000000.0), 2) AS avg_duration_s,\n       ROUND(COUNT(*) FILTER (WHERE span_status_code = 2) * 100.0 / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'\nGROUP BY env_name, version\nORDER BY invocations DESC\nLIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Environment / Version Breakdown",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "env_name",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "invocations",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3YS1AGXYCEYXEN57462VVX",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9F6VSGZZX6D6BVQYBP8EM2"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\", 'unknown') AS provider,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       COUNT(*) AS calls,\n       ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms,\n       ROUND(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS total_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY provider, model\nORDER BY calls DESC\nLIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Provider / Model Health",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3YS1AGG4G9KR7H2F7DQ8KB",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW94PZYT2K07YTJPDSPX2PKQ"
+    },
+    {
+      "title": "Total tokens per invocation",
+      "chartQuery": "WITH inv AS (\n  SELECT span_trace_id, date_bin('1 minute', MIN(p_timestamp), '1970-01-01T00:00:00Z') AS time_bin,\n         SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_tokens\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'chat'\n    AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n    AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n)\nSELECT time_bin,\n       ROUND(AVG(total_tokens), 2) AS avg_tokens_per_invocation,\n       ROUND(approx_percentile_cont(total_tokens, 0.90), 2) AS p90_tokens_per_invocation\nFROM inv\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset",
+        "inv"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "avg_tokens_per_invocation",
+            "title": "Tokens per Invocation",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWA6HVZZFSN51EJAJRVBJW94",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "title": "Recent Trace Summary",
+      "chartQuery": "WITH roots AS (\n  SELECT span_trace_id, MIN(p_timestamp) AS start_time, MAX(span_status_code) AS status_code,\n         ROUND(MAX(span_duration_ns) / 1000000000.0, 3) AS latency_s\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'invoke_agent'\n  GROUP BY span_trace_id\n), chats AS (\n  SELECT span_trace_id, COUNT(*) AS chat_calls,\n         SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_tokens,\n         ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'chat'\n    AND COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n    AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n    AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n), tools AS (\n  SELECT span_trace_id, COUNT(*) AS tool_calls\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'execute_tool'\n  GROUP BY span_trace_id\n)\nSELECT r.start_time, r.span_trace_id, CASE WHEN r.status_code = 2 THEN 'error' ELSE 'ok' END AS status,\n       r.latency_s, COALESCE(c.chat_calls, 0) AS chat_calls, COALESCE(t.tool_calls, 0) AS tool_calls,\n       COALESCE(c.total_tokens, 0) AS total_tokens, c.cost_usd\nFROM roots r\nLEFT JOIN chats c ON r.span_trace_id = c.span_trace_id\nLEFT JOIN tools t ON r.span_trace_id = t.span_trace_id\nORDER BY r.start_time DESC\nLIMIT 50",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "latency_s",
+            "title": "Latency (s)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 12,
+        "h": 8,
+        "x": 0,
+        "y": 48,
+        "i": "01KWAFEYM60GB5MDT8299GTG6R",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "title": "Tool Usage Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"gen_ai.tool.name\", \"tool.name\", span_name, 'unknown') AS tool,\n       COUNT(*) AS calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'execute_tool'\nGROUP BY time_bin, tool\nORDER BY time_bin ASC, tool ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "Tool Calls",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 8,
+        "x": 6,
+        "y": 0,
+        "i": "01KWA8X4DRRCSN6P10KPXZRJAR",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34"
+    },
+    {
+      "title": "Tool Latency Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"gen_ai.tool.name\", \"tool.name\", span_name, 'unknown') AS tool,\n       ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_latency_s\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'execute_tool'\n  AND span_duration_ns IS NOT NULL\nGROUP BY time_bin, tool\nORDER BY time_bin ASC, tool ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "avg_latency_s",
+            "title": "Latency (s)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 8,
+        "x": 6,
+        "y": 8,
+        "i": "01KWA99QJBM7P2K21YG8XTRWGC",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34"
+    },
+    {
+      "title": "Tool Performance Summary",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.tool.name\", \"tool.name\", span_name, 'unknown') AS tool,\n       COUNT(*) AS calls,\n       ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_latency_s,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_latency_s,\n       ROUND(COUNT(*) FILTER (WHERE span_status_code != 2) * 100.0 / NULLIF(COUNT(*), 0), 2) AS success_rate_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'execute_tool'\nGROUP BY tool\nORDER BY calls DESC\nLIMIT 30",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "Tool Calls",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 12,
+        "h": 10,
+        "x": 0,
+        "y": 32,
+        "i": "01KWAZ61F4F41E3G3E01B05HK4",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW91CHJCE0S9XRG8JAD80P34"
+    },
+    {
+      "title": "Cost Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 0,
+        "y": 0,
+        "i": "01KWA4F3W6108AP2FDWKYNTPK7",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAGCKVTY1W44MBG10Q07BKQ"
+    },
+    {
+      "title": "Cost Rate of Change",
+      "chartQuery": "WITH hourly AS (\n  SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n         SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY time_bin\n)\nSELECT time_bin,\n       ROUND(cost_usd, 6) AS cost_usd,\n       ROUND(cost_usd - LAG(cost_usd) OVER (ORDER BY time_bin), 6) AS cost_change_usd,\n       ROUND((cost_usd - LAG(cost_usd) OVER (ORDER BY time_bin)) * 100.0 / NULLIF(LAG(cost_usd) OVER (ORDER BY time_bin), 0), 2) AS cost_change_pct\nFROM hourly\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset",
+        "hourly"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "cost_change_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 6,
+        "y": 0,
+        "i": "01KWA1VKH3YZZCK1EPVAX69RXR",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAGCKVTY1W44MBG10Q07BKQ"
+    },
+    {
+      "title": "Cumulative Cost",
+      "chartQuery": "WITH hourly AS (\n  SELECT date_bin('1 min', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n         SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY time_bin\n)\nSELECT time_bin,\n       ROUND(SUM(cost_usd) OVER (ORDER BY time_bin ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 6) AS cumulative_cost_usd\nFROM hourly\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset",
+        "hourly"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "cumulative_cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 0,
+        "y": 10,
+        "i": "01KWA1D01G08XAHAQN8NMRCGBB",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAGCKVTY1W44MBG10Q07BKQ"
+    },
+    {
+      "title": "Cost per Token Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0), 10) AS cost_per_token_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "cost_per_token_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 6,
+        "y": 10,
+        "i": "01KWAT5YRPYK4424RFF4WNZJKE",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAGCKVTY1W44MBG10Q07BKQ"
+    },
+    {
+      "title": "Cost by Model",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "Model",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWAYYHY37B91P0R7MGMG88Q6",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAT91Y43N4Q3GM18RZFPDHM"
+    },
+    {
+      "title": "Cost by Provider and Model",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\", 'inferred') AS provider,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       COUNT(*) AS events,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       ROUND(AVG(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS avg_event_cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY provider, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWA2TYQ4WRA7Z9FAZYDZ3DQE",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAT91Y43N4Q3GM18RZFPDHM"
+    },
+    {
+      "title": "Total cost over time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWA5QXHCB3WB105CDT3QRZ1K",
+        "x": 0,
+        "y": 11,
+        "w": 12,
+        "h": 10,
+        "moved": true,
+        "static": false
+      },
+      "sectionId": "01KWAT91Y43N4Q3GM18RZFPDHM"
+    },
+    {
+      "title": "Highest Cost Invocations",
+      "chartQuery": "SELECT span_trace_id,\n       MIN(p_timestamp) AS start_time,\n       COALESCE(MAX(\"gen_ai.provider.name\"), 'inferred') AS provider,\n       COALESCE(MAX(\"gen_ai.request.model\"), MAX(\"gen_ai.response.model\"), 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens,\n       SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY span_trace_id\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 50",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 12,
+        "h": 12,
+        "x": 0,
+        "y": 0,
+        "i": "01KWAZDQ9P9THQKEQ7JVEA870H",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAQNE6N3B9VAKWRYJHX67P7"
+    },
+    {
+      "title": "Invocation Cost Distribution",
+      "chartQuery": "SELECT CASE\n         WHEN invocation_cost_usd < 0.001 THEN '< $0.001'\n         WHEN invocation_cost_usd < 0.01 THEN '$0.001 - $0.01'\n         WHEN invocation_cost_usd < 0.05 THEN '$0.01 - $0.05'\n         WHEN invocation_cost_usd < 0.10 THEN '$0.05 - $0.10'\n         ELSE '>= $0.10'\n       END AS cost_bucket,\n       COUNT(*) AS invocations\nFROM (\n  SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS invocation_cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n) t\nWHERE invocation_cost_usd IS NOT NULL\nGROUP BY cost_bucket\nORDER BY cost_bucket ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "cost_bucket",
+            "title": "Cost Bucket",
+            "display": true
+          },
+          "y": {
+            "field": "invocations",
+            "title": "Count",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 0,
+        "y": 12,
+        "i": "01KWAM1STEC23A7A1JFT3H6ZFW",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAQNE6N3B9VAKWRYJHX67P7"
+    },
+    {
+      "title": "Cost vs Tokens by Invocation",
+      "chartQuery": "SELECT span_trace_id,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_tokens\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY span_trace_id\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 6,
+        "y": 12,
+        "i": "01KWARQ0TP3M26GRY8XMBWFSA4",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAQNE6N3B9VAKWRYJHX67P7"
+    },
+    {
+      "title": "Cost by User",
+      "chartQuery": "SELECT COALESCE(\"username\", 'unknown') AS username,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY username\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "username",
+            "title": "User",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 0,
+        "y": 20,
+        "i": "01KWAPFAZ40A5QGHDKH0RRDDA8",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAT91Y43N4Q3GM18RZFPDHM"
+    },
+    {
+      "title": "Cost by Agent Name",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.agent.name\", 'unknown') AS agent_name,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY agent_name\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "agent_name",
+            "title": "Agent",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 6,
+        "y": 20,
+        "i": "01KWAWV2ZV01TPSJMTKYZM2BZK",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAT91Y43N4Q3GM18RZFPDHM"
+    },
+    {
+      "title": "Cost by User and Model",
+      "chartQuery": "SELECT COALESCE(\"username\", 'unknown') AS username,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY username, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "w": 6,
+        "h": 10,
+        "x": 0,
+        "y": 30,
+        "i": "01KWAQ6B6WXJW596VGT9GVCJ4E",
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAT91Y43N4Q3GM18RZFPDHM"
+    },
+    {
+      "title": "Cost by Agent and Model",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.agent.name\", 'unknown') AS agent_name,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY agent_name, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWA76HZXSQPKDTKPGSN8FZRZ",
+        "x": 6,
+        "y": 30,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAT91Y43N4Q3GM18RZFPDHM"
+    },
+    {
+      "title": "Total tool calls",
+      "chartQuery": "SELECT COUNT(*) AS tool_calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'execute_tool' ",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "tool_calls",
+            "title": "Count",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWAKP1P21VFWYXQZEDGXP6H6",
+        "x": 5,
+        "y": 4,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R"
+    },
+    {
+      "title": "Total cost",
+      "chartQuery": "SELECT ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS total_cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$"
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWA5CRR0KQXRGA49WDZJNEA6",
+        "x": 0,
+        "y": 4,
+        "w": 2,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R"
+    },
+    {
+      "title": "Total input tokens",
+      "chartQuery": "SELECT SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "Tokens",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWAEKF5YKYM2AVVV2XBQYDQQ",
+        "x": 2,
+        "y": 4,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R"
+    },
+    {
+      "title": "Average cost per agent run",
+      "chartQuery": "SELECT ROUND(AVG(invocation_cost_usd), 6) AS avg_invocation_cost_usd\nFROM (\n  SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS invocation_cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n) t\nWHERE invocation_cost_usd IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$"
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_invocation_cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWAH20K3YHY9XD71EGGW9AWC",
+        "x": 8,
+        "y": 4,
+        "w": 4,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Q878FF6DXYSR22AGXGD5R"
+    },
+    {
+      "title": "P95 Invocation Latency by Agent",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.agent.name\", 'unknown') AS agent_name,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 2) AS p95_latency_s,\n       COUNT(*) AS invocations\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'\n  AND span_duration_ns IS NOT NULL\nGROUP BY agent_name\nLIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "agent_name",
+            "title": "Agent",
+            "display": true
+          },
+          "y": {
+            "field": "p95_latency_s",
+            "title": "Latency (s)",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWBKRRWGM2PVMVEMXGRGH98G",
+        "x": 0,
+        "y": 56,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "title": "Invocation Latency by Username",
+      "chartQuery": "SELECT COALESCE(\"username\", 'unknown') AS username,\n       ROUND(MAX(span_duration_ns / 1000000000.0), 2) AS max_latency_s,\n       COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'\n  AND span_duration_ns IS NOT NULL\nGROUP BY username\nLIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "username",
+            "title": "User",
+            "display": true
+          },
+          "y": {
+            "field": "max_latency_s",
+            "title": "Latency (s)",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWBN1YF6WHEEE72C5542FW19",
+        "x": 6,
+        "y": 56,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9JEEWXEGK8SJJCGV1QBX2A"
+    },
+    {
+      "title": "P95 Input/Output Tokens Over Time",
+      "chartQuery": "WITH token_bins AS (\n  SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n         ROUND(approx_percentile_cont(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), 0.95), 2) AS p95_input_tokens,\n         ROUND(approx_percentile_cont(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), 0.95), 2) AS p95_output_tokens\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'chat'\n    AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n    AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY time_bin\n)\nSELECT time_bin, 'input' AS token_type, p95_input_tokens AS tokens\nFROM token_bins\nUNION ALL\nSELECT time_bin, 'output' AS token_type, p95_output_tokens AS tokens\nFROM token_bins\nORDER BY time_bin ASC, token_type ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "tokens",
+            "title": "Tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "token_type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWBP98C4JR88EB59EJANTZ55",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW94PZYT2K07YTJPDSPX2PKQ"
+    },
+    {
+      "title": "P95 Chat Cost Over Time",
+      "chartQuery": "WITH chat_cost AS (\n  SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n         agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) AS cost_usd\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'chat'\n    AND COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n    AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n    AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n)\nSELECT time_bin,\n       ROUND(approx_percentile_cont(cost_usd, 0.95), 6) AS p95_chat_cost_usd\nFROM chat_cost\nWHERE cost_usd IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "p95_chat_cost_usd",
+            "title": "Cost (USD)",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWBW06CEJS4TYDN68S3CJW7H",
+        "x": 0,
+        "y": 20,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWAGCKVTY1W44MBG10Q07BKQ"
+    },
+    {
+      "chartQuery": "SELECT ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 4) AS estimated_cost_usd FROM $trace_dataset WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Total Cost",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "Ren3 Estimated Cost",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GCT9911QZFTGY89QX",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT COUNT(DISTINCT COALESCE(\"username\", \"user.name\", 'unknown')) AS active_users FROM $trace_dataset WHERE COALESCE(\"username\", \"user.name\", 'unknown') != 'unknown'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Active Users",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "active_users",
+            "title": "Ren3 Active Users",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GQMGEA4KGRS4ZGWGW",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns/1000000000.0),2) AS avg_latency_s FROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat' AND span_duration_ns IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Avg Latency",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_latency_s",
+            "title": "Ren3 Avg Latency",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5G84J6P97VXMRCAJYG",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),2) AS p95_latency_s FROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat' AND span_duration_ns IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "P95 Latency",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_latency_s",
+            "title": "Ren3 P95 Latency",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GPY4NER7G14MX85XE",
+        "x": 0,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT ROUND(SUM(COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE), 0)) * 100.0 / NULLIF(SUM(COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE), 0)),0),2) AS cache_hit_rate_pct FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Cache Hit Rate",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "cache_hit_rate_pct",
+            "title": "Ren3 Cache Hit Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GPZVC9M854ZQZMZJC",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT ROUND(AVG(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)),2) AS avg_input_tokens FROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat' AND \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Avg Input Tokens / LLM Call",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_input_tokens",
+            "title": "Ren3 Avg Input / Turn",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5G5WR34JBKSN53PBMA",
+        "x": 0,
+        "y": 17,
+        "w": 3,
+        "h": 5,
+        "moved": true,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT ROUND(AVG(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)),2) AS avg_output_tokens FROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat' AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Avg Output Tokens / LLM Call",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_output_tokens",
+            "title": "Ren3 Avg Output / Turn",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GQJ57GDQ2RFXT1D0V",
+        "x": 3,
+        "y": 15,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT COUNT(*) AS runaway_runs FROM (SELECT span_trace_id, COUNT(*) FILTER (WHERE \"gen_ai.operation.name\" = 'chat') AS chat_calls, COUNT(*) FILTER (WHERE \"gen_ai.operation.name\" = 'execute_tool') AS tool_calls FROM $trace_dataset GROUP BY span_trace_id HAVING chat_calls >= 20 OR tool_calls >= 10) t",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "High Retry Loop Runs",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "runaway_runs",
+            "title": "Ren3 Runaway Runs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5G969VG0G328XDTBPE",
+        "x": 9,
+        "y": 15,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT COUNT(*) AS budget_breaches FROM (SELECT COALESCE(\"workspace.name\", 'unknown') AS workspace, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd, MAX(CAST(\"swe_agent.cost_limit.usd\" AS DOUBLE)) AS budget_usd FROM $trace_dataset WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY workspace HAVING cost_usd > budget_usd) t",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Budget Breaches",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "budget_breaches",
+            "title": "Ren3 Budget Breaches",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GCQVVVHSVF2WV6P1W",
+        "x": 6,
+        "y": 20,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $trace_dataset WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY time_bin ORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Cost Usage / Minute",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "cost_usd",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GGZWM54MWG7Y94EG9",
+        "x": 0,
+        "y": 25,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, SUM(COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0)) AS tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY time_bin ORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Token Usage / Minute",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "tokens",
+            "title": "tokens",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GJP862AVM3C7D8XG7",
+        "x": 6,
+        "y": 25,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, CASE WHEN \"gen_ai.operation.name\" = 'chat' THEN 'chat' ELSE 'workflow' END AS type, SUM(COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0)) AS tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY time_bin, type ORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Tokens by Type",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "tokens",
+            "title": "tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5G9BPVJTWPXMTRGGKM",
+        "x": 0,
+        "y": 33,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, SUM(COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0)) AS tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY time_bin, model ORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Tokens by Model",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "tokens",
+            "title": "tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GP91491WT9EK20DSD",
+        "x": 6,
+        "y": 33,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT span_trace_id, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $trace_dataset WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY span_trace_id ORDER BY cost_usd DESC LIMIT 10",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Cost per Agent Run",
+      "chartType": "pie",
+      "tileType": "code",
+      "config": {
+        "type": "pie",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "span_trace_id",
+            "title": "span_trace_id",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "span_trace_id"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GA818W7W9WGXG1S63",
+        "x": 0,
+        "y": 41,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"username\", 'unknown') AS username,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY username\nORDER BY cost_usd DESC\nLIMIT 10",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Cost per User",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "username",
+            "title": "username",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "username"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GYA54DFS8BNEJQYQB",
+        "x": 6,
+        "y": 41,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"team.name\", \"group.name\", 'unknown') AS team, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $trace_dataset WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY team ORDER BY cost_usd DESC LIMIT 10",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Cost per Team",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "team",
+            "title": "team",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "team"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GNG4J230Q6KZSQ004",
+        "x": 0,
+        "y": 49,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $trace_dataset WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') != 'unknown' AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY model ORDER BY cost_usd DESC LIMIT 10",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Cost per Model",
+      "chartType": "pie",
+      "tileType": "code",
+      "config": {
+        "type": "pie",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "model",
+            "title": "model",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GDGVYBAJESP3S3RE3",
+        "x": 6,
+        "y": 49,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT CASE WHEN COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') IN ('planner','executor','judges','evals','judge','eval','tool') THEN COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') ELSE 'tool overhead' END AS component, SUM(COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0)) AS tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY component ORDER BY tokens DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Token Component Share",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tokens",
+            "title": "Segment",
+            "display": true
+          },
+          "y": {
+            "field": "component",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GMHPR0BZDEWJ6NNC7",
+        "x": 0,
+        "y": 57,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT CASE WHEN COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') IN ('planner','executor','judges','evals','judge','eval','tool') THEN COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') ELSE 'tool overhead' END AS component, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $trace_dataset WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY component ORDER BY cost_usd DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Component Cost Split",
+      "chartType": "pie",
+      "tileType": "code",
+      "config": {
+        "type": "pie",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "component",
+            "title": "component",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "component"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5G5VM8MN4ZHJ9YMK3Q",
+        "x": 6,
+        "y": 57,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT SUM(CASE WHEN COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') = 'executor' THEN COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0) ELSE 0 END) AS executor_tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Executor Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "executor_tokens",
+            "title": "Ren3 Executor Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GDPZGGJBSG9WZN7S2",
+        "x": 0,
+        "y": 15,
+        "w": 3,
+        "h": 5,
+        "moved": true,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT SUM(CASE WHEN COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') = 'planner' THEN COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0) ELSE 0 END) AS planner_tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Planner Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "planner_tokens",
+            "title": "Ren3 Planner Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5G89SQ7V86M83ZWJP0",
+        "x": 3,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": true,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT SUM(CASE WHEN COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') IN ('judge','judges','eval','evals') THEN COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0) ELSE 0 END) AS judges_tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Judges/Evals Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "judges_tokens",
+            "title": "Ren3 Judges/Evals Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GAGE0F6FG80CWZCS7",
+        "x": 9,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": true,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT SUM(CASE WHEN COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') IN ('tool','tool overhead') OR \"gen_ai.operation.name\" = 'execute_tool' THEN COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0) ELSE 0 END) AS tool_overhead_tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Tool Overhead Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "tool_overhead_tokens",
+            "title": "Ren3 Tool Overhead Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5GJQ3RDVSHFJS43K7J",
+        "x": 6,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": true,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Input Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "input_tokens",
+            "title": "Ren3 Input Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5HES6XQMGF1RC0DCWB",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens FROM $trace_dataset WHERE \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Output Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "output_tokens",
+            "title": "Ren3 Output Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5H8N8HWBBER9XWD6PX",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"workspace.name\", 'unknown') AS workspace, COUNT(DISTINCT span_trace_id) AS runs, COUNT(DISTINCT COALESCE(\"username\", \"user.name\", 'unknown')) AS users, SUM(COALESCE(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE),0)+COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE),0)) AS tokens, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $trace_dataset WHERE COALESCE(\"workspace.name\", 'unknown') IS NOT NULL GROUP BY workspace ORDER BY cost_usd DESC NULLS LAST LIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Workspace Rollups",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workspace",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5HDA6F8XYE8W0X7M0T",
+        "x": 0,
+        "y": 65,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT ROW_NUMBER() OVER (ORDER BY p_timestamp ASC, span_start_time_unix_nano ASC) AS query_number, COALESCE(\"username\", \"user.name\", 'unknown') AS username, COALESCE(\"workspace.name\", 'unknown') AS workspace, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, ROUND(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), 6) AS cost_usd, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS input_tokens, CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS output_tokens, COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE), 0) AS cached_tokens FROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat' AND COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') != 'unknown' AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL ORDER BY query_number ASC LIMIT 50",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Cost per Query",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "query_number",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5H1K40QT30H1S52G9X",
+        "x": 0,
+        "y": 68,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT p_timestamp, span_trace_id, COALESCE(\"username\", \"user.name\", 'unknown') AS username, COALESCE(\"workspace.name\", 'unknown') AS workspace, COALESCE(\"team.name\", \"group.name\", 'unknown') AS team, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COALESCE(\"gen_ai.agent.component\", \"agent.component\", \"event_agent.component\", \"event_gen_ai.agent.component\", 'unknown') AS component, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS input_tokens, CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS output_tokens, COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE), 0) AS cached_tokens FROM $trace_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Token Explorer",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "input_tokens",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5HESCEXY63YYN6B54G",
+        "x": 0,
+        "y": 81,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT span_trace_id, COUNT(*) FILTER (WHERE \"gen_ai.operation.name\" = 'chat') AS chat_calls, COUNT(*) FILTER (WHERE \"gen_ai.operation.name\" = 'execute_tool') AS tool_calls, COUNT(*) AS spans, ROUND((MAX(span_end_time_unix_nano_epoch)-MIN(span_start_time_unix_nano_epoch))/1000000000.0,2) AS duration_s FROM $trace_dataset GROUP BY span_trace_id HAVING COUNT(*) FILTER (WHERE \"gen_ai.operation.name\" = 'chat') >= 20 OR COUNT(*) FILTER (WHERE \"gen_ai.operation.name\" = 'execute_tool') >= 10 ORDER BY chat_calls DESC LIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "High Retry Loop Details",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "span_trace_id",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "chat_calls",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5HVGX7YV6SJMWB8R6G",
+        "x": 0,
+        "y": 89,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(\"workspace.name\", 'unknown') AS workspace, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd, MAX(CAST(\"swe_agent.cost_limit.usd\" AS DOUBLE)) AS budget_usd, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) * 100.0 / NULLIF(MAX(CAST(\"swe_agent.cost_limit.usd\" AS DOUBLE)),0),2) AS burn_pct FROM $trace_dataset WHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY workspace ORDER BY burn_pct DESC NULLS LAST LIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Budget Burn Alerts",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workspace",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "burn_pct",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSE8X5H6RVKK9WH2W9Z29NF",
+        "x": 6,
+        "y": 89,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    },
+    {
+      "chartQuery": "SELECT SUM(COALESCE(CAST(\"gen_ai.usage.cached_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE), 0)) AS cached_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "title": "Cached Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "cached_tokens",
+            "title": "Cached Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWSFN4H2JVAN4D96Z07GG6YW",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWSE8X5G8RJZ760FQ8NX4C66"
+    }
+  ]
+}

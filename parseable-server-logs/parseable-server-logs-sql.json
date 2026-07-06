@@ -1,0 +1,916 @@
+{
+  "tags": [
+    "server-logs",
+    "parseable",
+    "logs"
+  ],
+  "variables": [
+    {
+      "name": "dataset",
+      "label": "Dataset",
+      "type": "dataset",
+      "defaultValue": "server-logs"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KW9W2EH0G8PFDWX0ZFWKZ3M9",
+      "title": "Overview"
+    },
+    {
+      "sectionId": "01KW99XVZBZ7KVMJF100KZBCE6",
+      "title": "Log Trends"
+    },
+    {
+      "sectionId": "01KW9GARN9Q0VT5YHD659C524W",
+      "title": "Severity & Components"
+    },
+    {
+      "sectionId": "01KW9X0XBQBJWY3Y8PHVZMB9GR",
+      "title": "Error Analysis"
+    },
+    {
+      "sectionId": "01KW9E9SXZCP9BE0Z8RXC0953H",
+      "title": "Sources"
+    },
+    {
+      "sectionId": "01KW9Y47BEN5DRY8M22FKDDBHY",
+      "title": "Recent Logs"
+    }
+  ],
+  "tiles": [
+    {
+      "chartQuery": "SELECT COUNT(*) AS logs\nFROM $dataset",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Total Logs",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NC9TDXPFYEZY3PRBP",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9W2EH0G8PFDWX0ZFWKZ3M9"
+    },
+    {
+      "chartQuery": "SELECT COUNT(*) AS errors\nFROM $dataset\nWHERE level = 'ERROR'",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Error Logs",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4N8V9QN5MNMCXBHJTC",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9W2EH0G8PFDWX0ZFWKZ3M9"
+    },
+    {
+      "chartQuery": "SELECT COUNT(*) AS warnings\nFROM $dataset\nWHERE level = 'WARN'",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Warning Logs",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "warnings",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NG4BS8868RM78P1MA",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9W2EH0G8PFDWX0ZFWKZ3M9"
+    },
+    {
+      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE level = 'ERROR') * 100.0 / NULLIF(COUNT(*), 0), 2) AS error_pct\nFROM $dataset",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Error Rate",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_pct",
+            "title": "Error Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NHYK3H4N2J6ZRGXT4",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9W2EH0G8PFDWX0ZFWKZ3M9"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(level, 'unknown') AS level,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY time_bin, level\nORDER BY time_bin ASC, level ASC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Log Volume Over Time",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "level"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4N76E5E112QYZP8WX0",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW99XVZBZ7KVMJF100KZBCE6"
+    },
+    {
+      "chartQuery": "SELECT date_bin('1 hour', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(*) FILTER (WHERE level = 'ERROR') AS errors,\n       COUNT(*) FILTER (WHERE level = 'WARN') AS warnings\nFROM $dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Error / Warning Trend",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "errors",
+              "warnings"
+            ],
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NYRYK23T2PED8T4PC",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW99XVZBZ7KVMJF100KZBCE6"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(level, 'unknown') AS level,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY level\nORDER BY logs DESC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Logs by Level",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "logs",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "level",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NEQVFX5XNG97WCV69",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9GARN9Q0VT5YHD659C524W"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(module, 'unknown') AS module,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY module\nORDER BY logs DESC\nLIMIT 15",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Top Modules",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "module",
+            "title": "Component",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4N8FKP16XZ8NGTTC2X",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9GARN9Q0VT5YHD659C524W"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(module, 'unknown') AS module,\n       COUNT(*) AS errors\nFROM $dataset\nWHERE level IN ('ERROR', 'WARN')\nGROUP BY module\nORDER BY errors DESC\nLIMIT 15",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Top Error Modules",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "module",
+            "title": "Component",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4N8DKB85C6ECAKWEN1",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9X0XBQBJWY3Y8PHVZMB9GR"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(body, 'unknown') AS message,\n       COUNT(*) AS occurrences,\n       COUNT(DISTINCT module) AS modules\nFROM $dataset\nWHERE level IN ('ERROR', 'WARN')\nGROUP BY message\nORDER BY occurrences DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Repeated Error Messages",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "message",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "occurrences",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NC3YXTGKY7ZJGE0V3",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9X0XBQBJWY3Y8PHVZMB9GR"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(deployment_id, 'unknown') AS deployment_id,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY deployment_id\nORDER BY logs DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Logs by Deployment",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "deployment_id",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NFBZNVCXXFGHZN4V7",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9E9SXZCP9BE0Z8RXC0953H"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(customer_id, 'unknown') AS customer_id,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY customer_id\nORDER BY logs DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Logs by Customer",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "customer_id",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4N4GYK2BR43970F9AJ",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9E9SXZCP9BE0Z8RXC0953H"
+    },
+    {
+      "chartQuery": "SELECT COALESCE(module, 'unknown') AS module,\n       COALESCE(level, 'unknown') AS level,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY module, level\nORDER BY logs DESC\nLIMIT 50",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Module Severity Matrix",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "module",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NKBF50D7K7Y9HDN9R",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9GARN9Q0VT5YHD659C524W"
+    },
+    {
+      "chartQuery": "SELECT p_timestamp, level, module, line_number, deployment_id, body\nFROM $dataset\nWHERE level IN ('ERROR', 'WARN')\nORDER BY p_timestamp DESC\nLIMIT 50",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Recent Error Logs",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "level",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW41RC4NNDGFK9M94RQK289K",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9Y47BEN5DRY8M22FKDDBHY"
+    }
+  ]
+}

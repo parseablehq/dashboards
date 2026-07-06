@@ -1,0 +1,2677 @@
+{
+  "tags": [
+    "otel",
+    "opentelemetry",
+    "collector",
+    "metrics",
+    "promql"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "astronomy-shop-metrics"
+    },
+    {
+      "name": "receiver",
+      "label": "Receiver",
+      "type": "promql",
+      "dataset": "astronomy-shop-metrics",
+      "labelName": "receiver",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "processor",
+      "label": "Processor",
+      "type": "promql",
+      "dataset": "astronomy-shop-metrics",
+      "labelName": "processor",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "exporter",
+      "label": "Exporter",
+      "type": "promql",
+      "dataset": "astronomy-shop-metrics",
+      "labelName": "exporter",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "collector_service",
+      "label": "Collector Service",
+      "type": "promql",
+      "dataset": "astronomy-shop-metrics",
+      "labelName": "service.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": "otelcol-contrib"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KWCN3JYE90YGYWQ4HBYV7K4Y",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWC5828R8JH6N08659SZWSTF",
+      "title": "Receivers",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWCRHAK4GP2SJ53FA8J594TX",
+      "title": "Processors",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB",
+      "title": "Exporters",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWC95SS5X5H7YXMT8KWR9D45",
+      "title": "Runtime",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWC4EFSBMFGNTF7A6ANZYKZJ",
+      "title": "Metric Inventory",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KWC0NV0Y6J5YX54970ZA12R9",
+      "title": "Alerts & Failure Signals",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "chartQuery": [
+        "count(count(otelcol_process_uptime{\"service.name\"=\"$collector_service\"}) by (\"service.instance.id\"))"
+      ],
+      "promqlQueryType": [
+        "instant"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Collector Instances",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Instances",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCPKD84P2BJ80N7ZSMQXRM2",
+        "x": 0,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCN3JYE90YGYWQ4HBYV7K4Y"
+    },
+    {
+      "chartQuery": [
+        "sum(rate({receiver=~\"$receiver\",__name__=~\"otelcol_receiver_accepted_spans|otelcol_receiver_accepted_metric_points|otelcol_receiver_accepted_log_records\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "instant"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Receiver Accepted Rate",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCJ2VXCXMR4Y2FX8T02F2JZ",
+        "x": 2,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCN3JYE90YGYWQ4HBYV7K4Y"
+    },
+    {
+      "chartQuery": [
+        "sum(rate({exporter=~\"$exporter\",__name__=~\"otelcol_exporter_sent_spans|otelcol_exporter_sent_metric_points|otelcol_exporter_sent_log_records\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "instant"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Sent Rate",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCBF4MGNGM9V31N8FK8SA6M",
+        "x": 4,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCN3JYE90YGYWQ4HBYV7K4Y"
+    },
+    {
+      "chartQuery": [
+        "sum(rate({exporter=~\"$exporter\",__name__=~\"otelcol_exporter_send_failed_spans|otelcol_exporter_send_failed_metric_points|otelcol_exporter_send_failed_log_records\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "instant"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Failure Rate",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Failures / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCMC1BCNA0A54KHNQ5AP8RK",
+        "x": 6,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCN3JYE90YGYWQ4HBYV7K4Y"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_process_cpu_seconds{\"service.name\"=\"$collector_service\"}[5m])) * 100"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "CPU Usage",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "config": {
+        "type": "gauge",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "CPU (%)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCR6YWX0NFVJNE47ZBD43HG",
+        "x": 8,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCN3JYE90YGYWQ4HBYV7K4Y"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_process_memory_rss{\"service.name\"=\"$collector_service\"})"
+      ],
+      "promqlQueryType": [
+        "instant"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "RSS Memory",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "config": {
+        "type": "gauge",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1,
+          "rangeTo": 100,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCH2V3G72BVA2S2WCH3SGE3",
+        "x": 10,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCN3JYE90YGYWQ4HBYV7K4Y"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_receiver_accepted_spans{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Receiver Accepted Spans",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Spans / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCMT6B2D1NDEV65JJ7JSGQ0",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC5828R8JH6N08659SZWSTF"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_receiver_accepted_metric_points{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Receiver Accepted Metric Points",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Metric points / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCAXPSS4G2QVSYBR8FDF07G",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC5828R8JH6N08659SZWSTF"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_receiver_accepted_log_records{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Receiver Accepted Log Records",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Log records / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC0PM81VV8HMER3040B39BT",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC5828R8JH6N08659SZWSTF"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_receiver_refused_spans{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_refused_metric_points{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_refused_log_records{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_failed_spans{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_failed_metric_points{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_failed_log_records{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range",
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Receiver Refused / Failed Items",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC9T6T34VT1H0M15G9RC3WF",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC5828R8JH6N08659SZWSTF"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_scraper_scraped_metric_points{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Scraped Metric Points",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Metric points / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCY5G76PNSCQ34PDZQP3MM0",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC5828R8JH6N08659SZWSTF"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_scraper_errored_metric_points{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Scraper Errored Metric Points",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Errors / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC5QGMPC72WDY4XCMYXSX8Z",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC5828R8JH6N08659SZWSTF"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_processor_incoming_items{processor=~\"$processor\"}[5m])) by (processor)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Processor Incoming Items",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCAJJ576CKJFS47VAMCQT6D",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCRHAK4GP2SJ53FA8J594TX"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_processor_outgoing_items{processor=~\"$processor\"}[5m])) by (processor)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Processor Outgoing Items",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC96VQ60SH3C3PQF6PKX1WR",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCRHAK4GP2SJ53FA8J594TX"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_processor_accepted_spans{processor=~\"$processor\"}[5m])) by (processor)",
+        "sum(rate(otelcol_processor_accepted_metric_points{processor=~\"$processor\"}[5m])) by (processor)",
+        "sum(rate(otelcol_processor_accepted_log_records{processor=~\"$processor\"}[5m])) by (processor)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Processor Accepted Items",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC9RZVS46S0DNGZ8AFTKKF9",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCRHAK4GP2SJ53FA8J594TX"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_processor_internal_duration_sum{processor=~\"$processor\"}[5m])) by (processor) / sum(rate(otelcol_processor_internal_duration_count{processor=~\"$processor\"}[5m])) by (processor)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Avg Processor Internal Duration",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Seconds",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCXNNB6ZSA4FYAWYNA5T8J6",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCRHAK4GP2SJ53FA8J594TX"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_processor_batch_batch_send_size_sum{processor=~\"$processor\"}[5m])) by (processor) / sum(rate(otelcol_processor_batch_batch_send_size_count{processor=~\"$processor\"}[5m])) by (processor)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Avg Batch Send Size",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCXMKQNCR9J399MJ2DQP0R5",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCRHAK4GP2SJ53FA8J594TX"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_processor_batch_batch_size_trigger_send{processor=~\"$processor\"}[5m])) by (processor)",
+        "sum(rate(otelcol_processor_batch_timeout_trigger_send{processor=~\"$processor\"}[5m])) by (processor)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Batch Triggers",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Triggers / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCKEG8NJ81T6ZDKY5GQ273H",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCRHAK4GP2SJ53FA8J594TX"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_exporter_sent_spans{exporter=~\"$exporter\"}[5m])) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Sent Spans",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Spans / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC3TW0GYNZX670WVRZP9GKQ",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_exporter_sent_metric_points{exporter=~\"$exporter\"}[5m])) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Sent Metric Points",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Metric points / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCYRA08H0GFBB1JA1AY729S",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_exporter_sent_log_records{exporter=~\"$exporter\"}[5m])) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Sent Log Records",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Log records / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC1SH3DFB2988KZWHPT9M60",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_exporter_send_failed_spans{exporter=~\"$exporter\"}[5m])) by (exporter)",
+        "sum(rate(otelcol_exporter_send_failed_metric_points{exporter=~\"$exporter\"}[5m])) by (exporter)",
+        "sum(rate(otelcol_exporter_send_failed_log_records{exporter=~\"$exporter\"}[5m])) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Send Failures",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Failures / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCNW77K705HTHJ3MRY1T6D9",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_exporter_enqueue_failed_spans{exporter=~\"$exporter\"}[5m])) by (exporter)",
+        "sum(rate(otelcol_exporter_enqueue_failed_metric_points{exporter=~\"$exporter\"}[5m])) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Enqueue Failures",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Failures / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCEW1Q93X8P8N8X1STHD284",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_exporter_queue_size{exporter=~\"$exporter\"}) by (exporter) / max(otelcol_exporter_queue_capacity{exporter=~\"$exporter\"}) by (exporter) * 100"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Queue Utilization",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Queue (%)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCZBSP07KPJP3MVRN8367CN",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_exporter_queue_size{exporter=~\"$exporter\"}) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Queue Size",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCYBE1WATTTERN5CVEDKW9D",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_exporter_queue_capacity{exporter=~\"$exporter\"}) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Queue Capacity",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Items",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC2544EJD87N9C4E4FJJ7Q8",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWCWZA9V00KR64VMMKPQ9ZTB"
+    },
+    {
+      "chartQuery": [
+        "rate(otelcol_process_cpu_seconds{\"service.name\"=\"$collector_service\"}[5m]) * 100"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Collector CPU by Instance",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "CPU (%)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC018J1H9WP0QJWZHZV8DGP",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC95SS5X5H7YXMT8KWR9D45"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_process_memory_rss{\"service.name\"=\"$collector_service\"}) by (\"service.instance.id\")"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Collector RSS Memory",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC02N4MFC4BVGE9SS41QY2C",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC95SS5X5H7YXMT8KWR9D45"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_process_runtime_heap_alloc_bytes{\"service.name\"=\"$collector_service\"}) by (\"service.instance.id\")"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Runtime Heap Alloc",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCS8TGB2YCZBJ0328JKF308",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC95SS5X5H7YXMT8KWR9D45"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_process_runtime_total_sys_memory_bytes{\"service.name\"=\"$collector_service\"}) by (\"service.instance.id\")"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Runtime Total Sys Memory",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCJC72VX4E6KT5HJRSKBTCY",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC95SS5X5H7YXMT8KWR9D45"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_process_runtime_total_alloc_bytes{\"service.name\"=\"$collector_service\"}) by (\"service.instance.id\")"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Runtime Total Alloc",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCNJSBJ7474H0YKRZQ2XRN4",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC95SS5X5H7YXMT8KWR9D45"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_process_uptime{\"service.name\"=\"$collector_service\"}) by (\"service.instance.id\")"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Collector Uptime",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Seconds",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCPCW5YYH31GD6003QBN2RB",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC95SS5X5H7YXMT8KWR9D45"
+    },
+    {
+      "chartQuery": "SELECT metric_name, COUNT(*) AS rows, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen\nFROM $metrics_dataset\nWHERE metric_name LIKE 'otelcol%'\nGROUP BY metric_name\nORDER BY metric_name",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "title": "OTel Collector Metric Inventory",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "rows",
+            "title": "Rows",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCHWJ47TZQ7KH88653XC2H1",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC4EFSBMFGNTF7A6ANZYKZJ"
+    },
+    {
+      "chartQuery": "SELECT component_type, component, COUNT(DISTINCT metric_name) AS metrics, COUNT(*) AS rows\nFROM (\n  SELECT CASE\n           WHEN receiver IS NOT NULL THEN 'receiver'\n           WHEN processor IS NOT NULL THEN 'processor'\n           WHEN exporter IS NOT NULL THEN 'exporter'\n           ELSE 'process'\n         END AS component_type,\n         COALESCE(receiver, processor, exporter, \"service.name\", 'unknown') AS component,\n         metric_name\n  FROM $metrics_dataset\n  WHERE metric_name LIKE 'otelcol%'\n) t\nGROUP BY component_type, component\nORDER BY component_type, rows DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "title": "Active Collector Components",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "component",
+            "title": "Component",
+            "display": true
+          },
+          "y": {
+            "field": "rows",
+            "title": "Rows",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCWP9Q4H1YS01XZ1HBZKBJC",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC4EFSBMFGNTF7A6ANZYKZJ"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_receiver_refused_spans{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_refused_metric_points{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_refused_log_records{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Receiver Refused Signals",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Refused / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCTXBANR0Q80DR35NQQ43CR",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC0NV0Y6J5YX54970ZA12R9"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_receiver_failed_spans{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_failed_metric_points{receiver=~\"$receiver\"}[5m])) by (receiver)",
+        "sum(rate(otelcol_receiver_failed_log_records{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Receiver Failed Signals",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Failed / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCXTKS72QG5NTEA5TFW7T0Y",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC0NV0Y6J5YX54970ZA12R9"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_exporter_send_failed_spans{exporter=~\"$exporter\"}[5m])) by (exporter)",
+        "sum(rate(otelcol_exporter_send_failed_metric_points{exporter=~\"$exporter\"}[5m])) by (exporter)",
+        "sum(rate(otelcol_exporter_send_failed_log_records{exporter=~\"$exporter\"}[5m])) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Send Failure Signals",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Failures / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCCAC2ZW73WQYK0KE8TH9BZ",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC0NV0Y6J5YX54970ZA12R9"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_exporter_enqueue_failed_spans{exporter=~\"$exporter\"}[5m])) by (exporter)",
+        "sum(rate(otelcol_exporter_enqueue_failed_metric_points{exporter=~\"$exporter\"}[5m])) by (exporter)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Exporter Enqueue Failure Signals",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Failures / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCTRND2RBBXSD3J61XPWGYC",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC0NV0Y6J5YX54970ZA12R9"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_scraper_errored_metric_points{receiver=~\"$receiver\"}[5m])) by (receiver)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Scraper Error Signals",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Errors / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCHNDEN48FJCTMVTZJDTW83",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC0NV0Y6J5YX54970ZA12R9"
+    },
+    {
+      "chartQuery": [
+        "max(otelcol_exporter_queue_size{exporter=~\"$exporter\"}) by (exporter) / max(otelcol_exporter_queue_capacity{exporter=~\"$exporter\"}) by (exporter) * 100"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "Queue Saturation Risk",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Queue (%)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWCGGBPH4YSJKMSFT68VCNB3",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC0NV0Y6J5YX54970ZA12R9"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(otelcol_process_cpu_seconds{\"service.name\"=\"$collector_service\"}[5m])) * 100"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "title": "High CPU Risk",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "CPU (%)",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KWC72XB02015022YVBAB9T62",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KWC0NV0Y6J5YX54970ZA12R9"
+    }
+  ]
+}

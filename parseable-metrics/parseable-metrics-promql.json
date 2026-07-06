@@ -1,0 +1,4322 @@
+{
+  "tags": [
+    "metrics",
+    "parseable",
+    "promql"
+  ],
+  "variables": [
+    {
+      "name": "node_type",
+      "label": "Node Type",
+      "type": "promql",
+      "dataset": "parseable-metrics",
+      "labelName": "node_type",
+      "labelFilters": [],
+      "defaultValue": "ingest"
+    },
+    {
+      "name": "dataset",
+      "label": "Dataset",
+      "type": "dataset",
+      "defaultValue": "parseable-metrics"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1",
+      "title": "Overview"
+    },
+    {
+      "sectionId": "01KW9YRJGKWYYBCT5THZQD25K8",
+      "title": "HTTP Requests"
+    },
+    {
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK",
+      "title": "Storage & Ingestion"
+    },
+    {
+      "sectionId": "01KW9TGDDJKW7JTTQJ33K02ERA",
+      "title": "Object Store"
+    },
+    {
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0",
+      "title": "Process Resources"
+    },
+    {
+      "sectionId": "01KW9CT7N3WVG3FRAPFJZKVE1Q",
+      "title": "Query & Cache"
+    },
+    {
+      "sectionId": "01KW9A0SKF3HD5E9TQQRTQJ1AW",
+      "title": "Latency & Histograms"
+    },
+    {
+      "sectionId": "01KW9XB94KQ7C1NFST01C7GPP7",
+      "title": "Tenants"
+    }
+  ],
+  "tiles": [
+    {
+      "chartQuery": [
+        "sum(parseable_storage_size{type=\"data\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Total Storage",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": 2,
+          "humanize": true,
+          "unit": "B"
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes"
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN578TC9A3M9JHCE9CYM",
+        "x": 0,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_lifetime_events_ingested)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Lifetime Events",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": -1,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count"
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN578E6RP6VTXT1BHRGV",
+        "x": 2,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_lifetime_events_ingested_size)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Lifetime Ingested",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "B",
+          "precision": 1,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN571QR0APDVV87JTD3C",
+        "x": 4,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_staging_files)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Staging Files",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Files",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN579THJ6FAJJR1BA2B9",
+        "x": 6,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(parseable_incoming_requests[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Request Rate (All)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN5701FAM9W4PMM9133H",
+        "x": 8,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(parseable_response_code{statuscode=~\"4..|5..\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Error Rate (All)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Error Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57SRMQ38PRTHC418H3",
+        "x": 10,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum by (status) (rate(parseable_incoming_requests[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Request Rate by Status (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN575D22ZK0TASMC71BV",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9YRJGKWYYBCT5THZQD25K8"
+    },
+    {
+      "chartQuery": [
+        "sum by (statuscode) (rate(parseable_response_code[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Response Code Rate (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57N49YY7ABJFDRKT1E",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9YRJGKWYYBCT5THZQD25K8"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (endpoint) (rate(parseable_incoming_requests[30s])))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Top Endpoint Request Rate (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57DSM3CBYN52H51NXZ",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum by (method) (rate(parseable_total_object_store_calls_by_date[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Object Store Calls by Method (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN578W8S2ZEZMWMVY8HW",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9TGDDJKW7JTTQJ33K02ERA"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_storage_size{type=\"data\"})) / 1073741824"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Storage by Stream",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "bar",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "GB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57KMMAQ227XEJBRR55",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_storage_size{type=\"data\"}) / 1073741824"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Storage Trend",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "GB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57A2DKCNNAB83NN4WE",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_events_ingested))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Ingested Events by Stream",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57VJH7G41BA4AE1XP3",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_events_ingested_size)) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Ingested Size by Stream",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57VMF83HPGH6WW3RXQ",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_staging_files))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Staging Files by Stream",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57F0NVYR8W3XAFCTYG",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_events_deleted))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Deleted Events by Stream",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57JDF5FHH7RXJAJTD8",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum by (method) (rate(parseable_total_bytes_scanned_in_object_store_calls_by_date[30s])) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Object Store Bytes Scanned",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN5707JV80TH78Q547ZN",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9TGDDJKW7JTTQJ33K02ERA"
+    },
+    {
+      "chartQuery": [
+        "sum by (method) (parseable_storage_requests_inflight)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Storage Requests Inflight (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Inflight Requests",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57ZNEE2MFC7PF9ZE6H",
+        "x": 0,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "process_resident_memory_bytes / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Process Memory (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57NPXGF33V6SQCJCV1",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "process_virtual_memory_bytes / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Virtual Memory (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN573K5ZY8JH2CDXB54B",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "process_open_fds"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Open File Descriptors (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57R0C6BK44BP2S5GXE",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "process_threads"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Process Threads (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN571JB1H9KFSG4MGGCJ",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "rate(process_cpu_seconds_total[30s])"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "CPU Seconds Rate (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "CPU Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57J6CHBQMXQ6VFNFPC",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "sum by (result) (rate(parseable_promql_cache_operations_total[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "PromQL Cache Operations (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVS6TN57H11TS98J8Y7C1N0Y",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9CT7N3WVG3FRAPFJZKVE1Q"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(parseable_incoming_requests{node_type=\"$node_type\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Request Rate ($node_type)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPMBSAE1ET6WCXJVWVP",
+        "x": 0,
+        "y": 8,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9YRJGKWYYBCT5THZQD25K8"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(parseable_response_code{node_type=\"$node_type\",statuscode=~\"4..|5..\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Error Rate ($node_type)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Error Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPM8VGADHEZXFAXFPSM",
+        "x": 6,
+        "y": 13,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_storage_size{node_type=\"$node_type\",type=\"data\"}) / 1073741824"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Storage ($node_type)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "GB",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPM8W20P84DBM9JFVV3",
+        "x": 6,
+        "y": 16,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_staging_files{node_type=\"$node_type\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Staging Files ($node_type)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Files",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNCTAM5GEEAC6B4B5W",
+        "x": 8,
+        "y": 13,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "sum(process_resident_memory_bytes{node_type=\"$node_type\"}) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "RSS Memory ($node_type)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNG7X3RC82AFWNBP45",
+        "x": 6,
+        "y": 16,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(process_cpu_seconds_total{node_type=\"$node_type\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "CPU Rate ($node_type)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "CPU Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNQ8M5VN9SZ71MPDEW",
+        "x": 8,
+        "y": 16,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "sum by (status) (rate(parseable_incoming_requests{node_type=\"$node_type\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Request Rate by Status ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPN4QP474PMXFHAAADR",
+        "x": 2,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9YRJGKWYYBCT5THZQD25K8"
+    },
+    {
+      "chartQuery": [
+        "sum by (statuscode) (rate(parseable_response_code{node_type=\"$node_type\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Response Code Rate ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNG74H7S7DPZQJG9P6",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9YRJGKWYYBCT5THZQD25K8"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (endpoint) (rate(parseable_incoming_requests{node_type=\"$node_type\"}[30s])))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Top Endpoint Request Rate ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNZHR6J1WZ506A9M2Y",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9YRJGKWYYBCT5THZQD25K8"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_storage_size{node_type=\"$node_type\",type=\"data\"})) / 1073741824"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Storage by Stream ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "GB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNTRC0APHKJBMDCG1Y",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_events_ingested{node_type=\"$node_type\"}))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Events Ingested by Stream ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNRQ5ZNEETNCJ534DK",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_events_ingested_size{node_type=\"$node_type\"})) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Events Ingested Size by Stream ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPN2PT7P0RK20CG142D",
+        "x": 0,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum by (method) (rate(parseable_total_object_store_calls_by_date{node_type=\"$node_type\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Object Store Calls by Method ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNF7TV5R27EKMGQHNS",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9TGDDJKW7JTTQJ33K02ERA"
+    },
+    {
+      "chartQuery": [
+        "sum by (method) (rate(parseable_total_bytes_scanned_in_object_store_calls_by_date{node_type=\"$node_type\"}[30s])) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Object Store Bytes Scanned ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNNG2QE6QT2WHWBAPG",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9TGDDJKW7JTTQJ33K02ERA"
+    },
+    {
+      "chartQuery": [
+        "sum by (method) (parseable_storage_requests_inflight{node_type=\"$node_type\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Storage Requests Inflight ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Inflight Requests",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNBC4GK7RZEXCQJ1J5",
+        "x": 0,
+        "y": 21,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1"
+    },
+    {
+      "chartQuery": [
+        "process_resident_memory_bytes{node_type=\"$node_type\"} / 1048576",
+        "process_virtual_memory_bytes{node_type=\"$node_type\"} / 1048576"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Process Memory ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPNVSB24KC49P0X94AB",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "process_open_fds{node_type=\"$node_type\"}",
+        "process_threads{node_type=\"$node_type\"}"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Open FDs / Threads ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPN8DKS6WC8WP25ZJF5",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "rate(process_cpu_seconds_total{node_type=\"$node_type\"}[30s])"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "CPU Seconds Rate ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "CPU Rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPP9J5RWFQ39NZVRRJ6",
+        "x": 0,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(parseable_total_query_calls_by_date{node_type=\"$node_type\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Query Calls ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPPNPB73GQP20QWQGRD",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9CT7N3WVG3FRAPFJZKVE1Q"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(parseable_total_bytes_scanned_in_query_by_date{node_type=\"$node_type\"}[30s])) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Bytes Scanned in Query ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPP2JHX7W3EB75XHYD2",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9CT7N3WVG3FRAPFJZKVE1Q"
+    },
+    {
+      "chartQuery": [
+        "sum by (result) (rate(parseable_promql_cache_operations_total{node_type=\"$node_type\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "PromQL Cache Operations ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPPRABWDE1TCY28EXJG",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9CT7N3WVG3FRAPFJZKVE1Q"
+    },
+    {
+      "chartQuery": [
+        "sum by (method) (rate(parseable_total_files_scanned_in_object_store_calls_by_date{node_type=\"$node_type\"}[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Files Scanned in Object Store ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSF5HPPZMMF8Q1EA2CFFPVD",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9TGDDJKW7JTTQJ33K02ERA"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_QUERY_CACHE_HIT)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Cache Hit Metrics",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSMGF1SDDD5RVQ4X4T",
+        "x": 0,
+        "y": 16,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9CT7N3WVG3FRAPFJZKVE1Q"
+    },
+    {
+      "chartQuery": [
+        "sum(rate(parseable_partial_file_scans_in_object_store_calls_by_date[30s]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Partial Object Store Scans",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSRBF2F5QC42E0ZCNS",
+        "x": 6,
+        "y": 16,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9TGDDJKW7JTTQJ33K02ERA"
+    },
+    {
+      "chartQuery": [
+        "sum(process_max_fds{node_type=\"$node_type\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Process Limit Metrics ($node_type)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSBRBH26S0GG7GCM5Y",
+        "x": 6,
+        "y": 32,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "process_start_time_seconds{node_type=\"$node_type\"}"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Process Start Metrics ($node_type)",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSJ2J6F0YRX60H6EMZ",
+        "x": 8,
+        "y": 32,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    },
+    {
+      "chartQuery": [
+        "histogram_quantile(0.95, sum by (le) (rate(parseable_response_time_bucket[30s])))",
+        "histogram_quantile(0.95, sum by (le) (rate(parseable_query_execute_time_bucket[30s])))",
+        "histogram_quantile(0.95, sum by (le) (rate(parseable_storage_request_response_time_bucket[30s])))"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Latency p95 Histograms (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Duration (ms)",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSQVNCDMFMNK9BWDE8",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9A0SKF3HD5E9TQQRTQJ1AW"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_deleted_events_storage_size)) / 1048576",
+        "topk(10, sum by (stream) (parseable_events_deleted_size)) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Deleted Size Metrics by Stream (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSDQ2J62BWPZ0F46VC",
+        "x": 6,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (stream) (parseable_lifetime_events_storage_size{type=\"data\"})) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Lifetime Storage Metrics by Stream (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZS04257T8JRY4WP66W",
+        "x": 0,
+        "y": 40,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum by (date) (parseable_events_ingested_date)",
+        "sum by (date) (parseable_total_events_ingested_by_date)"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Event Date Metrics - Counts (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZS636DRP9WSMJ78SHY",
+        "x": 6,
+        "y": 40,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum by (date) (parseable_events_ingested_size_date) / 1048576",
+        "sum by (date) (parseable_events_storage_size_date{type=\"data\"}) / 1048576",
+        "sum by (date) (parseable_total_events_ingested_size_by_date) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Event Date Metrics - Size (All)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSEA7AHFDN79CJA4S0",
+        "x": 0,
+        "y": 48,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum by (date) (parseable_total_logs_collected_by_date{node_type=\"$node_type\"})",
+        "sum by (date) (parseable_total_metrics_collected_by_date{node_type=\"$node_type\"})",
+        "sum by (date) (parseable_total_traces_collected_by_date{node_type=\"$node_type\"})"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Collection Count Metrics ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSDJND3PFQYHQRZHJS",
+        "x": 6,
+        "y": 48,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum by (date) (parseable_total_logs_collected_size_by_date{node_type=\"$node_type\"}) / 1048576",
+        "sum by (date) (parseable_total_metrics_collected_size_by_date{node_type=\"$node_type\"}) / 1048576",
+        "sum by (date) (parseable_total_traces_collected_size_by_date{node_type=\"$node_type\"}) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Collection Size Metrics ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSNHVDAF0MPFXNHVHR",
+        "x": 0,
+        "y": 56,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum by (date) (parseable_total_parquets_stored_by_date{node_type=\"$node_type\"})",
+        "sum by (date) (parseable_total_parquets_stored_size_by_date{node_type=\"$node_type\"}) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Parquet Metrics ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZSW0MZ35FF3D4A6GAD",
+        "x": 6,
+        "y": 56,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK"
+    },
+    {
+      "chartQuery": [
+        "sum by (date) (parseable_total_files_scanned_in_query_by_date{node_type=\"$node_type\"})",
+        "sum by (date) (parseable_total_bytes_scanned_in_query_by_date{node_type=\"$node_type\"}) / 1048576"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Query Scan Metrics ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSHJHZS12G1Y8CY2SAAXBEA",
+        "x": 2,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9CT7N3WVG3FRAPFJZKVE1Q"
+    },
+    {
+      "chartQuery": [
+        "histogram_quantile(0.95, sum by (le) (rate(parseable_response_time_bucket{node_type=\"$node_type\"}[30s])))",
+        "histogram_quantile(0.95, sum by (le) (rate(parseable_query_execute_time_bucket{node_type=\"$node_type\"}[30s])))",
+        "histogram_quantile(0.95, sum by (le) (rate(parseable_storage_request_response_time_bucket{node_type=\"$node_type\"}[30s])))"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Latency p95 Histograms ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Duration (ms)",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSJ4A25K3B6VM3545135T72",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9A0SKF3HD5E9TQQRTQJ1AW"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_response_time_count{node_type=\"$node_type\"})",
+        "sum(parseable_query_execute_time_count{node_type=\"$node_type\"})",
+        "sum(parseable_storage_request_response_time_count{node_type=\"$node_type\"})"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Latency Histogram Counts ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Duration (ms)",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSJ4A25DPJERNDPKPFNS231",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9A0SKF3HD5E9TQQRTQJ1AW"
+    },
+    {
+      "chartQuery": [
+        "sum(parseable_response_time_sum{node_type=\"$node_type\"})",
+        "sum(parseable_query_execute_time_sum{node_type=\"$node_type\"})",
+        "sum(parseable_storage_request_response_time_sum{node_type=\"$node_type\"})"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Latency Histogram Sums ($node_type)",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Duration (ms)",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KVSJ4A25KBAGV5D5KFFPFNHC",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9A0SKF3HD5E9TQQRTQJ1AW"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (tenant_id) (parseable_storage_size{type=\"data\"})) / 1073741824"
+      ],
+      "dbName": "$dataset",
+      "title": "Top Tenants by Storage",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "GB",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "tenant_id"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3ZBWGFFYZEX2BQX8BGKV6R",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9XB94KQ7C1NFST01C7GPP7"
+    },
+    {
+      "chartQuery": [
+        "topk(10, sum by (tenant_id) (parseable_events_ingested))"
+      ],
+      "dbName": "$dataset",
+      "title": "Top Tenants by Ingested Events",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "tenant_id"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3ZBWGFSSCBW5A142GHX294",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9XB94KQ7C1NFST01C7GPP7"
+    },
+    {
+      "chartQuery": [
+        "topk(10, histogram_quantile(0.95, sum by (le, endpoint) (rate(parseable_response_time_bucket[5m]))))"
+      ],
+      "dbName": "$dataset",
+      "title": "Request p95 Latency by Endpoint",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Duration (ms)",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "endpoint"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3ZBWGF7DFE3AP6NWS66YF9",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9A0SKF3HD5E9TQQRTQJ1AW"
+    },
+    {
+      "chartQuery": [
+        "max(process_open_fds / process_max_fds * 100)"
+      ],
+      "dbName": "$dataset",
+      "title": "File Descriptor Usage Percent",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent (%)",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KW3ZBWGF3TEERX2VR0V8SPA8",
+        "x": 0,
+        "y": 40,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9M028P3TRHP5K05MWR2EF0"
+    }
+  ]
+}

@@ -1,47 +1,77 @@
-[
-  {
-    "name": "Agent Cost Analysis",
-    "dirName": "agent-cost-analysis",
-    "description": "Analyze GenAI agent spend, token consumption, and cost distribution across models, users, tools, and sessions."
-  },
-  {
-    "name": "Agent Invocations",
-    "dirName": "agent-invocations",
-    "description": "Track agent invocation volume, outcomes, latency, tool calls, token usage, and request-level behavior for SWE-agent and GenAI workloads."
-  },
-  {
-    "name": "Claude Code Usage",
-    "dirName": "claude-code-usage",
-    "description": "Monitor Claude Code sessions, model usage, request patterns, token consumption, and PromQL-backed runtime signals."
-  },
-  {
-    "name": "Node Metrics Dashboard - PromQL",
-    "dirName": "node-metrics-dashboard",
-    "description": "Monitor host-level CPU, memory, disk, network, filesystem, and load metrics from node exporter style PromQL data."
-  },
-  {
-    "name": "OTel Collector Metrics",
-    "dirName": "otel-collector-metrics",
-    "description": "Observe OpenTelemetry Collector throughput, receiver/exporter activity, queue behavior, dropped telemetry, and component inventory."
-  },
-  {
-    "name": "OTel Demo Application",
-    "dirName": "otel-demo-application",
-    "description": "Explore application, service, and telemetry behavior for the OpenTelemetry Astronomy Shop demo application."
-  },
-  {
-    "name": "Parseable Audit Logs",
-    "dirName": "parseable-audit-logs",
-    "description": "Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets."
-  },
-  {
-    "name": "Parseable Metrics",
-    "dirName": "parseable-metrics",
-    "description": "Monitor Parseable service metrics including ingestion, query behavior, storage, runtime health, and system-level PromQL signals."
-  },
-  {
-    "name": "Parseable Server Logs",
-    "dirName": "parseable-server-logs",
-    "description": "Analyze Parseable server logs, error patterns, request activity, status distribution, and runtime log trends."
-  }
-]
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "name": "Agent Cost Analysis",
+      "dirName": "agent-cost-analysis",
+      "fileName": "agent-cost-analysis-sql.json",
+      "description": "Analyze GenAI agent spend, token consumption, and cost distribution across models, users, tools, and sessions.",
+      "source": "SQL",
+      "tags": ["agent-observability", "cost"]
+    },
+    {
+      "name": "Agent Invocations",
+      "dirName": "agent-invocations",
+      "fileName": "agent-invocations-sql.json",
+      "description": "Track agent invocation volume, outcomes, latency, tool calls, token usage, and request-level behavior for SWE-agent and GenAI workloads.",
+      "source": "SQL",
+      "tags": ["swe-agent", "genai", "sql"]
+    },
+    {
+      "name": "Claude Code Usage",
+      "dirName": "claude-code-usage",
+      "fileName": "claude-code-usage-mixed.json",
+      "description": "Monitor Claude Code sessions, model usage, request patterns, token consumption, and PromQL-backed runtime signals.",
+      "source": "Mixed",
+      "tags": ["claude-code", "usage", "genai"]
+    },
+    {
+      "name": "Node Metrics Dashboard - PromQL",
+      "dirName": "node-metrics-dashboard",
+      "fileName": "node-metrics-dashboard-promql.json",
+      "description": "Monitor host-level CPU, memory, disk, network, filesystem, and load metrics from node exporter style PromQL data.",
+      "source": "PromQL",
+      "tags": ["node", "promql"]
+    },
+    {
+      "name": "OTel Collector Metrics",
+      "dirName": "otel-collector-metrics",
+      "fileName": "otel-collector-metrics-mixed.json",
+      "description": "Observe OpenTelemetry Collector throughput, receiver/exporter activity, queue behavior, dropped telemetry, and component inventory.",
+      "source": "Mixed",
+      "tags": ["otel", "opentelemetry", "collector", "metrics", "promql"]
+    },
+    {
+      "name": "OTel Demo Application",
+      "dirName": "otel-demo-application",
+      "fileName": "otel-demo-application-mixed.json",
+      "description": "Explore application, service, and telemetry behavior for the OpenTelemetry Astronomy Shop demo application.",
+      "source": "Mixed",
+      "tags": ["otel-demo", "astronomy-shop", "observability"]
+    },
+    {
+      "name": "Parseable Audit Logs",
+      "dirName": "parseable-audit-logs",
+      "fileName": "parseable-audit-logs-sql.json",
+      "description": "Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets.",
+      "source": "SQL",
+      "tags": ["audit", "parseable", "logs"]
+    },
+    {
+      "name": "Parseable Metrics",
+      "dirName": "parseable-metrics",
+      "fileName": "parseable-metrics-promql.json",
+      "description": "Monitor Parseable service metrics including ingestion, query behavior, storage, runtime health, and system-level PromQL signals.",
+      "source": "PromQL",
+      "tags": ["metrics", "parseable", "promql"]
+    },
+    {
+      "name": "Parseable Server Logs",
+      "dirName": "parseable-server-logs",
+      "fileName": "parseable-server-logs-sql.json",
+      "description": "Analyze Parseable server logs, error patterns, request activity, status distribution, and runtime log trends.",
+      "source": "SQL",
+      "tags": ["server-logs", "parseable", "logs"]
+    }
+  ]
+}

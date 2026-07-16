@@ -2,107 +2,73 @@
   "tags": [
     "audit",
     "parseable",
-    "logs"
+    "logs",
+    "azure"
   ],
   "variables": [
     {
       "name": "dataset",
       "label": "Dataset",
       "type": "dataset",
-      "defaultValue": "audit-logs"
+      "defaultValue": "azure-prod-parseable-audit"
+    },
+    {
+      "name": "username",
+      "label": "Username",
+      "type": "sql",
+      "sqlQuery": "select distinct \"body_username\" from \"$dataset\""
     }
   ],
   "sections": [
     {
-      "sectionId": "01KW95114ZCSQ6W45NKWP9YPEQ",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
       "title": "Overview",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
-      "sectionId": "01KW9S8R68QCBRSPJFC293DFAR",
+      "sectionId": "01KW9WPA1Q85AH2SMMZJ72BJKQ",
       "title": "Request Trends",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
-      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3",
+      "sectionId": "01KW97Z07W58C4YMMZQ81KJ56W",
       "title": "Status & Auth",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
-      "sectionId": "01KW9D06JP6E0FMJWQWA0RKP4B",
+      "sectionId": "01KW94VMNVX4ASN67FVP195K11",
       "title": "Users & Streams",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
-      "sectionId": "01KW9FNPMFRCCAT7K4R5EV65EZ",
+      "sectionId": "01KW9QTB9EZ20F0EA8MG8VNCJD",
       "title": "API Paths",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
-      "sectionId": "01KW9XFV7GR7K2CWTDB0RC0AQG",
+      "sectionId": "01KW98XG1XRWZ6DBYS6TPTB9AK",
       "title": "Failures",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
-      "sectionId": "01KW9M8CK0GAGB2J5360GRFECD",
+      "sectionId": "01KW93XZCM5V1FZJ65MVZMCKN5",
       "title": "Recent Events",
-      "isExpanded": true
+      "isExpanded": false
     }
   ],
   "tiles": [
     {
-      "chartQuery": "SELECT COUNT(*) AS requests\nFROM $dataset",
+      "tile_id": "01KW448M64PD90CHKMTXPE1NVN",
+      "title": "UI API Calls",
+      "chartQuery": "SELECT COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'",
       "dbName": [
         "$dataset"
       ],
-      "title": "Total Requests",
       "chartType": "query-value",
       "tileType": "code",
-      "config": {
-        "type": "query-value",
-        "colourScheme": "blue",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "",
-            "title": "Metric",
-            "display": true
-          },
-          "y": {
-            "field": "requests",
-            "title": "Count",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
       "layout": {
-        "i": "01KW42MT44K0N60HS7V2R3E7HJ",
+        "i": "01KW448M64PD90CHKMTXPE1NVN",
         "x": 0,
         "y": 0,
         "w": 3,
@@ -110,43 +76,24 @@
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW95114ZCSQ6W45NKWP9YPEQ"
-    },
-    {
-      "chartQuery": "SELECT COUNT(*) AS errors\nFROM $dataset\nWHERE status_code >= 400",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Error Requests",
-      "chartType": "query-value",
-      "tileType": "code",
       "config": {
         "type": "query-value",
-        "colourScheme": "redYellowGreen",
+        "colourScheme": "blue",
         "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
           "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
           "humanize": true
         },
         "axes": {
           "x": {
             "field": "",
-            "title": "Metric",
+            "title": "",
             "display": true
           },
           "y": {
-            "field": "errors",
-            "title": "Errors",
-            "display": true
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
@@ -162,71 +109,20 @@
             "intersect": false
           }
         }
-      },
-      "layout": {
-        "i": "01KW42MT44MSBXDMAVDWT5VB2D",
-        "x": 0,
-        "y": 0,
-        "w": 3,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9S8R68QCBRSPJFC293DFAR"
+      }
     },
     {
-      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE status_code >= 400) * 100.0 / NULLIF(COUNT(*), 0), 2) AS error_pct\nFROM $dataset",
+      "tile_id": "01KW448M65XP6GEM7ZKWZKMVY1",
+      "title": "UI API Error Calls",
+      "chartQuery": "SELECT COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND (body_status_code >= 400 OR body_error IS NOT NULL)",
       "dbName": [
         "$dataset"
       ],
-      "title": "Error Rate",
       "chartType": "query-value",
       "tileType": "code",
-      "config": {
-        "type": "query-value",
-        "colourScheme": "greenYellowRed",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 2,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "",
-            "title": "Metric",
-            "display": true
-          },
-          "y": {
-            "field": "error_pct",
-            "title": "Error Rate",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
       "layout": {
-        "i": "01KW42MT441TQX15QG1NHCACEQ",
+        "i": "01KW448M65XP6GEM7ZKWZKMVY1",
         "x": 3,
         "y": 0,
         "w": 3,
@@ -234,43 +130,24 @@
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW95114ZCSQ6W45NKWP9YPEQ"
-    },
-    {
-      "chartQuery": "SELECT ROUND(AVG(content_length), 2) AS avg_content_length\nFROM $dataset\nWHERE content_length IS NOT NULL",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Avg Request Size",
-      "chartType": "query-value",
-      "tileType": "code",
       "config": {
         "type": "query-value",
-        "colourScheme": "purple",
+        "colourScheme": "redYellowGreen",
         "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
           "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "precision": 0,
           "humanize": true
         },
         "axes": {
           "x": {
             "field": "",
-            "title": "Metric",
+            "title": "",
             "display": true
           },
           "y": {
-            "field": "avg_content_length",
-            "title": "Bytes",
-            "display": true
+            "field": "errors",
+            "title": "errors",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
@@ -286,9 +163,20 @@
             "intersect": false
           }
         }
-      },
+      }
+    },
+    {
+      "tile_id": "01KW448M65W758DSM8BCH3V3HK",
+      "title": "UI API Error Rate",
+      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE body_status_code >= 400 OR body_error IS NOT NULL) * 100.0 / NULLIF(COUNT(*), 0), 2) AS error_pct\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
       "layout": {
-        "i": "01KW42MT44TJF3XBQWKFKNMD5W",
+        "i": "01KW448M65W758DSM8BCH3V3HK",
         "x": 6,
         "y": 0,
         "w": 3,
@@ -296,43 +184,132 @@
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW95114ZCSQ6W45NKWP9YPEQ"
+      "config": {
+        "type": "query-value",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "error_pct",
+            "title": "error_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
     },
     {
-      "chartQuery": "SELECT date_bin('1 hour', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY time_bin, method\nORDER BY time_bin ASC, method ASC",
+      "tile_id": "01KW448M650PS4ZP150Z4JKEW3",
+      "title": "UI API Avg Request Size",
+      "chartQuery": "SELECT ROUND(AVG(body_content_length), 2) AS avg_content_length\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND body_content_length IS NOT NULL",
       "dbName": [
         "$dataset"
       ],
-      "title": "Request Volume Over Time",
-      "chartType": "timeseries",
+      "chartType": "query-value",
       "tileType": "code",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
+      "layout": {
+        "i": "01KW448M650PS4ZP150Z4JKEW3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "avg_content_length",
+            "title": "avg_content_length",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M65VWCZ8XJGNB0YB2TP",
+      "title": "UI API Volume Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(body_method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, COALESCE(body_method, 'unknown')\nORDER BY time_bin ASC, method ASC",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "01KW9WPA1Q85AH2SMMZJ72BJKQ",
+      "layout": {
+        "i": "01KW448M65VWCZ8XJGNB0YB2TP",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
       "config": {
         "type": "area",
         "colourScheme": "yellow",
         "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
           "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
           "humanize": true
         },
         "axes": {
           "x": {
             "field": "time_bin",
-            "title": "Time",
+            "title": "",
             "display": true
           },
           "y": {
             "field": "requests",
-            "title": "Count",
-            "display": true
+            "title": "",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": [
@@ -350,508 +327,20 @@
             "intersect": false
           }
         }
-      },
-      "layout": {
-        "i": "01KW42MT44Q6PDX1670GWESS9D",
-        "x": 3,
-        "y": 0,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9S8R68QCBRSPJFC293DFAR"
+      }
     },
     {
-      "chartQuery": "SELECT date_bin('1 hour', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(*) FILTER (WHERE status_code >= 400) AS errors,\n       COUNT(*) FILTER (WHERE status_code >= 500) AS server_errors\nFROM $dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "tile_id": "01KW448M65TJEFZV5J092BQT6N",
+      "title": "UI API Error Trend",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(*) FILTER (WHERE body_status_code >= 400 OR body_error IS NOT NULL) AS errors,\n       COUNT(*) FILTER (WHERE body_status_code >= 500) AS server_errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$dataset"
       ],
-      "title": "Error Trend",
-      "chartType": "timeseries",
+      "chartType": "line",
       "tileType": "code",
-      "config": {
-        "type": "line",
-        "colourScheme": "red",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "time_bin",
-            "title": "Time",
-            "display": true
-          },
-          "y": {
-            "field": [
-              "errors",
-              "server_errors"
-            ],
-            "title": "Errors",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
+      "sectionId": "01KW9WPA1Q85AH2SMMZJ72BJKQ",
       "layout": {
-        "i": "01KW42MT44N9GZ8YZEK2DVADCK",
-        "x": 0,
-        "y": 8,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9S8R68QCBRSPJFC293DFAR"
-    },
-    {
-      "chartQuery": "SELECT CAST(status_code AS INT) AS status_code,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY status_code\nORDER BY requests DESC\nLIMIT 20",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Status Code Mix",
-      "chartType": "bar",
-      "tileType": "code",
-      "config": {
-        "type": "bar",
-        "colourScheme": "greenYellowRed",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "status_code",
-            "title": "Status",
-            "display": true
-          },
-          "y": {
-            "field": "requests",
-            "title": "Count",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KW42MT44P1QVP10Q8H2SR6XH",
-        "x": 0,
-        "y": 0,
-        "w": 4,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3"
-    },
-    {
-      "chartQuery": "SELECT COALESCE(method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY method\nORDER BY requests DESC",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Requests by Method",
-      "chartType": "donut",
-      "tileType": "code",
-      "config": {
-        "type": "donut",
-        "colourScheme": "redYellowGreen",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "requests",
-            "title": "Method",
-            "display": true
-          },
-          "y": {
-            "field": "method",
-            "title": "Count",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KW42MT449BBG5DT7ZQKX9SP9",
-        "x": 4,
-        "y": 0,
-        "w": 4,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3"
-    },
-    {
-      "chartQuery": "SELECT COALESCE(authorization_method, 'unknown') AS auth_method,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY auth_method\nORDER BY requests DESC",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Auth Methods",
-      "chartType": "donut",
-      "tileType": "code",
-      "config": {
-        "type": "donut",
-        "colourScheme": "greenYellowRed",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "requests",
-            "title": "Method",
-            "display": true
-          },
-          "y": {
-            "field": "auth_method",
-            "title": "Count",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KW42MT448ZTGEZBM7W2M1TF8",
-        "x": 8,
-        "y": 0,
-        "w": 4,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3"
-    },
-    {
-      "chartQuery": "SELECT COALESCE(path, 'unknown') AS path,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY path\nORDER BY requests DESC\nLIMIT 20",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Top Paths",
-      "chartType": "bar",
-      "tileType": "code",
-      "config": {
-        "type": "bar",
-        "colourScheme": "green",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "path",
-            "title": "Path",
-            "display": true
-          },
-          "y": {
-            "field": "requests",
-            "title": "Count",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KW42MT44Z2Y2JD55CGWWF1RD",
-        "x": 0,
-        "y": 0,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9FNPMFRCCAT7K4R5EV65EZ"
-    },
-    {
-      "chartQuery": "SELECT COALESCE(path, 'unknown') AS path,\n       COUNT(*) AS errors\nFROM $dataset\nWHERE status_code >= 400\nGROUP BY path\nORDER BY errors DESC\nLIMIT 20",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Top Error Paths",
-      "chartType": "bar",
-      "tileType": "code",
-      "config": {
-        "type": "bar",
-        "colourScheme": "red",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "path",
-            "title": "Path",
-            "display": true
-          },
-          "y": {
-            "field": "errors",
-            "title": "Errors",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KW42MT44AP6EGXAGNHSAW9WW",
-        "x": 0,
-        "y": 0,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9XFV7GR7K2CWTDB0RC0AQG"
-    },
-    {
-      "chartQuery": "SELECT COALESCE(NULLIF(username, ''), user_id, 'unknown') AS user,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY user\nORDER BY requests DESC\nLIMIT 20",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Top Users",
-      "chartType": "bar",
-      "tileType": "code",
-      "config": {
-        "type": "bar",
-        "colourScheme": "orange",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "user",
-            "title": "User",
-            "display": true
-          },
-          "y": {
-            "field": "requests",
-            "title": "Count",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KW42MT446ZCDQYFDFM83S421",
-        "x": 0,
-        "y": 0,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW9D06JP6E0FMJWQWA0RKP4B"
-    },
-    {
-      "chartQuery": "SELECT COALESCE(stream_name, \"headers_x-p-stream\", 'unknown') AS stream,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY stream\nORDER BY requests DESC\nLIMIT 20",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Top Streams",
-      "chartType": "bar",
-      "tileType": "code",
-      "config": {
-        "type": "bar",
-        "colourScheme": "yellow",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "stream",
-            "title": "Stream",
-            "display": true
-          },
-          "y": {
-            "field": "requests",
-            "title": "Count",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KW42MT44Z7AE2DZSJ7HQP9ZD",
+        "i": "01KW448M65TJEFZV5J092BQT6N",
         "x": 6,
         "y": 0,
         "w": 6,
@@ -859,43 +348,24 @@
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW9D06JP6E0FMJWQWA0RKP4B"
-    },
-    {
-      "chartQuery": "SELECT COALESCE(server_mode, 'unknown') AS server_mode,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY server_mode\nORDER BY requests DESC",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Server Mode",
-      "chartType": "donut",
-      "tileType": "code",
       "config": {
-        "type": "donut",
-        "colourScheme": "redYellowGreen",
+        "type": "line",
+        "colourScheme": "red",
         "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
           "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
           "humanize": true
         },
         "axes": {
           "x": {
-            "field": "requests",
-            "title": "Mode",
+            "field": "time_bin",
+            "title": "",
             "display": true
           },
           "y": {
-            "field": "server_mode",
-            "title": "Count",
-            "display": true
+            "field": "errors",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
@@ -911,9 +381,408 @@
             "intersect": false
           }
         }
-      },
+      }
+    },
+    {
+      "tile_id": "01KW448M65AA30SJVC5TQ0FSM6",
+      "title": "UI API Status Code Mix",
+      "chartQuery": "SELECT CAST(body_status_code AS INT) AS status_code,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY status_code\nORDER BY requests DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW97Z07W58C4YMMZQ81KJ56W",
       "layout": {
-        "i": "01KW42MT44CS58JH7GH7E69PP1",
+        "i": "01KW448M65AA30SJVC5TQ0FSM6",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "status_code",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M65MB23WNFX2DAHHFPP",
+      "title": "UI API Requests by Method",
+      "chartQuery": "SELECT COALESCE(body_method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY method\nORDER BY requests DESC",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW97Z07W58C4YMMZQ81KJ56W",
+      "layout": {
+        "i": "01KW448M65MB23WNFX2DAHHFPP",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "requests",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "method",
+            "title": "method",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "method"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M65HYSKPQ8PS27RBC3H",
+      "title": "Auth Methods",
+      "chartQuery": "SELECT COALESCE(body_authorization_method, 'unknown') AS auth_method,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY auth_method\nORDER BY requests DESC",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW97Z07W58C4YMMZQ81KJ56W",
+      "layout": {
+        "i": "01KW448M65HYSKPQ8PS27RBC3H",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "requests",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "auth_method",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M65MA3GP1QJPXHEMQHQ",
+      "title": "Top UI API Paths",
+      "chartQuery": "SELECT COALESCE(body_path, 'unknown') AS path,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY path\nORDER BY requests DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW9QTB9EZ20F0EA8MG8VNCJD",
+      "layout": {
+        "i": "01KW448M65MA3GP1QJPXHEMQHQ",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "path",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "path",
+            "title": "path",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "path"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M65SP5JCBP6W4Y1NT2J",
+      "title": "Top UI API Error Paths",
+      "chartQuery": "SELECT COALESCE(body_path, 'unknown') AS path,\n       COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND (body_status_code >= 400 OR body_error IS NOT NULL)\nGROUP BY path\nORDER BY errors DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW98XG1XRWZ6DBYS6TPTB9AK",
+      "layout": {
+        "i": "01KW448M65SP5JCBP6W4Y1NT2J",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "orange",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "path",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "path",
+            "title": "path",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "path"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M65JYMFTFERB9AMWGDY",
+      "title": "Top UI API Users",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user\nORDER BY requests DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW94VMNVX4ASN67FVP195K11",
+      "layout": {
+        "i": "01KW448M65JYMFTFERB9AMWGDY",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "yellow",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "user",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "user",
+            "title": "user",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "user"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M65H11199SSHT0C6WTD",
+      "title": "Top UI API Streams",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY stream\nORDER BY requests DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW94VMNVX4ASN67FVP195K11",
+      "layout": {
+        "i": "01KW448M65H11199SSHT0C6WTD",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "red",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "stream",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "stream",
+            "title": "stream",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "stream"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M6559XF4B51VJ4FYP0Q",
+      "title": "Server Mode",
+      "chartQuery": "SELECT COALESCE(body_server_mode, 'unknown') AS server_mode,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY server_mode\nORDER BY requests DESC",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW97Z07W58C4YMMZQ81KJ56W",
+      "layout": {
+        "i": "01KW448M6559XF4B51VJ4FYP0Q",
         "x": 0,
         "y": 8,
         "w": 4,
@@ -921,43 +790,24 @@
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW9AYW02QWZDNYR2JWAXZEG3"
-    },
-    {
-      "chartQuery": "SELECT p_timestamp, method, path, status_code, username, tenant_id, stream_name, error\nFROM $dataset\nWHERE status_code >= 400 OR error IS NOT NULL\nORDER BY p_timestamp DESC\nLIMIT 50",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Recent Failed Requests",
-      "chartType": "table",
-      "tileType": "code",
       "config": {
-        "type": "table",
-        "colourScheme": "greenYellowRed",
+        "type": "donut",
+        "colourScheme": "redYellowGreen",
         "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
           "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
           "humanize": true
         },
         "axes": {
           "x": {
-            "field": "p_timestamp",
-            "title": "Records",
+            "field": "requests",
+            "title": "",
             "display": true
           },
           "y": {
-            "field": "status_code",
-            "title": "Errors",
-            "display": true
+            "field": "server_mode",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
@@ -973,9 +823,20 @@
             "intersect": false
           }
         }
-      },
+      }
+    },
+    {
+      "tile_id": "01KW448M659MPP1S76JBW86QX4",
+      "title": "Recent Failed UI API Calls",
+      "chartQuery": "SELECT p_timestamp, body_method AS method, body_path AS path, body_status_code AS status_code,\n       COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username,\n       body_tenant_id AS tenant_id, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name, body_error AS error\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND (body_status_code >= 400 OR body_error IS NOT NULL)\nORDER BY p_timestamp DESC\nLIMIT 50",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW98XG1XRWZ6DBYS6TPTB9AK",
       "layout": {
-        "i": "01KW42MT44D5RHY10DYAPS9G82",
+        "i": "01KW448M659MPP1S76JBW86QX4",
         "x": 0,
         "y": 8,
         "w": 8,
@@ -983,43 +844,507 @@
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW9XFV7GR7K2CWTDB0RC0AQG"
-    },
-    {
-      "chartQuery": "SELECT p_timestamp, method, path, status_code, username, tenant_id, stream_name, authorization_method, server_mode\nFROM $dataset\nORDER BY p_timestamp DESC\nLIMIT 50",
-      "dbName": [
-        "$dataset"
-      ],
-      "title": "Recent Audit Events",
-      "chartType": "table",
-      "tileType": "code",
       "config": {
         "type": "table",
-        "colourScheme": "classic",
+        "colourScheme": "greenYellowRed",
         "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
           "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 0,
           "humanize": true
         },
         "axes": {
           "x": {
-            "field": "p_timestamp",
-            "title": "Records",
+            "field": "",
+            "title": "",
             "display": true
           },
           "y": {
-            "field": "status_code",
-            "title": "Count",
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW448M6579VP816221XNA7M1",
+      "title": "Recent UI API Calls",
+      "chartQuery": "SELECT p_timestamp, body_method AS method, body_path AS path, body_status_code AS status_code,\n       COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username,\n       body_tenant_id AS tenant_id, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name,\n       body_authorization_method AS authorization_method, body_server_mode AS server_mode\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nORDER BY p_timestamp DESC\nLIMIT 50",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW93XZCM5V1FZJ65MVZMCKN5",
+      "layout": {
+        "i": "01KW448M6579VP816221XNA7M1",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
             "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW7J2Z0MCXZQ9GXSNE8Y2292",
+      "title": "UI API Distinct Users",
+      "chartQuery": "SELECT COUNT(DISTINCT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown')) AS users\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
+      "layout": {
+        "i": "01KW7J2Z0MCXZQ9GXSNE8Y2292",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "users",
+            "title": "users",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW7ZJ60FCV8J7H764X19Y18C",
+      "title": "UI API Streams Touched",
+      "chartQuery": "SELECT COUNT(DISTINCT COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown')) AS streams\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
+      "layout": {
+        "i": "01KW7ZJ60FCV8J7H764X19Y18C",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "streams",
+            "title": "streams",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW7AGBMQK9ZVB140YEG59VRR",
+      "title": "UI API Paths Touched",
+      "chartQuery": "SELECT COUNT(DISTINCT COALESCE(body_path, 'unknown')) AS paths\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
+      "layout": {
+        "i": "01KW7AGBMQK9ZVB140YEG59VRR",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "paths",
+            "title": "paths",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW7HPPH60JPK4ERHMGGZ0S0H",
+      "title": "UI API Workspaces Touched",
+      "chartQuery": "SELECT COUNT(DISTINCT COALESCE(NULLIF(body_workspace_id, ''), NULLIF(body_org_id, ''), 'unknown')) AS workspaces\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
+      "layout": {
+        "i": "01KW7HPPH60JPK4ERHMGGZ0S0H",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "workspaces",
+            "title": "workspaces",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW768EJXBYFWG754B8FMVBN2",
+      "title": "UI API Status Class Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       CASE WHEN body_status_code >= 500 THEN '5xx' WHEN body_status_code >= 400 THEN '4xx' WHEN body_status_code >= 300 THEN '3xx' WHEN body_status_code >= 200 THEN '2xx' ELSE 'unknown' END AS status_class,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, status_class\nORDER BY time_bin ASC",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "01KW9WPA1Q85AH2SMMZJ72BJKQ",
+      "layout": {
+        "i": "01KW768EJXBYFWG754B8FMVBN2",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "method"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW71Z7VQDCPP1X0H7N60QP71",
+      "title": "UI API Calls by User and Method",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user,\n       COALESCE(body_method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user, method\nORDER BY requests DESC\nLIMIT 30",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
+      "layout": {
+        "i": "01KW71Z7VQDCPP1X0H7N60QP71",
+        "x": 0,
+        "y": 12,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW7XNWGK7NKFKGEYARY7XMPS",
+      "title": "UI API Calls by User and Stream",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user,\n       COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user, stream\nORDER BY requests DESC\nLIMIT 30",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97SVS4FT59FFBCJK5T9G3H",
+      "layout": {
+        "i": "01KW7XNWGK7NKFKGEYARY7XMPS",
+        "x": 6,
+        "y": 12,
+        "w": 6,
+        "h": 11,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW7QYYJ230566RM5ZFPX2VFR",
+      "title": "UI API Error Details by User",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user,\n       COALESCE(body_method, 'unknown') AS method, body_path AS path, CAST(body_status_code AS INT) AS status_code,\n       COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream,\n       COALESCE(body_error, '') AS error, COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND (body_status_code >= 400 OR body_error IS NOT NULL)\nGROUP BY user, method, path, status_code, stream, error\nORDER BY errors DESC\nLIMIT 30",
+      "sectionId": "01KW98XG1XRWZ6DBYS6TPTB9AK",
+      "layout": {
+        "i": "01KW7QYYJ230566RM5ZFPX2VFR",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 11,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
@@ -1036,16 +1361,227 @@
           }
         }
       },
+      "dbName": [
+        "$dataset"
+      ],
+      "tileType": "code",
+      "chartType": "table"
+    },
+    {
+      "tile_id": "01KW7MKPQ065QRMZMR60WK786J",
+      "title": "Slow APIs",
+      "chartQuery": "SELECT coalesce(body_method,'unknown') m,body_path p,round(approx_percentile_cont(cast(replace(body_response_time,'ms','') AS double),.95),2) p95,count(*) n FROM $dataset WHERE body_path NOT LIKE '%assets%' AND body_response_time LIKE '%ms' GROUP BY 1,2 ORDER BY 3 DESC LIMIT 25",
+      "sectionId": "01KW9QTB9EZ20F0EA8MG8VNCJD",
       "layout": {
-        "i": "01KW42MT441ZBKF7H2BXVK2ESV",
-        "x": 0,
+        "i": "01KW7MKPQ065QRMZMR60WK786J",
+        "x": 6,
         "y": 0,
-        "w": 12,
-        "h": 8,
+        "w": 6,
+        "h": 11,
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW9M8CK0GAGB2J5360GRFECD"
+      "config": {
+        "type": "table",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "dbName": [
+        "$dataset"
+      ],
+      "tileType": "code",
+      "chartType": "table"
+    },
+    {
+      "tile_id": "01KW7DFG92AN9JWCYJ0HSZV3GT",
+      "title": "UI API Call Inventory",
+      "chartQuery": "SELECT DISTINCT body_path AS path, body_method AS method, CAST(body_status_code AS INT) AS status_code,\n       COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name,\n       COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username,\n       COALESCE(body_error, '') AS error\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nORDER BY path, method, status_code\nLIMIT 200",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW9QTB9EZ20F0EA8MG8VNCJD",
+      "layout": {
+        "i": "01KW7DFG92AN9JWCYJ0HSZV3GT",
+        "x": 0,
+        "y": 11,
+        "w": 6,
+        "h": 11,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW7P6XZGVVGFY6TJ5TYFDX84",
+      "title": "UI API Path Method Status Summary",
+      "chartQuery": "SELECT body_path AS path, COALESCE(body_method, 'unknown') AS method, CAST(body_status_code AS INT) AS status_code,\n       COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name,\n       COALESCE(body_error, '') AS error, COUNT(*) AS calls\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY path, method, status_code, stream_name, error\nORDER BY calls DESC\nLIMIT 100",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97Z07W58C4YMMZQ81KJ56W",
+      "layout": {
+        "i": "01KW7P6XZGVVGFY6TJ5TYFDX84",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 12,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4YENKXBXNTCRGRN5D6P1AP",
+      "title": "User Actions",
+      "chartQuery": "SELECT DISTINCT\n  body_path,\n  body_method,\n  \"body_status_code\",\n  \"body_stream_name\",\n  \"body_error\"\nFROM\n  $dataset\nWHERE\n  body_username like '%$username%'\n  AND body_path NOT LIKE '%assets%'\n  AND body_error IS NULL",
+      "dbName": [
+        "$dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW93XZCM5V1FZJ65MVZMCKN5",
+      "layout": {
+        "i": "01KW4YENKXBXNTCRGRN5D6P1AP",
+        "x": 0,
+        "y": 8,
+        "w": 11,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "",
+            "title": "",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
     }
   ]
 }

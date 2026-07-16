@@ -33,7 +33,7 @@ Monitor host-level CPU, memory, disk, network, filesystem, and load metrics from
 - SWAP Used
 - Root FS Used
 - CPU Cores
-- Root FS Total in TiB
+- Root FS Total
 - RAM Total in GB
 - SWAP Total in GB
 - Uptime in weeks

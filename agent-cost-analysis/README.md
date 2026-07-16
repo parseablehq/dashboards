@@ -35,7 +35,7 @@ Analyze GenAI agent spend, token consumption, and cost distribution across model
 - Cost Rate of Change
 - Cumulative Cost
 - Cost per Token Over Time
-- RSS Memory
+- Cost Per Model
 - Cost by Provider and Model
 - Model Cost Over Time
 - Highest Cost Invocations

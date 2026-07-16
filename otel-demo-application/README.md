@@ -8,7 +8,7 @@ Browse all dashboard templates in the [Parseable dashboards repository](../READM
 
 | File | Dashboard | Panels |
 | --- | --- | ---: |
-| `otel-demo-application-mixed.json` | OTel Demo Application | 23 |
+| `otel-demo-application-mixed.json` | OTel Demo Application | 37 |
 
 ## OTel Demo Application
 
@@ -28,8 +28,8 @@ Explore application, service, and telemetry behavior for the OpenTelemetry Astro
 - Total Spans
 - Trace Services
 - Error Spans
-- Log Events
-- Log Errors
+- Total Logs
+- Error Logs
 - Orders
 - Total Revenue
 - Span Volume by Service
@@ -47,3 +47,17 @@ Explore application, service, and telemetry behavior for the OpenTelemetry Astro
 - Orders Over Time
 - Recent Error Logs
 - Slowest Spans
+- Log Volume by Service
+- Log Error Rate Over Time
+- Exception Types
+- Top Log Services
+- Metric Samples by Family
+- JVM Memory Used by Service
+- HTTP Metric Status Mix
+- Runtime Concurrency
+- Most Errored Service
+- Longest Span From Service
+- Trace With Highest Number Of Spans
+- Trace With Highest Number Of Errors
+- Total Metric Points
+- Total Unique Metrics

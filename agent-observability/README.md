@@ -1,6 +1,6 @@
-# Agent Invocations
+# Agent Observability
 
-Prism dashboard template for agent invocation observability.
+Prism dashboard template for agent observability.
 
 Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
 
@@ -8,17 +8,17 @@ Browse all dashboard templates in the [Parseable dashboards repository](../READM
 
 | File | Dashboard | Panels |
 | --- | --- | ---: |
-| `agent-invocations-sql.json` | Agent Invocations | 81 |
+| `agent-observability-sql.json` | Agent Observability | 77 |
 
-## Agent Invocations
+## Agent Observability
 
-**File:** `agent-invocations-sql.json`
+**File:** `agent-observability-sql.json`
 
-Track agent invocation volume, outcomes, latency, tool calls, token usage, and request-level behavior for SWE-agent and GenAI workloads. Use it to inspect execution paths, failure concentration, and heavy usage patterns.
+Track GenAI agent invocations, outcomes, latency, tool usage, token consumption, cost, and request-level behavior. Use it to inspect execution paths, failure concentration, and heavy usage patterns.
 
 **Source:** `SQL`
 
-**Tags:** `swe-agent`, `genai`, `sql`
+**Tags:** `swe-agent`, `genai`, `sql`, `agent-observability`
 
 **Filter variables:** `log_dataset`, `trace_dataset`
 
@@ -74,10 +74,7 @@ Track agent invocation volume, outcomes, latency, tool calls, token usage, and r
 - Invocation Latency by Username
 - P95 Input/Output Tokens Over Time
 - P95 Chat Cost Over Time
-- Total Cost
 - Active Users
-- Avg Latency
-- P95 Latency
 - Cache Hit Rate
 - Avg Input Tokens / LLM Call
 - Avg Output Tokens / LLM Call
@@ -97,7 +94,6 @@ Track agent invocation volume, outcomes, latency, tool calls, token usage, and r
 - Planner Tokens
 - Judges/Evals Tokens
 - Tool Overhead Tokens
-- Input Tokens
 - Output Tokens
 - Workspace Rollups
 - Cost per Query

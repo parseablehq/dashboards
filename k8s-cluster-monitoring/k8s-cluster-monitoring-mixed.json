@@ -1,0 +1,2488 @@
+{
+  "tags": [
+    "kubernetes",
+    "k8s",
+    "cluster",
+    "metrics",
+    "logs"
+  ],
+  "variables": [
+    {
+      "name": "cluster_metrics_dataset",
+      "label": "Cluster Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "azure-prod-cluster-metrics"
+    },
+    {
+      "name": "pod_logs_dataset",
+      "label": "K8s Pod Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "azure-prod-pod-logs"
+    },
+    {
+      "name": "events_dataset",
+      "label": "K8s Events Dataset",
+      "type": "dataset",
+      "defaultValue": "azure-prod-events"
+    },
+    {
+      "name": "namespace",
+      "label": "Namespace",
+      "type": "promql",
+      "dataset": "$cluster_metrics_dataset",
+      "labelName": "k8s.namespace.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "node",
+      "label": "Node",
+      "type": "promql",
+      "dataset": "$cluster_metrics_dataset",
+      "labelName": "k8s.node.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "pod",
+      "label": "Pod",
+      "type": "promql",
+      "dataset": "$cluster_metrics_dataset",
+      "labelName": "k8s.pod.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "container",
+      "label": "Container",
+      "type": "promql",
+      "dataset": "$cluster_metrics_dataset",
+      "labelName": "k8s.container.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "isExpanded": false,
+      "title": "Overview"
+    },
+    {
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "isExpanded": false,
+      "title": "Node Metrics"
+    },
+    {
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "isExpanded": false,
+      "title": "Pod and Container Metrics"
+    },
+    {
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "isExpanded": false,
+      "title": "Workloads"
+    },
+    {
+      "sectionId": "01KW9MKMHNDS0DY10G6NCTQE5W",
+      "isExpanded": false,
+      "title": "Pod logs"
+    },
+    {
+      "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
+      "isExpanded": false,
+      "title": "Pod Log Errors"
+    },
+    {
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "isExpanded": false,
+      "title": "K8s Events"
+    },
+    {
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "isExpanded": false,
+      "title": "Capacity and Limits"
+    },
+    {
+      "sectionId": "01KW9ZD7VRAMN1Y0QGJR19J7ZC",
+      "isExpanded": false,
+      "title": "Kubelet and Runtime"
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KW477E0D56C0SEWB9YN4R77R",
+      "title": "Nodes",
+      "chartQuery": "SELECT COUNT(DISTINCT \"k8s.node.name\") AS nodes FROM $cluster_metrics_dataset WHERE \"k8s.node.name\" IS NOT NULL",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW477E0D56C0SEWB9YN4R77R",
+        "x": 0,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "nodes",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DS1GFH0HFA2AC7R8E",
+      "title": "Namespaces",
+      "chartQuery": "SELECT COUNT(DISTINCT COALESCE(\"k8s.namespace.name\", namespace)) AS namespaces FROM $cluster_metrics_dataset WHERE COALESCE(\"k8s.namespace.name\", namespace) IS NOT NULL",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW477E0DS1GFH0HFA2AC7R8E",
+        "x": 2,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "namespaces",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D1SY20KT0VJQRN715",
+      "title": "Pods Seen",
+      "chartQuery": "SELECT COUNT(DISTINCT \"k8s.pod.name\") AS pods FROM $cluster_metrics_dataset WHERE \"k8s.pod.name\" IS NOT NULL",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW477E0D1SY20KT0VJQRN715",
+        "x": 4,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "pods",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DXQJ4BTZ9V3F633PR",
+      "title": "Containers Seen",
+      "chartQuery": "SELECT COUNT(DISTINCT \"k8s.container.name\") AS containers FROM $cluster_metrics_dataset WHERE \"k8s.container.name\" IS NOT NULL",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW477E0DXQJ4BTZ9V3F633PR",
+        "x": 6,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "containers",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DYDXF26A16PBT3FRG",
+      "title": "Pod Log Events",
+      "chartQuery": "SELECT COUNT(*) AS logs FROM $pod_logs_dataset\nWHERE ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", body_namespace, '') = '$namespace') AND ('$pod' = '.*' OR COALESCE(\"k8s.pod.name\", body_name, '') = '$pod') AND ('$container' = '.*' OR COALESCE(\"k8s.container.name\", '') = '$container')",
+      "dbName": [
+        "$pod_logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW477E0DYDXF26A16PBT3FRG",
+        "x": 8,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D9ZG0VN4S5G0FKVJH",
+      "title": "Node CPU Usage %",
+      "chartQuery": [
+        "(avg({\"k8s.node.cpu.usage\"}) by (\"k8s.node.name\") / avg({\"k8s.node.allocatable_cpu\"}) by (\"k8s.node.name\")) * 100"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0D9ZG0VN4S5G0FKVJH",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DKCA8BYFDZQ9C44SN",
+      "title": "Node Memory Working Set %",
+      "chartQuery": [
+        "(avg({\"k8s.node.memory.working_set\"}) by (\"k8s.node.name\") / avg({\"k8s.node.allocatable_memory\"}) by (\"k8s.node.name\")) * 100"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DKCA8BYFDZQ9C44SN",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DHB5V0ESA5F311BFK",
+      "title": "Node Filesystem Usage",
+      "chartQuery": [
+        "sum({\"k8s.node.filesystem.usage\"}) by (\"k8s.node.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DHB5V0ESA5F311BFK",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D8X7TP3EA7RX2GF19",
+      "title": "Node Network IO Rate",
+      "chartQuery": [
+        "sum(rate({\"k8s.node.network.io\"}[5m])) by (\"k8s.node.name\", direction)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0D8X7TP3EA7RX2GF19",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D9BTNR2MEA8G22SHB",
+      "title": "Pod CPU by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.pod.cpu.usage\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0D9BTNR2MEA8G22SHB",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DD2RNFGYET6VWSRBP",
+      "title": "Pod Memory by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.pod.memory.working_set\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DD2RNFGYET6VWSRBP",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DB0NQA26Y96JD6YM8",
+      "title": "Container CPU by Namespace",
+      "chartQuery": [
+        "sum({\"container.cpu.usage\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DB0NQA26Y96JD6YM8",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DJNHJCVN85MRTC36M",
+      "title": "Container Memory by Namespace",
+      "chartQuery": [
+        "sum({\"container.memory.working_set\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DJNHJCVN85MRTC36M",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DNM2WQPW271X5TKCR",
+      "title": "Pod Network IO Rate",
+      "chartQuery": [
+        "sum(rate({\"k8s.pod.network.io\"}[5m])) by (\"k8s.namespace.name\", direction)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DNM2WQPW271X5TKCR",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D7R4VKNGQM3YXY66B",
+      "title": "Pod Network Error Rate",
+      "chartQuery": [
+        "sum(rate({\"k8s.pod.network.errors\"}[5m])) by (\"k8s.namespace.name\", direction)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0D7R4VKNGQM3YXY66B",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DZPVG39NJD83KJZXD",
+      "title": "Pod Phase by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.pod.phase\"}) by (\"k8s.namespace.name\", phase)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DZPVG39NJD83KJZXD",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D4YNX82SCBATJ4CRB",
+      "title": "Node Conditions",
+      "chartQuery": [
+        "sum({\"k8s.node.condition_ready\"}) by (\"k8s.node.name\", status)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0D4YNX82SCBATJ4CRB",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DASDB6EYC70RJ41XP",
+      "title": "Deployment Desired vs Available",
+      "chartQuery": [
+        "sum({\"k8s.deployment.desired\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DASDB6EYC70RJ41XP",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DJVRSBVXYVR3Z2988",
+      "title": "Deployment Available",
+      "chartQuery": [
+        "sum({\"k8s.deployment.available\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DJVRSBVXYVR3Z2988",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DA0BAJ62QS1QSBANY",
+      "title": "DaemonSet Desired vs Ready",
+      "chartQuery": [
+        "sum({\"k8s.daemonset.desired_scheduled_nodes\"}) by (\"k8s.namespace.name\", \"k8s.daemonset.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0DA0BAJ62QS1QSBANY",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D2TPW198RCD3PKAD8",
+      "title": "DaemonSet Ready Nodes",
+      "chartQuery": [
+        "sum({\"k8s.daemonset.ready_nodes\"}) by (\"k8s.namespace.name\", \"k8s.daemonset.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW477E0D2TPW198RCD3PKAD8",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "yellow",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D5E6WS6HT40EDDHQY",
+      "title": "Pod Logs Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS logs FROM $pod_logs_dataset\nWHERE ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", body_namespace, '') = '$namespace') AND ('$pod' = '.*' OR COALESCE(\"k8s.pod.name\", body_name, '') = '$pod') AND ('$container' = '.*' OR COALESCE(\"k8s.container.name\", '') = '$container') GROUP BY time_bin ORDER BY time_bin ASC",
+      "dbName": [
+        "$pod_logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KW9MKMHNDS0DY10G6NCTQE5W",
+      "layout": {
+        "i": "01KW477E0D5E6WS6HT40EDDHQY",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin"
+          },
+          "y": {
+            "field": "logs"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D7C1AF8EAFGRDR8M2",
+      "title": "Top Log Namespaces",
+      "chartQuery": "SELECT COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace, COUNT(*) AS logs FROM $pod_logs_dataset GROUP BY COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') ORDER BY logs DESC LIMIT 15",
+      "dbName": [
+        "$pod_logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW9MKMHNDS0DY10G6NCTQE5W",
+      "layout": {
+        "i": "01KW477E0D7C1AF8EAFGRDR8M2",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "namespace"
+          },
+          "y": {
+            "field": "namespace",
+            "title": "namespace"
+          },
+          "groupBy": {
+            "field": [
+              "namespace"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D0FWGSND2W6D011FN",
+      "title": "Top Log Pods",
+      "chartQuery": "SELECT COALESCE(\"k8s.pod.name\", body_name, 'unknown') AS pod, COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace, COUNT(*) AS logs FROM $pod_logs_dataset GROUP BY COALESCE(\"k8s.pod.name\", body_name, 'unknown'), COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') ORDER BY logs DESC LIMIT 20",
+      "dbName": [
+        "$pod_logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW9MKMHNDS0DY10G6NCTQE5W",
+      "layout": {
+        "i": "01KW477E0D0FWGSND2W6D011FN",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DP9J6DRNADBCK7AD9",
+      "title": "Container Restarts",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace, \"k8s.pod.name\" AS pod, \"k8s.container.name\" AS container, MAX(data_point_value) AS restarts FROM $cluster_metrics_dataset WHERE metric_name = 'k8s.container.restarts' GROUP BY \"k8s.namespace.name\", \"k8s.pod.name\", \"k8s.container.name\" HAVING MAX(data_point_value) > 0 ORDER BY restarts DESC LIMIT 30",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "layout": {
+        "i": "01KW477E0DP9J6DRNADBCK7AD9",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0D1RVYQ966C1H5C78C",
+      "title": "Top Pod CPU",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace, \"k8s.pod.name\" AS pod, ROUND(AVG(data_point_value), 6) AS avg_cpu FROM $cluster_metrics_dataset WHERE metric_name = 'k8s.pod.cpu.usage' GROUP BY \"k8s.namespace.name\", \"k8s.pod.name\" ORDER BY avg_cpu DESC LIMIT 20",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "layout": {
+        "i": "01KW477E0D1RVYQ966C1H5C78C",
+        "x": 0,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true
+        }
+      }
+    },
+    {
+      "tile_id": "01KW477E0DWTPN5R6E601ZBTBA",
+      "title": "Top Pod Memory",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace, \"k8s.pod.name\" AS pod, ROUND(AVG(data_point_value), 0) AS avg_memory_bytes FROM $cluster_metrics_dataset WHERE metric_name = 'k8s.pod.memory.working_set' GROUP BY \"k8s.namespace.name\", \"k8s.pod.name\" ORDER BY avg_memory_bytes DESC LIMIT 20",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "layout": {
+        "i": "01KW477E0DWTPN5R6E601ZBTBA",
+        "x": 6,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5DGCHJEGGBESKQ16H3",
+      "title": "K8s Event Records",
+      "chartQuery": "SELECT COUNT(*) AS events FROM $events_dataset",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW4BQA5DGCHJEGGBESKQ16H3",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5DJX8A0N167CSKJNKJ",
+      "title": "Warning Events",
+      "chartQuery": "SELECT COUNT(*) AS warnings FROM $events_dataset WHERE type = 'Warning' OR p_log_category = 'WARN'",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW4BQA5DJX8A0N167CSKJNKJ",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "warnings",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5D554V6AM7C0ETS72K",
+      "title": "Event Occurrences",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(count AS DOUBLE)), COUNT(*)) AS occurrences FROM $events_dataset",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW4BQA5D554V6AM7C0ETS72K",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "occurrences",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5D0JAHP2M99S9ET2C5",
+      "title": "Warning Occurrences",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(count AS DOUBLE)), COUNT(*)) AS warning_occurrences FROM $events_dataset WHERE type = 'Warning' OR p_log_category = 'WARN'",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KW4BQA5D0JAHP2M99S9ET2C5",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "warning_occurrences",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5DQ1H7YTHDT4H1J7PA",
+      "title": "Events Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS events FROM $events_dataset WHERE ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", namespace, '') = '$namespace') AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') GROUP BY time_bin ORDER BY time_bin ASC",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "layout": {
+        "i": "01KW4BQA5DQ1H7YTHDT4H1J7PA",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin"
+          },
+          "y": {
+            "field": "events"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5DSGKMDAMYPZXYZXSF",
+      "title": "Warnings Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS warnings FROM $events_dataset WHERE (type = 'Warning' OR p_log_category = 'WARN') AND ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", namespace, '') = '$namespace') AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') GROUP BY time_bin ORDER BY time_bin ASC",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "layout": {
+        "i": "01KW4BQA5DSGKMDAMYPZXYZXSF",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin"
+          },
+          "y": {
+            "field": "warnings"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5DR0M2N5WWFBM8BVFP",
+      "title": "Events by Type",
+      "chartQuery": "SELECT COALESCE(type, p_log_category, 'unknown') AS event_type, COUNT(*) AS events FROM $events_dataset GROUP BY COALESCE(type, p_log_category, 'unknown') ORDER BY events DESC",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "layout": {
+        "i": "01KW4BQA5DR0M2N5WWFBM8BVFP",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "events"
+          },
+          "y": {
+            "field": "event_type"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5D5WT9YX0X830SRZZD",
+      "title": "Top Event Reasons",
+      "chartQuery": "SELECT COALESCE(reason, 'unknown') AS reason, COUNT(*) AS events, COALESCE(SUM(CAST(count AS DOUBLE)), COUNT(*)) AS occurrences FROM $events_dataset GROUP BY COALESCE(reason, 'unknown') ORDER BY events DESC LIMIT 15",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "layout": {
+        "i": "01KW4BQA5D5WT9YX0X830SRZZD",
+        "x": 4,
+        "y": 8,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "reason"
+          },
+          "y": {
+            "field": "reason",
+            "title": "reason"
+          },
+          "groupBy": {
+            "field": [
+              "reason"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5DTF8AEYCHE3YBGH55",
+      "title": "Top Event Namespaces",
+      "chartQuery": "SELECT COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name, COUNT(*) AS events, COALESCE(SUM(CAST(count AS DOUBLE)), COUNT(*)) AS occurrences FROM $events_dataset GROUP BY COALESCE(\"k8s.namespace.name\", namespace, 'unknown') ORDER BY events DESC LIMIT 15",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "layout": {
+        "i": "01KW4BQA5DTF8AEYCHE3YBGH55",
+        "x": 8,
+        "y": 8,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "namespace_name"
+          },
+          "y": {
+            "field": "namespace_name",
+            "title": "namespace_name"
+          },
+          "groupBy": {
+            "field": [
+              "namespace_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5DEVRV3DMZ3204A63F",
+      "title": "Events by Component",
+      "chartQuery": "SELECT COALESCE(component, \"reportingComponent\", 'unknown') AS component_name, COUNT(*) AS events, COALESCE(SUM(CAST(count AS DOUBLE)), COUNT(*)) AS occurrences FROM $events_dataset GROUP BY COALESCE(component, \"reportingComponent\", 'unknown') ORDER BY events DESC LIMIT 15",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "layout": {
+        "i": "01KW4BQA5DEVRV3DMZ3204A63F",
+        "x": 0,
+        "y": 16,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "component_name"
+          },
+          "y": {
+            "field": "component_name",
+            "title": "component_name"
+          },
+          "groupBy": {
+            "field": [
+              "component_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5DYN0CEF489DAK2Z6P",
+      "title": "High Occurrence Warnings",
+      "chartQuery": "SELECT COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name, name, kind, reason, message, MAX(CAST(count AS DOUBLE)) AS occurrences, MAX(p_timestamp) AS last_seen FROM $events_dataset WHERE type = 'Warning' OR p_log_category = 'WARN' GROUP BY COALESCE(\"k8s.namespace.name\", namespace, 'unknown'), name, kind, reason, message ORDER BY occurrences DESC LIMIT 30",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "layout": {
+        "i": "01KW4BQA5DYN0CEF489DAK2Z6P",
+        "x": 4,
+        "y": 16,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4BQA5D49CDQDH5KDT19W8J",
+      "title": "Recent Warning Events",
+      "chartQuery": "SELECT p_timestamp, COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name, COALESCE(host, \"reportingInstance\", '') AS node, name, kind, reason, message, CAST(count AS DOUBLE) AS occurrences FROM $events_dataset WHERE (type = 'Warning' OR p_log_category = 'WARN') AND ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", namespace, '') = '$namespace') AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$events_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
+      "layout": {
+        "i": "01KW4BQA5D49CDQDH5KDT19W8J",
+        "x": 8,
+        "y": 16,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "yellow",
+        "layout": {
+          "humanize": true
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CJT7AFFZ5RVJ94H9C7RP1",
+      "title": "Top Pod Errors",
+      "chartQuery": "SELECT coalesce(body_error,body_err,body_msg,body_message,body,'unknown') e,count(*) n FROM $pod_logs_dataset WHERE (severity_text IN ('ERROR','FATAL') OR lower(coalesce(body_level,body_msg,body_message,body_error,body_err,body,'')) LIKE '%error%') AND ('$namespace'='.*' OR coalesce(\"k8s.namespace.name\",body_namespace,'')='$namespace') AND ('$pod'='.*' OR coalesce(\"k8s.pod.name\",body_name,'')='$pod') GROUP BY 1 ORDER BY 2 DESC LIMIT 20",
+      "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
+      "layout": {
+        "i": "01KW4CJT7AFFZ5RVJ94H9C7RP1",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "e"
+          },
+          "y": {
+            "field": "n"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      },
+      "chartType": "table",
+      "tileType": "code"
+    },
+    {
+      "tile_id": "01KW4CJT7ABMH4NCN8C7GPZ3SK",
+      "title": "Pod Errors Over Time",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') time_bin,count(*) errors FROM $pod_logs_dataset WHERE (severity_text IN ('ERROR','FATAL') OR lower(coalesce(body_level,body_msg,body_error,body_err,body,'')) LIKE '%error%') AND ('$namespace'='.*' OR coalesce(\"k8s.namespace.name\",body_namespace,'')='$namespace') AND ('$pod'='.*' OR coalesce(\"k8s.pod.name\",body_name,'')='$pod') GROUP BY 1 ORDER BY 1",
+      "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
+      "layout": {
+        "i": "01KW4CJT7ABMH4NCN8C7GPZ3SK",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin"
+          },
+          "y": {
+            "field": "errors"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      },
+      "chartType": "timeseries",
+      "tileType": "code"
+    },
+    {
+      "tile_id": "01KW4CJT7AYDFXM0509FB033QN",
+      "title": "Pod Log Errors by Pod",
+      "chartQuery": "SELECT COALESCE(\"k8s.pod.name\", body_name, 'unknown') AS pod, COUNT(*) AS errors FROM $pod_logs_dataset WHERE (severity_text IN ('ERROR','FATAL') OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%') GROUP BY COALESCE(\"k8s.pod.name\", body_name, 'unknown') ORDER BY errors DESC LIMIT 25",
+      "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
+      "layout": {
+        "i": "01KW4CJT7AYDFXM0509FB033QN",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "pod"
+          },
+          "y": {
+            "field": "pod",
+            "title": "pod"
+          },
+          "groupBy": {
+            "field": [
+              "pod"
+            ]
+          }
+        }
+      },
+      "chartType": "pie",
+      "tileType": "code",
+      "dbName": [
+        "$pod_logs_dataset"
+      ]
+    },
+    {
+      "tile_id": "01KW4CJT7AE5XF7CPEB7PZCNH4",
+      "title": "Pod Log Errors by Namespace",
+      "chartQuery": "SELECT COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace_name, COUNT(*) AS errors FROM $pod_logs_dataset WHERE (severity_text IN ('ERROR','FATAL') OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%') GROUP BY COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') ORDER BY errors DESC LIMIT 20",
+      "dbName": [
+        "$pod_logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
+      "layout": {
+        "i": "01KW4CJT7AE5XF7CPEB7PZCNH4",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "namespace_name"
+          },
+          "y": {
+            "field": "namespace_name",
+            "title": "namespace_name"
+          },
+          "groupBy": {
+            "field": [
+              "namespace_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6X0PZMHDEJYXY58G5",
+      "title": "Node Allocatable CPU",
+      "chartQuery": [
+        "sum({\"k8s.node.allocatable_cpu\"}) by (\"k8s.node.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6X0PZMHDEJYXY58G5",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6SM449B4JAMMH4YFQ",
+      "title": "Node Allocatable Memory",
+      "chartQuery": [
+        "sum({\"k8s.node.allocatable_memory\"}) by (\"k8s.node.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6SM449B4JAMMH4YFQ",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6BWQD17VRG0FBGXWR",
+      "title": "Node Pressure Conditions",
+      "chartQuery": [
+        "sum({\"k8s.node.condition_memory_pressure\"}) by (\"k8s.node.name\", status)",
+        "sum({\"k8s.node.condition_disk_pressure\"}) by (\"k8s.node.name\", status)",
+        "sum({\"k8s.node.condition_pid_pressure\"}) by (\"k8s.node.name\", status)",
+        "sum({\"k8s.node.condition_network_unavailable\"}) by (\"k8s.node.name\", status)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range",
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6BWQD17VRG0FBGXWR",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6KZ245FAAD1CTFNNG",
+      "title": "Container Ready by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.container.ready\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6KZ245FAAD1CTFNNG",
+        "x": 0,
+        "y": 40,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6H6G013BM2Y151PCW",
+      "title": "Container CPU Requests by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.container.cpu_request\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6H6G013BM2Y151PCW",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6F8AT59WK60YN0XY9",
+      "title": "Container CPU Limits by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.container.cpu_limit\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6F8AT59WK60YN0XY9",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR606STZEW7VW52ABR3",
+      "title": "Container Memory Requests by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.container.memory_request\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR606STZEW7VW52ABR3",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6FX4MZ2AR4BQTAGAD",
+      "title": "Container Memory Limits by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.container.memory_limit\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6FX4MZ2AR4BQTAGAD",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6VJ43NJ4P9JDC8CC8",
+      "title": "Pod Filesystem Usage by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.pod.filesystem.usage\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6VJ43NJ4P9JDC8CC8",
+        "x": 6,
+        "y": 40,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6FJVNWRKSG539XGBB",
+      "title": "Pod Filesystem Available by Namespace",
+      "chartQuery": [
+        "sum({\"k8s.pod.filesystem.available\"}) by (\"k8s.namespace.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6FJVNWRKSG539XGBB",
+        "x": 0,
+        "y": 48,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6TZ9K1QV88Y9JFPET",
+      "title": "Kubelet Runtime Operation Errors",
+      "chartQuery": [
+        "sum(rate({\"kubelet_runtime_operations_errors_total\"}[5m])) by (operation_type)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW9ZD7VRAMN1Y0QGJR19J7ZC",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6TZ9K1QV88Y9JFPET",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6JSVS9TYCEV5XF7DY",
+      "title": "Kubelet HTTP Request Rate",
+      "chartQuery": [
+        "sum(rate({\"kubelet_http_requests_total\"}[5m])) by (method, status)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW9ZD7VRAMN1Y0QGJR19J7ZC",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6JSVS9TYCEV5XF7DY",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "yellow",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6K2MA47V4TWG57YBP",
+      "title": "Running Containers by State",
+      "chartQuery": [
+        "sum({\"kubelet_running_containers\"}) by (container_state)"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "promqlQueryType": [
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6K2MA47V4TWG57YBP",
+        "x": 6,
+        "y": 48,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR6CMX9A0XMQYEST1ZF",
+      "title": "StatefulSet Ready vs Desired",
+      "chartQuery": [
+        "sum({\"k8s.statefulset.ready_pods\"}) by (\"k8s.namespace.name\", \"k8s.statefulset.name\")",
+        "sum({\"k8s.statefulset.desired_pods\"}) by (\"k8s.namespace.name\", \"k8s.statefulset.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR6CMX9A0XMQYEST1ZF",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KW4CWVR66REH4HM82AXAWV66",
+      "title": "ReplicaSet Available vs Desired",
+      "chartQuery": [
+        "sum({\"k8s.replicaset.available\"}) by (\"k8s.namespace.name\", \"k8s.replicaset.name\")",
+        "sum({\"k8s.replicaset.desired\"}) by (\"k8s.namespace.name\", \"k8s.replicaset.name\")"
+      ],
+      "dbName": "$cluster_metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "layout": {
+        "i": "01KW4CWVR66REH4HM82AXAWV66",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash"
+          },
+          "y": {
+            "field": "COUNT_STAR"
+          },
+          "groupBy": {
+            "field": []
+          }
+        }
+      }
+    }
+  ]
+}

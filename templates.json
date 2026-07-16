@@ -7,15 +7,23 @@
       "fileName": "agent-cost-analysis-sql.json",
       "description": "Analyze GenAI agent spend, token consumption, and cost distribution across models, users, tools, and sessions.",
       "source": "SQL",
-      "tags": ["agent-observability", "cost"]
+      "tags": [
+        "agent-observability",
+        "cost"
+      ]
     },
     {
-      "name": "Agent Invocations",
-      "dirName": "agent-invocations",
-      "fileName": "agent-invocations-sql.json",
-      "description": "Track agent invocation volume, outcomes, latency, tool calls, token usage, and request-level behavior for SWE-agent and GenAI workloads.",
+      "name": "Agent Observability",
+      "dirName": "agent-observability",
+      "fileName": "agent-observability-sql.json",
+      "description": "Track GenAI agent invocations, outcomes, latency, tools, tokens, cost, and request-level behavior.",
       "source": "SQL",
-      "tags": ["swe-agent", "genai", "sql"]
+      "tags": [
+        "swe-agent",
+        "genai",
+        "sql",
+        "agent-observability"
+      ]
     },
     {
       "name": "Claude Code Usage",
@@ -23,7 +31,25 @@
       "fileName": "claude-code-usage-mixed.json",
       "description": "Monitor Claude Code sessions, model usage, request patterns, token consumption, and PromQL-backed runtime signals.",
       "source": "Mixed",
-      "tags": ["claude-code", "usage", "genai"]
+      "tags": [
+        "claude-code",
+        "usage",
+        "genai"
+      ]
+    },
+    {
+      "name": "K8s Cluster Monitoring",
+      "dirName": "k8s-cluster-monitoring",
+      "fileName": "k8s-cluster-monitoring-mixed.json",
+      "description": "Monitor Kubernetes cluster health, nodes, pods, containers, workloads, logs, events, capacity, and kubelet/runtime signals.",
+      "source": "Mixed",
+      "tags": [
+        "kubernetes",
+        "k8s",
+        "cluster",
+        "metrics",
+        "logs"
+      ]
     },
     {
       "name": "Node Metrics Dashboard - PromQL",
@@ -31,7 +57,10 @@
       "fileName": "node-metrics-dashboard-promql.json",
       "description": "Monitor host-level CPU, memory, disk, network, filesystem, and load metrics from node exporter style PromQL data.",
       "source": "PromQL",
-      "tags": ["node", "promql"]
+      "tags": [
+        "node",
+        "promql"
+      ]
     },
     {
       "name": "OTel Collector Metrics",
@@ -39,7 +68,13 @@
       "fileName": "otel-collector-metrics-mixed.json",
       "description": "Observe OpenTelemetry Collector throughput, receiver/exporter activity, queue behavior, dropped telemetry, and component inventory.",
       "source": "Mixed",
-      "tags": ["otel", "opentelemetry", "collector", "metrics", "promql"]
+      "tags": [
+        "otel",
+        "opentelemetry",
+        "collector",
+        "metrics",
+        "promql"
+      ]
     },
     {
       "name": "OTel Demo Application",
@@ -47,7 +82,11 @@
       "fileName": "otel-demo-application-mixed.json",
       "description": "Explore application, service, and telemetry behavior for the OpenTelemetry Astronomy Shop demo application.",
       "source": "Mixed",
-      "tags": ["otel-demo", "astronomy-shop", "observability"]
+      "tags": [
+        "otel-demo",
+        "astronomy-shop",
+        "observability"
+      ]
     },
     {
       "name": "Parseable Audit Logs",
@@ -55,7 +94,12 @@
       "fileName": "parseable-audit-logs-sql.json",
       "description": "Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets.",
       "source": "SQL",
-      "tags": ["audit", "parseable", "logs"]
+      "tags": [
+        "audit",
+        "parseable",
+        "logs",
+        "azure"
+      ]
     },
     {
       "name": "Parseable Metrics",
@@ -63,7 +107,11 @@
       "fileName": "parseable-metrics-promql.json",
       "description": "Monitor Parseable service metrics including ingestion, query behavior, storage, runtime health, and system-level PromQL signals.",
       "source": "PromQL",
-      "tags": ["metrics", "parseable", "promql"]
+      "tags": [
+        "metrics",
+        "parseable",
+        "promql"
+      ]
     },
     {
       "name": "Parseable Server Logs",
@@ -71,7 +119,12 @@
       "fileName": "parseable-server-logs-sql.json",
       "description": "Analyze Parseable server logs, error patterns, request activity, status distribution, and runtime log trends.",
       "source": "SQL",
-      "tags": ["server-logs", "parseable", "logs"]
+      "tags": [
+        "server-logs",
+        "parseable",
+        "logs",
+        "azure"
+      ]
     }
   ]
 }

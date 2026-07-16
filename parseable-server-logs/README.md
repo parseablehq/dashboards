@@ -18,7 +18,7 @@ Analyze Parseable server logs, error patterns, request activity, status distribu
 
 **Source:** `SQL`
 
-**Tags:** `server-logs`, `parseable`, `logs`
+**Tags:** `server-logs`, `parseable`, `logs`, `azure`
 
 **Filter variables:** `dataset`
 
@@ -30,11 +30,11 @@ Analyze Parseable server logs, error patterns, request activity, status distribu
 - Error Rate
 - Log Volume Over Time
 - Error / Warning Trend
-- Logs by Level
-- Top Modules
-- Top Error Modules
+- Logs by Category
+- Top Components
+- CPU Pressure
 - Repeated Error Messages
-- Logs by Deployment
-- Logs by Customer
+- Logs by Source IP
+- Logs by Log File
 - Module Severity Matrix
 - Recent Error Logs

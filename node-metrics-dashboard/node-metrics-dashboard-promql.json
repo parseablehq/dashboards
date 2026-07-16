@@ -8,7 +8,7 @@
       "name": "node",
       "label": "node",
       "type": "promql",
-      "dataset": "box3-node-metrics",
+      "dataset": "$dataset",
       "labelName": "instance",
       "metric": "node_uname_info",
       "labelFilters": []
@@ -17,7 +17,7 @@
       "name": "job",
       "label": "Job",
       "type": "promql",
-      "dataset": "box3-node-metrics",
+      "dataset": "$dataset",
       "labelName": "job",
       "metric": "node_uname_info",
       "labelFilters": []
@@ -33,7 +33,7 @@
     {
       "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "title": "Quick CPU / Mem / Disk",
-      "isExpanded": false
+      "isExpanded": true
     },
     {
       "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85",
@@ -113,20 +113,25 @@
   ],
   "tiles": [
     {
+      "tile_id": "01KXDD6DV8WQA4TBD9S0N8KQW1",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "irate(node_pressure_cpu_waiting_seconds_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "CPU Pressure",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -134,9 +139,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -161,31 +164,32 @@
         }
       },
       "layout": {
-        "i": "01KVQ2F3BZNBQRFMK243TFFY3R",
         "x": 0,
         "y": 0,
         "w": 2,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV84NA2EX0RZ1CXSW8B",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "irate(node_pressure_memory_waiting_seconds_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "Memory Pressure",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -193,9 +197,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -220,31 +222,32 @@
         }
       },
       "layout": {
-        "i": "01KVQ2KCAS22FMD2AH8AWZVBPQ",
         "x": 2,
         "y": 0,
         "w": 2,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV8K9DSAMTB9JZJQ44T",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "irate(node_pressure_io_waiting_seconds_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "IO Pressure",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "purple",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -252,9 +255,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -279,17 +280,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ2NV2TTPY6Z0JTGDRFZ7BR",
         "x": 4,
         "y": 0,
         "w": 2,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV800V35ZCK5TH5332B",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "100 * (1 - avg(rate(node_cpu_seconds_total{mode=\"idle\", instance=\"$node\"}[15s])))"
       ],
@@ -298,12 +297,17 @@
       ],
       "dbName": "$dataset",
       "title": "CPU Busy in percent",
-      "chartType": "gauge",
       "tileType": "promql",
+      "chartType": "gauge",
       "config": {
         "type": "gauge",
         "colourScheme": "orange",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": -1,
+          "humanize": true,
+          "rangeTo": 100,
           "segments": {
             "value": [
               10,
@@ -311,11 +315,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": -1,
-          "rangeTo": 100,
-          "unit": "%"
+          "label": false
         },
         "axes": {
           "x": {
@@ -340,17 +340,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ2VVBH35WYZYF100BYXE9F",
         "x": 6,
         "y": 0,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV844EFBST1QP9933JQ",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "scalar(node_load1{instance=\"$node\",job=\"$job\"}) * 100 / count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))"
       ],
@@ -359,12 +357,16 @@
       ],
       "dbName": "$dataset",
       "title": "Sys Load",
-      "chartType": "gauge",
       "tileType": "promql",
+      "chartType": "gauge",
       "config": {
         "type": "gauge",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
+          "rangeTo": 100,
           "segments": {
             "value": [
               10,
@@ -372,10 +374,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "rangeTo": 100,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -400,31 +399,33 @@
         }
       },
       "layout": {
-        "i": "01KVQ2YGBVFG6ENXP7FHJ1EKGW",
         "x": 9,
         "y": 0,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV8R655K3G512F34951",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "(1 - (node_memory_MemAvailable_bytes{instance=\"$node\", job=\"$job\"} / node_memory_MemTotal_bytes{instance=\"$node\", job=\"$job\"})) * 100"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "RAM Used",
-      "chartType": "gauge",
       "tileType": "promql",
+      "chartType": "gauge",
       "config": {
         "type": "gauge",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
+          "rangeTo": 100,
           "segments": {
             "value": [
               10,
@@ -432,10 +433,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "rangeTo": 100,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -462,31 +460,33 @@
         }
       },
       "layout": {
-        "i": "01KVQ30TJTCTS8D1QWRBT51HCW",
         "x": 0,
         "y": 5,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV8Y15C1HTRZSV64H0P",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "((node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"}) / (node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"})) * 100"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "SWAP Used",
-      "chartType": "gauge",
       "tileType": "promql",
+      "chartType": "gauge",
       "config": {
         "type": "gauge",
         "colourScheme": "classic",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
+          "rangeTo": 100,
           "segments": {
             "value": [
               10,
@@ -494,10 +494,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "rangeTo": 100,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -522,31 +519,33 @@
         }
       },
       "layout": {
-        "i": "01KVQ358EW4R3247JA9SA9CAN3",
         "x": 3,
         "y": 5,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV8BNZQRZDNC3W8MANK",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "100 - ((node_filesystem_avail_bytes{instance=\"$node\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"} * 100) / node_filesystem_size_bytes{instance=\"$node\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"})"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "Root FS Used",
-      "chartType": "gauge",
       "tileType": "promql",
+      "chartType": "gauge",
       "config": {
         "type": "gauge",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
+          "rangeTo": 100,
           "segments": {
             "value": [
               10,
@@ -554,10 +553,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "rangeTo": 100,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -582,31 +578,32 @@
         }
       },
       "layout": {
-        "i": "01KVQ36FV3P79NBTCJ46PBCJ2W",
         "x": 6,
         "y": 5,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV8REFHFPY6H6QAEV4Y",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "CPU Cores",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -614,9 +611,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -643,31 +638,32 @@
         }
       },
       "layout": {
-        "i": "01KVQ38KASK9JAE48831B0MYNE",
         "x": 9,
         "y": 5,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV8BZBT9Y7EBZFN6KQW",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
-        "node_filesystem_size_bytes{instance=\"$node\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"} / (1000000000)"
+        "node_filesystem_size_bytes{instance=\"$node\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"}"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
-      "title": "Root FS Total in TiB",
-      "chartType": "query-value",
+      "title": "Root FS Total",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -675,9 +671,8 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false,
-          "precision": -1
+          "unit": "B"
         },
         "axes": {
           "x": {
@@ -702,31 +697,35 @@
         }
       },
       "layout": {
-        "i": "01KVQ39B0JKYPMVV25M1EBCJHH",
+        "i": "01KXDD6DV8BZBT9Y7EBZFN6KQW",
         "x": 0,
         "y": 10,
         "w": 3,
         "h": 5,
         "moved": false,
         "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+      }
     },
     {
+      "tile_id": "01KXDD6DV8FJD57YKZS2HDC8W8",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}/(1024*1024*1024)"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "RAM Total in GB",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -734,9 +733,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -761,31 +758,32 @@
         }
       },
       "layout": {
-        "i": "01KVQ3CX9VYJPQN8XS0W59J5E8",
         "x": 3,
         "y": 10,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV93J9XYTCC6X7A0AF5",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"}/(1024*1024*1024)"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "SWAP Total in GB",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "purple",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -793,9 +791,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -820,31 +816,32 @@
         }
       },
       "layout": {
-        "i": "01KVQ3HGQQ0YKM2MT8RY40HCKP",
         "x": 6,
         "y": 10,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV9C2ZV879PAQVQFPX9",
+      "sectionId": "01KW4B2531Y14B0P32F5VRENXK",
       "chartQuery": [
         "(node_time_seconds{instance=\"$node\",job=\"$job\"} - node_boot_time_seconds{instance=\"$node\",job=\"$job\"})/(60*60*24*7)"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "Uptime in weeks",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -852,9 +849,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
@@ -879,17 +874,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ3M4VZ7VJKN0450EYWHH2G",
         "x": 9,
         "y": 10,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B2531Y14B0P32F5VRENXK"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV9GZXVTZBC9JHA9YA1",
+      "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85",
       "chartQuery": [
         "sum(irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"system\"}[15s])) / scalar(count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)))",
         "sum(irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"user\"}[15s])) / scalar(count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)))",
@@ -908,12 +901,16 @@
       ],
       "dbName": "$dataset",
       "title": "CPU Basic",
-      "chartType": "area",
       "tileType": "promql",
+      "chartType": "area",
       "config": {
         "type": "area",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -921,10 +918,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -948,17 +942,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ3YJW125RZD0VJWDF7V2JS",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 12,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85"
+        "h": 12
+      }
     },
     {
+      "tile_id": "01KXDD6DV9C61GT106N3H6FKJX",
+      "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85",
       "chartQuery": [
         "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}/(1024*1024*1024)",
         "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"} - (node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"} + node_memory_SReclaimable_bytes{instance=\"$node\",job=\"$job\"})/(1024*1024*1024)",
@@ -975,12 +967,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Basic",
-      "chartType": "area",
       "tileType": "promql",
+      "chartType": "area",
       "config": {
         "type": "area",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -988,9 +983,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B"
+          "label": false
         },
         "axes": {
           "x": {
@@ -1014,17 +1007,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ47XMJ7JQVVDP42TDTG5FG",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 12,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85"
+        "h": 12
+      }
     },
     {
+      "tile_id": "01KXDD6DV9QEYWG7PF691D9DVG",
+      "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85",
       "chartQuery": [
         "irate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[15s])*8",
         "irate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[15s])*8"
@@ -1035,12 +1026,15 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Basic",
-      "chartType": "area",
       "tileType": "promql",
+      "chartType": "area",
       "config": {
         "type": "area",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1048,9 +1042,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B"
+          "label": false
         },
         "axes": {
           "x": {
@@ -1074,17 +1066,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ4REAJ6KEAGA1ED7S9WS1X",
         "x": 0,
         "y": 12,
         "w": 6,
-        "h": 12,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85"
+        "h": 12
+      }
     },
     {
+      "tile_id": "01KXDD6DV9MMDFJ14AN7074AT8",
+      "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85",
       "chartQuery": [
         "100 - ((node_filesystem_avail_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'} * 100) / node_filesystem_size_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'})"
       ],
@@ -1093,12 +1083,16 @@
       ],
       "dbName": "$dataset",
       "title": "Disk Space Used Basic",
-      "chartType": "area",
       "tileType": "promql",
+      "chartType": "area",
       "config": {
         "type": "area",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1106,10 +1100,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -1133,17 +1124,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ4WCPG1RPE6QFEHWGA37BP",
         "x": 6,
         "y": 12,
         "w": 6,
-        "h": 12,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4B5ERZFAMWRS844ZTB6W85"
+        "h": 12
+      }
     },
     {
+      "tile_id": "01KXDD6DV9ADFYNZZSTK4CT9QT",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "sum(irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"system\"}[15s])) / scalar(count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)))",
         "sum(irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"user\"}[15s])) / scalar(count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)))",
@@ -1162,12 +1151,16 @@
       ],
       "dbName": "$dataset",
       "title": "CPU Details",
-      "chartType": "area",
       "tileType": "promql",
+      "chartType": "area",
       "config": {
         "type": "area",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1175,10 +1168,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -1202,17 +1192,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ70P14Z1W7HHZT8HN93JTK",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 12,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 12
+      }
     },
     {
+      "tile_id": "01KXDD6DV9R105HSDRW3HAJ862",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"} - node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"} - node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} - node_memory_Slab_bytes{instance=\"$node\",job=\"$job\"} - node_memory_PageTables_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapCached_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_PageTables_bytes{instance=\"$node\",job=\"$job\"}",
@@ -1231,12 +1219,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory in details",
-      "chartType": "area",
       "tileType": "promql",
+      "chartType": "area",
       "config": {
         "type": "area",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1244,9 +1235,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B"
+          "label": false
         },
         "axes": {
           "x": {
@@ -1270,17 +1259,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ7EHX95KQMCX3M3KJ5EZTF",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 12,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 12
+      }
     },
     {
+      "tile_id": "01KXDD6DV9X90BAW0PVJGKP517",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "irate(node_disk_reads_completed_total{instance=\"$node\",job=\"$job\",device=~\"[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+\"}[15s])",
         "irate(node_disk_writes_completed_total{instance=\"$node\",job=\"$job\",device=~\"[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+\"}[15s])"
@@ -1291,12 +1278,15 @@
       ],
       "dbName": "$dataset",
       "title": "Disk IOPS",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "timeseries",
       "config": {
         "type": "area",
         "colourScheme": "purple",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1304,9 +1294,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": ""
+          "label": false
         },
         "axes": {
           "x": {
@@ -1330,17 +1318,15 @@
         }
       },
       "layout": {
-        "i": "01KVQ7Q2A22T3JXWF6924CD7DV",
         "x": 0,
         "y": 12,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9WGFRF374NN06RYHJ",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "irate(node_disk_read_bytes_total{instance=\"$node\",job=\"$job\",device=~\"[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+\"}[15s])/(1024*1024)",
         "irate(node_disk_written_bytes_total{instance=\"$node\",job=\"$job\",device=~\"[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+\"}[15s])/(1024*1024)"
@@ -1351,12 +1337,15 @@
       ],
       "dbName": "$dataset",
       "title": "I/O Usage Read/Write",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "timeseries",
       "config": {
         "type": "area",
         "colourScheme": "orange",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1364,9 +1353,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": ""
+          "label": false
         },
         "axes": {
           "x": {
@@ -1390,31 +1377,33 @@
         }
       },
       "layout": {
-        "i": "01KVQ7S5RQVAT4VM3RMC1M06D7",
         "x": 6,
         "y": 12,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV99Y8ZC1BRMX2J5T12",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
       "chartQuery": [
         "irate(node_pressure_irq_stalled_seconds_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "Irq Pressure",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1422,10 +1411,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -1451,31 +1437,32 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ6AWES29GBX14Q9TDH",
         "x": 0,
         "y": 0,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV9TBMJM2YTG1J1ZGR5",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
       "chartQuery": [
         "node_reboot_required{instance=\"$node\",job=\"$job\"}"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "Reboot Required",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1483,9 +1470,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -1511,17 +1496,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ6HEFB805TEFGGKM8D",
         "x": 3,
         "y": 0,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DV9CAPQRCV23BGHFZ02",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "rate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[15s])*8",
         "rate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[15s])*8"
@@ -1532,12 +1515,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1545,7 +1530,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -1575,17 +1559,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7BCX8CGFR69474CN1",
         "x": 0,
         "y": 20,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV99EFA8PWXGJG5FVE0",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "(rate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[15s]) / ignoring(speed) node_network_speed_bytes{instance=\"$node\",job=\"$job\", speed!=\"-1\"}) * 100",
         "(rate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[15s]) / ignoring(speed) node_network_speed_bytes{instance=\"$node\",job=\"$job\", speed!=\"-1\"}) * 100"
@@ -1596,12 +1578,16 @@
       ],
       "dbName": "$dataset",
       "title": "Network Saturation",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1609,10 +1595,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -1641,17 +1624,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7XXBYY1AJJYNFF77R",
         "x": 6,
         "y": 20,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV907QPK04W2C7BJ9CZ",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "node_filesystem_avail_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'}",
         "node_filesystem_free_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'}",
@@ -1664,12 +1645,15 @@
       ],
       "dbName": "$dataset",
       "title": "Filesystem Space Available",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1677,10 +1661,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -1709,17 +1690,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7JR0FHPMK6R30W0G1",
         "x": 0,
         "y": 28,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV96SVM5Q2N6HVP2661",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "node_filesystem_size_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'} - node_filesystem_avail_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'}"
       ],
@@ -1728,12 +1707,15 @@
       ],
       "dbName": "$dataset",
       "title": "Filesystem Used",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1741,10 +1723,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -1773,17 +1752,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7CR8HKVPTXWKA3BGF",
         "x": 6,
         "y": 28,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9KQR2X7HJ810RC3AC",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "irate(node_disk_io_time_seconds_total{instance=\"$node\",job=\"$job\",device=~\"[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+\"} [15s])"
       ],
@@ -1792,12 +1769,16 @@
       ],
       "dbName": "$dataset",
       "title": "Disk I/O Utilization",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1805,10 +1786,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -1837,17 +1815,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ72508CMJC64SZD1C7",
         "x": 0,
         "y": 36,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9YCBW0TFA6D44917C",
+      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY",
       "chartQuery": [
         "rate(node_pressure_cpu_waiting_seconds_total{instance=\"$node\",job=\"$job\"}[15s])",
         "rate(node_pressure_memory_waiting_seconds_total{instance=\"$node\",job=\"$job\"}[15s])",
@@ -1866,12 +1842,16 @@
       ],
       "dbName": "$dataset",
       "title": "Pressure Stall Information",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "purple",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1879,10 +1859,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -1911,17 +1888,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7NPQEPQAY6PZF6FE9",
         "x": 6,
         "y": 36,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW4RZ8ZV50XEM26JVF6NTTWY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9VZAC889ENDH1ZFZT",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_Committed_AS_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_CommitLimit_bytes{instance=\"$node\",job=\"$job\"}"
@@ -1932,12 +1907,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Committed",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "orange",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -1945,10 +1923,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -1977,17 +1952,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7GMJ9Q4RVKZVA137J",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9STFE23S45T0ESTGV",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_Writeback_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_WritebackTmp_bytes{instance=\"$node\",job=\"$job\"}",
@@ -2002,12 +1975,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Writeback and Dirty",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2015,10 +1991,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2047,17 +2020,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ753GZZCPEC1AJ9YTZ",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9SR6GRVVA1WFG28FW",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_SUnreclaim_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_SReclaimable_bytes{instance=\"$node\",job=\"$job\"}"
@@ -2068,12 +2039,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Slab",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2081,10 +2055,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2113,17 +2084,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7NRBQ3NJM6CRKW8PZ",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV93X4CSP6GR6RG3N3G",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_Mapped_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_Shmem_bytes{instance=\"$node\",job=\"$job\"}",
@@ -2138,12 +2107,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Shared and Mapped",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "classic",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2151,10 +2123,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2183,17 +2152,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7H9JCERFGKK0WSRTY",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9M7VMCPJE5AJ5RW2A",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "(node_memory_Inactive_bytes{instance=\"$node\",job=\"$job\"}) / (node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"})",
         "(node_memory_Active_bytes{instance=\"$node\",job=\"$job\"}) / (node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"})"
@@ -2204,12 +2171,16 @@
       ],
       "dbName": "$dataset",
       "title": "Memory LRU Active / Inactive (%)",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2217,10 +2188,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -2249,17 +2217,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ764HW525QWKZ8JZAF",
         "x": 0,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV98F3715M3R2QGRM7J",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_Inactive_file_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_Inactive_anon_bytes{instance=\"$node\",job=\"$job\"}",
@@ -2274,12 +2240,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory LRU Active / Inactive Detail",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2287,10 +2256,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2319,17 +2285,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ741REDB92HABMH1C4",
         "x": 6,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9G48QQ8XM1SMGMT50",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_KernelStack_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_Percpu_bytes{instance=\"$node\",job=\"$job\"}",
@@ -2342,12 +2306,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Kernel / CPU / IO",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2355,10 +2322,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2387,17 +2351,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7NB1Y1KY8QTW9MDRD",
         "x": 0,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9KXDCPVZ3VYSHHFAY",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_VmallocChunk_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_VmallocTotal_bytes{instance=\"$node\",job=\"$job\"}",
@@ -2410,12 +2372,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Vmalloc",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2423,10 +2388,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2455,17 +2417,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7BZQWRRQ1X8FJHWTX",
         "x": 6,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9RCG3NTWYRKEZHHSR",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_AnonHugePages_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_AnonPages_bytes{instance=\"$node\",job=\"$job\"}"
@@ -2476,12 +2436,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Anonymous",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "purple",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2489,10 +2452,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2521,17 +2481,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ71C4JY6ZA3CQQB79T",
         "x": 0,
         "y": 32,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9WQV8Y4HAVGDVRB1N",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_Unevictable_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_Mlocked_bytes{instance=\"$node\",job=\"$job\"}"
@@ -2542,12 +2500,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Unevictable and MLocked",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "orange",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2555,10 +2516,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2587,17 +2545,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7QZJB417DXEZQB4VB",
         "x": 6,
         "y": 32,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV96RFGYGG2ZG1X3MHR",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_DirectMap1G_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_DirectMap2M_bytes{instance=\"$node\",job=\"$job\"}",
@@ -2610,12 +2566,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory DirectMap",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2623,10 +2582,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2655,17 +2611,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7RMT7X9H0EW5GB4AX",
         "x": 0,
         "y": 40,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9BQZ8EM2ZA0Q17YBM",
+      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5",
       "chartQuery": [
         "node_memory_HugePages_Free{instance=\"$node\",job=\"$job\"} * node_memory_Hugepagesize_bytes{instance=\"$node\",job=\"$job\"}",
         "node_memory_HugePages_Rsvd{instance=\"$node\",job=\"$job\"} * node_memory_Hugepagesize_bytes{instance=\"$node\",job=\"$job\"}",
@@ -2680,12 +2634,15 @@
       ],
       "dbName": "$dataset",
       "title": "Memory HugePages",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2693,10 +2650,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -2725,17 +2679,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7529VN1QMT8SGE3C4",
         "x": 6,
         "y": 40,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8PRX0WHV668K3PS5QCWFX5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV952GV9VXGY6RXV9E2",
+      "sectionId": "01KW8BYXFNCRHC8E05BKANQXBP",
       "chartQuery": [
         "irate(node_vmstat_pgpgin{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_vmstat_pgpgout{instance=\"$node\",job=\"$job\"}[15s])"
@@ -2746,12 +2698,14 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Pages In / Out",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "classic",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2759,7 +2713,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -2789,17 +2742,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7RJH54Q2GF5X2R1G2",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8BYXFNCRHC8E05BKANQXBP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9359SSFSX35AEEAZH",
+      "sectionId": "01KW8BYXFNCRHC8E05BKANQXBP",
       "chartQuery": [
         "irate(node_vmstat_pswpin{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_vmstat_pswpout{instance=\"$node\",job=\"$job\"}[15s])"
@@ -2810,12 +2761,14 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Pages Swap In / Out",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2823,7 +2776,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -2853,17 +2805,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7SGSDJ2BFC891T2TT",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8BYXFNCRHC8E05BKANQXBP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9AFBHGDNPDDQBDZ8Z",
+      "sectionId": "01KW8BYXFNCRHC8E05BKANQXBP",
       "chartQuery": [
         "irate(node_vmstat_pgfault{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_vmstat_pgmajfault{instance=\"$node\",job=\"$job\"}[15s])",
@@ -2876,12 +2826,14 @@
       ],
       "dbName": "$dataset",
       "title": "Memory Page Faults",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2889,7 +2841,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -2919,17 +2870,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7H6X8WBCNPD880EW7",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8BYXFNCRHC8E05BKANQXBP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9MFCMXM3VJW7YV5FW",
+      "sectionId": "01KW8BYXFNCRHC8E05BKANQXBP",
       "chartQuery": [
         "irate(node_vmstat_oom_kill{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -2938,12 +2887,14 @@
       ],
       "dbName": "$dataset",
       "title": "OOM Killer",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -2951,7 +2902,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -2981,17 +2931,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ78P28FFDK4RSVSAFK",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8BYXFNCRHC8E05BKANQXBP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9T2DTQZ1VAQTPYNPP",
+      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5",
       "chartQuery": [
         "node_timex_estimated_error_seconds{instance=\"$node\",job=\"$job\"}",
         "node_timex_offset_seconds{instance=\"$node\",job=\"$job\"}",
@@ -3004,12 +2952,15 @@
       ],
       "dbName": "$dataset",
       "title": "Time Synchronized Drift",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "s",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3017,70 +2968,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "s"
-        },
-        "axes": {
-          "x": {
-            "field": "__series_hash",
-            "title": "Series",
-            "display": true
-          },
-          "y": {
-            "field": "COUNT_STAR",
-            "title": "Value",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KVQCCFJ7M1MVXE0C3413E0DK",
-        "x": 0,
-        "y": 0,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5"
-    },
-    {
-      "chartQuery": [
-        "node_timex_loop_time_constant{instance=\"$node\",job=\"$job\"}"
-      ],
-      "promqlQueryType": [
-        "range"
-      ],
-      "dbName": "$dataset",
-      "title": "Time PLL Adjust",
-      "chartType": "timeseries",
-      "tileType": "promql",
-      "config": {
-        "type": "line",
-        "colourScheme": "purple",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3110,17 +2997,76 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7G1WZ6CWHYSEMA1M4",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "tile_id": "01KXDD6DV9WSJ03KC2MRZEA9J3",
+      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5",
+      "chartQuery": [
+        "node_timex_loop_time_constant{instance=\"$node\",job=\"$job\"}"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Time PLL Adjust",
+      "tileType": "promql",
+      "chartType": "donut",
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9CM9317TEZTMJG46J",
+      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5",
       "chartQuery": [
         "node_timex_sync_status{instance=\"$node\",job=\"$job\"}",
         "node_timex_frequency_adjustment_ratio{instance=\"$node\",job=\"$job\"}",
@@ -3135,12 +3081,14 @@
       ],
       "dbName": "$dataset",
       "title": "Time Synchronized Status",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "red",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3148,7 +3096,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3178,17 +3125,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7TG8JN3EDGVHMXP8D",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV96FJNT8E64S31091Q",
+      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5",
       "chartQuery": [
         "node_timex_pps_frequency_hertz{instance=\"$node\",job=\"$job\"}",
         "node_timex_pps_stability_hertz{instance=\"$node\",job=\"$job\"}"
@@ -3199,12 +3144,15 @@
       ],
       "dbName": "$dataset",
       "title": "PPS Frequency / Stability",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "Hz",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3212,9 +3160,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "Hz"
+          "label": false
         },
         "axes": {
           "x": {
@@ -3243,17 +3189,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ7K5KDY6CJ1SW226EZ",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9BNZRS2QVW1FBG9V0",
+      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5",
       "chartQuery": [
         "node_timex_pps_jitter_seconds{instance=\"$node\",job=\"$job\"}",
         "node_timex_pps_shift_seconds{instance=\"$node\",job=\"$job\"}"
@@ -3264,12 +3208,15 @@
       ],
       "dbName": "$dataset",
       "title": "PPS Time Accuracy",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "s",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3277,9 +3224,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "s"
+          "label": false
         },
         "axes": {
           "x": {
@@ -3308,17 +3253,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ79F6ZHMWHG58GP056",
         "x": 0,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9MKBAPKFCGM1K9J1F",
+      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5",
       "chartQuery": [
         "irate(node_timex_pps_calibration_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_timex_pps_error_total{instance=\"$node\",job=\"$job\"}[15s])",
@@ -3333,12 +3276,14 @@
       ],
       "dbName": "$dataset",
       "title": "PPS Sync Events",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "classic",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3346,7 +3291,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3376,17 +3320,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ76929MTZBRWACKC2R",
         "x": 6,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9TKFM9XB0A2904CXE",
+      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY",
       "chartQuery": [
         "node_procs_blocked{instance=\"$node\",job=\"$job\"}",
         "node_procs_running{instance=\"$node\",job=\"$job\"}"
@@ -3397,12 +3339,14 @@
       ],
       "dbName": "$dataset",
       "title": "Processes Status",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "redYellowGreen",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3410,7 +3354,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3440,17 +3383,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ83HSPE9WW2HJ290PD",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV99B1Y7GVT2CCTN9J7",
+      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY",
       "chartQuery": [
         "node_processes_state{instance=\"$node\",job=\"$job\"}"
       ],
@@ -3459,12 +3400,14 @@
       ],
       "dbName": "$dataset",
       "title": "Processes Detailed States",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3472,7 +3415,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3502,17 +3444,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8QYC573HKQH14JX9Z",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV95ENBR21WTP9CX0BJ",
+      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY",
       "chartQuery": [
         "irate(node_forks_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -3521,12 +3461,14 @@
       ],
       "dbName": "$dataset",
       "title": "Processes Forks",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3534,7 +3476,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3564,17 +3505,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8BXWP8508J8YKM0Z2",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9V7ZHRSNBTAK8DE1H",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
       "chartQuery": [
         "irate(node_schedstat_running_seconds_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_schedstat_waiting_seconds_total{instance=\"$node\",job=\"$job\"}[15s])",
@@ -3587,12 +3526,16 @@
       ],
       "dbName": "$dataset",
       "title": "CPU Saturation per Core",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3600,10 +3543,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -3632,17 +3572,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ866JB77CXSHXH969P",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9VYA8YRGSX5YJ95E9",
+      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY",
       "chartQuery": [
         "node_processes_pids{instance=\"$node\",job=\"$job\"}",
         "node_processes_max_processes{instance=\"$node\",job=\"$job\"}"
@@ -3653,12 +3591,14 @@
       ],
       "dbName": "$dataset",
       "title": "PIDs Number and Limit",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "purple",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3666,7 +3606,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3696,17 +3635,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8AMHRCVEY6JF9JRW2",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV96QV65KM4PMSZ3VKV",
+      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY",
       "chartQuery": [
         "node_processes_threads{instance=\"$node\",job=\"$job\"}",
         "node_processes_max_threads{instance=\"$node\",job=\"$job\"}"
@@ -3717,12 +3654,14 @@
       ],
       "dbName": "$dataset",
       "title": "Threads Number and Limit",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "orange",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3730,7 +3669,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3760,17 +3698,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8SHKS8XAWJ0QHX794",
         "x": 0,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8HJ239HDS8RGQNMD423AVY"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9JRPBDREGF2CYRS7J",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
       "chartQuery": [
         "irate(node_context_switches_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_intr_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -3781,12 +3717,14 @@
       ],
       "dbName": "$dataset",
       "title": "Context Switches / Interrupts",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3794,7 +3732,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3824,17 +3761,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8RVE1JBT9ERP6PQBD",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV984HJDQ7FGZEPKWS9",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
       "chartQuery": [
         "node_load1{instance=\"$node\",job=\"$job\"}",
         "node_load5{instance=\"$node\",job=\"$job\"}",
@@ -3849,12 +3784,14 @@
       ],
       "dbName": "$dataset",
       "title": "System Load",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3862,7 +3799,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -3892,17 +3828,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ89DDGFRSNANJFRVAJ",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV96MRM3CFDNS71Z3N7",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
       "chartQuery": [
         "node_cpu_scaling_frequency_hertz{instance=\"$node\",job=\"$job\"}",
         "avg(node_cpu_scaling_frequency_max_hertz{instance=\"$node\",job=\"$job\"})",
@@ -3915,12 +3849,15 @@
       ],
       "dbName": "$dataset",
       "title": "CPU Frequency Scaling",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "classic",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "Hz",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -3928,70 +3865,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "Hz"
-        },
-        "axes": {
-          "x": {
-            "field": "__series_hash",
-            "title": "Series",
-            "display": true
-          },
-          "y": {
-            "field": "COUNT_STAR",
-            "title": "CPU Usage",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KVQCCFJ82QPV5XNB76JHKK3B",
-        "x": 0,
-        "y": 16,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
-    },
-    {
-      "chartQuery": [
-        "irate(node_schedstat_timeslices_total{instance=\"$node\",job=\"$job\"}[15s])"
-      ],
-      "promqlQueryType": [
-        "range"
-      ],
-      "dbName": "$dataset",
-      "title": "CPU Schedule Timeslices",
-      "chartType": "timeseries",
-      "tileType": "promql",
-      "config": {
-        "type": "line",
-        "colourScheme": "parseableBlue",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4021,17 +3894,76 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ80A5EA8CNRMRRNJ8V",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "tile_id": "01KXDD6DV9E9HPKNMQ7DMNBDJN",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
+      "chartQuery": [
+        "irate(node_schedstat_timeslices_total{instance=\"$node\",job=\"$job\"}[15s])"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "CPU Schedule Timeslices",
+      "tileType": "promql",
+      "chartType": "donut",
+      "config": {
+        "type": "donut",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "CPU Usage",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
         "x": 6,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9GB89VSJXERS1W2P2",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
       "chartQuery": [
         "irate(node_interrupts_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -4040,12 +3972,14 @@
       ],
       "dbName": "$dataset",
       "title": "IRQ Detail",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4053,7 +3987,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4083,17 +4016,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8RKXG2T3H0936PZ6E",
         "x": 0,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV94J10EFES78R5HNWM",
+      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP",
       "chartQuery": [
         "node_entropy_available_bits{instance=\"$node\",job=\"$job\"}",
         "node_entropy_pool_size_bits{instance=\"$node\",job=\"$job\"}"
@@ -4104,12 +4035,14 @@
       ],
       "dbName": "$dataset",
       "title": "Entropy",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4117,7 +4050,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4147,17 +4079,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8X7G9KJB3F3M0G6ZS",
         "x": 6,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8MPFRVJZV6VANJQCK18DMP"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9BT4VAS81NVHFJ6NA",
+      "sectionId": "01KW8S5BHS3R29SZD3KJHR9N0J",
       "chartQuery": [
         "node_hwmon_temp_celsius{instance=\"$node\",job=\"$job\"} * on(chip) group_left(chip_name) node_hwmon_chip_names{instance=\"$node\",job=\"$job\"}",
         "node_hwmon_temp_crit_alarm_celsius{instance=\"$node\",job=\"$job\"} * on(chip) group_left(chip_name) node_hwmon_chip_names{instance=\"$node\",job=\"$job\"}",
@@ -4174,12 +4104,15 @@
       ],
       "dbName": "$dataset",
       "title": "Hardware Temperature Monitor",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "C",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4187,134 +4120,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "C"
-        },
-        "axes": {
-          "x": {
-            "field": "__series_hash",
-            "title": "Series",
-            "display": true
-          },
-          "y": {
-            "field": "COUNT_STAR",
-            "title": "Value",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KVQCCFJ8H3FSG793CX06BGGV",
-        "x": 0,
-        "y": 0,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8S5BHS3R29SZD3KJHR9N0J"
-    },
-    {
-      "chartQuery": [
-        "100 * node_cooling_device_cur_state{instance=\"$node\",job=\"$job\"} / node_cooling_device_max_state{instance=\"$node\",job=\"$job\"}"
-      ],
-      "promqlQueryType": [
-        "range"
-      ],
-      "dbName": "$dataset",
-      "title": "Cooling Device Utilization",
-      "chartType": "timeseries",
-      "tileType": "promql",
-      "config": {
-        "type": "line",
-        "colourScheme": "purple",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
-        },
-        "axes": {
-          "x": {
-            "field": "__series_hash",
-            "title": "Series",
-            "display": true
-          },
-          "y": {
-            "field": "COUNT_STAR",
-            "title": "Value",
-            "display": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      },
-      "layout": {
-        "i": "01KVQCCFJ8KX3Y202995R8FSWE",
-        "x": 6,
-        "y": 0,
-        "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8S5BHS3R29SZD3KJHR9N0J"
-    },
-    {
-      "chartQuery": [
-        "node_power_supply_online{instance=\"$node\",job=\"$job\"}"
-      ],
-      "promqlQueryType": [
-        "range"
-      ],
-      "dbName": "$dataset",
-      "title": "Power Supply",
-      "chartType": "timeseries",
-      "tileType": "promql",
-      "config": {
-        "type": "line",
-        "colourScheme": "orange",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4344,33 +4149,33 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8XZYNH6NW6K7C75WG",
         "x": 0,
-        "y": 8,
+        "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8S5BHS3R29SZD3KJHR9N0J"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9X2AT7QVR9ZEC7P2M",
+      "sectionId": "01KW8S5BHS3R29SZD3KJHR9N0J",
       "chartQuery": [
-        "node_hwmon_fan_rpm{instance=\"$node\",job=\"$job\"} * on(chip) group_left(chip_name) node_hwmon_chip_names{instance=\"$node\",job=\"$job\"}",
-        "node_hwmon_fan_min_rpm{instance=\"$node\",job=\"$job\"} * on(chip) group_left(chip_name) node_hwmon_chip_names{instance=\"$node\",job=\"$job\"}"
+        "100 * node_cooling_device_cur_state{instance=\"$node\",job=\"$job\"} / node_cooling_device_max_state{instance=\"$node\",job=\"$job\"}"
       ],
       "promqlQueryType": [
-        "range",
         "range"
       ],
       "dbName": "$dataset",
-      "title": "Hardware Fan Speed",
-      "chartType": "timeseries",
+      "title": "Cooling Device Utilization",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
-        "colourScheme": "yellow",
+        "type": "donut",
+        "colourScheme": "purple",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4378,9 +4183,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "rpm"
+          "label": false
         },
         "axes": {
           "x": {
@@ -4409,17 +4212,140 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8Q8JTGKS9BGFE0S11",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "tile_id": "01KXDD6DV9TERGN66K34WA6RJV",
+      "sectionId": "01KW8S5BHS3R29SZD3KJHR9N0J",
+      "chartQuery": [
+        "node_power_supply_online{instance=\"$node\",job=\"$job\"}"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Power Supply",
+      "tileType": "promql",
+      "chartType": "donut",
+      "config": {
+        "type": "donut",
+        "colourScheme": "orange",
+        "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "tile_id": "01KXDD6DV92X82QK2VG51PN8DM",
+      "sectionId": "01KW8S5BHS3R29SZD3KJHR9N0J",
+      "chartQuery": [
+        "node_hwmon_fan_rpm{instance=\"$node\",job=\"$job\"} * on(chip) group_left(chip_name) node_hwmon_chip_names{instance=\"$node\",job=\"$job\"}",
+        "node_hwmon_fan_min_rpm{instance=\"$node\",job=\"$job\"} * on(chip) group_left(chip_name) node_hwmon_chip_names{instance=\"$node\",job=\"$job\"}"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$dataset",
+      "title": "Hardware Fan Speed",
+      "tileType": "promql",
+      "chartType": "donut",
+      "config": {
+        "type": "donut",
+        "colourScheme": "yellow",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "rpm",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Series",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8S5BHS3R29SZD3KJHR9N0J"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9WJAWQEYBQTN134RC",
+      "sectionId": "01KW81WG7EMG2W4TZP2VG7FHZQ",
       "chartQuery": [
         "node_systemd_units{instance=\"$node\",job=\"$job\",state=\"activating\"}",
         "node_systemd_units{instance=\"$node\",job=\"$job\",state=\"active\"}",
@@ -4436,12 +4362,14 @@
       ],
       "dbName": "$dataset",
       "title": "Systemd Units State",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4449,7 +4377,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4479,17 +4406,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8GHYJK691TP344VGM",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW81WG7EMG2W4TZP2VG7FHZQ"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV97736XZRYCAVNDG8E",
+      "sectionId": "01KW81WG7EMG2W4TZP2VG7FHZQ",
       "chartQuery": [
         "node_systemd_socket_current_connections{instance=\"$node\",job=\"$job\"}"
       ],
@@ -4498,12 +4423,14 @@
       ],
       "dbName": "$dataset",
       "title": "Systemd Sockets Current",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "classic",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4511,7 +4438,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4541,17 +4467,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ83QXD070K9PWJGQYS",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW81WG7EMG2W4TZP2VG7FHZQ"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV9W6FS9TCBVDR3RS0A",
+      "sectionId": "01KW81WG7EMG2W4TZP2VG7FHZQ",
       "chartQuery": [
         "irate(node_systemd_socket_accepted_connections_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -4560,12 +4484,14 @@
       ],
       "dbName": "$dataset",
       "title": "Systemd Sockets Accepted",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4573,7 +4499,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4603,17 +4528,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8PSN4RK4658G748B4",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW81WG7EMG2W4TZP2VG7FHZQ"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DV927TTVH1XKB7ZQYK4",
+      "sectionId": "01KW81WG7EMG2W4TZP2VG7FHZQ",
       "chartQuery": [
         "irate(node_systemd_socket_refused_connections_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -4622,12 +4545,14 @@
       ],
       "dbName": "$dataset",
       "title": "Systemd Sockets Refused",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4635,7 +4560,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4665,17 +4589,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8023KBM8SJVX3CJJ9",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW81WG7EMG2W4TZP2VG7FHZQ"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA3Z3NJVYTYZRSY5YQ",
+      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF",
       "chartQuery": [
         "irate(node_disk_reads_completed_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_disk_writes_completed_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -4686,12 +4608,14 @@
       ],
       "dbName": "$dataset",
       "title": "Disk Read/Write IOps",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4699,7 +4623,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4729,17 +4652,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8J8GYGVJ8H878PKHR",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAEBM9PJX0P3H7SE6P",
+      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF",
       "chartQuery": [
         "irate(node_disk_read_bytes_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_disk_written_bytes_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -4750,12 +4671,15 @@
       ],
       "dbName": "$dataset",
       "title": "Disk Read/Write Data",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4763,10 +4687,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -4795,17 +4716,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8X62A01GC6ESY8MFY",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVANCK1R26QJDK4AEN2",
+      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF",
       "chartQuery": [
         "irate(node_disk_read_time_seconds_total{instance=\"$node\",job=\"$job\"}[15s]) / irate(node_disk_reads_completed_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_disk_write_time_seconds_total{instance=\"$node\",job=\"$job\"}[15s]) / irate(node_disk_writes_completed_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -4816,12 +4735,15 @@
       ],
       "dbName": "$dataset",
       "title": "Disk Average Wait Time",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "purple",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "s",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4829,9 +4751,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "s"
+          "label": false
         },
         "axes": {
           "x": {
@@ -4860,17 +4780,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8SS79VBN6Q3PXQTQH",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAAYPFWDRZM86RJP9F",
+      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF",
       "chartQuery": [
         "irate(node_disk_io_time_weighted_seconds_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -4879,12 +4797,14 @@
       ],
       "dbName": "$dataset",
       "title": "Average Queue Size",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "orange",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4892,7 +4812,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4922,17 +4841,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8TF41NGAX6DR1WZ6Y",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVADW82NBSTRSZ6YS95",
+      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF",
       "chartQuery": [
         "irate(node_disk_reads_merged_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_disk_writes_merged_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -4943,12 +4860,14 @@
       ],
       "dbName": "$dataset",
       "title": "Disk R/W Merged",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -4956,7 +4875,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -4986,17 +4904,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8M24A5P9EKVX0SY62",
         "x": 0,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAYZ717VV985X9J3ZR",
+      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5",
       "chartQuery": [
         "irate(node_disk_io_time_seconds_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_disk_discard_time_seconds_total{instance=\"$node\",job=\"$job\"}[15s])",
@@ -5009,12 +4925,16 @@
       ],
       "dbName": "$dataset",
       "title": "Time Spent Doing I/Os",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5022,10 +4942,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -5054,17 +4971,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ86T2SHHM3K5PNA4T5",
         "x": 0,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8V1ZEMG9KBJQNM1BYX86X5"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA79Y9XXA9KYTZZ7SX",
+      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF",
       "chartQuery": [
         "irate(node_disk_discards_completed_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_disk_discards_merged_total{instance=\"$node\",job=\"$job\"}[15s])",
@@ -5077,12 +4992,14 @@
       ],
       "dbName": "$dataset",
       "title": "Disk Ops Discards / Flush",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "classic",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5090,7 +5007,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5120,17 +5036,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8PTQNM7RYDTG7YTNY",
         "x": 6,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVARHF7YBZYP8K4JM56",
+      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF",
       "chartQuery": [
         "irate(node_disk_discarded_sectors_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -5139,12 +5053,14 @@
       ],
       "dbName": "$dataset",
       "title": "Disk Sectors Discarded Successfully",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5152,7 +5068,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5182,17 +5097,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8P8DSNCNRQXK71QEW",
         "x": 0,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAR72Q34AH32KP3CCP",
+      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF",
       "chartQuery": [
         "node_disk_io_now{instance=\"$node\",job=\"$job\"}"
       ],
@@ -5201,12 +5114,14 @@
       ],
       "dbName": "$dataset",
       "title": "Instantaneous Queue Size",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5214,7 +5129,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5244,17 +5158,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8BX211X8QVGT6GEFP",
         "x": 6,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8GSRY6XZ2G9PNBK1AN2RVF"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVANAQKV0SNG7GPM2MB",
+      "sectionId": "01KW86N45MRFJASW7HZQAXE6N6",
       "chartQuery": [
         "node_filefd_maximum{instance=\"$node\",job=\"$job\"}",
         "node_filefd_allocated{instance=\"$node\",job=\"$job\"}"
@@ -5265,12 +5177,14 @@
       ],
       "dbName": "$dataset",
       "title": "File Descriptor",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5278,7 +5192,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5308,17 +5221,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ847GBR87JZYVK5255",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW86N45MRFJASW7HZQAXE6N6"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVANECENK296AGP7AD2",
+      "sectionId": "01KW86N45MRFJASW7HZQAXE6N6",
       "chartQuery": [
         "node_filesystem_files_free{instance=\"$node\",job=\"$job\",device!~'rootfs'}"
       ],
@@ -5327,12 +5238,14 @@
       ],
       "dbName": "$dataset",
       "title": "File Nodes Free",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5340,7 +5253,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5370,17 +5282,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8MSSMBQF5B6WS6TXW",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW86N45MRFJASW7HZQAXE6N6"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAYAB34Q10YD4JFBGK",
+      "sectionId": "01KW86N45MRFJASW7HZQAXE6N6",
       "chartQuery": [
         "node_filesystem_readonly{instance=\"$node\",job=\"$job\",device!~'rootfs'}",
         "node_filesystem_device_error{instance=\"$node\",job=\"$job\",device!~'rootfs',fstype!~'tmpfs'}"
@@ -5391,12 +5301,14 @@
       ],
       "dbName": "$dataset",
       "title": "Filesystem in ReadOnly / Error",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "greenYellowRed",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5404,7 +5316,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5434,17 +5345,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ86XKBZ66XP8RYM1Z0",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW86N45MRFJASW7HZQAXE6N6"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA7RV1K0AJP86DPJ56",
+      "sectionId": "01KW86N45MRFJASW7HZQAXE6N6",
       "chartQuery": [
         "node_filesystem_files{instance=\"$node\",job=\"$job\",device!~'rootfs'}"
       ],
@@ -5453,12 +5362,14 @@
       ],
       "dbName": "$dataset",
       "title": "File Nodes Size",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5466,7 +5377,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5496,17 +5406,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ855AQN2VMCPJSCVGY",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW86N45MRFJASW7HZQAXE6N6"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAZKKAXCQXWFDPG54K",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_receive_packets_total{instance=\"$node\",job=\"$job\"}[15s])",
         "rate(node_network_transmit_packets_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -5517,12 +5425,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic by Packets",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5530,7 +5440,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5560,17 +5469,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ89E8RB2WQ0SS53YKQ",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA7KDFP0PJTB09TNXQ",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_receive_errs_total{instance=\"$node\",job=\"$job\"}[15s])",
         "rate(node_network_transmit_errs_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -5581,12 +5488,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Errors",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "greenYellowRed",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5594,7 +5503,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5624,17 +5532,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8K8GVAT6W3E19BQTP",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAY44S9Q15FBH666C3",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_receive_drop_total{instance=\"$node\",job=\"$job\"}[15s])",
         "rate(node_network_transmit_drop_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -5645,12 +5551,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Drop",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5658,7 +5566,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5688,17 +5595,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8429K9XZS2HGYXTY1",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVASP8BRGP1P9WV2WYE",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_receive_compressed_total{instance=\"$node\",job=\"$job\"}[15s])",
         "rate(node_network_transmit_compressed_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -5709,12 +5614,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Compressed",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5722,7 +5629,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5752,17 +5658,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ88T4TNXTJ30EXM3B6",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA8211VW7EX33BVB41",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_receive_multicast_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -5771,12 +5675,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Multicast",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5784,7 +5690,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5814,17 +5719,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8RAP1VEPZF7A7QYSW",
         "x": 0,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAXMBW333Q3NYH39XH",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_receive_nohandler_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -5833,12 +5736,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic NoHandler",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5846,7 +5751,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5876,17 +5780,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8CXF96J2DX53XNS8Y",
         "x": 6,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVACEBY3CC0H5TA94WE",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_receive_frame_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -5895,12 +5797,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Frame",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5908,7 +5812,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -5938,17 +5841,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ8GABQMSQ3BSE41DN9",
         "x": 0,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAQH8NQ3WDY25CS6HJ",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_receive_fifo_total{instance=\"$node\",job=\"$job\"}[15s])",
         "rate(node_network_transmit_fifo_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -5959,12 +5860,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Fifo",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -5972,7 +5875,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6002,17 +5904,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9940A9X96ZQA7P836",
         "x": 6,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA3YV4D35B86QT49B8",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_transmit_colls_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -6021,12 +5921,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Collision",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6034,7 +5936,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6064,17 +5965,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9T0QHMVW43C1DGK9N",
         "x": 0,
         "y": 32,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA9HRBVABYAGGN0NYP",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "rate(node_network_transmit_carrier_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -6083,12 +5982,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Traffic Carrier Errors",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "redYellowGreen",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6096,7 +5997,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6126,17 +6026,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9SNEM58NEKZBWWFQK",
         "x": 6,
         "y": 32,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA14ZJS6Z2B7N79M1E",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "node_arp_entries{instance=\"$node\",job=\"$job\"}"
       ],
@@ -6145,12 +6043,14 @@
       ],
       "dbName": "$dataset",
       "title": "ARP Entries",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6158,7 +6058,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6188,17 +6087,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9GANZT4RYA8YT6PAX",
         "x": 0,
         "y": 40,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAH0S35YDZX0VY66PC",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "node_nf_conntrack_entries{instance=\"$node\",job=\"$job\"}",
         "node_nf_conntrack_entries_limit{instance=\"$node\",job=\"$job\"}"
@@ -6209,12 +6106,14 @@
       ],
       "dbName": "$dataset",
       "title": "NF Conntrack",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6222,7 +6121,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6252,17 +6150,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9VE0EAV93WYHH2FAY",
         "x": 6,
         "y": 40,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAF4RTVFXWR9FEX59J",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "node_network_up{operstate=\"up\",instance=\"$node\",job=\"$job\"}",
         "node_network_carrier{instance=\"$node\",job=\"$job\"}"
@@ -6273,12 +6169,14 @@
       ],
       "dbName": "$dataset",
       "title": "Network Operational Status",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "redYellowGreen",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6286,7 +6184,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6316,31 +6213,32 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9YKTTPX5YW7NV4FRX",
         "x": 0,
         "y": 48,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAF0H10YXYA1G7ZZP1",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "node_network_speed_bytes{instance=\"$node\",job=\"$job\"} * 8"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "Speed",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": 0,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6348,9 +6246,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": 0
+          "label": false
         },
         "axes": {
           "x": {
@@ -6376,31 +6272,32 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9SJS9H4VQR60DR5DV",
         "x": 6,
         "y": 48,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DVA4QPMT0DBYE509S82",
+      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q",
       "chartQuery": [
         "node_network_mtu_bytes{instance=\"$node\",job=\"$job\"}"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "MTU",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": 0,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6408,9 +6305,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "precision": 0
+          "label": false
         },
         "axes": {
           "x": {
@@ -6436,17 +6331,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9K2DS0VG5FM80J6T5",
         "x": 9,
         "y": 48,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8D745S0SHWJN77HV5YCA5Q"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DVA2NGBAR4CY8M01HFP",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "node_sockstat_TCP_alloc{instance=\"$node\",job=\"$job\"}",
         "node_sockstat_TCP_inuse{instance=\"$node\",job=\"$job\"}",
@@ -6461,12 +6354,14 @@
       ],
       "dbName": "$dataset",
       "title": "Sockstat TCP",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6474,7 +6369,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6504,17 +6398,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ97DZ8H9CX6YFY7QA3",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAE01F80Z3EC17PG3K",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "node_sockstat_UDPLITE_inuse{instance=\"$node\",job=\"$job\"}",
         "node_sockstat_UDP_inuse{instance=\"$node\",job=\"$job\"}"
@@ -6525,12 +6417,14 @@
       ],
       "dbName": "$dataset",
       "title": "Sockstat UDP",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6538,7 +6432,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6568,17 +6461,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ92XDRSZDC5BBNYYFM",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAQFE2QVPSZG0G1R48",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "node_sockstat_sockets_used{instance=\"$node\",job=\"$job\"}"
       ],
@@ -6587,12 +6478,14 @@
       ],
       "dbName": "$dataset",
       "title": "Sockstat Used",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6600,7 +6493,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6630,17 +6522,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ987NPR0CJ0VM7XFA5",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAFNE3HBKY5GDQW3FV",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "node_sockstat_FRAG_inuse{instance=\"$node\",job=\"$job\"}",
         "node_sockstat_RAW_inuse{instance=\"$node\",job=\"$job\"}"
@@ -6651,12 +6541,14 @@
       ],
       "dbName": "$dataset",
       "title": "Sockstat FRAG / RAW",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6664,7 +6556,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6694,17 +6585,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9E3BAHANH6KYNRKS5",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAS8JXN0SAWP6ES3VA",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "node_sockstat_TCP_mem{instance=\"$node\",job=\"$job\"}",
         "node_sockstat_UDP_mem{instance=\"$node\",job=\"$job\"}"
@@ -6715,12 +6604,14 @@
       ],
       "dbName": "$dataset",
       "title": "TCP/UDP Kernel Buffer Memory Pages",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6728,7 +6619,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6758,17 +6648,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9XDARCM7M0AF1WTKC",
         "x": 0,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAVPMZ9291SVTMGEQN",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "node_sockstat_TCP_mem_bytes{instance=\"$node\",job=\"$job\"}",
         "node_sockstat_UDP_mem_bytes{instance=\"$node\",job=\"$job\"}",
@@ -6781,12 +6669,15 @@
       ],
       "dbName": "$dataset",
       "title": "Sockstat Memory Size",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6794,10 +6685,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -6826,17 +6714,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9QJN0X8YHSC4KV2SR",
         "x": 6,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAYNKE46YPD34X4VP0",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "irate(node_softnet_processed_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_softnet_dropped_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -6847,12 +6733,14 @@
       ],
       "dbName": "$dataset",
       "title": "Softnet Packets",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6860,7 +6748,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6890,17 +6777,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9NSAGPYEQ70DB9WBD",
         "x": 0,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVATSTF9V0JBBF90HK9",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "irate(node_softnet_times_squeezed_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -6909,12 +6794,14 @@
       ],
       "dbName": "$dataset",
       "title": "Softnet Out of Quota",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6922,7 +6809,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -6952,17 +6838,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9H8Q7686109BF2AHV",
         "x": 6,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAV8AH3ET96VT20PHW",
+      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM",
       "chartQuery": [
         "irate(node_softnet_received_rps_total{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_softnet_flow_limit_count_total{instance=\"$node\",job=\"$job\"}[15s])"
@@ -6973,12 +6857,14 @@
       ],
       "dbName": "$dataset",
       "title": "Softnet RPS",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -6986,7 +6872,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7016,17 +6901,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9PR95JA84KTVY6S1Z",
         "x": 0,
         "y": 32,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW87WQE3HCG9P2TYJFSYDSAM"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAAPB8MXD2B7SZJZBC",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_IpExt_InOctets{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_netstat_IpExt_OutOctets{instance=\"$node\",job=\"$job\"}[15s])"
@@ -7037,12 +6920,15 @@
       ],
       "dbName": "$dataset",
       "title": "Netstat IP In / Out Octets",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7050,10 +6936,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -7082,17 +6965,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9S7VY7X75F06220ET",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAX0N47CA7YVY92NAV",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_Tcp_InSegs{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_netstat_Tcp_OutSegs{instance=\"$node\",job=\"$job\"}[15s])"
@@ -7103,12 +6984,14 @@
       ],
       "dbName": "$dataset",
       "title": "TCP In / Out",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7116,7 +6999,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7146,17 +7028,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9QRB1X8WVMAF6VHD6",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA80KW1TY8VA1MHJJ1",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_Udp_InDatagrams{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_netstat_Udp_OutDatagrams{instance=\"$node\",job=\"$job\"}[15s])"
@@ -7167,12 +7047,14 @@
       ],
       "dbName": "$dataset",
       "title": "UDP In / Out",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7180,7 +7062,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7210,17 +7091,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9XH3V7K37P2BBPDGZ",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA3NRHQSEQVSKAB6FZ",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_Icmp_InMsgs{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_netstat_Icmp_OutMsgs{instance=\"$node\",job=\"$job\"}[15s])"
@@ -7231,12 +7110,14 @@
       ],
       "dbName": "$dataset",
       "title": "ICMP In / Out",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7244,7 +7125,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7274,17 +7154,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9PSZGBRT92XSA15BW",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVANTV86NCP0STH60K6",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_TcpExt_ListenOverflows{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_netstat_TcpExt_ListenDrops{instance=\"$node\",job=\"$job\"}[15s])",
@@ -7309,12 +7187,14 @@
       ],
       "dbName": "$dataset",
       "title": "TCP Errors",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "greenYellowRed",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7322,7 +7202,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7352,17 +7231,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9M0BPBEKP0RXVEBF7",
         "x": 0,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA8PEBRC5BGSFEBM43",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_Udp_InErrors{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_netstat_Udp_NoPorts{instance=\"$node\",job=\"$job\"}[15s])",
@@ -7379,12 +7256,14 @@
       ],
       "dbName": "$dataset",
       "title": "UDP Errors",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "red",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7392,7 +7271,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7422,17 +7300,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ93JCCF7D2RYCTE5MX",
         "x": 6,
         "y": 16,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA5N6NNXTZ2CHRAMH5",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_Icmp_InErrors{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -7441,12 +7317,14 @@
       ],
       "dbName": "$dataset",
       "title": "ICMP Errors",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "redYellowGreen",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7454,7 +7332,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7484,17 +7361,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9PH0NVTFBTT46XXHQ",
         "x": 0,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAYR000F90D8ZSQSTV",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_TcpExt_SyncookiesFailed{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_netstat_TcpExt_SyncookiesRecv{instance=\"$node\",job=\"$job\"}[15s])",
@@ -7507,12 +7382,14 @@
       ],
       "dbName": "$dataset",
       "title": "TCP SynCookie",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7520,7 +7397,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7550,17 +7426,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9SJRWC6VE14S16GW9",
         "x": 6,
         "y": 24,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAH5R7SP45ZCRFXYVW",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "node_netstat_Tcp_CurrEstab{instance=\"$node\",job=\"$job\"}",
         "node_netstat_Tcp_MaxConn{instance=\"$node\",job=\"$job\"}"
@@ -7571,12 +7445,14 @@
       ],
       "dbName": "$dataset",
       "title": "TCP Connections",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7584,7 +7460,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7614,17 +7489,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9G8NRVZYY8AB7X99C",
         "x": 0,
         "y": 32,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVA2D1AB41432E4SD4P",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "node_udp_queues{instance=\"$node\",job=\"$job\",ip=\"v4\",queue=\"rx\"}",
         "node_udp_queues{instance=\"$node\",job=\"$job\",ip=\"v4\",queue=\"tx\"}"
@@ -7635,12 +7508,14 @@
       ],
       "dbName": "$dataset",
       "title": "UDP Queue",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "parseableBlue",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7648,7 +7523,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7678,17 +7552,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9GEP6YD0RQGM7D8BZ",
         "x": 6,
         "y": 32,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAKHRK9JF7FV7ZZX19",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "irate(node_netstat_Tcp_ActiveOpens{instance=\"$node\",job=\"$job\"}[15s])",
         "irate(node_netstat_Tcp_PassiveOpens{instance=\"$node\",job=\"$job\"}[15s])"
@@ -7699,12 +7571,14 @@
       ],
       "dbName": "$dataset",
       "title": "TCP Direct Transition",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7712,7 +7586,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7742,17 +7615,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9P5QFDKT1JN0HYRMW",
         "x": 0,
         "y": 40,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAPFBFYWW0NDZHV4YX",
+      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G",
       "chartQuery": [
         "node_tcp_connection_states{state=\"established\",instance=\"$node\",job=\"$job\"}",
         "node_tcp_connection_states{state=\"fin_wait2\",instance=\"$node\",job=\"$job\"}",
@@ -7769,12 +7640,14 @@
       ],
       "dbName": "$dataset",
       "title": "TCP Stat",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7782,7 +7655,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -7812,17 +7684,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9A56MMS28FTDV1AXS",
         "x": 6,
         "y": 40,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW82JDRYSYRAN5J5ZVZF1R7G"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVANA48H9D22FCWGJXS",
+      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2",
       "chartQuery": [
         "node_scrape_collector_duration_seconds{instance=\"$node\",job=\"$job\"}"
       ],
@@ -7831,12 +7701,15 @@
       ],
       "dbName": "$dataset",
       "title": "Node Exporter Scrape Time",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "s",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7844,9 +7717,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "s"
+          "label": false
         },
         "axes": {
           "x": {
@@ -7875,17 +7746,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9M48JMB9FAVV7NN37",
         "x": 0,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAW5M1JAYQ71E3JFBP",
+      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2",
       "chartQuery": [
         "irate(process_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[15s])"
       ],
@@ -7894,12 +7763,16 @@
       ],
       "dbName": "$dataset",
       "title": "Exporter Process CPU Usage",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "gray",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7907,10 +7780,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "%",
-          "precision": 1
+          "label": false
         },
         "axes": {
           "x": {
@@ -7939,17 +7809,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9SM9M2ADAR5TGJRAY",
         "x": 6,
         "y": 0,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVAXJZ5W6PBT4920SQZ",
+      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2",
       "chartQuery": [
         "process_virtual_memory_bytes{instance=\"$node\",job=\"$job\"}",
         "process_virtual_memory_max_bytes{instance=\"$node\",job=\"$job\"}"
@@ -7960,12 +7828,15 @@
       ],
       "dbName": "$dataset",
       "title": "Exporter Processes Memory",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "yellow",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -7973,10 +7844,7 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "B",
-          "humanize": true
+          "label": false
         },
         "axes": {
           "x": {
@@ -8005,17 +7873,15 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9WFB9HC29FR1J0G8H",
         "x": 0,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVABR0JD2QE4YHKD724",
+      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2",
       "chartQuery": [
         "process_max_fds{instance=\"$node\",job=\"$job\"}",
         "process_open_fds{instance=\"$node\",job=\"$job\"}"
@@ -8026,12 +7892,14 @@
       ],
       "dbName": "$dataset",
       "title": "Exporter File Descriptor Usage",
-      "chartType": "timeseries",
       "tileType": "promql",
+      "chartType": "donut",
       "config": {
-        "type": "line",
+        "type": "donut",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -8039,7 +7907,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -8069,31 +7936,32 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ9VW8SWFVCGPYWPNJX",
         "x": 6,
         "y": 8,
         "w": 6,
-        "h": 8,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2"
+        "h": 8
+      }
     },
     {
+      "tile_id": "01KXDD6DVASEJV0STC8CTJ5S6E",
+      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2",
       "chartQuery": [
         "node_scrape_collector_success{instance=\"$node\",job=\"$job\"}"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "Node Exporter Scrape - collector",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "green",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -8101,7 +7969,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -8128,31 +7995,32 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ96MHYM3KWKWEC59XV",
         "x": 0,
         "y": 16,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2"
+        "h": 5
+      }
     },
     {
+      "tile_id": "01KXDD6DVA6XFEPSKEDZPKN88Z",
+      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2",
       "chartQuery": [
         "1 - node_textfile_scrape_error{instance=\"$node\",job=\"$job\"}"
       ],
       "promqlQueryType": [
-        "instant"
+        "range"
       ],
       "dbName": "$dataset",
       "title": "Node Exporter Scrape - textfile",
-      "chartType": "query-value",
       "tileType": "promql",
+      "chartType": "query-value",
       "config": {
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "precision": -1,
+          "humanize": true,
           "segments": {
             "value": [
               10,
@@ -8160,7 +8028,6 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
           "label": false
         },
         "axes": {
@@ -8187,15 +8054,11 @@
         }
       },
       "layout": {
-        "i": "01KVQCCFJ96DEEN4N3612RHM0H",
         "x": 3,
         "y": 16,
         "w": 3,
-        "h": 5,
-        "moved": false,
-        "static": false
-      },
-      "sectionId": "01KW8SQBXZGXA9TR0D1HV376D2"
+        "h": 5
+      }
     }
   ]
 }

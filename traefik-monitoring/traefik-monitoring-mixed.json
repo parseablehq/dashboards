@@ -1,0 +1,2594 @@
+{
+  "tags": [
+    "traefik",
+    "kubernetes",
+    "ingress",
+    "promql",
+    "logs"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "azure-prod-cluster-metrics"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "azure-prod-pod-logs"
+    },
+    {
+      "name": "entrypoint",
+      "label": "EntryPoint",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "entrypoint",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "service",
+      "label": "Service",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "service",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "code",
+      "label": "HTTP Code",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "code",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "method",
+      "label": "Method",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "method",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "protocol",
+      "label": "Protocol",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "protocol",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "pod",
+      "label": "Pod",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "k8s.pod.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXQB959Z10C27QPKDRXJTRDT",
+      "title": "EntryPoints & Traffic",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXQB959ZPG5XT8MNM61NGY6Y",
+      "title": "Services & Latency",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXQB959ZH1NRA995Y8P2F0PW",
+      "title": "TLS & Certificates",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXQB959ZW5P2367G00AT9ET1",
+      "title": "Runtime & Process",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXQB959ZTRJ5JDR0AX3AM0RN",
+      "title": "Logs",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXQB959ZD5QMXSHA5DF6FAPG",
+      "title": "Inventory",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KXQB959ZMJFYJ20X35NNWZTZ",
+      "title": "Request Rate",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_entrypoint_requests_total\",entrypoint=~\"$entrypoint\",code=~\"$code\",method=~\"$method\",protocol=~\"$protocol\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "layout": {
+        "i": "01KXQB959ZMJFYJ20X35NNWZTZ",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Requests / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZW5P7DZN3RZ47E0KG",
+      "title": "5xx Rate",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_entrypoint_requests_total\",entrypoint=~\"$entrypoint\",code=~\"5..\",method=~\"$method\",protocol=~\"$protocol\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "layout": {
+        "i": "01KXQB959ZW5P7DZN3RZ47E0KG",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "5xx / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZFS7AB07C7FEGAA5C",
+      "title": "Success %",
+      "chartQuery": [
+        "100 * sum(rate({__name__=\"traefik_entrypoint_requests_total\",entrypoint=~\"$entrypoint\",code!~\"5..\",method=~\"$method\",protocol=~\"$protocol\"}[5m])) / sum(rate({__name__=\"traefik_entrypoint_requests_total\",entrypoint=~\"$entrypoint\",method=~\"$method\",protocol=~\"$protocol\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "layout": {
+        "i": "01KXQB959ZFS7AB07C7FEGAA5C",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZHNR6D63CJ9HJBWNY",
+      "title": "Open Connections",
+      "chartQuery": [
+        "sum({__name__=\"traefik_open_connections\",entrypoint=~\"$entrypoint\",\"k8s.pod.name\"=~\"$pod\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "layout": {
+        "i": "01KXQB959ZHNR6D63CJ9HJBWNY",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Connections",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZTX4W1Q1X3STDWBXT",
+      "title": "Config Reload Success",
+      "chartQuery": [
+        "100 * max({__name__=\"traefik_config_last_reload_success\",\"k8s.pod.name\"=~\"$pod\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "layout": {
+        "i": "01KXQB959ZTX4W1Q1X3STDWBXT",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959Z8FKDRMW6A76H0K0X",
+      "title": "Config Reloads",
+      "chartQuery": [
+        "sum(increase({__name__=\"traefik_config_reloads_total\",\"k8s.pod.name\"=~\"$pod\"}[1h]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "layout": {
+        "i": "01KXQB959Z8FKDRMW6A76H0K0X",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Reloads",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZYCGBWQYRT65JZMGW",
+      "title": "Active Certificates",
+      "chartQuery": [
+        "count({__name__=\"traefik_tls_certs_not_after\",cn=~\".*\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "layout": {
+        "i": "01KXQB959ZYCGBWQYRT65JZMGW",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Certificates",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959Z6F9D149N340XEX3Y",
+      "title": "Requests by Code",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_entrypoint_requests_total\",entrypoint=~\"$entrypoint\",code=~\"$code\",method=~\"$method\",protocol=~\"$protocol\"}[5m])) by (code)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z34RYB1MV0ME3KSFT",
+      "layout": {
+        "i": "01KXQB959Z6F9D149N340XEX3Y",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Requests / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZFGE3YH7PR4P5BGYY",
+      "title": "Request Rate by EntryPoint",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_entrypoint_requests_total\",entrypoint=~\"$entrypoint\",code=~\"$code\",method=~\"$method\",protocol=~\"$protocol\"}[5m])) by (entrypoint)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z10C27QPKDRXJTRDT",
+      "layout": {
+        "i": "01KXQB959ZFGE3YH7PR4P5BGYY",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Requests / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZEKP9Z4A2TSDX1KRW",
+      "title": "Request Bytes by EntryPoint",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_entrypoint_requests_bytes_total\",entrypoint=~\"$entrypoint\"}[5m])) by (entrypoint)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z10C27QPKDRXJTRDT",
+      "layout": {
+        "i": "01KXQB959ZEKP9Z4A2TSDX1KRW",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "Bps",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZBS8EG1EA2CKXHDFQ",
+      "title": "Response Bytes by EntryPoint",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_entrypoint_responses_bytes_total\",entrypoint=~\"$entrypoint\"}[5m])) by (entrypoint)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z10C27QPKDRXJTRDT",
+      "layout": {
+        "i": "01KXQB959ZBS8EG1EA2CKXHDFQ",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "Bps",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bytes / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZE3K88VAMRAHTYW1Z",
+      "title": "Open Connections by EntryPoint",
+      "chartQuery": [
+        "sum({__name__=\"traefik_open_connections\",entrypoint=~\"$entrypoint\"}) by (entrypoint)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959Z10C27QPKDRXJTRDT",
+      "layout": {
+        "i": "01KXQB959ZE3K88VAMRAHTYW1Z",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Connections",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959Z9Z2QCFK4D4VDZDQS",
+      "title": "HTTP Status Mix",
+      "chartQuery": "SELECT COALESCE(code, 'unknown') AS code, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' AND entrypoint IS NOT NULL GROUP BY code ORDER BY requests DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXQB959Z10C27QPKDRXJTRDT",
+      "layout": {
+        "i": "01KXQB959Z9Z2QCFK4D4VDZDQS",
+        "x": 0,
+        "y": 16,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "code",
+            "title": "HTTP Code",
+            "display": true
+          },
+          "y": {
+            "field": "code",
+            "title": "HTTP Code",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959ZMVT5CJ9ADERYKMBD",
+      "title": "Methods",
+      "chartQuery": "SELECT COALESCE(method, 'unknown') AS method, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY method ORDER BY requests DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXQB959Z10C27QPKDRXJTRDT",
+      "layout": {
+        "i": "01KXQB959ZMVT5CJ9ADERYKMBD",
+        "x": 4,
+        "y": 16,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "method",
+            "title": "Method",
+            "display": true
+          },
+          "y": {
+            "field": "method",
+            "title": "Method",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959ZTA7X56NNFYF43BFJ",
+      "title": "Protocols",
+      "chartQuery": "SELECT COALESCE(protocol, 'unknown') AS protocol, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY protocol ORDER BY requests DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXQB959Z10C27QPKDRXJTRDT",
+      "layout": {
+        "i": "01KXQB959ZTA7X56NNFYF43BFJ",
+        "x": 8,
+        "y": 16,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "protocol",
+            "title": "Protocol",
+            "display": true
+          },
+          "y": {
+            "field": "protocol",
+            "title": "Protocol",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959Z7GHT98BKMFGGEMBG",
+      "title": "Service Request Rate",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_service_requests_total\",service=~\"$service\",code=~\"$code\",method=~\"$method\",protocol=~\"$protocol\"}[5m])) by (service)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZPG5XT8MNM61NGY6Y",
+      "layout": {
+        "i": "01KXQB959Z7GHT98BKMFGGEMBG",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Requests / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZJ1DZFZYNX39HM4QF",
+      "title": "Service Errors",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_service_requests_total\",service=~\"$service\",code=~\"5..\"}[5m])) by (service)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZPG5XT8MNM61NGY6Y",
+      "layout": {
+        "i": "01KXQB959ZJ1DZFZYNX39HM4QF",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "5xx / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZCYSDWRT1V12ZEN43",
+      "title": "EntryPoint Latency Buckets",
+      "chartQuery": [
+        "sum(rate(traefik_entrypoint_request_duration_seconds_bucket{entrypoint=~\"$entrypoint\"}[5m])) by (le)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZPG5XT8MNM61NGY6Y",
+      "layout": {
+        "i": "01KXQB959ZCYSDWRT1V12ZEN43",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bucket rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZP8XD41R8D2KKV2TD",
+      "title": "Service Latency Buckets",
+      "chartQuery": [
+        "sum(rate(traefik_service_request_duration_seconds_bucket{service=~\"$service\"}[5m])) by (le)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZPG5XT8MNM61NGY6Y",
+      "layout": {
+        "i": "01KXQB959ZP8XD41R8D2KKV2TD",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Bucket rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZCH0PN5ECYTC4QARR",
+      "title": "Top Services by Samples",
+      "chartQuery": "SELECT COALESCE(service, 'unknown') AS service, COUNT(*) AS samples, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'traefik_service_requests_total' AND p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY service ORDER BY samples DESC LIMIT 15",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZPG5XT8MNM61NGY6Y",
+      "layout": {
+        "i": "01KXQB959ZCH0PN5ECYTC4QARR",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "service",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959Z82W2H76196KB6QMB",
+      "title": "TLS Requests by Version",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_entrypoint_requests_tls_total\",entrypoint=~\"$entrypoint\"}[5m])) by (tls_version)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZH1NRA995Y8P2F0PW",
+      "layout": {
+        "i": "01KXQB959Z82W2H76196KB6QMB",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "TLS req/s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZNZJ9PEEMGHBJS5K6",
+      "title": "TLS Requests by Cipher",
+      "chartQuery": [
+        "sum(rate({__name__=\"traefik_entrypoint_requests_tls_total\",entrypoint=~\"$entrypoint\"}[5m])) by (tls_cipher)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZH1NRA995Y8P2F0PW",
+      "layout": {
+        "i": "01KXQB959ZNZJ9PEEMGHBJS5K6",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "TLS req/s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZHPA1CE7R2DSVTD1K",
+      "title": "Certificates by CN",
+      "chartQuery": "SELECT COALESCE(cn, 'unknown') AS cn, COUNT(*) AS certs FROM $metrics_dataset WHERE metric_name = 'traefik_tls_certs_not_after' AND p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY cn ORDER BY certs DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZH1NRA995Y8P2F0PW",
+      "layout": {
+        "i": "01KXQB959ZHPA1CE7R2DSVTD1K",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "cn",
+            "title": "Common Name",
+            "display": true
+          },
+          "y": {
+            "field": "cn",
+            "title": "Common Name",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959ZPMQQTPQ3GMRWXB1A",
+      "title": "Certificate Expiry",
+      "chartQuery": "SELECT cn, MAX(data_point_value) AS not_after_unix, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'traefik_tls_certs_not_after' AND p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY cn ORDER BY not_after_unix ASC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZH1NRA995Y8P2F0PW",
+      "layout": {
+        "i": "01KXQB959ZPMQQTPQ3GMRWXB1A",
+        "x": 4,
+        "y": 8,
+        "w": 8,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "cn",
+            "title": "cn",
+            "display": true
+          },
+          "y": {
+            "field": "not_after_unix",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959Z3Q9ZWRXGP625PJA1",
+      "title": "CPU Usage",
+      "chartQuery": [
+        "sum(rate(process_cpu_seconds_total{\"k8s.namespace.name\"=\"traefik\",\"k8s.pod.name\"=~\"$pod\"}[5m])) * 100"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZW5P2367G00AT9ET1",
+      "layout": {
+        "i": "01KXQB959Z3Q9ZWRXGP625PJA1",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "CPU %",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZJR8JAEM948T413HR",
+      "title": "RSS Memory",
+      "chartQuery": [
+        "sum(process_resident_memory_bytes{\"k8s.namespace.name\"=\"traefik\",\"k8s.pod.name\"=~\"$pod\"}) by (\"k8s.pod.name\")"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZW5P2367G00AT9ET1",
+      "layout": {
+        "i": "01KXQB959ZJR8JAEM948T413HR",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "RSS",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959Z01365SKJHKP066CT",
+      "title": "Go Heap",
+      "chartQuery": [
+        "sum(go_memstats_heap_alloc_bytes{\"k8s.namespace.name\"=\"traefik\",\"k8s.pod.name\"=~\"$pod\"}) by (\"k8s.pod.name\")"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZW5P2367G00AT9ET1",
+      "layout": {
+        "i": "01KXQB959Z01365SKJHKP066CT",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Heap",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZFP348P70ZR4284HT",
+      "title": "Goroutines",
+      "chartQuery": [
+        "sum(go_goroutines{\"k8s.namespace.name\"=\"traefik\",\"k8s.pod.name\"=~\"$pod\"}) by (\"k8s.pod.name\")"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZW5P2367G00AT9ET1",
+      "layout": {
+        "i": "01KXQB959ZFP348P70ZR4284HT",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Goroutines",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZYKMVBMBK12B1EMT4",
+      "title": "Open File Descriptors",
+      "chartQuery": [
+        "sum(process_open_fds{\"k8s.namespace.name\"=\"traefik\",\"k8s.pod.name\"=~\"$pod\"}) by (\"k8s.pod.name\")"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZW5P2367G00AT9ET1",
+      "layout": {
+        "i": "01KXQB959ZYKMVBMBK12B1EMT4",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "FDs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959ZED62TWQHGSNS89R0",
+      "title": "FD Usage %",
+      "chartQuery": [
+        "100 * sum(process_open_fds{\"k8s.namespace.name\"=\"traefik\",\"k8s.pod.name\"=~\"$pod\"}) / sum(process_max_fds{\"k8s.namespace.name\"=\"traefik\",\"k8s.pod.name\"=~\"$pod\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXQB959ZW5P2367G00AT9ET1",
+      "layout": {
+        "i": "01KXQB959ZED62TWQHGSNS89R0",
+        "x": 6,
+        "y": 16,
+        "w": 3,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXQB959Z0QTDG7QNK797TQHD",
+      "title": "Access Logs",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik'",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZTRJ5JDR0AX3AM0RN",
+      "layout": {
+        "i": "01KXQB959Z0QTDG7QNK797TQHD",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959ZT8V21FX5CNA9EB6Z",
+      "title": "5xx Access Logs",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' AND body LIKE '%\" 5__ %'",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZTRJ5JDR0AX3AM0RN",
+      "layout": {
+        "i": "01KXQB959ZT8V21FX5CNA9EB6Z",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "5xx Logs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959Z31EE30099J33JYJG",
+      "title": "Logs Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZTRJ5JDR0AX3AM0RN",
+      "layout": {
+        "i": "01KXQB959Z31EE30099J33JYJG",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs / min",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959ZW60BNPENAES0F3XB",
+      "title": "Access Logs by Status",
+      "chartQuery": "SELECT COALESCE(array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 3), 'unknown') AS status_code, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY status_code ORDER BY logs DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZTRJ5JDR0AX3AM0RN",
+      "layout": {
+        "i": "01KXQB959ZW60BNPENAES0F3XB",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "status_code",
+            "title": "Status",
+            "display": true
+          },
+          "y": {
+            "field": "status_code",
+            "title": "Status",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959ZBZDTBXE1SFWZ44C5",
+      "title": "Access Logs by Method",
+      "chartQuery": "SELECT COALESCE(array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 1), 'unknown') AS method, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY method ORDER BY logs DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZTRJ5JDR0AX3AM0RN",
+      "layout": {
+        "i": "01KXQB959ZBZDTBXE1SFWZ44C5",
+        "x": 4,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "method",
+            "title": "Method",
+            "display": true
+          },
+          "y": {
+            "field": "method",
+            "title": "Method",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959Z4QBZBQVCM45Y7XEV",
+      "title": "Recent 5xx Access Logs",
+      "chartQuery": "SELECT p_timestamp, \"k8s.pod.name\" AS pod, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 1) AS method, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 2) AS path, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 3) AS status_code, body FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' AND body LIKE '%\" 5__ %' ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZTRJ5JDR0AX3AM0RN",
+      "layout": {
+        "i": "01KXQB959Z4QBZBQVCM45Y7XEV",
+        "x": 8,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "status_code",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959ZF9H5ASQXS5FTZ60X",
+      "title": "Traefik Metric Inventory",
+      "chartQuery": "SELECT metric_name, COUNT(*) AS samples, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '6 hours' AND metric_name LIKE 'traefik_%' GROUP BY metric_name ORDER BY metric_name",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZD5QMXSHA5DF6FAPG",
+      "layout": {
+        "i": "01KXQB959ZF9H5ASQXS5FTZ60X",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB959ZY31CP7ABVQ6BPAVS",
+      "title": "Traefik Pods",
+      "chartQuery": "SELECT \"k8s.pod.name\" AS pod, COUNT(DISTINCT metric_name) AS metrics, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' AND \"k8s.namespace.name\" = 'traefik' GROUP BY \"k8s.pod.name\" ORDER BY pod",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXQB959ZD5QMXSHA5DF6FAPG",
+      "layout": {
+        "i": "01KXQB959ZY31CP7ABVQ6BPAVS",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "pod",
+            "title": "pod",
+            "display": true
+          },
+          "y": {
+            "field": "metrics",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

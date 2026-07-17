@@ -4,7 +4,8 @@
     "k8s",
     "cluster",
     "metrics",
-    "logs"
+    "logs",
+    "events"
   ],
   "variables": [
     {
@@ -393,16 +394,18 @@
       },
       "config": {
         "type": "donut",
-        "colourScheme": "greenYellowRed",
+        "colourScheme": "blue",
         "layout": {
           "humanize": true
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.node.name",
+            "title": "k8s.node.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.node.name",
+            "title": "k8s.node.name"
           },
           "groupBy": {
             "field": []
@@ -516,16 +519,18 @@
       },
       "config": {
         "type": "donut",
-        "colourScheme": "redYellowGreen",
+        "colourScheme": "yellow",
         "layout": {
           "humanize": true
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.node.name",
+            "title": "k8s.node.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.node.name",
+            "title": "k8s.node.name"
           },
           "groupBy": {
             "field": []
@@ -727,10 +732,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.namespace.name",
+            "title": "k8s.namespace.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.namespace.name",
+            "title": "k8s.namespace.name"
           },
           "groupBy": {
             "field": []
@@ -768,10 +775,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.namespace.name",
+            "title": "k8s.namespace.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.namespace.name",
+            "title": "k8s.namespace.name"
           },
           "groupBy": {
             "field": []
@@ -850,10 +859,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "status",
+            "title": "status"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "status",
+            "title": "status"
           },
           "groupBy": {
             "field": []
@@ -891,10 +902,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.deployment.name",
+            "title": "k8s.deployment.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.deployment.name",
+            "title": "k8s.deployment.name"
           },
           "groupBy": {
             "field": []
@@ -932,10 +945,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.deployment.name",
+            "title": "k8s.deployment.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.deployment.name",
+            "title": "k8s.deployment.name"
           },
           "groupBy": {
             "field": []
@@ -973,10 +988,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.daemonset.name",
+            "title": "k8s.daemonset.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.daemonset.name",
+            "title": "k8s.daemonset.name"
           },
           "groupBy": {
             "field": []
@@ -1014,10 +1031,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.daemonset.name",
+            "title": "k8s.daemonset.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.daemonset.name",
+            "title": "k8s.daemonset.name"
           },
           "groupBy": {
             "field": []
@@ -1084,13 +1103,14 @@
       },
       "config": {
         "type": "donut",
-        "colourScheme": "greenYellowRed",
+        "colourScheme": "blue",
         "layout": {
           "humanize": true
         },
         "axes": {
           "x": {
-            "field": "namespace"
+            "field": "namespace",
+            "title": "namespace"
           },
           "y": {
             "field": "namespace",
@@ -1519,10 +1539,12 @@
         },
         "axes": {
           "x": {
-            "field": "events"
+            "field": "event_type",
+            "title": "event_type"
           },
           "y": {
-            "field": "event_type"
+            "field": "event_type",
+            "title": "event_type"
           },
           "groupBy": {
             "field": []
@@ -1551,13 +1573,14 @@
       },
       "config": {
         "type": "donut",
-        "colourScheme": "redYellowGreen",
+        "colourScheme": "blue",
         "layout": {
           "humanize": true
         },
         "axes": {
           "x": {
-            "field": "reason"
+            "field": "reason",
+            "title": "reason"
           },
           "y": {
             "field": "reason",
@@ -1598,7 +1621,8 @@
         },
         "axes": {
           "x": {
-            "field": "namespace_name"
+            "field": "namespace_name",
+            "title": "namespace_name"
           },
           "y": {
             "field": "namespace_name",
@@ -1639,7 +1663,8 @@
         },
         "axes": {
           "x": {
-            "field": "component_name"
+            "field": "component_name",
+            "title": "component_name"
           },
           "y": {
             "field": "component_name",
@@ -1799,7 +1824,8 @@
         },
         "axes": {
           "x": {
-            "field": "pod"
+            "field": "pod",
+            "title": "pod"
           },
           "y": {
             "field": "pod",
@@ -1845,7 +1871,8 @@
         },
         "axes": {
           "x": {
-            "field": "namespace_name"
+            "field": "namespace_name",
+            "title": "namespace_name"
           },
           "y": {
             "field": "namespace_name",
@@ -1889,10 +1916,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.node.name",
+            "title": "k8s.node.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.node.name",
+            "title": "k8s.node.name"
           },
           "groupBy": {
             "field": []
@@ -1977,10 +2006,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.node.name",
+            "title": "k8s.node.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.node.name",
+            "title": "k8s.node.name"
           },
           "groupBy": {
             "field": []
@@ -2305,10 +2336,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "operation_type",
+            "title": "operation_type"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "operation_type",
+            "title": "operation_type"
           },
           "groupBy": {
             "field": []
@@ -2346,10 +2379,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "status",
+            "title": "status"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "status",
+            "title": "status"
           },
           "groupBy": {
             "field": []
@@ -2430,10 +2465,12 @@
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.statefulset.name",
+            "title": "k8s.statefulset.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.statefulset.name",
+            "title": "k8s.statefulset.name"
           },
           "groupBy": {
             "field": []
@@ -2467,19 +2504,1037 @@
       },
       "config": {
         "type": "donut",
-        "colourScheme": "greenYellowRed",
+        "colourScheme": "purple",
         "layout": {
           "humanize": true
         },
         "axes": {
           "x": {
-            "field": "__series_hash"
+            "field": "k8s.replicaset.name",
+            "title": "k8s.replicaset.name"
           },
           "y": {
-            "field": "COUNT_STAR"
+            "field": "k8s.replicaset.name",
+            "title": "k8s.replicaset.name"
           },
           "groupBy": {
             "field": []
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68NN3MN1PEENGXNZ4RY",
+      "title": "Node Ready %",
+      "chartQuery": "SELECT 100 * SUM(data_point_value) / NULLIF(COUNT(*), 0) AS value FROM $cluster_metrics_dataset WHERE metric_name = 'k8s.node.condition_ready' AND p_timestamp >= NOW() - INTERVAL '10 minutes' AND \"k8s.node.name\" IS NOT NULL",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "gauge",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KXQDE68NN3MN1PEENGXNZ4RY",
+        "x": 0,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QGF7G03WM95WX1HCR",
+      "title": "Cluster CPU Usage %",
+      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.cpu.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.allocatable_cpu' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.cpu.usage','k8s.node.allocatable_cpu') AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "gauge",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KXQDE68QGF7G03WM95WX1HCR",
+        "x": 3,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68Q14B39CXD8DYG5RWR",
+      "title": "Cluster Memory Usage %",
+      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.memory.working_set' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.allocatable_memory' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.memory.working_set','k8s.node.allocatable_memory') AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "gauge",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KXQDE68Q14B39CXD8DYG5RWR",
+        "x": 6,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QGFQSYKPKSPXHW4B9",
+      "title": "Cluster Filesystem Usage %",
+      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.filesystem.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.filesystem.capacity' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.filesystem.usage','k8s.node.filesystem.capacity') AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "gauge",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KXQDE68QGFQSYKPKSPXHW4B9",
+        "x": 9,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QEJB9QJ0EFJMNAQ05",
+      "title": "Pods by Phase",
+      "chartQuery": "SELECT CASE CAST(data_point_value AS INT) WHEN 1 THEN 'Pending' WHEN 2 THEN 'Running' WHEN 3 THEN 'Succeeded' WHEN 4 THEN 'Failed' WHEN 5 THEN 'Unknown' ELSE CAST(data_point_value AS VARCHAR) END AS pod_phase, COUNT(DISTINCT \"k8s.pod.name\") AS pods FROM $cluster_metrics_dataset WHERE metric_name='k8s.pod.phase' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY pod_phase ORDER BY pods DESC",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KXQDE68QEJB9QJ0EFJMNAQ05",
+        "x": 0,
+        "y": 15,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "pod_phase",
+            "title": "Pod Phase",
+            "display": true
+          },
+          "y": {
+            "field": "pod_phase",
+            "title": "Pod Phase",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68Q7243QPR6EHNAXZTY",
+      "title": "Namespaces by Phase",
+      "chartQuery": "SELECT CASE CAST(data_point_value AS INT) WHEN 1 THEN 'Active' WHEN 2 THEN 'Terminating' ELSE CAST(data_point_value AS VARCHAR) END AS namespace_phase, COUNT(DISTINCT \"k8s.namespace.name\") AS namespaces FROM $cluster_metrics_dataset WHERE metric_name='k8s.namespace.phase' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_phase ORDER BY namespaces DESC",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KW951NT32CY7J896FDG4FYRX",
+      "layout": {
+        "i": "01KXQDE68Q7243QPR6EHNAXZTY",
+        "x": 6,
+        "y": 15,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "namespace_phase",
+            "title": "Namespace Phase",
+            "display": true
+          },
+          "y": {
+            "field": "namespace_phase",
+            "title": "Namespace Phase",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QJ0K9433MK20K8VJV",
+      "title": "Node Filesystem Usage %",
+      "chartQuery": "SELECT \"k8s.node.name\" AS node, 100 * SUM(CASE WHEN metric_name='k8s.node.filesystem.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.filesystem.capacity' THEN data_point_value ELSE 0 END),0) AS usage_percent FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.filesystem.usage','k8s.node.filesystem.capacity') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY \"k8s.node.name\" ORDER BY usage_percent DESC",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "layout": {
+        "i": "01KXQDE68QJ0K9433MK20K8VJV",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "node",
+            "title": "node",
+            "display": true
+          },
+          "y": {
+            "field": "usage_percent",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QB30ZYMTBAFAQKDHX",
+      "title": "Node Network Errors",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.node.name\" AS node, SUM(data_point_value) AS errors FROM $cluster_metrics_dataset WHERE metric_name='k8s.node.network.errors' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY time_bucket, \"k8s.node.name\" ORDER BY time_bucket",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
+      "layout": {
+        "i": "01KXQDE68QB30ZYMTBAFAQKDHX",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QFXDNADY47881DQM3",
+      "title": "Pod Restarts Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.namespace.name\" AS namespace_name, SUM(data_point_value) AS restarts FROM $cluster_metrics_dataset WHERE metric_name='k8s.container.restarts' AND p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" IS NOT NULL GROUP BY time_bucket, namespace_name ORDER BY time_bucket",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "layout": {
+        "i": "01KXQDE68QFXDNADY47881DQM3",
+        "x": 0,
+        "y": 48,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "restarts",
+            "title": "Restarts",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68Q743H7D02KA3WMGFT",
+      "title": "Top Restarting Containers",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.pod.name\" AS pod, \"k8s.container.name\" AS container, MAX(data_point_value) AS restarts FROM $cluster_metrics_dataset WHERE metric_name='k8s.container.restarts' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY \"k8s.namespace.name\", \"k8s.pod.name\", \"k8s.container.name\" HAVING MAX(data_point_value) > 0 ORDER BY restarts DESC LIMIT 25",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "layout": {
+        "i": "01KXQDE68Q743H7D02KA3WMGFT",
+        "x": 6,
+        "y": 48,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "pod",
+            "title": "pod",
+            "display": true
+          },
+          "y": {
+            "field": "restarts",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QH6JDGX2SYR8S0ZDS",
+      "title": "Pod Network Errors by Namespace",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.namespace.name\" AS namespace_name, SUM(data_point_value) AS errors FROM $cluster_metrics_dataset WHERE metric_name='k8s.pod.network.errors' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY time_bucket, namespace_name ORDER BY time_bucket",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
+      "layout": {
+        "i": "01KXQDE68QH6JDGX2SYR8S0ZDS",
+        "x": 0,
+        "y": 56,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QD5CHA5K19G3HKGAH",
+      "title": "Unavailable Deployments",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.deployment.name\" AS deployment, SUM(CASE WHEN metric_name='k8s.deployment.desired' THEN data_point_value ELSE 0 END) AS desired, SUM(CASE WHEN metric_name='k8s.deployment.available' THEN data_point_value ELSE 0 END) AS available, SUM(CASE WHEN metric_name='k8s.deployment.desired' THEN data_point_value ELSE 0 END) - SUM(CASE WHEN metric_name='k8s.deployment.available' THEN data_point_value ELSE 0 END) AS unavailable FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.deployment.desired','k8s.deployment.available') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name, deployment HAVING unavailable > 0 ORDER BY unavailable DESC LIMIT 30",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "layout": {
+        "i": "01KXQDE68QD5CHA5K19G3HKGAH",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "deployment",
+            "title": "deployment",
+            "display": true
+          },
+          "y": {
+            "field": "unavailable",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QQWHT0GZH0C4QP6CT",
+      "title": "DaemonSets Misscheduled",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.daemonset.name\" AS daemonset, MAX(data_point_value) AS misscheduled_nodes FROM $cluster_metrics_dataset WHERE metric_name='k8s.daemonset.misscheduled_nodes' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name, daemonset HAVING MAX(data_point_value) > 0 ORDER BY misscheduled_nodes DESC LIMIT 30",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "layout": {
+        "i": "01KXQDE68QQWHT0GZH0C4QP6CT",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "daemonset",
+            "title": "daemonset",
+            "display": true
+          },
+          "y": {
+            "field": "misscheduled_nodes",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QE3S3EZ9DTREWYQ8A",
+      "title": "StatefulSets Not Ready",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.statefulset.name\" AS statefulset, SUM(CASE WHEN metric_name='k8s.statefulset.desired_pods' THEN data_point_value ELSE 0 END) AS desired, SUM(CASE WHEN metric_name='k8s.statefulset.ready_pods' THEN data_point_value ELSE 0 END) AS ready, SUM(CASE WHEN metric_name='k8s.statefulset.desired_pods' THEN data_point_value ELSE 0 END) - SUM(CASE WHEN metric_name='k8s.statefulset.ready_pods' THEN data_point_value ELSE 0 END) AS not_ready FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.statefulset.desired_pods','k8s.statefulset.ready_pods') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name, statefulset HAVING not_ready > 0 ORDER BY not_ready DESC LIMIT 30",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
+      "layout": {
+        "i": "01KXQDE68QE3S3EZ9DTREWYQ8A",
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "statefulset",
+            "title": "statefulset",
+            "display": true
+          },
+          "y": {
+            "field": "not_ready",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68Q4A5ZE33YXDWH9XSQ",
+      "title": "Namespace CPU Request vs Usage",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, SUM(CASE WHEN metric_name='k8s.container.cpu_request' THEN data_point_value ELSE 0 END) AS requested_cpu, SUM(CASE WHEN metric_name='k8s.pod.cpu.usage' THEN data_point_value ELSE 0 END) AS used_cpu FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.container.cpu_request','k8s.pod.cpu.usage') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name ORDER BY requested_cpu DESC LIMIT 30",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "layout": {
+        "i": "01KXQDE68Q4A5ZE33YXDWH9XSQ",
+        "x": 0,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "namespace_name",
+            "title": "namespace_name",
+            "display": true
+          },
+          "y": {
+            "field": "requested_cpu",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQDE68QDVJEAX24KMWSHTWM",
+      "title": "Namespace Memory Request vs Usage",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, SUM(CASE WHEN metric_name='k8s.container.memory_request' THEN data_point_value ELSE 0 END) AS requested_memory, SUM(CASE WHEN metric_name='k8s.pod.memory.working_set' THEN data_point_value ELSE 0 END) AS used_memory FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.container.memory_request','k8s.pod.memory.working_set') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name ORDER BY requested_memory DESC LIMIT 30",
+      "dbName": [
+        "$cluster_metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KW991GJRB275JXGGV67KVEW4",
+      "layout": {
+        "i": "01KXQDE68QDVJEAX24KMWSHTWM",
+        "x": 6,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "namespace_name",
+            "title": "namespace_name",
+            "display": true
+          },
+          "y": {
+            "field": "requested_memory",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }

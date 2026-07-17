@@ -8,17 +8,17 @@ Browse all dashboard templates in the [Parseable dashboards repository](../READM
 
 | File | Dashboard | Panels |
 | --- | --- | ---: |
-| `k8s-cluster-monitoring-mixed.json` | K8s Cluster Monitoring | 58 |
+| `k8s-cluster-monitoring-mixed.json` | K8s Cluster Monitoring | 74 |
 
 ## K8s Cluster Monitoring
 
 **File:** `k8s-cluster-monitoring-mixed.json`
 
-Monitor Kubernetes cluster health, nodes, pods, containers, workloads, pod logs, Kubernetes events, capacity, and kubelet/runtime signals. Use it to troubleshoot cluster behavior across metrics, logs, and events.
+Monitor Kubernetes cluster health, nodes, pods, containers, workloads, logs, events, capacity, and kubelet/runtime signals.
 
 **Source:** `Mixed`
 
-**Tags:** `kubernetes`, `k8s`, `cluster`, `metrics`, `logs`
+**Tags:** `kubernetes`, `k8s`, `cluster`, `metrics`, `logs`, `events`
 
 **Filter variables:** `cluster_metrics_dataset`, `pod_logs_dataset`, `events_dataset`, `namespace`, `node`, `pod`, `container`
 
@@ -82,3 +82,19 @@ Monitor Kubernetes cluster health, nodes, pods, containers, workloads, pod logs,
 - Running Containers by State
 - StatefulSet Ready vs Desired
 - ReplicaSet Available vs Desired
+- Node Ready %
+- Cluster CPU Usage %
+- Cluster Memory Usage %
+- Cluster Filesystem Usage %
+- Pods by Phase
+- Namespaces by Phase
+- Node Filesystem Usage %
+- Node Network Errors
+- Pod Restarts Over Time
+- Top Restarting Containers
+- Pod Network Errors by Namespace
+- Unavailable Deployments
+- DaemonSets Misscheduled
+- StatefulSets Not Ready
+- Namespace CPU Request vs Usage
+- Namespace Memory Request vs Usage

@@ -48,6 +48,35 @@
         "k8s",
         "cluster",
         "metrics",
+        "logs",
+        "events"
+      ]
+    },
+    {
+      "name": "Argo CD",
+      "dirName": "argo-cd",
+      "fileName": "argo-cd-mixed.json",
+      "description": "Monitor Argo CD applications, sync health, controller activity, Kubernetes API behavior, Redis/cache signals, metrics inventory, and Argo CD logs.",
+      "source": "Mixed",
+      "tags": [
+        "argocd",
+        "gitops",
+        "kubernetes",
+        "promql",
+        "logs"
+      ]
+    },
+    {
+      "name": "Traefik Monitoring",
+      "dirName": "traefik-monitoring",
+      "fileName": "traefik-monitoring-mixed.json",
+      "description": "Monitor Traefik ingress traffic, entrypoints, services, latency, TLS certificates, runtime health, access logs, and metric inventory.",
+      "source": "Mixed",
+      "tags": [
+        "traefik",
+        "kubernetes",
+        "ingress",
+        "promql",
         "logs"
       ]
     },

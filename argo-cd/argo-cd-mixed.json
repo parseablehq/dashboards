@@ -1,0 +1,2801 @@
+{
+  "tags": [
+    "argocd",
+    "gitops",
+    "kubernetes",
+    "promql",
+    "logs"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "azure-prod-cluster-metrics"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "azure-prod-pod-logs"
+    },
+    {
+      "name": "namespace",
+      "label": "Argo CD Namespace",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "namespace",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "project",
+      "label": "Project",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "project",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "application",
+      "label": "Application",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "sync_status",
+      "label": "Sync Status",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "sync_status",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "health_status",
+      "label": "Health Status",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "health_status",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "pod",
+      "label": "Pod",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "k8s.pod.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXMXSZPHP6CFCGXE7YWZNY4W",
+      "title": "Applications",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXMXSZPHXWA3K3G277K3ZH8F",
+      "title": "Sync & Reconciliation",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "title": "Clusters & Kubernetes API",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXMXSZPH7778TWTM3M455WEW",
+      "title": "Redis & Cache",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXMXSZPH44EZMF55Y9670FWW",
+      "title": "Inventory",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXQB95A0ASQ7KS6J4PR04TAA",
+      "title": "Logs",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KXMXSZPHKAEZZZPRRBJCDS21",
+      "title": "Applications",
+      "chartQuery": [
+        "sum({__name__=\"argocd_app_info\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\",sync_status=~\"$sync_status\",health_status=~\"$health_status\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "layout": {
+        "i": "01KXMXSZPHKAEZZZPRRBJCDS21",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPH924M07X50FFVT15P",
+      "title": "Healthy Apps",
+      "chartQuery": [
+        "sum({__name__=\"argocd_app_info\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\",sync_status=~\"$sync_status\",health_status=\"Healthy\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "layout": {
+        "i": "01KXMXSZPH924M07X50FFVT15P",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPH32FBJKRH59BHFHM1",
+      "title": "Out Of Sync Apps",
+      "chartQuery": [
+        "sum({__name__=\"argocd_app_info\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\",sync_status!=\"Synced\",health_status=~\"$health_status\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "layout": {
+        "i": "01KXMXSZPH32FBJKRH59BHFHM1",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPH680P81S5SCK4HF8S",
+      "title": "Connected Clusters",
+      "chartQuery": "SELECT COUNT(DISTINCT server) AS value FROM $metrics_dataset WHERE metric_name = 'argocd_cluster_connection_status' AND data_point_value = 1 AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "layout": {
+        "i": "01KXMXSZPH680P81S5SCK4HF8S",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPHRMXM13RK9MDH6J01",
+      "title": "Orphaned Resources",
+      "chartQuery": [
+        "sum({__name__=\"argocd_app_orphaned_resources_count\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "layout": {
+        "i": "01KXMXSZPHRMXM13RK9MDH6J01",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHVAWQAYKS6KBRNTAM",
+      "title": "Kubectl Retries",
+      "chartQuery": "SELECT COALESCE(SUM(data_point_value), 0) AS value FROM $metrics_dataset WHERE metric_name = 'argocd_kubectl_request_retries_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "layout": {
+        "i": "01KXMXSZPHVAWQAYKS6KBRNTAM",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPHBSPGF43YKSKSND8Z",
+      "title": "App Health %",
+      "chartQuery": [
+        "100 * sum({__name__=\"argocd_app_info\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\",health_status=\"Healthy\"}) / sum({__name__=\"argocd_app_info\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "layout": {
+        "i": "01KXMXSZPHBSPGF43YKSKSND8Z",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPH2S5WQ0X6E1TH836C",
+      "title": "App Sync %",
+      "chartQuery": [
+        "100 * sum({__name__=\"argocd_app_info\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\",sync_status=\"Synced\"}) / sum({__name__=\"argocd_app_info\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH5QB9XSSY9R5P9E65",
+      "layout": {
+        "i": "01KXMXSZPH2S5WQ0X6E1TH836C",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPH660FKDSZ3E3K27MW",
+      "title": "Applications by Health",
+      "chartQuery": "SELECT COALESCE(health_status, 'unknown') AS health_status, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY health_status ORDER BY apps DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPHP6CFCGXE7YWZNY4W",
+      "layout": {
+        "i": "01KXMXSZPH660FKDSZ3E3K27MW",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "health_status",
+            "title": "Health",
+            "display": true
+          },
+          "y": {
+            "field": "health_status",
+            "title": "Health",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPH9Q2QFNWF8HMQPMXT",
+      "title": "Applications by Sync Status",
+      "chartQuery": "SELECT COALESCE(sync_status, 'unknown') AS sync_status, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY sync_status ORDER BY apps DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPHP6CFCGXE7YWZNY4W",
+      "layout": {
+        "i": "01KXMXSZPH9Q2QFNWF8HMQPMXT",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "sync_status",
+            "title": "Sync",
+            "display": true
+          },
+          "y": {
+            "field": "sync_status",
+            "title": "Sync",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPH95A9K7GNNGTKJ5GR",
+      "title": "Applications by Project",
+      "chartQuery": "SELECT COALESCE(project, 'unknown') AS project, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY project ORDER BY apps DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPHP6CFCGXE7YWZNY4W",
+      "layout": {
+        "i": "01KXMXSZPH95A9K7GNNGTKJ5GR",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "project",
+            "title": "Project",
+            "display": true
+          },
+          "y": {
+            "field": "project",
+            "title": "Project",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPHV5NR9M7MDBHW65XZ",
+      "title": "Applications by Destination Namespace",
+      "chartQuery": "SELECT COALESCE(dest_namespace, 'unknown') AS dest_namespace, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY dest_namespace ORDER BY apps DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPHP6CFCGXE7YWZNY4W",
+      "layout": {
+        "i": "01KXMXSZPHV5NR9M7MDBHW65XZ",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "dest_namespace",
+            "title": "Namespace",
+            "display": true
+          },
+          "y": {
+            "field": "dest_namespace",
+            "title": "Namespace",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPH1N2Z0ES2HCRJ9EBW",
+      "title": "Out Of Sync Applications",
+      "chartQuery": "SELECT name, project, repo, dest_namespace, health_status, sync_status, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND sync_status <> 'Synced' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY name, project, repo, dest_namespace, health_status, sync_status ORDER BY last_seen DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPHP6CFCGXE7YWZNY4W",
+      "layout": {
+        "i": "01KXMXSZPH1N2Z0ES2HCRJ9EBW",
+        "x": 4,
+        "y": 8,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "name",
+            "title": "name",
+            "display": true
+          },
+          "y": {
+            "field": "sync_status",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPH8KEDFWRKA91C0NGR",
+      "title": "Apps with Orphaned Resources",
+      "chartQuery": "SELECT name, namespace, project, SUM(data_point_value) AS orphaned_resources, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_orphaned_resources_count' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY name, namespace, project HAVING SUM(data_point_value) > 0 ORDER BY orphaned_resources DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPHP6CFCGXE7YWZNY4W",
+      "layout": {
+        "i": "01KXMXSZPH8KEDFWRKA91C0NGR",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "name",
+            "title": "name",
+            "display": true
+          },
+          "y": {
+            "field": "orphaned_resources",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPHQ629NS2Q3EJJER4X",
+      "title": "Sync Rate by Phase",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_app_sync_total\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\"}[5m])) by (phase)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHXWA3K3G277K3ZH8F",
+      "layout": {
+        "i": "01KXMXSZPHQ629NS2Q3EJJER4X",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Syncs / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHXX7HHQ8QNP9HBZ32",
+      "title": "Sync Duration Rate",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_app_sync_duration_seconds_total\",namespace=~\"$namespace\",project=~\"$project\",name=~\"$application\"}[5m])) by (phase)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHXWA3K3G277K3ZH8F",
+      "layout": {
+        "i": "01KXMXSZPHXX7HHQ8QNP9HBZ32",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Seconds / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHYANV140XJ3R8SCZY",
+      "title": "Reconcile Duration Buckets",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_app_reconcile_bucket\"}[5m])) by (le)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHXWA3K3G277K3ZH8F",
+      "layout": {
+        "i": "01KXMXSZPHYANV140XJ3R8SCZY",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Reconciles / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPH7BZVPW867B873Y4G",
+      "title": "Reconcile Count Rate",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_app_reconcile_count\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHXWA3K3G277K3ZH8F",
+      "layout": {
+        "i": "01KXMXSZPH7BZVPW867B873Y4G",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Reconciles / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHHXX48Z4KMP0E41HE",
+      "title": "Resource Events Processed in Batch",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_resource_events_processed_in_batch\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHXWA3K3G277K3ZH8F",
+      "layout": {
+        "i": "01KXMXSZPHHXX48Z4KMP0E41HE",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Events / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHE1SRR5GAP6GT4TN3",
+      "title": "Top Sync Activity by App",
+      "chartQuery": "SELECT name, project, phase, MAX(data_point_value) AS sync_total, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_sync_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY name, project, phase ORDER BY sync_total DESC LIMIT 25",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPHXWA3K3G277K3ZH8F",
+      "layout": {
+        "i": "01KXMXSZPHE1SRR5GAP6GT4TN3",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "name",
+            "title": "name",
+            "display": true
+          },
+          "y": {
+            "field": "sync_total",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPH9JQE3CGD6VC4FXGB",
+      "title": "Cluster Connection Status",
+      "chartQuery": [
+        "100 * sum({__name__=\"argocd_cluster_connection_status\"}) / count({__name__=\"argocd_cluster_connection_status\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "layout": {
+        "i": "01KXMXSZPH9JQE3CGD6VC4FXGB",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHDQT9FA005G0WFYVZ",
+      "title": "Cluster Cache Age",
+      "chartQuery": [
+        "max({__name__=\"argocd_cluster_cache_age_seconds\"}) by (server)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "layout": {
+        "i": "01KXMXSZPHDQT9FA005G0WFYVZ",
+        "x": 3,
+        "y": 0,
+        "w": 5,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Seconds",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHEC5AVTNYKC2PM2ZQ",
+      "title": "Cluster Events by Kind",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_cluster_events_total\"}[5m])) by (kind)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "layout": {
+        "i": "01KXMXSZPHEC5AVTNYKC2PM2ZQ",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Events / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHYRBSH5S3NQEZFPC7",
+      "title": "API Resource Objects",
+      "chartQuery": [
+        "sum({__name__=\"argocd_cluster_api_resource_objects\"}) by (kind)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "layout": {
+        "i": "01KXMXSZPHYRBSH5S3NQEZFPC7",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Objects",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHADM3ZGB6GPJPKDAG",
+      "title": "Kubectl Requests by Code",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_kubectl_requests_total\"}[5m])) by (code)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "layout": {
+        "i": "01KXMXSZPHADM3ZGB6GPJPKDAG",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "redYellowGreen",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Requests / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHZ1V6FKDYJZZA2JWQ",
+      "title": "Kubectl Requests by Method",
+      "chartQuery": "SELECT COALESCE(method, 'unknown') AS method, SUM(data_point_value) AS requests FROM $metrics_dataset WHERE metric_name = 'argocd_kubectl_requests_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY method ORDER BY requests DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "layout": {
+        "i": "01KXMXSZPHZ1V6FKDYJZZA2JWQ",
+        "x": 0,
+        "y": 16,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "method",
+            "title": "Method",
+            "display": true
+          },
+          "y": {
+            "field": "method",
+            "title": "Method",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPHVNMB7ZMBG639FHGA",
+      "title": "Kubectl Duration Buckets",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_kubectl_request_duration_seconds_bucket\"}[5m])) by (le, verb)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "layout": {
+        "i": "01KXMXSZPHVNMB7ZMBG639FHGA",
+        "x": 4,
+        "y": 16,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Requests / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPH4PEK74F3W7PBEYC2",
+      "title": "Kubectl Exec Pending",
+      "chartQuery": [
+        "sum({__name__=\"argocd_kubectl_exec_pending\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPHRWG9V710906QJW2G",
+      "layout": {
+        "i": "01KXMXSZPH4PEK74F3W7PBEYC2",
+        "x": 8,
+        "y": 16,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Pending",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHYNJRCFT3AVH51JMK",
+      "title": "Redis Request Rate",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_redis_request_total\"}[5m])) by (failed)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH7778TWTM3M455WEW",
+      "layout": {
+        "i": "01KXMXSZPHYNJRCFT3AVH51JMK",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Requests / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPH3K5RB338VYYKTWKM",
+      "title": "Redis Duration Buckets",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_redis_request_duration_bucket\"}[5m])) by (le, failed)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH7778TWTM3M455WEW",
+      "layout": {
+        "i": "01KXMXSZPH3K5RB338VYYKTWKM",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Requests / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHTJHB97CZ4F31PS76",
+      "title": "Redis Requests by Initiator",
+      "chartQuery": "SELECT COALESCE(initiator, 'unknown') AS initiator, SUM(data_point_value) AS requests FROM $metrics_dataset WHERE metric_name = 'argocd_redis_request_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY initiator ORDER BY requests DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPH7778TWTM3M455WEW",
+      "layout": {
+        "i": "01KXMXSZPHTJHB97CZ4F31PS76",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "initiator",
+            "title": "Initiator",
+            "display": true
+          },
+          "y": {
+            "field": "initiator",
+            "title": "Initiator",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPHCNKYTNRMEZGV56Z8",
+      "title": "Redis Failures",
+      "chartQuery": "SELECT hostname, initiator, failed, MAX(data_point_value) AS requests, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_redis_request_total' AND failed = 'true' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY hostname, initiator, failed ORDER BY requests DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPH7778TWTM3M455WEW",
+      "layout": {
+        "i": "01KXMXSZPHCNKYTNRMEZGV56Z8",
+        "x": 4,
+        "y": 8,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "hostname",
+            "title": "hostname",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPH5VT9JBK4W1VRWEVJ",
+      "title": "Kubectl Transport Cache Entries",
+      "chartQuery": [
+        "sum({__name__=\"argocd_kubectl_transport_cache_entries\"}) by (host)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH7778TWTM3M455WEW",
+      "layout": {
+        "i": "01KXMXSZPH5VT9JBK4W1VRWEVJ",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Entries",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHSKG8216YT8GX6X76",
+      "title": "Kubectl Transport Create Calls",
+      "chartQuery": [
+        "sum(rate({__name__=\"argocd_kubectl_transport_create_calls_total\"}[5m])) by (host)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXMXSZPH7778TWTM3M455WEW",
+      "layout": {
+        "i": "01KXMXSZPHSKG8216YT8GX6X76",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Calls / sec",
+            "display": true,
+            "beginAtZero": false
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXMXSZPHKXX2S15PZ17WB6FH",
+      "title": "Argo CD Metric Inventory",
+      "chartQuery": "SELECT metric_name, COUNT(*) AS rows, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name LIKE 'argocd%' GROUP BY metric_name ORDER BY rows DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPH44EZMF55Y9670FWW",
+      "layout": {
+        "i": "01KXMXSZPHKXX2S15PZ17WB6FH",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "rows",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXMXSZPHBF0PR3W6VP457PJ1",
+      "title": "Argo CD Scrape Targets",
+      "chartQuery": "SELECT \"service.name\" AS service_name, \"service.instance.id\" AS service_instance_id, \"k8s.pod.name\" AS pod, COUNT(DISTINCT metric_name) AS metrics, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name LIKE 'argocd%' GROUP BY \"service.name\", \"service.instance.id\", \"k8s.pod.name\" ORDER BY metrics DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXMXSZPH44EZMF55Y9670FWW",
+      "layout": {
+        "i": "01KXMXSZPHBF0PR3W6VP457PJ1",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "service_name",
+            "title": "service_name",
+            "display": true
+          },
+          "y": {
+            "field": "metrics",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB95A0BBCNA9VDNTJ1J49K",
+      "title": "Argo CD Log Events",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd'",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXQB95A0ASQ7KS6J4PR04TAA",
+      "layout": {
+        "i": "01KXQB95A0BBCNA9VDNTJ1J49K",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB95A0FQVRM1KGYW7889SH",
+      "title": "Argo CD Error Logs",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' AND (LOWER(body) LIKE '%error%' OR LOWER(body) LIKE '%failed%' OR LOWER(body) LIKE '%panic%' OR LOWER(severity_text) LIKE '%error%')",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXQB95A0ASQ7KS6J4PR04TAA",
+      "layout": {
+        "i": "01KXQB95A0FQVRM1KGYW7889SH",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Error Logs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB95A002DSPD400N3FG0HW",
+      "title": "Argo CD Logs Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KXQB95A0ASQ7KS6J4PR04TAA",
+      "layout": {
+        "i": "01KXQB95A002DSPD400N3FG0HW",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs / min",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB95A0B5YSM2DWK33AB1MR",
+      "title": "Argo CD Logs by Component",
+      "chartQuery": "SELECT COALESCE(\"k8s.container.name\", 'unknown') AS component, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' GROUP BY component ORDER BY logs DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXQB95A0ASQ7KS6J4PR04TAA",
+      "layout": {
+        "i": "01KXQB95A0B5YSM2DWK33AB1MR",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "component",
+            "title": "Component",
+            "display": true
+          },
+          "y": {
+            "field": "component",
+            "title": "Component",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB95A0QKERCPZ636GTVCVB",
+      "title": "Argo CD Logs by Severity",
+      "chartQuery": "SELECT COALESCE(severity_text, 'unknown') AS severity, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' GROUP BY severity ORDER BY logs DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXQB95A0ASQ7KS6J4PR04TAA",
+      "layout": {
+        "i": "01KXQB95A0QKERCPZ636GTVCVB",
+        "x": 4,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "severity",
+            "title": "Severity",
+            "display": true
+          },
+          "y": {
+            "field": "severity",
+            "title": "Severity",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXQB95A0ZEEDZTNA263EFNAX",
+      "title": "Recent Argo CD Error Logs",
+      "chartQuery": "SELECT p_timestamp, \"k8s.container.name\" AS component, \"k8s.pod.name\" AS pod, severity_text, body FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' AND (LOWER(body) LIKE '%error%' OR LOWER(body) LIKE '%failed%' OR LOWER(body) LIKE '%panic%' OR LOWER(severity_text) LIKE '%error%') ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXQB95A0ASQ7KS6J4PR04TAA",
+      "layout": {
+        "i": "01KXQB95A0ZEEDZTNA263EFNAX",
+        "x": 8,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "severity_text",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

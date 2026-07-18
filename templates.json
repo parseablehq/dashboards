@@ -97,6 +97,22 @@
       ]
     },
     {
+      "name": "Redis Monitoring",
+      "dirName": "redis-monitoring",
+      "fileName": "redis-monitoring-mixed.json",
+      "description": "Monitor Redis availability, clients, command throughput, memory, keyspace, persistence, replication, network, CPU, logs, traces, and exporter health.",
+      "source": "Mixed",
+      "tags": [
+        "redis",
+        "database",
+        "cache",
+        "metrics",
+        "logs",
+        "traces",
+        "promql"
+      ]
+    },
+    {
       "name": "MongoDB Monitoring",
       "dirName": "mongodb-monitoring",
       "fileName": "mongodb-monitoring-mixed.json",

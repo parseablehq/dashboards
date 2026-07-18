@@ -81,6 +81,37 @@
       ]
     },
     {
+      "name": "Postgres Monitoring",
+      "dirName": "postgres-monitoring",
+      "fileName": "postgres-monitoring-mixed.json",
+      "description": "Monitor PostgreSQL health, connections, locks, database activity, storage, query performance, replication, WAL, logs, traces, and exporter inventory.",
+      "source": "Mixed",
+      "tags": [
+        "postgres",
+        "postgresql",
+        "database",
+        "metrics",
+        "logs",
+        "traces",
+        "promql"
+      ]
+    },
+    {
+      "name": "MongoDB Monitoring",
+      "dirName": "mongodb-monitoring",
+      "fileName": "mongodb-monitoring-mixed.json",
+      "description": "Monitor MongoDB connections, operations, storage, collections, WiredTiger cache, replication, logs, traces, and exporter inventory.",
+      "source": "Mixed",
+      "tags": [
+        "mongodb",
+        "database",
+        "metrics",
+        "logs",
+        "traces",
+        "promql"
+      ]
+    },
+    {
       "name": "Node Metrics Dashboard - PromQL",
       "dirName": "node-metrics-dashboard",
       "fileName": "node-metrics-dashboard-promql.json",

@@ -1,0 +1,3404 @@
+{
+  "tags": [
+    "mongodb",
+    "database",
+    "metrics",
+    "logs",
+    "traces",
+    "promql"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "MongoDB Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "mongodb-metrics"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "MongoDB Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "mongodb-logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "MongoDB Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "mongodb-traces"
+    },
+    {
+      "name": "server",
+      "label": "Server",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "server.address",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "database",
+      "label": "Database",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "database",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "operation",
+      "label": "Operation",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "operation",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRH8JB6694BBER8C19N2CF7",
+      "title": "Connections & Operations",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRH8JB64KVCB6MGCGQ0DHKW",
+      "title": "Storage & Collections",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRH8JB6CFSWFV4PNRMJ73M1",
+      "title": "WiredTiger & Cache",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRH8JB6N59ACCWADJ55WJA0",
+      "title": "Replication",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
+      "title": "Logs",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "title": "Traces",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRH8JB6ADF3R129EXFYXJXF",
+      "title": "Exporter & Inventory",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KXRH8JB65683NGQ1VF94Z61V",
+      "title": "MongoDB Instances",
+      "chartQuery": [
+        "count(count(mongodb_connection_count) by (server_address))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "layout": {
+        "i": "01KXRH8JB65683NGQ1VF94Z61V",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Instances",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6HQTKJDRYTD69A16S",
+      "title": "Databases",
+      "chartQuery": [
+        "max(mongodb_database_count)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "layout": {
+        "i": "01KXRH8JB6HQTKJDRYTD69A16S",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Databases",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6648H4D8H7R165HTM",
+      "title": "Current Connections",
+      "chartQuery": [
+        "sum(mongodb_connection_count{type=\"current\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "layout": {
+        "i": "01KXRH8JB6648H4D8H7R165HTM",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Connections",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB640ST7VT4FEH1WNSQ",
+      "title": "Active Connections",
+      "chartQuery": [
+        "sum(mongodb_connection_count{type=\"active\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "layout": {
+        "i": "01KXRH8JB640ST7VT4FEH1WNSQ",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Connections",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6SGTAZMZDARBMWY8Q",
+      "title": "Ops / Sec",
+      "chartQuery": [
+        "sum(rate(mongodb_operation_count[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "layout": {
+        "i": "01KXRH8JB6SGTAZMZDARBMWY8Q",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Ops / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB62EZ9QSAKZ1H4PEZW",
+      "title": "Network Requests / Sec",
+      "chartQuery": [
+        "sum(rate(mongodb_network_request_count[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "layout": {
+        "i": "01KXRH8JB62EZ9QSAKZ1H4PEZW",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Requests / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6C757GSWKC7QM1ADN",
+      "title": "Memory Usage",
+      "chartQuery": [
+        "sum(mongodb_memory_usage{type=\"resident\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "layout": {
+        "i": "01KXRH8JB6C757GSWKC7QM1ADN",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB62083CVZXWB5PWTBJ",
+      "title": "Replication Lag",
+      "chartQuery": [
+        "max(mongodb_mongod_replset_member_replication_lag)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB5TR74QEBT4FJRYX3Z",
+      "layout": {
+        "i": "01KXRH8JB62083CVZXWB5PWTBJ",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Seconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB64P5JPF2S238YHK9N",
+      "title": "Connections by Type",
+      "chartQuery": [
+        "sum(mongodb_connection_count) by (type)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6694BBER8C19N2CF7",
+      "layout": {
+        "i": "01KXRH8JB64P5JPF2S238YHK9N",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "connection_type",
+            "title": "Connection Type",
+            "display": true
+          },
+          "y": {
+            "field": "connection_type",
+            "title": "Connection Type",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB63TDE0QR8MW27JPDE",
+      "title": "Operations by Type",
+      "chartQuery": [
+        "sum(rate(mongodb_operation_count[5m])) by (operation)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "pie",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6694BBER8C19N2CF7",
+      "layout": {
+        "i": "01KXRH8JB63TDE0QR8MW27JPDE",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "Operation",
+            "display": true
+          },
+          "y": {
+            "field": "operation",
+            "title": "Operation",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6MC6R9DSM0J0MET7B",
+      "title": "Operations Over Time",
+      "chartQuery": [
+        "sum(rate(mongodb_operation_count[5m])) by (operation)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6694BBER8C19N2CF7",
+      "layout": {
+        "i": "01KXRH8JB6MC6R9DSM0J0MET7B",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "operations",
+            "title": "Operations",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB68HNK6EY1JY90RCHJ",
+      "title": "Document Operations",
+      "chartQuery": [
+        "sum(rate(mongodb_document_operation_count[5m])) by (operation,database)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6694BBER8C19N2CF7",
+      "layout": {
+        "i": "01KXRH8JB68HNK6EY1JY90RCHJ",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "documents",
+            "title": "Documents",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB66KF1S6BH38HHY1S5",
+      "title": "Operation Time",
+      "chartQuery": [
+        "sum(rate(mongodb_operation_time[5m])) by (operation)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6694BBER8C19N2CF7",
+      "layout": {
+        "i": "01KXRH8JB66KF1S6BH38HHY1S5",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "operation_time",
+            "title": "Time",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB633S5PAYCXFMQ6EFT",
+      "title": "Network IO",
+      "chartQuery": [
+        "sum(rate(mongodb_network_io_receive[5m]))",
+        "sum(rate(mongodb_network_io_transmit[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6694BBER8C19N2CF7",
+      "layout": {
+        "i": "01KXRH8JB633S5PAYCXFMQ6EFT",
+        "x": 0,
+        "y": 15,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "bytes",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB687XYKEZWEJ12YMP1",
+      "title": "Asserts by Type",
+      "chartQuery": [
+        "sum(mongodb_asserts_total) by (type)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6694BBER8C19N2CF7",
+      "layout": {
+        "i": "01KXRH8JB687XYKEZWEJ12YMP1",
+        "x": 6,
+        "y": 15,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "assert_type",
+            "title": "Assert Type",
+            "display": true
+          },
+          "y": {
+            "field": "assert_type",
+            "title": "Assert Type",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6K2KB6VS5X7S8VDK8",
+      "title": "Data Size by Database",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb.data.size' AND p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY database_name ORDER BY bytes DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB64KVCB6MGCGQ0DHKW",
+      "layout": {
+        "i": "01KXRH8JB6K2KB6VS5X7S8VDK8",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "database_name",
+            "title": "database_name",
+            "display": true
+          },
+          "y": {
+            "field": "bytes",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB6YJWYJQFKVX836PSM",
+      "title": "Storage Size by Database",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb.storage.size' AND p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY database_name ORDER BY bytes DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB64KVCB6MGCGQ0DHKW",
+      "layout": {
+        "i": "01KXRH8JB6YJWYJQFKVX836PSM",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "database_name",
+            "title": "database_name",
+            "display": true
+          },
+          "y": {
+            "field": "bytes",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB6BPGD7XNSCW6ANYVF",
+      "title": "Collections by Database",
+      "chartQuery": [
+        "max(mongodb_collection_count) by (database)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB64KVCB6MGCGQ0DHKW",
+      "layout": {
+        "i": "01KXRH8JB6BPGD7XNSCW6ANYVF",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "database_name",
+            "title": "Database",
+            "display": true
+          },
+          "y": {
+            "field": "database_name",
+            "title": "Database",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6ZF9F7ETYCYQEJ9DF",
+      "title": "Index Size by Database",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb.index.size' AND p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY database_name ORDER BY bytes DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB64KVCB6MGCGQ0DHKW",
+      "layout": {
+        "i": "01KXRH8JB6ZF9F7ETYCYQEJ9DF",
+        "x": 4,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "database_name",
+            "title": "database_name",
+            "display": true
+          },
+          "y": {
+            "field": "bytes",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB65FAPZDJX4TJ8QTVV",
+      "title": "Index Count by Database",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS indexes FROM $metrics_dataset WHERE metric_name='mongodb.index.count' AND p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY database_name ORDER BY indexes DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB64KVCB6MGCGQ0DHKW",
+      "layout": {
+        "i": "01KXRH8JB65FAPZDJX4TJ8QTVV",
+        "x": 8,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "database_name",
+            "title": "database_name",
+            "display": true
+          },
+          "y": {
+            "field": "indexes",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB6WR8Y0W3J4QE65SRM",
+      "title": "Object Count by Database",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS objects FROM $metrics_dataset WHERE metric_name='mongodb.object.count' AND p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY database_name ORDER BY objects DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB64KVCB6MGCGQ0DHKW",
+      "layout": {
+        "i": "01KXRH8JB6WR8Y0W3J4QE65SRM",
+        "x": 0,
+        "y": 15,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "database_name",
+            "title": "database_name",
+            "display": true
+          },
+          "y": {
+            "field": "objects",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB639CVHTB71EFQPEHG",
+      "title": "Collection Latency Ops",
+      "chartQuery": "SELECT metric_name, MAX(data_point_value)-MIN(data_point_value) AS ops FROM $metrics_dataset WHERE metric_name IN ('mongodb_collstats_latencyStats_reads_ops','mongodb_collstats_latencyStats_writes_ops','mongodb_collstats_latencyStats_commands_ops','mongodb_collstats_latencyStats_transactions_ops') AND p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY metric_name ORDER BY ops DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB64KVCB6MGCGQ0DHKW",
+      "layout": {
+        "i": "01KXRH8JB639CVHTB71EFQPEHG",
+        "x": 6,
+        "y": 15,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "ops",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB68R8MMGE0RRMEFVSB",
+      "title": "WiredTiger Cache Usage %",
+      "chartQuery": [
+        "100 * sum(mongodb_mongod_wiredtiger_cache_bytes{type=\"total\"}) / sum(mongodb_mongod_wiredtiger_cache_max_bytes)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6CFSWFV4PNRMJ73M1",
+      "layout": {
+        "i": "01KXRH8JB68R8MMGE0RRMEFVSB",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6WMH37QDKCRJTYP0A",
+      "title": "WiredTiger Cache Bytes",
+      "chartQuery": [
+        "sum(mongodb_mongod_wiredtiger_cache_bytes) by (type)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6CFSWFV4PNRMJ73M1",
+      "layout": {
+        "i": "01KXRH8JB6WMH37QDKCRJTYP0A",
+        "x": 3,
+        "y": 0,
+        "w": 5,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "bytes",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6GRCWTSB3H1BTN9GQ",
+      "title": "Cache Hit / Miss",
+      "chartQuery": [
+        "sum(rate(mongodb_cache_operations[5m])) by (type)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6CFSWFV4PNRMJ73M1",
+      "layout": {
+        "i": "01KXRH8JB6GRCWTSB3H1BTN9GQ",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "cache_result",
+            "title": "Cache Result",
+            "display": true
+          },
+          "y": {
+            "field": "cache_result",
+            "title": "Cache Result",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6TC0HAT3BA341KW0R",
+      "title": "WiredTiger Evictions",
+      "chartQuery": [
+        "sum(rate(mongodb_mongod_wiredtiger_cache_evicted_total[5m]))",
+        "sum(rate(mongodb_mongod_wiredtiger_cache_pages_total[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6CFSWFV4PNRMJ73M1",
+      "layout": {
+        "i": "01KXRH8JB6TC0HAT3BA341KW0R",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "evictions",
+            "title": "Evictions",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6K9G7ET16FF4SG2C5",
+      "title": "Global Lock Time",
+      "chartQuery": [
+        "sum(rate(mongodb_global_lock_time[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6CFSWFV4PNRMJ73M1",
+      "layout": {
+        "i": "01KXRH8JB6K9G7ET16FF4SG2C5",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "lock_time",
+            "title": "Lock Time",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB655K15E4X2Q3J7GC4",
+      "title": "Replica Set State",
+      "chartQuery": "SELECT \"server.address\" AS server, MAX(data_point_value) AS state FROM $metrics_dataset WHERE metric_name='mongodb_mongod_replset_my_state' AND p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY \"server.address\" ORDER BY server",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6N59ACCWADJ55WJA0",
+      "layout": {
+        "i": "01KXRH8JB655K15E4X2Q3J7GC4",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "server",
+            "title": "server",
+            "display": true
+          },
+          "y": {
+            "field": "state",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB6F0NZABPSDR2FQ00G",
+      "title": "Replication Lag by State",
+      "chartQuery": "SELECT COALESCE(state,'unknown') AS member_state, MAX(data_point_value) AS lag_seconds FROM $metrics_dataset WHERE metric_name='mongodb_mongod_replset_member_replication_lag' AND p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY COALESCE(state,'unknown') ORDER BY lag_seconds DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6N59ACCWADJ55WJA0",
+      "layout": {
+        "i": "01KXRH8JB6F0NZABPSDR2FQ00G",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "member_state",
+            "title": "member_state",
+            "display": true
+          },
+          "y": {
+            "field": "lag_seconds",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB6VZTG9888029JDGH5",
+      "title": "Replication Lag Over Time",
+      "chartQuery": [
+        "max(mongodb_mongod_replset_member_replication_lag) by (state)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6N59ACCWADJ55WJA0",
+      "layout": {
+        "i": "01KXRH8JB6VZTG9888029JDGH5",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "lag_seconds",
+            "title": "Seconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB6D2YHKEMZ7VE9RQ6Y",
+      "title": "Replica Set Members",
+      "chartQuery": [
+        "max(mongodb_mongod_replset_number_of_members)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6N59ACCWADJ55WJA0",
+      "layout": {
+        "i": "01KXRH8JB6D2YHKEMZ7VE9RQ6Y",
+        "x": 6,
+        "y": 8,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Members",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB7PKX5VJ2KVXFZ69SE",
+      "title": "Oplog Window",
+      "chartQuery": [
+        "max(mongodb_mongod_replset_oplog_head_timestamp) - max(mongodb_mongod_replset_oplog_tail_timestamp)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6N59ACCWADJ55WJA0",
+      "layout": {
+        "i": "01KXRH8JB7PKX5VJ2KVXFZ69SE",
+        "x": 9,
+        "y": 8,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Seconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB7E7ZWJNVJN9F974Z8",
+      "title": "MongoDB Log Events",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours'",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
+      "layout": {
+        "i": "01KXRH8JB7E7ZWJNVJN9F974Z8",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7V4J01VHJG0PX0FET",
+      "title": "Warnings / Errors",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' AND array_element(regexp_match(\"mongodb.raw\", '\\\"s\\\":\\\"([^\\\"]+)'), 1) IN ('W','E','F')",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
+      "layout": {
+        "i": "01KXRH8JB7V4J01VHJG0PX0FET",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7VN1QN7AEM9MBN8FR",
+      "title": "Logs Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
+      "layout": {
+        "i": "01KXRH8JB7VN1QN7AEM9MBN8FR",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "Logs / min",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7CTY04X7YB1R6S4MP",
+      "title": "Logs by Severity",
+      "chartQuery": "SELECT COALESCE(array_element(regexp_match(\"mongodb.raw\", '\\\"s\\\":\\\"([^\\\"]+)'), 1), 'unknown') AS severity, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY severity ORDER BY logs DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
+      "layout": {
+        "i": "01KXRH8JB7CTY04X7YB1R6S4MP",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "severity",
+            "title": "Severity",
+            "display": true
+          },
+          "y": {
+            "field": "severity",
+            "title": "Severity",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB76XAFR8KBS31V6GWN",
+      "title": "Logs by Component",
+      "chartQuery": "SELECT COALESCE(array_element(regexp_match(\"mongodb.raw\", '\\\"c\\\":\\\"([^\\\"]+)'), 1), 'unknown') AS component, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY component ORDER BY logs DESC LIMIT 15",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
+      "layout": {
+        "i": "01KXRH8JB76XAFR8KBS31V6GWN",
+        "x": 4,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "component",
+            "title": "Component",
+            "display": true
+          },
+          "y": {
+            "field": "component",
+            "title": "Component",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7D47F5EHR0573C4C3",
+      "title": "Recent Warning / Error Logs",
+      "chartQuery": "SELECT p_timestamp, array_element(regexp_match(\"mongodb.raw\", '\\\"s\\\":\\\"([^\\\"]+)'), 1) AS severity, array_element(regexp_match(\"mongodb.raw\", '\\\"c\\\":\\\"([^\\\"]+)'), 1) AS component, array_element(regexp_match(\"mongodb.raw\", '\\\"msg\\\":\\\"([^\\\"]+)'), 1) AS message, \"mongodb.raw\" AS raw FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' AND array_element(regexp_match(\"mongodb.raw\", '\\\"s\\\":\\\"([^\\\"]+)'), 1) IN ('W','E','F') ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
+      "layout": {
+        "i": "01KXRH8JB7D47F5EHR0573C4C3",
+        "x": 8,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "severity",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7HPKK8Q4VH2YG6XPH",
+      "title": "Trace Spans",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "layout": {
+        "i": "01KXRH8JB7HPKK8Q4VH2YG6XPH",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Spans",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7P7VSBTECWHV03Z9M",
+      "title": "Error Spans",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' AND span_status_code <> 0",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "layout": {
+        "i": "01KXRH8JB7P7VSBTECWHV03Z9M",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB78E4FW2Z9SC56ZQV0",
+      "title": "Avg Span Duration",
+      "chartQuery": "SELECT AVG(span_duration_ns)/1000000 AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "layout": {
+        "i": "01KXRH8JB78E4FW2Z9SC56ZQV0",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Milliseconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7YHTKZDFV79PV583Z",
+      "title": "P95 Span Duration",
+      "chartQuery": "SELECT approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "layout": {
+        "i": "01KXRH8JB7YHTKZDFV79PV583Z",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Milliseconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7D1CCTZASHEA654YF",
+      "title": "Spans Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "layout": {
+        "i": "01KXRH8JB7D1CCTZASHEA654YF",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "Spans / min",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7EQ9EE1E74EVQEBM9",
+      "title": "Spans by DB Operation",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", 'unknown') AS operation, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY operation ORDER BY spans DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "layout": {
+        "i": "01KXRH8JB7EQ9EE1E74EVQEBM9",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "Operation",
+            "display": true
+          },
+          "y": {
+            "field": "operation",
+            "title": "Operation",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7HMBASV9VKBZG0VFW",
+      "title": "Span Duration by Collection",
+      "chartQuery": "SELECT COALESCE(\"db.collection.name\", 'unknown') AS collection_name, AVG(span_duration_ns)/1000000 AS avg_ms, approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS p95_ms, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY collection_name ORDER BY p95_ms DESC LIMIT 20",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "layout": {
+        "i": "01KXRH8JB7HMBASV9VKBZG0VFW",
+        "x": 0,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "collection_name",
+            "title": "collection_name",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7MSRNH374NWADWF47",
+      "title": "Slow MongoDB Trace Queries",
+      "chartQuery": "SELECT p_timestamp, \"db.namespace\" AS database_name, \"db.collection.name\" AS collection_name, \"db.operation.name\" AS operation, span_name, span_duration_ns/1000000 AS duration_ms, \"db.query.text\" AS query_text FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' ORDER BY span_duration_ns DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6JFQC193KJDJZ9XMQ",
+      "layout": {
+        "i": "01KXRH8JB7MSRNH374NWADWF47",
+        "x": 6,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7ECMV6AA3QCFBYDDM",
+      "title": "Exporter Scrape Time",
+      "chartQuery": [
+        "max(collector_scrape_time_ms)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6ADF3R129EXFYXJXF",
+      "layout": {
+        "i": "01KXRH8JB7ECMV6AA3QCFBYDDM",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Milliseconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB7QGY3AF2D5D66NM7T",
+      "title": "Exporter Goroutines",
+      "chartQuery": [
+        "max(go_goroutines)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6ADF3R129EXFYXJXF",
+      "layout": {
+        "i": "01KXRH8JB7QGY3AF2D5D66NM7T",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Goroutines",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB70DAQ3QVPYZKTK0TR",
+      "title": "Exporter Heap Alloc",
+      "chartQuery": [
+        "max(go_memstats_heap_alloc_bytes)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRH8JB6ADF3R129EXFYXJXF",
+      "layout": {
+        "i": "01KXRH8JB70DAQ3QVPYZKTK0TR",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRH8JB7189FGQQVN6N6GGKP",
+      "title": "Metric Inventory",
+      "chartQuery": "SELECT metric_name, COUNT(*) AS samples, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '48 hours' GROUP BY metric_name ORDER BY samples DESC LIMIT 200",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6ADF3R129EXFYXJXF",
+      "layout": {
+        "i": "01KXRH8JB7189FGQQVN6N6GGKP",
+        "x": 0,
+        "y": 5,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRH8JB7ZAH3EFXMQBC4H9DV",
+      "title": "MongoDB Stream Freshness",
+      "chartQuery": "SELECT 'mongodb-metrics' AS stream, COUNT(*) AS rows, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset UNION ALL SELECT 'mongodb-logs' AS stream, COUNT(*) AS rows, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $logs_dataset UNION ALL SELECT 'mongodb-traces' AS stream, COUNT(*) AS rows, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $traces_dataset",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRH8JB6ADF3R129EXFYXJXF",
+      "layout": {
+        "i": "01KXRH8JB7ZAH3EFXMQBC4H9DV",
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "stream",
+            "title": "stream",
+            "display": true
+          },
+          "y": {
+            "field": "rows",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

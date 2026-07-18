@@ -1,0 +1,3815 @@
+{
+  "tags": [
+    "postgres",
+    "postgresql",
+    "database",
+    "metrics",
+    "logs",
+    "traces",
+    "promql"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Postgres Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "postgres-metrics"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "Postgres Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "postgres-logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "Postgres Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "postgres-traces"
+    },
+    {
+      "name": "database",
+      "label": "Database",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "datname",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "application",
+      "label": "Application",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "application_name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "server",
+      "label": "Server",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "server.address",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRCJMY8SSKV70SAR2D7TNQD",
+      "title": "Connections & Locks",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRCJMY81HNB84V1T0M81ZZK",
+      "title": "Database Activity",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRCJMY8VK9V747SEP48E69Y",
+      "title": "Storage & Tables",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRCJMY8JQ68S6FG7MQX91Q5",
+      "title": "Query Performance",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRCJMY8EXSBKDPM9Q6BJYRH",
+      "title": "Replication & WAL",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRCJMY8PR36AYJCCSBS4H1K",
+      "title": "Logs",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "title": "Traces",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXRCJMY83FWM338FBP2SG7CA",
+      "title": "Exporter & Inventory",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KXRCJMY8NMFMQGJ3ZVF835X1",
+      "title": "Postgres Up",
+      "chartQuery": [
+        "100 * min(pg_up)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "layout": {
+        "i": "01KXRCJMY8NMFMQGJ3ZVF835X1",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 0,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY8WBCWHC1GDVYEGDM5",
+      "title": "Databases",
+      "chartQuery": [
+        "count(count(pg_database_size_bytes) by (datname))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "layout": {
+        "i": "01KXRCJMY8WBCWHC1GDVYEGDM5",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Databases",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY8V7RVN5Q3GEPG6C09",
+      "title": "Active Connections",
+      "chartQuery": [
+        "sum(pg_stat_activity_active_connections)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "layout": {
+        "i": "01KXRCJMY8V7RVN5Q3GEPG6C09",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Connections",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY8SS7DD8TT47QFF3G0",
+      "title": "Connection Utilization %",
+      "chartQuery": [
+        "100 * max(pg_stat_activity_used_connections) / max(pg_stat_activity_max_connections)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "layout": {
+        "i": "01KXRCJMY8SS7DD8TT47QFF3G0",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 1,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY8E01A9A6WG0KFKJCW",
+      "title": "Cache Hit Ratio",
+      "chartQuery": [
+        "100 * avg(pg_stat_database_blks_hit_ratio{datname!~\"template0|template1\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "layout": {
+        "i": "01KXRCJMY8E01A9A6WG0KFKJCW",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY8G0ZNYCPMJH079BV2",
+      "title": "Database Size",
+      "chartQuery": [
+        "sum(pg_database_size_bytes)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "layout": {
+        "i": "01KXRCJMY8G0ZNYCPMJH079BV2",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9FT5E49NZPS9W24NZ",
+      "title": "QPS",
+      "chartQuery": [
+        "sum(rate(pg_stat_database_xact_commit[5m])) + sum(rate(pg_stat_database_xact_rollback[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "layout": {
+        "i": "01KXRCJMY9FT5E49NZPS9W24NZ",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Queries / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9CZNEBEB783SWRGR3",
+      "title": "Deadlocks + Conflicts",
+      "chartQuery": [
+        "sum(pg_stat_database_deadlocks) + sum(pg_stat_database_conflicts)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY7M805WJ88QXEFK9NB",
+      "layout": {
+        "i": "01KXRCJMY9CZNEBEB783SWRGR3",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9JNDJAZE9XTXPHWJY",
+      "title": "Connections by State",
+      "chartQuery": [
+        "sum(pg_stat_activity_count) by (state)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8SSKV70SAR2D7TNQD",
+      "layout": {
+        "i": "01KXRCJMY9JNDJAZE9XTXPHWJY",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "state",
+            "title": "State",
+            "display": true
+          },
+          "y": {
+            "field": "state",
+            "title": "State",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9FM8HFN25983JFPBP",
+      "title": "Connections by Application",
+      "chartQuery": [
+        "sum(pg_stat_activity_connections_by_application) by (application_name)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "pie",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8SSKV70SAR2D7TNQD",
+      "layout": {
+        "i": "01KXRCJMY9FM8HFN25983JFPBP",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "application_name",
+            "title": "Application",
+            "display": true
+          },
+          "y": {
+            "field": "application_name",
+            "title": "Application",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9XYYP6WP5CGGVVZ82",
+      "title": "Used vs Available Connections",
+      "chartQuery": [
+        "max(pg_stat_activity_used_connections)",
+        "max(pg_stat_activity_available_connections)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8SSKV70SAR2D7TNQD",
+      "layout": {
+        "i": "01KXRCJMY9XYYP6WP5CGGVVZ82",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Connections",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9T3PG2QXSF5GFZBGZ",
+      "title": "Blocked / Waiting Connections",
+      "chartQuery": [
+        "sum(pg_stat_activity_blocked_connections)",
+        "sum(pg_stat_activity_waiting_connections)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8SSKV70SAR2D7TNQD",
+      "layout": {
+        "i": "01KXRCJMY9T3PG2QXSF5GFZBGZ",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Connections",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9XGA84R0GEKF4B0MB",
+      "title": "Locks by Mode",
+      "chartQuery": [
+        "sum(pg_locks_count) by (mode)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8SSKV70SAR2D7TNQD",
+      "layout": {
+        "i": "01KXRCJMY9XGA84R0GEKF4B0MB",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "mode",
+            "title": "Lock Mode",
+            "display": true
+          },
+          "y": {
+            "field": "mode",
+            "title": "Lock Mode",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9M77XXHNR6KWV1GMZ",
+      "title": "Wait Events",
+      "chartQuery": "SELECT COALESCE(event,'unknown') AS event, SUM(data_point_value) AS waits FROM $metrics_dataset WHERE metric_name='pg_wait_event' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY event ORDER BY waits DESC LIMIT 15",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8SSKV70SAR2D7TNQD",
+      "layout": {
+        "i": "01KXRCJMY9M77XXHNR6KWV1GMZ",
+        "x": 0,
+        "y": 15,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "event",
+            "title": "event",
+            "display": true
+          },
+          "y": {
+            "field": "waits",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMY9ANHZW6SWHY78R5ZT",
+      "title": "Transactions by Database",
+      "chartQuery": [
+        "sum(rate(pg_stat_database_xact_commit[5m])) by (datname)",
+        "sum(rate(pg_stat_database_xact_rollback[5m])) by (datname)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY81HNB84V1T0M81ZZK",
+      "layout": {
+        "i": "01KXRCJMY9ANHZW6SWHY78R5ZT",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "tx_delta",
+            "title": "Transactions",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMY9G2KZN753FMFVAMMM",
+      "title": "Rows Changed",
+      "chartQuery": [
+        "sum(rate(pg_stat_database_tup_inserted[5m])) by (datname)",
+        "sum(rate(pg_stat_database_tup_updated[5m])) by (datname)",
+        "sum(rate(pg_stat_database_tup_deleted[5m])) by (datname)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY81HNB84V1T0M81ZZK",
+      "layout": {
+        "i": "01KXRCJMY9G2KZN753FMFVAMMM",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "row_delta",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYA78QKT5J7VNE9FN24",
+      "title": "Rows Returned / Fetched",
+      "chartQuery": [
+        "sum(rate(pg_stat_database_tup_returned[5m])) by (datname)",
+        "sum(rate(pg_stat_database_tup_fetched[5m])) by (datname)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY81HNB84V1T0M81ZZK",
+      "layout": {
+        "i": "01KXRCJMYA78QKT5J7VNE9FN24",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "row_delta",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYAQK4FPVSGTQZF6K1Z",
+      "title": "Temp Files / Bytes",
+      "chartQuery": [
+        "sum(rate(pg_stat_database_temp_files[5m])) by (datname)",
+        "sum(rate(pg_stat_database_temp_bytes[5m])) by (datname)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY81HNB84V1T0M81ZZK",
+      "layout": {
+        "i": "01KXRCJMYAQK4FPVSGTQZF6K1Z",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "temp_delta",
+            "title": "Delta",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYA6F98BKFGHQ1NSFAW",
+      "title": "Database Cache Hit Ratio",
+      "chartQuery": "SELECT datname, 100 * AVG(data_point_value) AS cache_hit_percent FROM $metrics_dataset WHERE metric_name='pg_stat_database_blks_hit_ratio' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname ORDER BY cache_hit_percent ASC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY81HNB84V1T0M81ZZK",
+      "layout": {
+        "i": "01KXRCJMYA6F98BKFGHQ1NSFAW",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "datname",
+            "title": "datname",
+            "display": true
+          },
+          "y": {
+            "field": "cache_hit_percent",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYA6AH1ZY9BMCG9BY83",
+      "title": "Deadlocks and Conflicts by Database",
+      "chartQuery": "SELECT datname, metric_name, SUM(data_point_value) AS events FROM $metrics_dataset WHERE metric_name IN ('pg_stat_database_deadlocks','pg_stat_database_conflicts') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname, metric_name ORDER BY events DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY81HNB84V1T0M81ZZK",
+      "layout": {
+        "i": "01KXRCJMYA6AH1ZY9BMCG9BY83",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "datname",
+            "title": "datname",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYAGPW3SP2Y2F9V32BA",
+      "title": "Database Size by DB",
+      "chartQuery": "SELECT COALESCE(datname,'unknown') AS datname, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='pg_database_size_bytes' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname ORDER BY bytes DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8VK9V747SEP48E69Y",
+      "layout": {
+        "i": "01KXRCJMYAGPW3SP2Y2F9V32BA",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "datname",
+            "title": "datname",
+            "display": true
+          },
+          "y": {
+            "field": "bytes",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYAZARKBYWEWVZKXEHS",
+      "title": "Top Table Sizes",
+      "chartQuery": "SELECT COALESCE(\"postgresql.table.name\", relname) AS table_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name IN ('postgresql.table.size','pg_stat_user_tables_table_size_bytes') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY COALESCE(\"postgresql.table.name\", relname) ORDER BY bytes DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8VK9V747SEP48E69Y",
+      "layout": {
+        "i": "01KXRCJMYAZARKBYWEWVZKXEHS",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "table_name",
+            "title": "table_name",
+            "display": true
+          },
+          "y": {
+            "field": "bytes",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYAX2HANZNGCMD0YY29",
+      "title": "Rows by Table State",
+      "chartQuery": [
+        "sum(postgresql_rows) by (state)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "donut",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8VK9V747SEP48E69Y",
+      "layout": {
+        "i": "01KXRCJMYAX2HANZNGCMD0YY29",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "state",
+            "title": "Row State",
+            "display": true
+          },
+          "y": {
+            "field": "state",
+            "title": "Row State",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYA424601G02E3XKS8X",
+      "title": "Table Bloat Ratio",
+      "chartQuery": "SELECT datname, schemaname, relname, 100 * MAX(data_point_value) AS bloat_percent FROM $metrics_dataset WHERE metric_name='pg_stat_user_tables_bloat_ratio' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname, schemaname, relname ORDER BY bloat_percent DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8VK9V747SEP48E69Y",
+      "layout": {
+        "i": "01KXRCJMYA424601G02E3XKS8X",
+        "x": 4,
+        "y": 8,
+        "w": 8,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "relname",
+            "title": "relname",
+            "display": true
+          },
+          "y": {
+            "field": "bloat_percent",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYAWHRXT2HZ5JAPAJQ4",
+      "title": "Index Health",
+      "chartQuery": "SELECT metric_name, SUM(data_point_value) AS value FROM $metrics_dataset WHERE metric_name IN ('pg_index_invalid_count','pg_index_unused_count','pg_index_unused_size_bytes') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY metric_name ORDER BY value DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8VK9V747SEP48E69Y",
+      "layout": {
+        "i": "01KXRCJMYAWHRXT2HZ5JAPAJQ4",
+        "x": 0,
+        "y": 15,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYAM9ZGANTF9Y6M360T",
+      "title": "Sequence Usage",
+      "chartQuery": "SELECT datname, schemaname, sequencename, 100 * MAX(data_point_value) AS used_percent FROM $metrics_dataset WHERE metric_name='pg_sequence_used_ratio' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname, schemaname, sequencename ORDER BY used_percent DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8VK9V747SEP48E69Y",
+      "layout": {
+        "i": "01KXRCJMYAM9ZGANTF9Y6M360T",
+        "x": 6,
+        "y": 15,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "sequencename",
+            "title": "sequencename",
+            "display": true
+          },
+          "y": {
+            "field": "used_percent",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYAP75GX7HHW07TKY2X",
+      "title": "Statement Calls",
+      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS calls FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_calls_total' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY query_short ORDER BY calls DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8JQ68S6FG7MQX91Q5",
+      "layout": {
+        "i": "01KXRCJMYAP75GX7HHW07TKY2X",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "query_short",
+            "title": "query_short",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYA4DGQKQN2F6PSA2FD",
+      "title": "Mean Execution Time",
+      "chartQuery": "SELECT query_short, MAX(data_point_value) AS mean_seconds FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_mean_exec_time_seconds' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY query_short ORDER BY mean_seconds DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8JQ68S6FG7MQX91Q5",
+      "layout": {
+        "i": "01KXRCJMYA4DGQKQN2F6PSA2FD",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "query_short",
+            "title": "query_short",
+            "display": true
+          },
+          "y": {
+            "field": "mean_seconds",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYA0NB8FE9ADAAHQRA4",
+      "title": "Total Execution Time",
+      "chartQuery": [
+        "sum(rate(postgres_pg_stat_statements_total_exec_time_seconds[5m])) by (query_short)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8JQ68S6FG7MQX91Q5",
+      "layout": {
+        "i": "01KXRCJMYA0NB8FE9ADAAHQRA4",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "exec_seconds",
+            "title": "Seconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYAR5DQST4SMJK08E3B",
+      "title": "Statement Cache Hit Ratio",
+      "chartQuery": "SELECT query_short, 100 * MAX(data_point_value) AS cache_hit_percent FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_cache_hit_ratio' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY query_short ORDER BY cache_hit_percent ASC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8JQ68S6FG7MQX91Q5",
+      "layout": {
+        "i": "01KXRCJMYAR5DQST4SMJK08E3B",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "query_short",
+            "title": "query_short",
+            "display": true
+          },
+          "y": {
+            "field": "cache_hit_percent",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYACDADQHQW5DEWDAKX",
+      "title": "Statement Rows",
+      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS rows FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_rows_total' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY query_short ORDER BY rows DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8JQ68S6FG7MQX91Q5",
+      "layout": {
+        "i": "01KXRCJMYACDADQHQW5DEWDAKX",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "query_short",
+            "title": "query_short",
+            "display": true
+          },
+          "y": {
+            "field": "rows",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYANG8K5X1BJ9KV50T0",
+      "title": "Statement WAL Bytes",
+      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS wal_bytes FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_wal_bytes_total' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY query_short ORDER BY wal_bytes DESC LIMIT 20",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8JQ68S6FG7MQX91Q5",
+      "layout": {
+        "i": "01KXRCJMYANG8K5X1BJ9KV50T0",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "query_short",
+            "title": "query_short",
+            "display": true
+          },
+          "y": {
+            "field": "wal_bytes",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYAVC6Z0ECX0FBHA2HP",
+      "title": "Replication Lag",
+      "chartQuery": [
+        "max(pg_replication_lag_seconds)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8EXSBKDPM9Q6BJYRH",
+      "layout": {
+        "i": "01KXRCJMYAVC6Z0ECX0FBHA2HP",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Seconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYASJNP1TCVA4AFAJBM",
+      "title": "WAL Bytes Rate",
+      "chartQuery": [
+        "sum(rate(pg_stat_wal_bytes_total[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8EXSBKDPM9Q6BJYRH",
+      "layout": {
+        "i": "01KXRCJMYASJNP1TCVA4AFAJBM",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "Bps",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Bytes / sec",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYAT1S7HQFMT7B79MDJ",
+      "title": "Checkpoint Age",
+      "chartQuery": [
+        "max(pg_last_checkpoint_age_seconds)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8EXSBKDPM9Q6BJYRH",
+      "layout": {
+        "i": "01KXRCJMYAT1S7HQFMT7B79MDJ",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Seconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYA22F7Q6TC7E1ETBVZ",
+      "title": "Archiver Failed",
+      "chartQuery": [
+        "sum(rate(pg_stat_archiver_failed_total[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8EXSBKDPM9Q6BJYRH",
+      "layout": {
+        "i": "01KXRCJMYA22F7Q6TC7E1ETBVZ",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Failures",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYA6WD8BXRS169NPKS4",
+      "title": "WAL Activity",
+      "chartQuery": [
+        "sum(rate(pg_stat_wal_records_total[5m]))",
+        "sum(rate(pg_stat_wal_fpi_total[5m]))",
+        "sum(rate(pg_stat_wal_buffers_full_total[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8EXSBKDPM9Q6BJYRH",
+      "layout": {
+        "i": "01KXRCJMYA6WD8BXRS169NPKS4",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "delta",
+            "title": "Delta",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYA5DH3JFYD6GJ95YQD",
+      "title": "Checkpoint Writes",
+      "chartQuery": [
+        "sum(rate(pg_stat_checkpointer_buffers_written_total[5m]))",
+        "sum(rate(pg_stat_checkpointer_requested_total[5m]))",
+        "sum(rate(pg_stat_checkpointer_timed_total[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY8EXSBKDPM9Q6BJYRH",
+      "layout": {
+        "i": "01KXRCJMYA5DH3JFYD6GJ95YQD",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "delta",
+            "title": "Delta",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYA43X739MJ67GNDQ39",
+      "title": "Postgres Log Events",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour'",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8PR36AYJCCSBS4H1K",
+      "layout": {
+        "i": "01KXRCJMYA43X739MJ67GNDQ39",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBQ30RTVHE2FYFPJB9",
+      "title": "Errors / Warnings",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND body_error_severity IN ('ERROR','FATAL','PANIC','WARNING')",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8PR36AYJCCSBS4H1K",
+      "layout": {
+        "i": "01KXRCJMYBQ30RTVHE2FYFPJB9",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBD2DCGAXWTH2070QR",
+      "title": "Logs Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8PR36AYJCCSBS4H1K",
+      "layout": {
+        "i": "01KXRCJMYBD2DCGAXWTH2070QR",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Logs / min",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBQ0Y33TQ71NA8YBAD",
+      "title": "Logs by Severity",
+      "chartQuery": "SELECT COALESCE(body_error_severity,'unknown') AS severity, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY severity ORDER BY logs DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8PR36AYJCCSBS4H1K",
+      "layout": {
+        "i": "01KXRCJMYBQ0Y33TQ71NA8YBAD",
+        "x": 0,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "severity",
+            "title": "Severity",
+            "display": true
+          },
+          "y": {
+            "field": "severity",
+            "title": "Severity",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBT34YQDPW33FTX9MR",
+      "title": "Logs by Database",
+      "chartQuery": "SELECT COALESCE(body_dbname,'unknown') AS database_name, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY database_name ORDER BY logs DESC LIMIT 15",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8PR36AYJCCSBS4H1K",
+      "layout": {
+        "i": "01KXRCJMYBT34YQDPW33FTX9MR",
+        "x": 4,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "database_name",
+            "title": "Database",
+            "display": true
+          },
+          "y": {
+            "field": "database_name",
+            "title": "Database",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYB5MFNYBRNEGNGNC20",
+      "title": "Recent Error Logs",
+      "chartQuery": "SELECT p_timestamp, body_error_severity, body_dbname, body_user, body_application_name, body_message FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND body_error_severity IN ('ERROR','FATAL','PANIC','WARNING') ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY8PR36AYJCCSBS4H1K",
+      "layout": {
+        "i": "01KXRCJMYB5MFNYBRNEGNGNC20",
+        "x": 8,
+        "y": 8,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "body_error_severity",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBTT81TXCTK4PXZQ16",
+      "title": "Trace Spans",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "layout": {
+        "i": "01KXRCJMYBTT81TXCTK4PXZQ16",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Spans",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBYRPVMGKTFN539AVK",
+      "title": "Error Spans",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND span_status_code <> 0",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "layout": {
+        "i": "01KXRCJMYBYRPVMGKTFN539AVK",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBPPYSFYS7MHDYWYFG",
+      "title": "Avg Span Duration",
+      "chartQuery": "SELECT AVG(span_duration_ns)/1000000 AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "layout": {
+        "i": "01KXRCJMYBPPYSFYS7MHDYWYFG",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Milliseconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYB1G34J3YV6YD24CE0",
+      "title": "P95 Span Duration",
+      "chartQuery": "SELECT approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "layout": {
+        "i": "01KXRCJMYB1G34J3YV6YD24CE0",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Milliseconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBT903T84FFSK9EJPR",
+      "title": "Spans Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "layout": {
+        "i": "01KXRCJMYBT903T84FFSK9EJPR",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "Spans / min",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBNJ6WMP25Q1DQP6S5",
+      "title": "Span Duration by Operation",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, AVG(span_duration_ns)/1000000 AS avg_ms, approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS p95_ms, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY operation ORDER BY p95_ms DESC LIMIT 20",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "layout": {
+        "i": "01KXRCJMYBNJ6WMP25Q1DQP6S5",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "operation",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYB1M7E49Y7A08494MC",
+      "title": "Spans by DB Operation",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", 'unknown') AS operation, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY operation ORDER BY spans DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "layout": {
+        "i": "01KXRCJMYB1M7E49Y7A08494MC",
+        "x": 0,
+        "y": 13,
+        "w": 4,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "Operation",
+            "display": true
+          },
+          "y": {
+            "field": "operation",
+            "title": "Operation",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBFNKCNGTMN9M7PP74",
+      "title": "Slow Trace Queries",
+      "chartQuery": "SELECT p_timestamp, \"db.namespace\" AS database_name, \"db.operation.name\" AS operation, span_name, span_duration_ns/1000000 AS duration_ms, \"db.query.text\" AS query_text FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' ORDER BY span_duration_ns DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY89PKB2XBWXR2PZS51",
+      "layout": {
+        "i": "01KXRCJMYBFNKCNGTMN9M7PP74",
+        "x": 4,
+        "y": 13,
+        "w": 8,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYB5DZY419C9BNNVGJB",
+      "title": "Exporter Scrape Success %",
+      "chartQuery": [
+        "100 * min(pg_exporter_collector_last_scrape_success)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY83FWM338FBP2SG7CA",
+      "layout": {
+        "i": "01KXRCJMYB5DZY419C9BNNVGJB",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 0,
+          "rangeTo": 100
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYBDMZHXRZT4SWR3KSC",
+      "title": "Exporter CPU %",
+      "chartQuery": [
+        "max(pg_exporter_process_cpu_percent)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY83FWM338FBP2SG7CA",
+      "layout": {
+        "i": "01KXRCJMYBDMZHXRZT4SWR3KSC",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Percent",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYBJPFRR3ADE2JHYW44",
+      "title": "Exporter RSS Memory",
+      "chartQuery": [
+        "max(pg_exporter_process_resident_memory_bytes)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXRCJMY83FWM338FBP2SG7CA",
+      "layout": {
+        "i": "01KXRCJMYBJPFRR3ADE2JHYW44",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Bytes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXRCJMYB5DVS4S6GQ4XRARA7",
+      "title": "Metric Inventory",
+      "chartQuery": "SELECT metric_name, COUNT(*) AS samples, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '6 hours' GROUP BY metric_name ORDER BY samples DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY83FWM338FBP2SG7CA",
+      "layout": {
+        "i": "01KXRCJMYB5DVS4S6GQ4XRARA7",
+        "x": 0,
+        "y": 5,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXRCJMYBQKENQ6DJGN1KYEHF",
+      "title": "Postgres Settings",
+      "chartQuery": "SELECT metric_name, MAX(data_point_value) AS value FROM $metrics_dataset WHERE metric_name LIKE 'pg_settings_%' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY metric_name ORDER BY metric_name",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXRCJMY83FWM338FBP2SG7CA",
+      "layout": {
+        "i": "01KXRCJMYBQKENQ6DJGN1KYEHF",
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

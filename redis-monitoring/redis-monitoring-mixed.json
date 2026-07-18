@@ -1,0 +1,3888 @@
+{
+  "tags": [
+    "redis",
+    "database",
+    "cache",
+    "metrics",
+    "logs",
+    "traces",
+    "promql"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Redis Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "redis-metrics"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "Redis Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "redis-logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "Redis Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "redis-traces"
+    },
+    {
+      "name": "release",
+      "label": "Release",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "release",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "role",
+      "label": "Redis Role",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "redis_role",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "instance",
+      "label": "Instance",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "service.instance.id",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXTTV50A9GQB7WXZ0V50ECB5",
+      "title": "Clients & Commands",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "title": "Memory & Keyspace",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "title": "Persistence & Replication",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "title": "Network & CPU",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXTTV50A1VGBZ8QER4A4PMYQ",
+      "title": "Logs",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXTTV50A905NYG9S2CBBBYET",
+      "title": "Traces",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXTTV50A2A7W7PXA72Q69W37",
+      "title": "Exporter & Inventory",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KXTTV50AA2KEDFFX16W9SCSH",
+      "title": "Redis Availability",
+      "chartQuery": [
+        "100 * avg(redis_up{release=~\"$release\",redis_role=~\"$role\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "layout": {
+        "i": "01KXTTV50AA2KEDFFX16W9SCSH",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50A3RKVA86D925V96K4",
+      "title": "Redis Instances",
+      "chartQuery": [
+        "count(count(redis_up{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role,release))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "layout": {
+        "i": "01KXTTV50A3RKVA86D925V96K4",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50B0H75V7MKA4RXMB61",
+      "title": "Connected Clients",
+      "chartQuery": [
+        "sum(redis_connected_clients{release=~\"$release\",redis_role=~\"$role\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "layout": {
+        "i": "01KXTTV50B0H75V7MKA4RXMB61",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50B5ZZTN1RVPWWZM8PQ",
+      "title": "Commands / sec",
+      "chartQuery": [
+        "sum(rate(redis_commands_processed_total{release=~\"$release\",redis_role=~\"$role\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "layout": {
+        "i": "01KXTTV50B5ZZTN1RVPWWZM8PQ",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50BWPDFK7JM8TQ2GG7F",
+      "title": "Memory Usage %",
+      "chartQuery": [
+        "100 * sum(redis_memory_used_bytes{release=~\"$release\",redis_role=~\"$role\"}) / clamp_min(sum(redis_memory_max_bytes{release=~\"$release\",redis_role=~\"$role\"}), 1)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "layout": {
+        "i": "01KXTTV50BWPDFK7JM8TQ2GG7F",
+        "x": 12,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50BWB6CAWMAGJGQC573",
+      "title": "Keyspace Hits / sec",
+      "chartQuery": [
+        "sum(rate(redis_keyspace_hits_total{release=~\"$release\",redis_role=~\"$role\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "layout": {
+        "i": "01KXTTV50BWB6CAWMAGJGQC573",
+        "x": 15,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50C9VRJ6X8RTET76690",
+      "title": "Rejected Connections / sec",
+      "chartQuery": [
+        "sum(rate(redis_rejected_connections_total{release=~\"$release\",redis_role=~\"$role\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "layout": {
+        "i": "01KXTTV50C9VRJ6X8RTET76690",
+        "x": 18,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50C3S1FET3R4Y4YDSNZ",
+      "title": "Evicted Keys / sec",
+      "chartQuery": [
+        "sum(rate(redis_evicted_keys_total{release=~\"$release\",redis_role=~\"$role\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXTTV508YTXHD3MXBB9X6QSE",
+      "layout": {
+        "i": "01KXTTV50C3S1FET3R4Y4YDSNZ",
+        "x": 21,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "keys/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50C8D0RT510Y35DHAQV",
+      "title": "Clients by Role",
+      "chartQuery": [
+        "sum(redis_connected_clients{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A9GQB7WXZ0V50ECB5",
+      "layout": {
+        "i": "01KXTTV50C8D0RT510Y35DHAQV",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50CF7W9NRS37JTSBRSP",
+      "title": "Blocked Clients",
+      "chartQuery": [
+        "sum(redis_blocked_clients{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A9GQB7WXZ0V50ECB5",
+      "layout": {
+        "i": "01KXTTV50CF7W9NRS37JTSBRSP",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50CGC3H9ER06HYXN1SB",
+      "title": "Connections Received / sec",
+      "chartQuery": [
+        "sum(rate(redis_connections_received_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A9GQB7WXZ0V50ECB5",
+      "layout": {
+        "i": "01KXTTV50CGC3H9ER06HYXN1SB",
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "conn/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50CN4EFSWH36CBKZ9YE",
+      "title": "Rejected Connections / sec by Role",
+      "chartQuery": [
+        "sum(rate(redis_rejected_connections_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A9GQB7WXZ0V50ECB5",
+      "layout": {
+        "i": "01KXTTV50CN4EFSWH36CBKZ9YE",
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "conn/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50CKBEN7BFDWET6VG0T",
+      "title": "Command Throughput by Role",
+      "chartQuery": [
+        "sum(rate(redis_commands_processed_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A9GQB7WXZ0V50ECB5",
+      "layout": {
+        "i": "01KXTTV50CKBEN7BFDWET6VG0T",
+        "x": 0,
+        "y": 7,
+        "w": 8,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50CX6Z82AQ99G2519AT",
+      "title": "Command Failures by Command",
+      "chartQuery": [
+        "topk(10, sum(rate(redis_commands_failed_calls_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (cmd))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A9GQB7WXZ0V50ECB5",
+      "layout": {
+        "i": "01KXTTV50CX6Z82AQ99G2519AT",
+        "x": 8,
+        "y": 7,
+        "w": 8,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50C9B87CYN1A8MT59R8",
+      "title": "Command Duration / sec by Command",
+      "chartQuery": [
+        "topk(10, sum(rate(redis_commands_duration_seconds_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (cmd))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A9GQB7WXZ0V50ECB5",
+      "layout": {
+        "i": "01KXTTV50C9B87CYN1A8MT59R8",
+        "x": 16,
+        "y": 7,
+        "w": 8,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50C4HVKYCF4YB8KRJFB",
+      "title": "Memory Used",
+      "chartQuery": [
+        "sum(redis_memory_used_bytes{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "layout": {
+        "i": "01KXTTV50C4HVKYCF4YB8KRJFB",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50CKA4C6RMYJRYXMCTY",
+      "title": "Memory Peak",
+      "chartQuery": [
+        "sum(redis_memory_used_peak_bytes{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "layout": {
+        "i": "01KXTTV50CKA4C6RMYJRYXMCTY",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50C02E5HFGPVJ4MJK9G",
+      "title": "Memory RSS",
+      "chartQuery": [
+        "sum(redis_memory_used_rss_bytes{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "layout": {
+        "i": "01KXTTV50C02E5HFGPVJ4MJK9G",
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50CYZXA8EHJJR143J92",
+      "title": "Fragmentation Ratio",
+      "chartQuery": [
+        "avg(redis_mem_fragmentation_ratio{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "layout": {
+        "i": "01KXTTV50CYZXA8EHJJR143J92",
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50DHEEWYHXFCNMZV7W1",
+      "title": "Keys by DB",
+      "chartQuery": [
+        "sum(redis_db_keys{release=~\"$release\",redis_role=~\"$role\"}) by (db)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "layout": {
+        "i": "01KXTTV50DHEEWYHXFCNMZV7W1",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "keys",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50DEC09X7DJWWGE4NK2",
+      "title": "Expiring Keys by DB",
+      "chartQuery": [
+        "sum(redis_db_keys_expiring{release=~\"$release\",redis_role=~\"$role\"}) by (db)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "layout": {
+        "i": "01KXTTV50DEC09X7DJWWGE4NK2",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "keys",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50DX7QWZ4VKC7YVQD7H",
+      "title": "Expired Keys / sec",
+      "chartQuery": [
+        "sum(rate(redis_expired_keys_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "layout": {
+        "i": "01KXTTV50DX7QWZ4VKC7YVQD7H",
+        "x": 12,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "keys/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50DXQMENWJES8KHCNXK",
+      "title": "Keyspace Hit Rate",
+      "chartQuery": [
+        "sum(rate(redis_keyspace_hits_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50AJ1TR51V8BABENGFV",
+      "layout": {
+        "i": "01KXTTV50DXQMENWJES8KHCNXK",
+        "x": 18,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50W3BS2F22DWAY8R9SS",
+      "title": "Connected Replicas",
+      "chartQuery": [
+        "sum(redis_connected_slaves{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "layout": {
+        "i": "01KXTTV50W3BS2F22DWAY8R9SS",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50WK6XMEZY6P08C651C",
+      "title": "Master Link Up",
+      "chartQuery": [
+        "avg(redis_master_link_up{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "layout": {
+        "i": "01KXTTV50WK6XMEZY6P08C651C",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50WESV3M9F6VJCS4QGD",
+      "title": "Replication Offset",
+      "chartQuery": [
+        "max(redis_master_repl_offset{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "layout": {
+        "i": "01KXTTV50WESV3M9F6VJCS4QGD",
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50X4XKNBF02W1HMYPPV",
+      "title": "RDB Changes Since Last Save",
+      "chartQuery": [
+        "sum(redis_rdb_changes_since_last_save{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "layout": {
+        "i": "01KXTTV50X4XKNBF02W1HMYPPV",
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50XR552FGCN10KJFRK6",
+      "title": "Latest Fork Duration",
+      "chartQuery": [
+        "max(redis_latest_fork_seconds{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "layout": {
+        "i": "01KXTTV50XR552FGCN10KJFRK6",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50X33VA5F8TECW77VV6",
+      "title": "RDB Saves / sec",
+      "chartQuery": [
+        "sum(rate(redis_rdb_saves_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "layout": {
+        "i": "01KXTTV50X33VA5F8TECW77VV6",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50XGCBP61FF1C3W78M0",
+      "title": "AOF Current Size",
+      "chartQuery": [
+        "sum(redis_aof_current_size_bytes{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "layout": {
+        "i": "01KXTTV50XGCBP61FF1C3W78M0",
+        "x": 12,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50YE0YK38ACWKMPCDN4",
+      "title": "AOF Delayed Fsync",
+      "chartQuery": [
+        "sum(redis_aof_delayed_fsync{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A8MSHF2047Z7HMYSJ",
+      "layout": {
+        "i": "01KXTTV50YE0YK38ACWKMPCDN4",
+        "x": 18,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50Y0MD9MKAEGVZDEXMS",
+      "title": "Network Input / sec",
+      "chartQuery": [
+        "sum(rate(redis_net_input_bytes_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "layout": {
+        "i": "01KXTTV50Y0MD9MKAEGVZDEXMS",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "B/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50Y83QRKFBSTGW3NWD5",
+      "title": "Network Output / sec",
+      "chartQuery": [
+        "sum(rate(redis_net_output_bytes_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "layout": {
+        "i": "01KXTTV50Y83QRKFBSTGW3NWD5",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "B/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50ZX7VG9SJT58QKJT9V",
+      "title": "Redis CPU User / sec",
+      "chartQuery": [
+        "sum(rate(redis_cpu_user_seconds_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "layout": {
+        "i": "01KXTTV50ZX7VG9SJT58QKJT9V",
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV50ZDVTBKFSE6DG97ZA3",
+      "title": "Redis CPU Sys / sec",
+      "chartQuery": [
+        "sum(rate(redis_cpu_sys_seconds_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "layout": {
+        "i": "01KXTTV50ZDVTBKFSE6DG97ZA3",
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV510YAEK3EX1CPMPJ29S",
+      "title": "Process RSS Memory",
+      "chartQuery": [
+        "sum(process_resident_memory_bytes{release=~\"$release\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "layout": {
+        "i": "01KXTTV510YAEK3EX1CPMPJ29S",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV510ZCPW82200TGSX1WA",
+      "title": "Process CPU / sec",
+      "chartQuery": [
+        "sum(rate(process_cpu_seconds_total{release=~\"$release\"}[5m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "layout": {
+        "i": "01KXTTV510ZCPW82200TGSX1WA",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV510PA44WVT5293JKJ50",
+      "title": "Open File Descriptors",
+      "chartQuery": [
+        "sum(process_open_fds{release=~\"$release\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "layout": {
+        "i": "01KXTTV510PA44WVT5293JKJ50",
+        "x": 12,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV5107HRBVM3ZCQCYYMP9",
+      "title": "Scrape Duration",
+      "chartQuery": [
+        "avg(redis_exporter_last_scrape_duration_seconds{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50ARMK7P8226EGHJVR0",
+      "layout": {
+        "i": "01KXTTV5107HRBVM3ZCQCYYMP9",
+        "x": 18,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV511ZZMQSEQMYBD1AB92",
+      "title": "Log Records",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes'",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A1VGBZ8QER4A4PMYQ",
+      "layout": {
+        "i": "01KXTTV511ZZMQSEQMYBD1AB92",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV511BZN0N89YQ1ZXKZ58",
+      "title": "Logs by Category",
+      "chartQuery": "SELECT COALESCE(p_log_category, severity_text, 'unknown') AS category, COUNT(*) AS records FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY category ORDER BY records DESC LIMIT 10",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A1VGBZ8QER4A4PMYQ",
+      "layout": {
+        "i": "01KXTTV511BZN0N89YQ1ZXKZ58",
+        "x": 4,
+        "y": 0,
+        "w": 5,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "category",
+            "title": "category",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "records",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "category"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51KVTDW13F9250C20C9",
+      "title": "Redis Commands in Logs",
+      "chartQuery": "SELECT regexp_replace(body, '^.*\\\"([^\\\"]+)\\\".*$', '\\\\1') AS command, COUNT(*) AS records FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY command ORDER BY records DESC LIMIT 15",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A1VGBZ8QER4A4PMYQ",
+      "layout": {
+        "i": "01KXTTV51KVTDW13F9250C20C9",
+        "x": 9,
+        "y": 0,
+        "w": 7,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "command",
+            "title": "command",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "records",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51K3J3P0RKVNPRM3J5M",
+      "title": "Auth and Error-like Logs",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' AND (body ILIKE '%ERR%' OR body ILIKE '%error%' OR body ILIKE '%AUTH%') GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "line",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A1VGBZ8QER4A4PMYQ",
+      "layout": {
+        "i": "01KXTTV51K3J3P0RKVNPRM3J5M",
+        "x": 16,
+        "y": 0,
+        "w": 8,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51K4PPDWKMRJZDMZB4S",
+      "title": "Recent Redis Logs",
+      "chartQuery": "SELECT p_timestamp, COALESCE(p_log_category, severity_text, 'unknown') AS category, body FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A1VGBZ8QER4A4PMYQ",
+      "layout": {
+        "i": "01KXTTV51K4PPDWKMRJZDMZB4S",
+        "x": 0,
+        "y": 7,
+        "w": 24,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "body",
+            "title": "body",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51KK7Z7XC2TNA9WVSNF",
+      "title": "Trace Spans",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A905NYG9S2CBBBYET",
+      "layout": {
+        "i": "01KXTTV51KK7Z7XC2TNA9WVSNF",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51KPZ9JJ9RYVBEW2WAM",
+      "title": "Error Spans",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' AND (span_status_code != 0 OR span_status_description != 'UNSET')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A905NYG9S2CBBBYET",
+      "layout": {
+        "i": "01KXTTV51KPZ9JJ9RYVBEW2WAM",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51KK1S9HH0B9X0JZCR1",
+      "title": "p95 Span Duration",
+      "chartQuery": "SELECT approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A905NYG9S2CBBBYET",
+      "layout": {
+        "i": "01KXTTV51KK1S9HH0B9X0JZCR1",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51K5R5H4Z0A6FRP9YDR",
+      "title": "Spans by Operation",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY operation ORDER BY spans DESC LIMIT 12",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A905NYG9S2CBBBYET",
+      "layout": {
+        "i": "01KXTTV51K5R5H4Z0A6FRP9YDR",
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "operation",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51K73K30X2JHZQ8R0E8",
+      "title": "Span Status",
+      "chartQuery": "SELECT COALESCE(span_status_description, 'unknown') AS status, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY status ORDER BY spans DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A905NYG9S2CBBBYET",
+      "layout": {
+        "i": "01KXTTV51K73K30X2JHZQ8R0E8",
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "status",
+            "title": "status",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51K9ZV7E4T66GV6YZF2",
+      "title": "Latency by Operation",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS p95_ms, avg(span_duration_ns)/1000000 AS avg_ms FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY operation ORDER BY p95_ms DESC LIMIT 15",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A905NYG9S2CBBBYET",
+      "layout": {
+        "i": "01KXTTV51K9ZV7E4T66GV6YZF2",
+        "x": 0,
+        "y": 7,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "operation",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "p95_ms",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51KJJ5F9F4KMVSTHJ8H",
+      "title": "Recent Error Spans",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_name, COALESCE(\"db.operation.name\", 'unknown') AS operation, span_status_description, span_status_message, span_duration_ns/1000000 AS duration_ms FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' AND (span_status_code != 0 OR span_status_description != 'UNSET') ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A905NYG9S2CBBBYET",
+      "layout": {
+        "i": "01KXTTV51KJJ5F9F4KMVSTHJ8H",
+        "x": 12,
+        "y": 7,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51KA9CKZKSQBDF7ERAE",
+      "title": "Exporter Scrape Errors",
+      "chartQuery": [
+        "sum(redis_exporter_last_scrape_error{release=~\"$release\",redis_role=~\"$role\"}) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A2A7W7PXA72Q69W37",
+      "layout": {
+        "i": "01KXTTV51KA9CKZKSQBDF7ERAE",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV51KEXDF361N8WWKWST4",
+      "title": "Exporter Scrapes / sec",
+      "chartQuery": [
+        "sum(rate(redis_exporter_scrapes_total{release=~\"$release\",redis_role=~\"$role\"}[5m])) by (redis_role)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A2A7W7PXA72Q69W37",
+      "layout": {
+        "i": "01KXTTV51KEXDF361N8WWKWST4",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV51K9BHQGCDRPPTKX8BN",
+      "title": "Target Up",
+      "chartQuery": [
+        "avg(up{release=~\"$release\"}) by (job)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A2A7W7PXA72Q69W37",
+      "layout": {
+        "i": "01KXTTV51K9BHQGCDRPPTKX8BN",
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV51K6V3JG4H26GYZH45N",
+      "title": "Scrape Samples",
+      "chartQuery": [
+        "sum(scrape_samples_scraped{release=~\"$release\"}) by (job)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXTTV50A2A7W7PXA72Q69W37",
+      "layout": {
+        "i": "01KXTTV51K6V3JG4H26GYZH45N",
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXTTV51KCV8RWEM1J8HN2R4G",
+      "title": "Metric Families by Prefix",
+      "chartQuery": "SELECT CASE WHEN metric_name LIKE 'redis.%' THEN 'otel-dotted' WHEN metric_name LIKE 'redis_%' THEN 'redis-exporter' WHEN metric_name LIKE 'process_%' THEN 'process' ELSE 'other' END AS prefix, COUNT(DISTINCT metric_name) AS families FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY prefix ORDER BY families DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A2A7W7PXA72Q69W37",
+      "layout": {
+        "i": "01KXTTV51KCV8RWEM1J8HN2R4G",
+        "x": 0,
+        "y": 7,
+        "w": 8,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "prefix",
+            "title": "prefix",
+            "display": true
+          },
+          "y": {
+            "field": "families",
+            "title": "families",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "prefix"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXTTV51KC95TDNYXFCCP1TWY",
+      "title": "Redis Instances Inventory",
+      "chartQuery": "SELECT DISTINCT COALESCE(\"service.instance.id\", 'unknown') AS instance, COALESCE(redis_role, 'unknown') AS role, COALESCE(release, 'unknown') AS release, COALESCE(\"server.address\", 'unknown') AS server_address FROM $metrics_dataset WHERE metric_name='redis_up' AND p_timestamp >= NOW() - INTERVAL '30 minutes' ORDER BY role, instance",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXTTV50A2A7W7PXA72Q69W37",
+      "layout": {
+        "i": "01KXTTV51KC95TDNYXFCCP1TWY",
+        "x": 8,
+        "y": 7,
+        "w": 16,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "instance",
+            "title": "instance",
+            "display": true
+          },
+          "y": {
+            "field": "role",
+            "title": "role",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

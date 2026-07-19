@@ -977,7 +977,7 @@
     {
       "tile_id": "01KXRCJMY9M77XXHNR6KWV1GMZ",
       "title": "Wait Events",
-      "chartQuery": "SELECT COALESCE(event,'unknown') AS event, SUM(data_point_value) AS waits FROM $metrics_dataset WHERE metric_name='pg_wait_event' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY event ORDER BY waits DESC LIMIT 15",
+      "chartQuery": "SELECT COALESCE(event,'unknown') AS event, SUM(data_point_value) AS waits FROM $metrics_dataset WHERE metric_name='pg_wait_event' GROUP BY event ORDER BY waits DESC LIMIT 15",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1314,7 +1314,7 @@
     {
       "tile_id": "01KXRCJMYA6F98BKFGHQ1NSFAW",
       "title": "Database Cache Hit Ratio",
-      "chartQuery": "SELECT datname, 100 * AVG(data_point_value) AS cache_hit_percent FROM $metrics_dataset WHERE metric_name='pg_stat_database_blks_hit_ratio' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname ORDER BY cache_hit_percent ASC",
+      "chartQuery": "SELECT datname, 100 * AVG(data_point_value) AS cache_hit_percent FROM $metrics_dataset WHERE metric_name='pg_stat_database_blks_hit_ratio' GROUP BY datname ORDER BY cache_hit_percent ASC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1377,7 +1377,7 @@
     {
       "tile_id": "01KXRCJMYA6AH1ZY9BMCG9BY83",
       "title": "Deadlocks and Conflicts by Database",
-      "chartQuery": "SELECT datname, metric_name, SUM(data_point_value) AS events FROM $metrics_dataset WHERE metric_name IN ('pg_stat_database_deadlocks','pg_stat_database_conflicts') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname, metric_name ORDER BY events DESC",
+      "chartQuery": "SELECT datname, metric_name, SUM(data_point_value) AS events FROM $metrics_dataset WHERE metric_name IN ('pg_stat_database_deadlocks','pg_stat_database_conflicts') GROUP BY datname, metric_name ORDER BY events DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1440,7 +1440,7 @@
     {
       "tile_id": "01KXRCJMYAGPW3SP2Y2F9V32BA",
       "title": "Database Size by DB",
-      "chartQuery": "SELECT COALESCE(datname,'unknown') AS datname, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='pg_database_size_bytes' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname ORDER BY bytes DESC",
+      "chartQuery": "SELECT COALESCE(datname,'unknown') AS datname, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='pg_database_size_bytes' GROUP BY datname ORDER BY bytes DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1503,7 +1503,7 @@
     {
       "tile_id": "01KXRCJMYAZARKBYWEWVZKXEHS",
       "title": "Top Table Sizes",
-      "chartQuery": "SELECT COALESCE(\"postgresql.table.name\", relname) AS table_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name IN ('postgresql.table.size','pg_stat_user_tables_table_size_bytes') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY COALESCE(\"postgresql.table.name\", relname) ORDER BY bytes DESC LIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"postgresql.table.name\", relname) AS table_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name IN ('postgresql.table.size','pg_stat_user_tables_table_size_bytes') GROUP BY COALESCE(\"postgresql.table.name\", relname) ORDER BY bytes DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1632,7 +1632,7 @@
     {
       "tile_id": "01KXRCJMYA424601G02E3XKS8X",
       "title": "Table Bloat Ratio",
-      "chartQuery": "SELECT datname, schemaname, relname, 100 * MAX(data_point_value) AS bloat_percent FROM $metrics_dataset WHERE metric_name='pg_stat_user_tables_bloat_ratio' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname, schemaname, relname ORDER BY bloat_percent DESC LIMIT 20",
+      "chartQuery": "SELECT datname, schemaname, relname, 100 * MAX(data_point_value) AS bloat_percent FROM $metrics_dataset WHERE metric_name='pg_stat_user_tables_bloat_ratio' GROUP BY datname, schemaname, relname ORDER BY bloat_percent DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1695,7 +1695,7 @@
     {
       "tile_id": "01KXRCJMYAWHRXT2HZ5JAPAJQ4",
       "title": "Index Health",
-      "chartQuery": "SELECT metric_name, SUM(data_point_value) AS value FROM $metrics_dataset WHERE metric_name IN ('pg_index_invalid_count','pg_index_unused_count','pg_index_unused_size_bytes') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY metric_name ORDER BY value DESC",
+      "chartQuery": "SELECT metric_name, SUM(data_point_value) AS value FROM $metrics_dataset WHERE metric_name IN ('pg_index_invalid_count','pg_index_unused_count','pg_index_unused_size_bytes') GROUP BY metric_name ORDER BY value DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1758,7 +1758,7 @@
     {
       "tile_id": "01KXRCJMYAM9ZGANTF9Y6M360T",
       "title": "Sequence Usage",
-      "chartQuery": "SELECT datname, schemaname, sequencename, 100 * MAX(data_point_value) AS used_percent FROM $metrics_dataset WHERE metric_name='pg_sequence_used_ratio' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY datname, schemaname, sequencename ORDER BY used_percent DESC LIMIT 20",
+      "chartQuery": "SELECT datname, schemaname, sequencename, 100 * MAX(data_point_value) AS used_percent FROM $metrics_dataset WHERE metric_name='pg_sequence_used_ratio' GROUP BY datname, schemaname, sequencename ORDER BY used_percent DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1821,7 +1821,7 @@
     {
       "tile_id": "01KXRCJMYAP75GX7HHW07TKY2X",
       "title": "Statement Calls",
-      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS calls FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_calls_total' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY query_short ORDER BY calls DESC LIMIT 20",
+      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS calls FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_calls_total' GROUP BY query_short ORDER BY calls DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1884,7 +1884,7 @@
     {
       "tile_id": "01KXRCJMYA4DGQKQN2F6PSA2FD",
       "title": "Mean Execution Time",
-      "chartQuery": "SELECT query_short, MAX(data_point_value) AS mean_seconds FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_mean_exec_time_seconds' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY query_short ORDER BY mean_seconds DESC LIMIT 20",
+      "chartQuery": "SELECT query_short, MAX(data_point_value) AS mean_seconds FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_mean_exec_time_seconds' GROUP BY query_short ORDER BY mean_seconds DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2013,7 +2013,7 @@
     {
       "tile_id": "01KXRCJMYAR5DQST4SMJK08E3B",
       "title": "Statement Cache Hit Ratio",
-      "chartQuery": "SELECT query_short, 100 * MAX(data_point_value) AS cache_hit_percent FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_cache_hit_ratio' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY query_short ORDER BY cache_hit_percent ASC LIMIT 20",
+      "chartQuery": "SELECT query_short, 100 * MAX(data_point_value) AS cache_hit_percent FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_cache_hit_ratio' GROUP BY query_short ORDER BY cache_hit_percent ASC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2076,7 +2076,7 @@
     {
       "tile_id": "01KXRCJMYACDADQHQW5DEWDAKX",
       "title": "Statement Rows",
-      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS rows FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_rows_total' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY query_short ORDER BY rows DESC LIMIT 20",
+      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS rows FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_rows_total' GROUP BY query_short ORDER BY rows DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2139,7 +2139,7 @@
     {
       "tile_id": "01KXRCJMYANG8K5X1BJ9KV50T0",
       "title": "Statement WAL Bytes",
-      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS wal_bytes FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_wal_bytes_total' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY query_short ORDER BY wal_bytes DESC LIMIT 20",
+      "chartQuery": "SELECT query_short, MAX(data_point_value)-MIN(data_point_value) AS wal_bytes FROM $metrics_dataset WHERE metric_name='postgres_pg_stat_statements_wal_bytes_total' GROUP BY query_short ORDER BY wal_bytes DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2606,7 +2606,7 @@
     {
       "tile_id": "01KXRCJMYA43X739MJ67GNDQ39",
       "title": "Postgres Log Events",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour'",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2669,7 +2669,7 @@
     {
       "tile_id": "01KXRCJMYBQ30RTVHE2FYFPJB9",
       "title": "Errors / Warnings",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND body_error_severity IN ('ERROR','FATAL','PANIC','WARNING')",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE body_error_severity IN ('ERROR','FATAL','PANIC','WARNING')",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2732,7 +2732,7 @@
     {
       "tile_id": "01KXRCJMYBD2DCGAXWTH2070QR",
       "title": "Logs Over Time",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY time_bucket ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset GROUP BY time_bucket ORDER BY time_bucket",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2795,7 +2795,7 @@
     {
       "tile_id": "01KXRCJMYBQ0Y33TQ71NA8YBAD",
       "title": "Logs by Severity",
-      "chartQuery": "SELECT COALESCE(body_error_severity,'unknown') AS severity, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY severity ORDER BY logs DESC",
+      "chartQuery": "SELECT COALESCE(body_error_severity,'unknown') AS severity, COUNT(*) AS logs FROM $logs_dataset GROUP BY severity ORDER BY logs DESC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2858,7 +2858,7 @@
     {
       "tile_id": "01KXRCJMYBT34YQDPW33FTX9MR",
       "title": "Logs by Database",
-      "chartQuery": "SELECT COALESCE(body_dbname,'unknown') AS database_name, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY database_name ORDER BY logs DESC LIMIT 15",
+      "chartQuery": "SELECT COALESCE(body_dbname,'unknown') AS database_name, COUNT(*) AS logs FROM $logs_dataset GROUP BY database_name ORDER BY logs DESC LIMIT 15",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2921,7 +2921,7 @@
     {
       "tile_id": "01KXRCJMYB5MFNYBRNEGNGNC20",
       "title": "Recent Error Logs",
-      "chartQuery": "SELECT p_timestamp, body_error_severity, body_dbname, body_user, body_application_name, body_message FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND body_error_severity IN ('ERROR','FATAL','PANIC','WARNING') ORDER BY p_timestamp DESC LIMIT 50",
+      "chartQuery": "SELECT p_timestamp, body_error_severity, body_dbname, body_user, body_application_name, body_message FROM $logs_dataset WHERE body_error_severity IN ('ERROR','FATAL','PANIC','WARNING') ORDER BY p_timestamp DESC LIMIT 50",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2984,7 +2984,7 @@
     {
       "tile_id": "01KXRCJMYBTT81TXCTK4PXZQ16",
       "title": "Trace Spans",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour'",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3047,7 +3047,7 @@
     {
       "tile_id": "01KXRCJMYBYRPVMGKTFN539AVK",
       "title": "Error Spans",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND span_status_code <> 0",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE span_status_code <> 0",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3110,7 +3110,7 @@
     {
       "tile_id": "01KXRCJMYBPPYSFYS7MHDYWYFG",
       "title": "Avg Span Duration",
-      "chartQuery": "SELECT AVG(span_duration_ns)/1000000 AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour'",
+      "chartQuery": "SELECT AVG(span_duration_ns)/1000000 AS value FROM $traces_dataset",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3173,7 +3173,7 @@
     {
       "tile_id": "01KXRCJMYB1G34J3YV6YD24CE0",
       "title": "P95 Span Duration",
-      "chartQuery": "SELECT approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour'",
+      "chartQuery": "SELECT approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3236,7 +3236,7 @@
     {
       "tile_id": "01KXRCJMYBT903T84FFSK9EJPR",
       "title": "Spans Over Time",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY time_bucket ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS spans FROM $traces_dataset GROUP BY time_bucket ORDER BY time_bucket",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3299,7 +3299,7 @@
     {
       "tile_id": "01KXRCJMYBNJ6WMP25Q1DQP6S5",
       "title": "Span Duration by Operation",
-      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, AVG(span_duration_ns)/1000000 AS avg_ms, approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS p95_ms, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY operation ORDER BY p95_ms DESC LIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, AVG(span_duration_ns)/1000000 AS avg_ms, approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS p95_ms, COUNT(*) AS spans FROM $traces_dataset GROUP BY operation ORDER BY p95_ms DESC LIMIT 20",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3362,7 +3362,7 @@
     {
       "tile_id": "01KXRCJMYB1M7E49Y7A08494MC",
       "title": "Spans by DB Operation",
-      "chartQuery": "SELECT COALESCE(\"db.operation.name\", 'unknown') AS operation, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY operation ORDER BY spans DESC",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", 'unknown') AS operation, COUNT(*) AS spans FROM $traces_dataset GROUP BY operation ORDER BY spans DESC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3425,7 +3425,7 @@
     {
       "tile_id": "01KXRCJMYBFNKCNGTMN9M7PP74",
       "title": "Slow Trace Queries",
-      "chartQuery": "SELECT p_timestamp, \"db.namespace\" AS database_name, \"db.operation.name\" AS operation, span_name, span_duration_ns/1000000 AS duration_ms, \"db.query.text\" AS query_text FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' ORDER BY span_duration_ns DESC LIMIT 50",
+      "chartQuery": "SELECT p_timestamp, \"db.namespace\" AS database_name, \"db.operation.name\" AS operation, span_name, span_duration_ns/1000000 AS duration_ms, \"db.query.text\" AS query_text FROM $traces_dataset ORDER BY span_duration_ns DESC LIMIT 50",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3688,7 +3688,7 @@
     {
       "tile_id": "01KXRCJMYB5DVS4S6GQ4XRARA7",
       "title": "Metric Inventory",
-      "chartQuery": "SELECT metric_name, COUNT(*) AS samples, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '6 hours' GROUP BY metric_name ORDER BY samples DESC",
+      "chartQuery": "SELECT metric_name, COUNT(*) AS samples, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset GROUP BY metric_name ORDER BY samples DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -3751,7 +3751,7 @@
     {
       "tile_id": "01KXRCJMYBQKENQ6DJGN1KYEHF",
       "title": "Postgres Settings",
-      "chartQuery": "SELECT metric_name, MAX(data_point_value) AS value FROM $metrics_dataset WHERE metric_name LIKE 'pg_settings_%' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY metric_name ORDER BY metric_name",
+      "chartQuery": "SELECT metric_name, MAX(data_point_value) AS value FROM $metrics_dataset WHERE metric_name LIKE 'pg_settings_%' GROUP BY metric_name ORDER BY metric_name",
       "dbName": [
         "$metrics_dataset"
       ],

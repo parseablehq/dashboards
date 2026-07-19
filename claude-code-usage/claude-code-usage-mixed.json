@@ -310,7 +310,7 @@
     },
     {
       "tile_id": "01KW44V4B237NS8QFF23W4QHAX",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(*) AS api_requests,\n       ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -510,7 +510,7 @@
     },
     {
       "tile_id": "01KW44V4B2TW3C07X6M4MMGGE3",
-      "chartQuery": "SELECT COALESCE(model, 'unknown') AS model,\n       COUNT(*) AS api_requests,\n       ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY model\nORDER BY cost_usd DESC",
+      "chartQuery": "SELECT COALESCE(model, 'unknown') AS model, COUNT(*) AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY model\nORDER BY cost_usd DESC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -575,7 +575,7 @@
     },
     {
       "tile_id": "01KW44V4B22WGDZK462D8S7A8B",
-      "chartQuery": "SELECT COALESCE(model, 'unknown') AS model,\n       COUNT(*) AS api_requests\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY model\nORDER BY api_requests DESC",
+      "chartQuery": "SELECT COALESCE(model, 'unknown') AS model, COUNT(*) AS api_requests\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY model\nORDER BY api_requests DESC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -640,7 +640,7 @@
     },
     {
       "tile_id": "01KW44V4B2B2DE8334PYFBKS3W",
-      "chartQuery": "SELECT COALESCE(\"event.name\", body, event_type, 'unknown') AS event_name,\n       COUNT(*) AS events\nFROM $logs_dataset\nGROUP BY event_name\nORDER BY events DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"event.name\", body, event_type, 'unknown') AS event_name, COUNT(*) AS events\nFROM $logs_dataset\nGROUP BY event_name\nORDER BY events DESC\nLIMIT 20",
       "dbName": [
         "$logs_dataset"
       ],
@@ -705,7 +705,7 @@
     },
     {
       "tile_id": "01KW44V4B21WYTVFR26JAF6KAK",
-      "chartQuery": "SELECT COALESCE(tool_name, \"mcp_tool.name\", 'unknown') AS tool,\n       COUNT(*) AS uses\nFROM $logs_dataset\nWHERE tool_name IS NOT NULL OR \"mcp_tool.name\" IS NOT NULL\nGROUP BY tool\nORDER BY uses DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(tool_name, \"mcp_tool.name\", 'unknown') AS tool, COUNT(*) AS uses\nFROM $logs_dataset\nWHERE tool_name IS NOT NULL OR \"mcp_tool.name\" IS NOT NULL\nGROUP BY tool\nORDER BY uses DESC\nLIMIT 20",
       "dbName": [
         "$logs_dataset"
       ],
@@ -770,7 +770,7 @@
     },
     {
       "tile_id": "01KW44V4B2ZEWACGH2NFQ3RJE2",
-      "chartQuery": "SELECT COALESCE(hook_event, hook_name, 'unknown') AS hook,\n       COUNT(*) AS events\nFROM $logs_dataset\nWHERE hook_event IS NOT NULL OR hook_name IS NOT NULL\nGROUP BY hook\nORDER BY events DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(hook_event, hook_name, 'unknown') AS hook, COUNT(*) AS events\nFROM $logs_dataset\nWHERE hook_event IS NOT NULL OR hook_name IS NOT NULL\nGROUP BY hook\nORDER BY events DESC\nLIMIT 20",
       "dbName": [
         "$logs_dataset"
       ],
@@ -835,7 +835,7 @@
     },
     {
       "tile_id": "01KW44V4B2HBCFMYKRZR6Q7R6K",
-      "chartQuery": "SELECT COALESCE(command_name, 'unknown') AS command,\n       COUNT(*) AS uses\nFROM $logs_dataset\nWHERE command_name IS NOT NULL\nGROUP BY command\nORDER BY uses DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(command_name, 'unknown') AS command, COUNT(*) AS uses\nFROM $logs_dataset\nWHERE command_name IS NOT NULL\nGROUP BY command\nORDER BY uses DESC\nLIMIT 20",
       "dbName": [
         "$logs_dataset"
       ],
@@ -900,7 +900,7 @@
     },
     {
       "tile_id": "01KW44V4B2SSQEVQAK7D3H87ZB",
-      "chartQuery": "SELECT COALESCE(\"plugin.name\", \"marketplace.name\", 'unknown') AS plugin,\n       COUNT(*) AS events\nFROM $logs_dataset\nWHERE \"plugin.name\" IS NOT NULL OR \"marketplace.name\" IS NOT NULL\nGROUP BY plugin\nORDER BY events DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"plugin.name\", \"marketplace.name\", 'unknown') AS plugin, COUNT(*) AS events\nFROM $logs_dataset\nWHERE \"plugin.name\" IS NOT NULL OR \"marketplace.name\" IS NOT NULL\nGROUP BY plugin\nORDER BY events DESC\nLIMIT 20",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1101,7 +1101,7 @@
     },
     {
       "tile_id": "01KW44V4B2HGJGJ626HTT1A6SH",
-      "chartQuery": "SELECT COALESCE(error_name, error_type, error_code, error, 'unknown') AS error_label,\n       COUNT(*) AS errors\nFROM $logs_dataset\nWHERE error IS NOT NULL OR error_name IS NOT NULL OR error_type IS NOT NULL OR error_code IS NOT NULL\nGROUP BY error_label\nORDER BY errors DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(error_name, error_type, error_code, error, 'unknown') AS error_label, COUNT(*) AS errors\nFROM $logs_dataset\nWHERE error IS NOT NULL OR error_name IS NOT NULL OR error_type IS NOT NULL OR error_code IS NOT NULL\nGROUP BY error_label\nORDER BY errors DESC\nLIMIT 20",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1227,7 +1227,7 @@
     },
     {
       "tile_id": "01KW44V4B23YAEMY1WEFVWAQNQ",
-      "chartQuery": "SELECT \"session.id\" AS session_id,\n       MIN(p_timestamp) AS start_time,\n       MAX(p_timestamp) AS end_time,\n       COUNT(*) AS events,\n       COUNT(*) FILTER (WHERE \"event.name\" = 'api_request') AS api_requests,\n       ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nGROUP BY session_id\nORDER BY end_time DESC\nLIMIT 50",
+      "chartQuery": "SELECT \"session.id\" AS session_id, MIN(p_timestamp) AS start_time, MAX(p_timestamp) AS end_time, COUNT(*) AS events, COUNT(*) FILTER (WHERE \"event.name\" = 'api_request') AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nGROUP BY session_id\nORDER BY end_time DESC\nLIMIT 50",
       "dbName": [
         "$logs_dataset"
       ],

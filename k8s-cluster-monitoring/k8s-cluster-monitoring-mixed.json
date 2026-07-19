@@ -2526,7 +2526,7 @@
     {
       "tile_id": "01KXQDE68NN3MN1PEENGXNZ4RY",
       "title": "Node Ready %",
-      "chartQuery": "SELECT 100 * SUM(data_point_value) / NULLIF(COUNT(*), 0) AS value FROM $cluster_metrics_dataset WHERE metric_name = 'k8s.node.condition_ready' AND p_timestamp >= NOW() - INTERVAL '10 minutes' AND \"k8s.node.name\" IS NOT NULL",
+      "chartQuery": "SELECT 100 * SUM(data_point_value) / NULLIF(COUNT(*), 0) AS value FROM $cluster_metrics_dataset WHERE metric_name = 'k8s.node.condition_ready' AND \"k8s.node.name\" IS NOT NULL",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -2591,7 +2591,7 @@
     {
       "tile_id": "01KXQDE68QGF7G03WM95WX1HCR",
       "title": "Cluster CPU Usage %",
-      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.cpu.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.allocatable_cpu' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.cpu.usage','k8s.node.allocatable_cpu') AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.cpu.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.allocatable_cpu' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.cpu.usage','k8s.node.allocatable_cpu')",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -2656,7 +2656,7 @@
     {
       "tile_id": "01KXQDE68Q14B39CXD8DYG5RWR",
       "title": "Cluster Memory Usage %",
-      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.memory.working_set' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.allocatable_memory' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.memory.working_set','k8s.node.allocatable_memory') AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.memory.working_set' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.allocatable_memory' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.memory.working_set','k8s.node.allocatable_memory')",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -2721,7 +2721,7 @@
     {
       "tile_id": "01KXQDE68QGFQSYKPKSPXHW4B9",
       "title": "Cluster Filesystem Usage %",
-      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.filesystem.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.filesystem.capacity' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.filesystem.usage','k8s.node.filesystem.capacity') AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "chartQuery": "SELECT 100 * SUM(CASE WHEN metric_name='k8s.node.filesystem.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.filesystem.capacity' THEN data_point_value ELSE 0 END),0) AS value FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.filesystem.usage','k8s.node.filesystem.capacity')",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -2786,7 +2786,7 @@
     {
       "tile_id": "01KXQDE68QEJB9QJ0EFJMNAQ05",
       "title": "Pods by Phase",
-      "chartQuery": "SELECT CASE CAST(data_point_value AS INT) WHEN 1 THEN 'Pending' WHEN 2 THEN 'Running' WHEN 3 THEN 'Succeeded' WHEN 4 THEN 'Failed' WHEN 5 THEN 'Unknown' ELSE CAST(data_point_value AS VARCHAR) END AS pod_phase, COUNT(DISTINCT \"k8s.pod.name\") AS pods FROM $cluster_metrics_dataset WHERE metric_name='k8s.pod.phase' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY pod_phase ORDER BY pods DESC",
+      "chartQuery": "SELECT CASE CAST(data_point_value AS INT) WHEN 1 THEN 'Pending' WHEN 2 THEN 'Running' WHEN 3 THEN 'Succeeded' WHEN 4 THEN 'Failed' WHEN 5 THEN 'Unknown' ELSE CAST(data_point_value AS VARCHAR) END AS pod_phase, COUNT(DISTINCT \"k8s.pod.name\") AS pods FROM $cluster_metrics_dataset WHERE metric_name='k8s.pod.phase' GROUP BY pod_phase ORDER BY pods DESC",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -2849,7 +2849,7 @@
     {
       "tile_id": "01KXQDE68Q7243QPR6EHNAXZTY",
       "title": "Namespaces by Phase",
-      "chartQuery": "SELECT CASE CAST(data_point_value AS INT) WHEN 1 THEN 'Active' WHEN 2 THEN 'Terminating' ELSE CAST(data_point_value AS VARCHAR) END AS namespace_phase, COUNT(DISTINCT \"k8s.namespace.name\") AS namespaces FROM $cluster_metrics_dataset WHERE metric_name='k8s.namespace.phase' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_phase ORDER BY namespaces DESC",
+      "chartQuery": "SELECT CASE CAST(data_point_value AS INT) WHEN 1 THEN 'Active' WHEN 2 THEN 'Terminating' ELSE CAST(data_point_value AS VARCHAR) END AS namespace_phase, COUNT(DISTINCT \"k8s.namespace.name\") AS namespaces FROM $cluster_metrics_dataset WHERE metric_name='k8s.namespace.phase' GROUP BY namespace_phase ORDER BY namespaces DESC",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -2912,7 +2912,7 @@
     {
       "tile_id": "01KXQDE68QJ0K9433MK20K8VJV",
       "title": "Node Filesystem Usage %",
-      "chartQuery": "SELECT \"k8s.node.name\" AS node, 100 * SUM(CASE WHEN metric_name='k8s.node.filesystem.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.filesystem.capacity' THEN data_point_value ELSE 0 END),0) AS usage_percent FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.filesystem.usage','k8s.node.filesystem.capacity') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY \"k8s.node.name\" ORDER BY usage_percent DESC",
+      "chartQuery": "SELECT \"k8s.node.name\" AS node, 100 * SUM(CASE WHEN metric_name='k8s.node.filesystem.usage' THEN data_point_value ELSE 0 END) / NULLIF(SUM(CASE WHEN metric_name='k8s.node.filesystem.capacity' THEN data_point_value ELSE 0 END),0) AS usage_percent FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.node.filesystem.usage','k8s.node.filesystem.capacity') GROUP BY \"k8s.node.name\" ORDER BY usage_percent DESC",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -2975,7 +2975,7 @@
     {
       "tile_id": "01KXQDE68QB30ZYMTBAFAQKDHX",
       "title": "Node Network Errors",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.node.name\" AS node, SUM(data_point_value) AS errors FROM $cluster_metrics_dataset WHERE metric_name='k8s.node.network.errors' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY time_bucket, \"k8s.node.name\" ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.node.name\" AS node, SUM(data_point_value) AS errors FROM $cluster_metrics_dataset WHERE metric_name='k8s.node.network.errors' GROUP BY time_bucket, \"k8s.node.name\" ORDER BY time_bucket",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -3038,7 +3038,7 @@
     {
       "tile_id": "01KXQDE68QFXDNADY47881DQM3",
       "title": "Pod Restarts Over Time",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.namespace.name\" AS namespace_name, SUM(data_point_value) AS restarts FROM $cluster_metrics_dataset WHERE metric_name='k8s.container.restarts' AND p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" IS NOT NULL GROUP BY time_bucket, namespace_name ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.namespace.name\" AS namespace_name, SUM(data_point_value) AS restarts FROM $cluster_metrics_dataset WHERE metric_name='k8s.container.restarts' AND \"k8s.namespace.name\" IS NOT NULL GROUP BY time_bucket, namespace_name ORDER BY time_bucket",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -3101,7 +3101,7 @@
     {
       "tile_id": "01KXQDE68Q743H7D02KA3WMGFT",
       "title": "Top Restarting Containers",
-      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.pod.name\" AS pod, \"k8s.container.name\" AS container, MAX(data_point_value) AS restarts FROM $cluster_metrics_dataset WHERE metric_name='k8s.container.restarts' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY \"k8s.namespace.name\", \"k8s.pod.name\", \"k8s.container.name\" HAVING MAX(data_point_value) > 0 ORDER BY restarts DESC LIMIT 25",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.pod.name\" AS pod, \"k8s.container.name\" AS container, MAX(data_point_value) AS restarts FROM $cluster_metrics_dataset WHERE metric_name='k8s.container.restarts' GROUP BY \"k8s.namespace.name\", \"k8s.pod.name\", \"k8s.container.name\" HAVING MAX(data_point_value) > 0 ORDER BY restarts DESC LIMIT 25",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -3164,7 +3164,7 @@
     {
       "tile_id": "01KXQDE68QH6JDGX2SYR8S0ZDS",
       "title": "Pod Network Errors by Namespace",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.namespace.name\" AS namespace_name, SUM(data_point_value) AS errors FROM $cluster_metrics_dataset WHERE metric_name='k8s.pod.network.errors' AND p_timestamp >= NOW() - INTERVAL '1 hour' GROUP BY time_bucket, namespace_name ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, \"k8s.namespace.name\" AS namespace_name, SUM(data_point_value) AS errors FROM $cluster_metrics_dataset WHERE metric_name='k8s.pod.network.errors' GROUP BY time_bucket, namespace_name ORDER BY time_bucket",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -3227,7 +3227,7 @@
     {
       "tile_id": "01KXQDE68QD5CHA5K19G3HKGAH",
       "title": "Unavailable Deployments",
-      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.deployment.name\" AS deployment, SUM(CASE WHEN metric_name='k8s.deployment.desired' THEN data_point_value ELSE 0 END) AS desired, SUM(CASE WHEN metric_name='k8s.deployment.available' THEN data_point_value ELSE 0 END) AS available, SUM(CASE WHEN metric_name='k8s.deployment.desired' THEN data_point_value ELSE 0 END) - SUM(CASE WHEN metric_name='k8s.deployment.available' THEN data_point_value ELSE 0 END) AS unavailable FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.deployment.desired','k8s.deployment.available') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name, deployment HAVING unavailable > 0 ORDER BY unavailable DESC LIMIT 30",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.deployment.name\" AS deployment, SUM(CASE WHEN metric_name='k8s.deployment.desired' THEN data_point_value ELSE 0 END) AS desired, SUM(CASE WHEN metric_name='k8s.deployment.available' THEN data_point_value ELSE 0 END) AS available, SUM(CASE WHEN metric_name='k8s.deployment.desired' THEN data_point_value ELSE 0 END) - SUM(CASE WHEN metric_name='k8s.deployment.available' THEN data_point_value ELSE 0 END) AS unavailable FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.deployment.desired','k8s.deployment.available') GROUP BY namespace_name, deployment HAVING unavailable > 0 ORDER BY unavailable DESC LIMIT 30",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -3290,7 +3290,7 @@
     {
       "tile_id": "01KXQDE68QQWHT0GZH0C4QP6CT",
       "title": "DaemonSets Misscheduled",
-      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.daemonset.name\" AS daemonset, MAX(data_point_value) AS misscheduled_nodes FROM $cluster_metrics_dataset WHERE metric_name='k8s.daemonset.misscheduled_nodes' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name, daemonset HAVING MAX(data_point_value) > 0 ORDER BY misscheduled_nodes DESC LIMIT 30",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.daemonset.name\" AS daemonset, MAX(data_point_value) AS misscheduled_nodes FROM $cluster_metrics_dataset WHERE metric_name='k8s.daemonset.misscheduled_nodes' GROUP BY namespace_name, daemonset HAVING MAX(data_point_value) > 0 ORDER BY misscheduled_nodes DESC LIMIT 30",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -3353,7 +3353,7 @@
     {
       "tile_id": "01KXQDE68QE3S3EZ9DTREWYQ8A",
       "title": "StatefulSets Not Ready",
-      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.statefulset.name\" AS statefulset, SUM(CASE WHEN metric_name='k8s.statefulset.desired_pods' THEN data_point_value ELSE 0 END) AS desired, SUM(CASE WHEN metric_name='k8s.statefulset.ready_pods' THEN data_point_value ELSE 0 END) AS ready, SUM(CASE WHEN metric_name='k8s.statefulset.desired_pods' THEN data_point_value ELSE 0 END) - SUM(CASE WHEN metric_name='k8s.statefulset.ready_pods' THEN data_point_value ELSE 0 END) AS not_ready FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.statefulset.desired_pods','k8s.statefulset.ready_pods') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name, statefulset HAVING not_ready > 0 ORDER BY not_ready DESC LIMIT 30",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, \"k8s.statefulset.name\" AS statefulset, SUM(CASE WHEN metric_name='k8s.statefulset.desired_pods' THEN data_point_value ELSE 0 END) AS desired, SUM(CASE WHEN metric_name='k8s.statefulset.ready_pods' THEN data_point_value ELSE 0 END) AS ready, SUM(CASE WHEN metric_name='k8s.statefulset.desired_pods' THEN data_point_value ELSE 0 END) - SUM(CASE WHEN metric_name='k8s.statefulset.ready_pods' THEN data_point_value ELSE 0 END) AS not_ready FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.statefulset.desired_pods','k8s.statefulset.ready_pods') GROUP BY namespace_name, statefulset HAVING not_ready > 0 ORDER BY not_ready DESC LIMIT 30",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -3416,7 +3416,7 @@
     {
       "tile_id": "01KXQDE68Q4A5ZE33YXDWH9XSQ",
       "title": "Namespace CPU Request vs Usage",
-      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, SUM(CASE WHEN metric_name='k8s.container.cpu_request' THEN data_point_value ELSE 0 END) AS requested_cpu, SUM(CASE WHEN metric_name='k8s.pod.cpu.usage' THEN data_point_value ELSE 0 END) AS used_cpu FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.container.cpu_request','k8s.pod.cpu.usage') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name ORDER BY requested_cpu DESC LIMIT 30",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, SUM(CASE WHEN metric_name='k8s.container.cpu_request' THEN data_point_value ELSE 0 END) AS requested_cpu, SUM(CASE WHEN metric_name='k8s.pod.cpu.usage' THEN data_point_value ELSE 0 END) AS used_cpu FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.container.cpu_request','k8s.pod.cpu.usage') GROUP BY namespace_name ORDER BY requested_cpu DESC LIMIT 30",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -3479,7 +3479,7 @@
     {
       "tile_id": "01KXQDE68QDVJEAX24KMWSHTWM",
       "title": "Namespace Memory Request vs Usage",
-      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, SUM(CASE WHEN metric_name='k8s.container.memory_request' THEN data_point_value ELSE 0 END) AS requested_memory, SUM(CASE WHEN metric_name='k8s.pod.memory.working_set' THEN data_point_value ELSE 0 END) AS used_memory FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.container.memory_request','k8s.pod.memory.working_set') AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY namespace_name ORDER BY requested_memory DESC LIMIT 30",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, SUM(CASE WHEN metric_name='k8s.container.memory_request' THEN data_point_value ELSE 0 END) AS requested_memory, SUM(CASE WHEN metric_name='k8s.pod.memory.working_set' THEN data_point_value ELSE 0 END) AS used_memory FROM $cluster_metrics_dataset WHERE metric_name IN ('k8s.container.memory_request','k8s.pod.memory.working_set') GROUP BY namespace_name ORDER BY requested_memory DESC LIMIT 30",
       "dbName": [
         "$cluster_metrics_dataset"
       ],

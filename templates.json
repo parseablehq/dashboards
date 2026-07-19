@@ -113,6 +113,22 @@
       ]
     },
     {
+      "name": "SQL Server Monitoring",
+      "dirName": "sql-server-monitoring",
+      "fileName": "sql-server-monitoring-mixed.json",
+      "description": "Monitor Microsoft SQL Server availability, batch requests, buffer cache, memory, database I/O, TempDB, locks, waits, deadlocks, query logs, traces, and metric inventory.",
+      "source": "Mixed",
+      "tags": [
+        "sqlserver",
+        "mssql",
+        "database",
+        "metrics",
+        "logs",
+        "traces",
+        "promql"
+      ]
+    },
+    {
       "name": "MongoDB Monitoring",
       "dirName": "mongodb-monitoring",
       "fileName": "mongodb-monitoring-mixed.json",

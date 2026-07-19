@@ -2270,7 +2270,7 @@
     },
     {
       "tile_id": "01KWCWP9Q4H1YS01XZ1HBZKBJC",
-      "chartQuery": "SELECT component_type, component, COUNT(DISTINCT metric_name) AS metrics, COUNT(*) AS rows\nFROM (\n  SELECT CASE\n           WHEN receiver IS NOT NULL THEN 'receiver'\n           WHEN processor IS NOT NULL THEN 'processor'\n           WHEN exporter IS NOT NULL THEN 'exporter'\n           ELSE 'process'\n         END AS component_type,\n         COALESCE(receiver, processor, exporter, \"service.name\", 'unknown') AS component,\n         metric_name\n  FROM $metrics_dataset\n  WHERE metric_name LIKE 'otelcol%'\n) t\nGROUP BY component_type, component\nORDER BY component_type, rows DESC",
+      "chartQuery": "SELECT component_type, component, COUNT(DISTINCT metric_name) AS metrics, COUNT(*) AS rows\nFROM ( SELECT CASE WHEN receiver IS NOT NULL THEN 'receiver' WHEN processor IS NOT NULL THEN 'processor' WHEN exporter IS NOT NULL THEN 'exporter' ELSE 'process' END AS component_type, COALESCE(receiver, processor, exporter, \"service.name\", 'unknown') AS component, metric_name FROM $metrics_dataset WHERE metric_name LIKE 'otelcol%'\n) t\nGROUP BY component_type, component\nORDER BY component_type, rows DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -4045,7 +4045,7 @@
       "title": "Service Instance Details",
       "chartType": "table",
       "tileType": "code",
-      "chartQuery": "SELECT \"service.instance.id\" AS service_instance_id,\n       \"service.name\" AS service_name,\n       COUNT(DISTINCT metric_name) AS metrics,\n       MIN(p_timestamp) AS first_seen,\n       MAX(p_timestamp) AS last_seen\nFROM $metrics_dataset\nWHERE metric_name LIKE 'otelcol%'\n  AND \"service.name\" IS NOT NULL\nGROUP BY \"service.instance.id\", \"service.name\"\nORDER BY last_seen DESC",
+      "chartQuery": "SELECT \"service.instance.id\" AS service_instance_id, \"service.name\" AS service_name, COUNT(DISTINCT metric_name) AS metrics, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen\nFROM $metrics_dataset\nWHERE metric_name LIKE 'otelcol%' AND \"service.name\" IS NOT NULL\nGROUP BY \"service.instance.id\", \"service.name\"\nORDER BY last_seen DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -4109,7 +4109,7 @@
       "title": "Spans Flow Summary",
       "chartType": "table",
       "tileType": "code",
-      "chartQuery": "SELECT component_type, component, SUM(samples) AS samples\nFROM (\n  SELECT 'receiver' AS component_type, COALESCE(receiver, 'unknown') AS component, COUNT(*) AS samples\n  FROM $metrics_dataset\n  WHERE metric_name = 'otelcol_receiver_accepted_spans' AND receiver IS NOT NULL\n  GROUP BY receiver\n  UNION ALL\n  SELECT 'exporter' AS component_type, COALESCE(exporter, 'unknown') AS component, COUNT(*) AS samples\n  FROM $metrics_dataset\n  WHERE metric_name = 'otelcol_exporter_sent_spans' AND exporter IS NOT NULL\n  GROUP BY exporter\n) t\nGROUP BY component_type, component\nORDER BY component_type, samples DESC",
+      "chartQuery": "SELECT component_type, component, SUM(samples) AS samples\nFROM ( SELECT 'receiver' AS component_type, COALESCE(receiver, 'unknown') AS component, COUNT(*) AS samples FROM $metrics_dataset WHERE metric_name = 'otelcol_receiver_accepted_spans' AND receiver IS NOT NULL GROUP BY receiver UNION ALL SELECT 'exporter' AS component_type, COALESCE(exporter, 'unknown') AS component, COUNT(*) AS samples FROM $metrics_dataset WHERE metric_name = 'otelcol_exporter_sent_spans' AND exporter IS NOT NULL GROUP BY exporter\n) t\nGROUP BY component_type, component\nORDER BY component_type, samples DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -4173,7 +4173,7 @@
       "title": "Metric Points Flow Summary",
       "chartType": "table",
       "tileType": "code",
-      "chartQuery": "SELECT component_type, component, SUM(samples) AS samples\nFROM (\n  SELECT 'receiver' AS component_type, COALESCE(receiver, 'unknown') AS component, COUNT(*) AS samples\n  FROM $metrics_dataset\n  WHERE metric_name = 'otelcol_receiver_accepted_metric_points' AND receiver IS NOT NULL\n  GROUP BY receiver\n  UNION ALL\n  SELECT 'exporter' AS component_type, COALESCE(exporter, 'unknown') AS component, COUNT(*) AS samples\n  FROM $metrics_dataset\n  WHERE metric_name = 'otelcol_exporter_sent_metric_points' AND exporter IS NOT NULL\n  GROUP BY exporter\n) t\nGROUP BY component_type, component\nORDER BY component_type, samples DESC",
+      "chartQuery": "SELECT component_type, component, SUM(samples) AS samples\nFROM ( SELECT 'receiver' AS component_type, COALESCE(receiver, 'unknown') AS component, COUNT(*) AS samples FROM $metrics_dataset WHERE metric_name = 'otelcol_receiver_accepted_metric_points' AND receiver IS NOT NULL GROUP BY receiver UNION ALL SELECT 'exporter' AS component_type, COALESCE(exporter, 'unknown') AS component, COUNT(*) AS samples FROM $metrics_dataset WHERE metric_name = 'otelcol_exporter_sent_metric_points' AND exporter IS NOT NULL GROUP BY exporter\n) t\nGROUP BY component_type, component\nORDER BY component_type, samples DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -4237,7 +4237,7 @@
       "title": "Log Records Flow Summary",
       "chartType": "table",
       "tileType": "code",
-      "chartQuery": "SELECT component_type, component, SUM(samples) AS samples\nFROM (\n  SELECT 'receiver' AS component_type, COALESCE(receiver, 'unknown') AS component, COUNT(*) AS samples\n  FROM $metrics_dataset\n  WHERE metric_name = 'otelcol_receiver_accepted_log_records' AND receiver IS NOT NULL\n  GROUP BY receiver\n  UNION ALL\n  SELECT 'exporter' AS component_type, COALESCE(exporter, 'unknown') AS component, COUNT(*) AS samples\n  FROM $metrics_dataset\n  WHERE metric_name = 'otelcol_exporter_sent_log_records' AND exporter IS NOT NULL\n  GROUP BY exporter\n) t\nGROUP BY component_type, component\nORDER BY component_type, samples DESC",
+      "chartQuery": "SELECT component_type, component, SUM(samples) AS samples\nFROM ( SELECT 'receiver' AS component_type, COALESCE(receiver, 'unknown') AS component, COUNT(*) AS samples FROM $metrics_dataset WHERE metric_name = 'otelcol_receiver_accepted_log_records' AND receiver IS NOT NULL GROUP BY receiver UNION ALL SELECT 'exporter' AS component_type, COALESCE(exporter, 'unknown') AS component, COUNT(*) AS samples FROM $metrics_dataset WHERE metric_name = 'otelcol_exporter_sent_log_records' AND exporter IS NOT NULL GROUP BY exporter\n) t\nGROUP BY component_type, component\nORDER BY component_type, samples DESC",
       "dbName": [
         "$metrics_dataset"
       ],

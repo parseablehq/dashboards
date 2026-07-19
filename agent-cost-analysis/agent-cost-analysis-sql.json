@@ -47,7 +47,7 @@
     {
       "tile_id": "01KWANCH81F2P5AQ08SGF1JRB9",
       "title": "Total Invocations",
-      "chartQuery": "SELECT COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent' ",
+      "chartQuery": "SELECT COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'",
       "dbName": [
         "$trace_dataset"
       ],
@@ -106,7 +106,7 @@
     {
       "tile_id": "01KWAXM8RJ1FDWC1K2G6H47F4X",
       "title": "Total Chat Calls",
-      "chartQuery": "SELECT COUNT(*) AS chat_calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat' ",
+      "chartQuery": "SELECT COUNT(*) AS chat_calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'",
       "dbName": [
         "$trace_dataset"
       ],
@@ -165,7 +165,7 @@
     {
       "tile_id": "01KWAF5BXD0DHVTYMM71X36MGG",
       "title": "Total Tool Calls",
-      "chartQuery": "SELECT COUNT(*) AS tool_calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'execute_tool' ",
+      "chartQuery": "SELECT COUNT(*) AS tool_calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'execute_tool'",
       "dbName": [
         "$trace_dataset"
       ],
@@ -224,7 +224,7 @@
     {
       "tile_id": "01KWAD86E19W3CXGN9JF9KFXTM",
       "title": "Total Cost ($)",
-      "chartQuery": "SELECT ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS total_cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL",
+      "chartQuery": "SELECT ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS total_cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL AND agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -284,7 +284,7 @@
     {
       "tile_id": "01KWA922KVPGDJ5WJYJB8VWQC7",
       "title": "Total Token Usage",
-      "chartQuery": "SELECT SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "chartQuery": "SELECT SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat' AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -343,7 +343,7 @@
     {
       "tile_id": "01KWAVZJHPBGRVY8WG807N3H3D",
       "title": "Avg Cost per Invocation",
-      "chartQuery": "SELECT ROUND(AVG(invocation_cost_usd), 6) AS avg_invocation_cost_usd\nFROM (\n  SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS invocation_cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n) t\nWHERE invocation_cost_usd IS NOT NULL",
+      "chartQuery": "SELECT ROUND(AVG(invocation_cost_usd), 6) AS avg_invocation_cost_usd\nFROM ( SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS invocation_cost_usd FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY span_trace_id\n) t\nWHERE invocation_cost_usd IS NOT NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -402,7 +402,7 @@
     {
       "tile_id": "01KWAPFDW92A38TH8R3PAM804A",
       "title": "P95 Cost per Invocation",
-      "chartQuery": "SELECT ROUND(approx_percentile_cont(invocation_cost_usd, 0.95), 6) AS p95_invocation_cost_usd\nFROM (\n  SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS invocation_cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n) t\nWHERE invocation_cost_usd IS NOT NULL",
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(invocation_cost_usd, 0.95), 6) AS p95_invocation_cost_usd\nFROM ( SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS invocation_cost_usd FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY span_trace_id\n) t\nWHERE invocation_cost_usd IS NOT NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -461,7 +461,7 @@
     {
       "tile_id": "01KWA5J55PF0JFYJQKKGAM7K2A",
       "title": "Cost Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -520,7 +520,7 @@
     {
       "tile_id": "01KWAZ2SRYB8P4R9RF06TWFPZ6",
       "title": "Cost Rate of Change",
-      "chartQuery": "WITH hourly AS (\n  SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n         SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY time_bin\n)\nSELECT time_bin,\n       ROUND(cost_usd, 6) AS cost_usd,\n       ROUND(cost_usd - LAG(cost_usd) OVER (ORDER BY time_bin), 6) AS cost_change_usd,\n       ROUND((cost_usd - LAG(cost_usd) OVER (ORDER BY time_bin)) * 100.0 / NULLIF(LAG(cost_usd) OVER (ORDER BY time_bin), 0), 2) AS cost_change_pct\nFROM hourly\nORDER BY time_bin ASC",
+      "chartQuery": "WITH hourly AS ( SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY time_bin\n)\nSELECT time_bin, ROUND(cost_usd, 6) AS cost_usd, ROUND(cost_usd - LAG(cost_usd) OVER (ORDER BY time_bin), 6) AS cost_change_usd, ROUND((cost_usd - LAG(cost_usd) OVER (ORDER BY time_bin)) * 100.0 / NULLIF(LAG(cost_usd) OVER (ORDER BY time_bin), 0), 2) AS cost_change_pct\nFROM hourly\nORDER BY time_bin ASC",
       "dbName": [
         "$trace_dataset",
         "hourly"
@@ -580,7 +580,7 @@
     {
       "tile_id": "01KWA118DSA7CDH6EKQ3DME84D",
       "title": "Cumulative Cost",
-      "chartQuery": "WITH hourly AS (\n  SELECT date_bin('1 min', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n         SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY time_bin\n)\nSELECT time_bin,\n       ROUND(SUM(cost_usd) OVER (ORDER BY time_bin ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 6) AS cumulative_cost_usd\nFROM hourly\nORDER BY time_bin ASC",
+      "chartQuery": "WITH hourly AS ( SELECT date_bin('1 min', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY time_bin\n)\nSELECT time_bin, ROUND(SUM(cost_usd) OVER (ORDER BY time_bin ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 6) AS cumulative_cost_usd\nFROM hourly\nORDER BY time_bin ASC",
       "dbName": [
         "$trace_dataset",
         "hourly"
@@ -640,7 +640,7 @@
     {
       "tile_id": "01KWA6B7406JNRJPRYBS0DY76M",
       "title": "Cost per Token Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0), 10) AS cost_per_token_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0), 10) AS cost_per_token_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -699,7 +699,7 @@
     {
       "tile_id": "01KWAXJ1WTB3JPA6JQX1RGBAQR",
       "title": "Cost Per Model",
-      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
       "dbName": [
         "$trace_dataset"
       ],
@@ -763,7 +763,7 @@
     {
       "tile_id": "01KWA199KC9QKSEYQFTSV8HRY3",
       "title": "Cost by Provider and Model",
-      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\", 'inferred') AS provider,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       COUNT(*) AS events,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       ROUND(AVG(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS avg_event_cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY provider, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\", 'inferred') AS provider, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COUNT(*) AS events, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd, ROUND(AVG(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS avg_event_cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY provider, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
       "dbName": [
         "$trace_dataset"
       ],
@@ -822,7 +822,7 @@
     {
       "tile_id": "01KWADFYAB59D4EHZSHZM9RH3Z",
       "title": "Model Cost Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -886,7 +886,7 @@
     {
       "tile_id": "01KWABFY2JZFMFJ1GEQMKFN92N",
       "title": "Highest Cost Invocations",
-      "chartQuery": "SELECT span_trace_id,\n       MIN(p_timestamp) AS start_time,\n       COALESCE(MAX(\"gen_ai.provider.name\"), 'inferred') AS provider,\n       COALESCE(MAX(\"gen_ai.request.model\"), MAX(\"gen_ai.response.model\"), 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens,\n       SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY span_trace_id\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 50",
+      "chartQuery": "SELECT span_trace_id, MIN(p_timestamp) AS start_time, COALESCE(MAX(\"gen_ai.provider.name\"), 'inferred') AS provider, COALESCE(MAX(\"gen_ai.request.model\"), MAX(\"gen_ai.response.model\"), 'unknown') AS model, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd, SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens, SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY span_trace_id\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 50",
       "dbName": [
         "$trace_dataset"
       ],
@@ -945,7 +945,7 @@
     {
       "tile_id": "01KWAAVRVPCCPN2TVWC3J57BAF",
       "title": "Invocation Cost Distribution",
-      "chartQuery": "SELECT CASE\n         WHEN invocation_cost_usd < 0.001 THEN '< $0.001'\n         WHEN invocation_cost_usd < 0.01 THEN '$0.001 - $0.01'\n         WHEN invocation_cost_usd < 0.05 THEN '$0.01 - $0.05'\n         WHEN invocation_cost_usd < 0.10 THEN '$0.05 - $0.10'\n         ELSE '>= $0.10'\n       END AS cost_bucket,\n       COUNT(*) AS invocations\nFROM (\n  SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS invocation_cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n) t\nWHERE invocation_cost_usd IS NOT NULL\nGROUP BY cost_bucket\nORDER BY cost_bucket ASC",
+      "chartQuery": "SELECT CASE WHEN invocation_cost_usd < 0.001 THEN '< $0.001' WHEN invocation_cost_usd < 0.01 THEN '$0.001 - $0.01' WHEN invocation_cost_usd < 0.05 THEN '$0.01 - $0.05' WHEN invocation_cost_usd < 0.10 THEN '$0.05 - $0.10' ELSE '>= $0.10' END AS cost_bucket, COUNT(*) AS invocations\nFROM ( SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS invocation_cost_usd FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY span_trace_id\n) t\nWHERE invocation_cost_usd IS NOT NULL\nGROUP BY cost_bucket\nORDER BY cost_bucket ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1004,7 +1004,7 @@
     {
       "tile_id": "01KWA7J9Z4TC4YD3CMA2SG0JB5",
       "title": "Cost vs Tokens by Invocation",
-      "chartQuery": "SELECT span_trace_id,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_tokens\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY span_trace_id\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 100",
+      "chartQuery": "SELECT span_trace_id, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd, SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS total_tokens\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY span_trace_id\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 100",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1063,7 +1063,7 @@
     {
       "tile_id": "01KWAS3DX5A44GTDWA48YX3RFM",
       "title": "Unpriced Events",
-      "chartQuery": "SELECT COUNT(*) AS unpriced_events\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NULL",
+      "chartQuery": "SELECT COUNT(*) AS unpriced_events\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL AND agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1122,7 +1122,7 @@
     {
       "tile_id": "01KWAN4A8K39ZSN3QJ0C7E9X4Z",
       "title": "Pricing Coverage",
-      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL) * 100.0 / NULLIF(COUNT(*), 0), 2) AS pricing_coverage_pct\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL) * 100.0 / NULLIF(COUNT(*), 0), 2) AS pricing_coverage_pct\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1181,7 +1181,7 @@
     {
       "tile_id": "01KWA00JHWDJH8PH65M84AST0K",
       "title": "Unpriced Models",
-      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\", 'inferred') AS provider,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       COUNT(*) AS unpriced_events\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NULL\nGROUP BY provider, model\nORDER BY unpriced_events DESC\nLIMIT 30",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\", 'inferred') AS provider, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COUNT(*) AS unpriced_events\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL AND agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NULL\nGROUP BY provider, model\nORDER BY unpriced_events DESC\nLIMIT 30",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1240,7 +1240,7 @@
     {
       "tile_id": "01KWA5W2MPY6VS693V600AH6R2",
       "title": "Cached Input Share",
-      "chartQuery": "SELECT ROUND(SUM(CAST(COALESCE(\"gen_ai.usage.cache_read.input_tokens\", '0') AS DOUBLE)) * 100.0 / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0), 2) AS cached_input_share_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\n  AND COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "chartQuery": "SELECT ROUND(SUM(CAST(COALESCE(\"gen_ai.usage.cache_read.input_tokens\", '0') AS DOUBLE)) * 100.0 / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0), 2) AS cached_input_share_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat' AND COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1299,7 +1299,7 @@
     {
       "tile_id": "01KWA4RNVH778NTDS5AWT1QXV6",
       "title": "Output / Input Token Ratio (%)",
-      "chartQuery": "SELECT ROUND(SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) * 100.0 / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0), 2) AS output_input_ratio_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\n  AND COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "chartQuery": "SELECT ROUND(SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) * 100.0 / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0), 2) AS output_input_ratio_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat' AND COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1359,7 +1359,7 @@
     {
       "tile_id": "01KWA4GJX05GEAJNTE9H4YF3ZY",
       "title": "Cost per Successful Outcome",
-      "chartQuery": "WITH invocation_cost AS (\n  SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n), outcomes AS (\n  SELECT span_trace_id, MAX(CASE WHEN COALESCE(\"gen_ai.response.finish_reasons\", '') LIKE '%submitted%' THEN 1 ELSE 0 END) AS success\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'invoke_agent'\n  GROUP BY span_trace_id\n)\nSELECT ROUND(SUM(c.cost_usd) / NULLIF(SUM(o.success), 0), 6) AS cost_per_success_usd\nFROM invocation_cost c\nJOIN outcomes o ON c.span_trace_id = o.span_trace_id",
+      "chartQuery": "WITH invocation_cost AS ( SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY span_trace_id\n), outcomes AS ( SELECT span_trace_id, MAX(CASE WHEN COALESCE(\"gen_ai.response.finish_reasons\", '') LIKE '%submitted%' THEN 1 ELSE 0 END) AS success FROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'invoke_agent' GROUP BY span_trace_id\n)\nSELECT ROUND(SUM(c.cost_usd) / NULLIF(SUM(o.success), 0), 6) AS cost_per_success_usd\nFROM invocation_cost c\nJOIN outcomes o ON c.span_trace_id = o.span_trace_id",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1418,7 +1418,7 @@
     {
       "tile_id": "01KWAWC42J09251HEFEVWQYQEH",
       "title": "Success Rate",
-      "chartQuery": "SELECT ROUND(COUNT(DISTINCT span_trace_id) FILTER (WHERE COALESCE(\"gen_ai.response.finish_reasons\", '') LIKE '%submitted%') * 100.0 / NULLIF(COUNT(DISTINCT span_trace_id), 0), 2) AS success_rate_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent' ",
+      "chartQuery": "SELECT ROUND(COUNT(DISTINCT span_trace_id) FILTER (WHERE COALESCE(\"gen_ai.response.finish_reasons\", '') LIKE '%submitted%') * 100.0 / NULLIF(COUNT(DISTINCT span_trace_id), 0), 2) AS success_rate_pct\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'invoke_agent'",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1477,7 +1477,7 @@
     {
       "tile_id": "01KWA4E11RQ1WGVZ5V5KFNPYCH",
       "title": "Cost per Agent Job Over Time",
-      "chartQuery": "WITH invocation_cost AS (\n  SELECT span_trace_id, date_bin('1 minute', MIN(p_timestamp), '1970-01-01T00:00:00Z') AS time_bin, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n)\nSELECT time_bin, ROUND(AVG(cost_usd), 6) AS avg_cost_per_agent_job_usd, ROUND(approx_percentile_cont(cost_usd, 0.95), 6) AS p95_cost_per_agent_job_usd\nFROM invocation_cost\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "WITH invocation_cost AS ( SELECT span_trace_id, date_bin('1 minute', MIN(p_timestamp), '1970-01-01T00:00:00Z') AS time_bin, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY span_trace_id\n)\nSELECT time_bin, ROUND(AVG(cost_usd), 6) AS avg_cost_per_agent_job_usd, ROUND(approx_percentile_cont(cost_usd, 0.95), 6) AS p95_cost_per_agent_job_usd\nFROM invocation_cost\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1536,7 +1536,7 @@
     {
       "tile_id": "01KWAAGFNT09S6H3VSFV0K341K",
       "title": "Cost by Outcome",
-      "chartQuery": "WITH invocation_cost AS (\n  SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd\n  FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  GROUP BY span_trace_id\n), outcomes AS (\n  SELECT span_trace_id, COALESCE(MAX(\"gen_ai.response.finish_reasons\"), 'unknown') AS outcome\n  FROM $trace_dataset\n  WHERE \"gen_ai.operation.name\" = 'invoke_agent'\n  GROUP BY span_trace_id\n)\nSELECT outcome, COUNT(*) AS invocations, ROUND(SUM(c.cost_usd), 6) AS cost_usd\nFROM invocation_cost c\nLEFT JOIN outcomes o ON c.span_trace_id = o.span_trace_id\nGROUP BY outcome\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
+      "chartQuery": "WITH invocation_cost AS ( SELECT span_trace_id, SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY span_trace_id\n), outcomes AS ( SELECT span_trace_id, COALESCE(MAX(\"gen_ai.response.finish_reasons\"), 'unknown') AS outcome FROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'invoke_agent' GROUP BY span_trace_id\n)\nSELECT outcome, COUNT(*) AS invocations, ROUND(SUM(c.cost_usd), 6) AS cost_usd\nFROM invocation_cost c\nLEFT JOIN outcomes o ON c.span_trace_id = o.span_trace_id\nGROUP BY outcome\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1595,7 +1595,7 @@
     {
       "tile_id": "01KWA5H7R0QY3Z2ZN2TNEBMD82",
       "title": "Cost by User",
-      "chartQuery": "SELECT COALESCE(\"username\", 'unknown') AS username,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY username\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"username\", 'unknown') AS username, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd, COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY username\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1659,7 +1659,7 @@
     {
       "tile_id": "01KWAWRG8KFW6QP5WP98YKNJAN",
       "title": "Cost by Agent Name",
-      "chartQuery": "SELECT COALESCE(\"gen_ai.agent.name\", 'unknown') AS agent_name,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd,\n       COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY agent_name\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.agent.name\", 'unknown') AS agent_name, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd, COUNT(DISTINCT span_trace_id) AS invocations\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY agent_name\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 20",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1723,7 +1723,7 @@
     {
       "tile_id": "01KWAGCZ5ZW0ZW4J406WY6G7PP",
       "title": "Cost by User and Model",
-      "chartQuery": "SELECT COALESCE(\"username\", 'unknown') AS username,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY username, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
+      "chartQuery": "SELECT COALESCE(\"username\", 'unknown') AS username, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY username, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1787,7 +1787,7 @@
     {
       "tile_id": "01KWABN7E2FA67P8Q773GWHRXD",
       "title": "Cost by Agent and Model",
-      "chartQuery": "SELECT COALESCE(\"gen_ai.agent.name\", 'unknown') AS agent_name,\n       COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n       ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY agent_name, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.agent.name\", 'unknown') AS agent_name, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, ROUND(SUM(agent_cost(\"gen_ai.provider.name\", COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd\nFROM $trace_dataset\nWHERE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") IS NOT NULL AND \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL\nGROUP BY agent_name, model\nORDER BY cost_usd DESC NULLS LAST\nLIMIT 30",
       "dbName": [
         "$trace_dataset"
       ],

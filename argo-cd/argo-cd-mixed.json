@@ -319,7 +319,7 @@
     {
       "tile_id": "01KXMXSZPH680P81S5SCK4HF8S",
       "title": "Connected Clusters",
-      "chartQuery": "SELECT COUNT(DISTINCT server) AS value FROM $metrics_dataset WHERE metric_name = 'argocd_cluster_connection_status' AND data_point_value = 1 AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "chartQuery": "SELECT COUNT(DISTINCT server) AS value FROM $metrics_dataset WHERE metric_name = 'argocd_cluster_connection_status' AND data_point_value = 1",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -448,7 +448,7 @@
     {
       "tile_id": "01KXMXSZPHVAWQAYKS6KBRNTAM",
       "title": "Kubectl Retries",
-      "chartQuery": "SELECT COALESCE(SUM(data_point_value), 0) AS value FROM $metrics_dataset WHERE metric_name = 'argocd_kubectl_request_retries_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes'",
+      "chartQuery": "SELECT COALESCE(SUM(data_point_value), 0) AS value FROM $metrics_dataset WHERE metric_name = 'argocd_kubectl_request_retries_total'",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -641,7 +641,7 @@
     {
       "tile_id": "01KXMXSZPH660FKDSZ3E3K27MW",
       "title": "Applications by Health",
-      "chartQuery": "SELECT COALESCE(health_status, 'unknown') AS health_status, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY health_status ORDER BY apps DESC",
+      "chartQuery": "SELECT COALESCE(health_status, 'unknown') AS health_status, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' GROUP BY health_status ORDER BY apps DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -704,7 +704,7 @@
     {
       "tile_id": "01KXMXSZPH9Q2QFNWF8HMQPMXT",
       "title": "Applications by Sync Status",
-      "chartQuery": "SELECT COALESCE(sync_status, 'unknown') AS sync_status, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY sync_status ORDER BY apps DESC",
+      "chartQuery": "SELECT COALESCE(sync_status, 'unknown') AS sync_status, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' GROUP BY sync_status ORDER BY apps DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -767,7 +767,7 @@
     {
       "tile_id": "01KXMXSZPH95A9K7GNNGTKJ5GR",
       "title": "Applications by Project",
-      "chartQuery": "SELECT COALESCE(project, 'unknown') AS project, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY project ORDER BY apps DESC LIMIT 20",
+      "chartQuery": "SELECT COALESCE(project, 'unknown') AS project, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' GROUP BY project ORDER BY apps DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -830,7 +830,7 @@
     {
       "tile_id": "01KXMXSZPHV5NR9M7MDBHW65XZ",
       "title": "Applications by Destination Namespace",
-      "chartQuery": "SELECT COALESCE(dest_namespace, 'unknown') AS dest_namespace, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY dest_namespace ORDER BY apps DESC LIMIT 20",
+      "chartQuery": "SELECT COALESCE(dest_namespace, 'unknown') AS dest_namespace, COUNT(DISTINCT name) AS apps FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' GROUP BY dest_namespace ORDER BY apps DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -893,7 +893,7 @@
     {
       "tile_id": "01KXMXSZPH1N2Z0ES2HCRJ9EBW",
       "title": "Out Of Sync Applications",
-      "chartQuery": "SELECT name, project, repo, dest_namespace, health_status, sync_status, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND sync_status <> 'Synced' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY name, project, repo, dest_namespace, health_status, sync_status ORDER BY last_seen DESC",
+      "chartQuery": "SELECT name, project, repo, dest_namespace, health_status, sync_status, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_info' AND sync_status <> 'Synced' GROUP BY name, project, repo, dest_namespace, health_status, sync_status ORDER BY last_seen DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -956,7 +956,7 @@
     {
       "tile_id": "01KXMXSZPH8KEDFWRKA91C0NGR",
       "title": "Apps with Orphaned Resources",
-      "chartQuery": "SELECT name, namespace, project, SUM(data_point_value) AS orphaned_resources, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_orphaned_resources_count' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY name, namespace, project HAVING SUM(data_point_value) > 0 ORDER BY orphaned_resources DESC",
+      "chartQuery": "SELECT name, namespace, project, SUM(data_point_value) AS orphaned_resources, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_orphaned_resources_count' GROUP BY name, namespace, project HAVING SUM(data_point_value) > 0 ORDER BY orphaned_resources DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1339,7 +1339,7 @@
     {
       "tile_id": "01KXMXSZPHE1SRR5GAP6GT4TN3",
       "title": "Top Sync Activity by App",
-      "chartQuery": "SELECT name, project, phase, MAX(data_point_value) AS sync_total, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_sync_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY name, project, phase ORDER BY sync_total DESC LIMIT 25",
+      "chartQuery": "SELECT name, project, phase, MAX(data_point_value) AS sync_total, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_app_sync_total' GROUP BY name, project, phase ORDER BY sync_total DESC LIMIT 25",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1723,7 +1723,7 @@
     {
       "tile_id": "01KXMXSZPHZ1V6FKDYJZZA2JWQ",
       "title": "Kubectl Requests by Method",
-      "chartQuery": "SELECT COALESCE(method, 'unknown') AS method, SUM(data_point_value) AS requests FROM $metrics_dataset WHERE metric_name = 'argocd_kubectl_requests_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY method ORDER BY requests DESC",
+      "chartQuery": "SELECT COALESCE(method, 'unknown') AS method, SUM(data_point_value) AS requests FROM $metrics_dataset WHERE metric_name = 'argocd_kubectl_requests_total' GROUP BY method ORDER BY requests DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2042,7 +2042,7 @@
     {
       "tile_id": "01KXMXSZPHTJHB97CZ4F31PS76",
       "title": "Redis Requests by Initiator",
-      "chartQuery": "SELECT COALESCE(initiator, 'unknown') AS initiator, SUM(data_point_value) AS requests FROM $metrics_dataset WHERE metric_name = 'argocd_redis_request_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY initiator ORDER BY requests DESC LIMIT 20",
+      "chartQuery": "SELECT COALESCE(initiator, 'unknown') AS initiator, SUM(data_point_value) AS requests FROM $metrics_dataset WHERE metric_name = 'argocd_redis_request_total' GROUP BY initiator ORDER BY requests DESC LIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2105,7 +2105,7 @@
     {
       "tile_id": "01KXMXSZPHCNKYTNRMEZGV56Z8",
       "title": "Redis Failures",
-      "chartQuery": "SELECT hostname, initiator, failed, MAX(data_point_value) AS requests, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_redis_request_total' AND failed = 'true' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY hostname, initiator, failed ORDER BY requests DESC",
+      "chartQuery": "SELECT hostname, initiator, failed, MAX(data_point_value) AS requests, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'argocd_redis_request_total' AND failed = 'true' GROUP BY hostname, initiator, failed ORDER BY requests DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2422,7 +2422,7 @@
     {
       "tile_id": "01KXQB95A0BBCNA9VDNTJ1J49K",
       "title": "Argo CD Log Events",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd'",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'argocd'",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2485,7 +2485,7 @@
     {
       "tile_id": "01KXQB95A0FQVRM1KGYW7889SH",
       "title": "Argo CD Error Logs",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' AND (LOWER(body) LIKE '%error%' OR LOWER(body) LIKE '%failed%' OR LOWER(body) LIKE '%panic%' OR LOWER(severity_text) LIKE '%error%')",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'argocd' AND (LOWER(body) LIKE '%error%' OR LOWER(body) LIKE '%failed%' OR LOWER(body) LIKE '%panic%' OR LOWER(severity_text) LIKE '%error%')",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2548,7 +2548,7 @@
     {
       "tile_id": "01KXQB95A002DSPD400N3FG0HW",
       "title": "Argo CD Logs Over Time",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' GROUP BY time_bucket ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'argocd' GROUP BY time_bucket ORDER BY time_bucket",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2611,7 +2611,7 @@
     {
       "tile_id": "01KXQB95A0B5YSM2DWK33AB1MR",
       "title": "Argo CD Logs by Component",
-      "chartQuery": "SELECT COALESCE(\"k8s.container.name\", 'unknown') AS component, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' GROUP BY component ORDER BY logs DESC",
+      "chartQuery": "SELECT COALESCE(\"k8s.container.name\", 'unknown') AS component, COUNT(*) AS logs FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'argocd' GROUP BY component ORDER BY logs DESC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2674,7 +2674,7 @@
     {
       "tile_id": "01KXQB95A0QKERCPZ636GTVCVB",
       "title": "Argo CD Logs by Severity",
-      "chartQuery": "SELECT COALESCE(severity_text, 'unknown') AS severity, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' GROUP BY severity ORDER BY logs DESC",
+      "chartQuery": "SELECT COALESCE(severity_text, 'unknown') AS severity, COUNT(*) AS logs FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'argocd' GROUP BY severity ORDER BY logs DESC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2737,7 +2737,7 @@
     {
       "tile_id": "01KXQB95A0ZEEDZTNA263EFNAX",
       "title": "Recent Argo CD Error Logs",
-      "chartQuery": "SELECT p_timestamp, \"k8s.container.name\" AS component, \"k8s.pod.name\" AS pod, severity_text, body FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'argocd' AND (LOWER(body) LIKE '%error%' OR LOWER(body) LIKE '%failed%' OR LOWER(body) LIKE '%panic%' OR LOWER(severity_text) LIKE '%error%') ORDER BY p_timestamp DESC LIMIT 50",
+      "chartQuery": "SELECT p_timestamp, \"k8s.container.name\" AS component, \"k8s.pod.name\" AS pod, severity_text, body FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'argocd' AND (LOWER(body) LIKE '%error%' OR LOWER(body) LIKE '%failed%' OR LOWER(body) LIKE '%panic%' OR LOWER(severity_text) LIKE '%error%') ORDER BY p_timestamp DESC LIMIT 50",
       "dbName": [
         "$logs_dataset"
       ],

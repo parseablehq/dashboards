@@ -917,7 +917,7 @@
     {
       "tile_id": "01KXQB959Z9Z2QCFK4D4VDZDQS",
       "title": "HTTP Status Mix",
-      "chartQuery": "SELECT COALESCE(code, 'unknown') AS code, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' AND entrypoint IS NOT NULL GROUP BY code ORDER BY requests DESC",
+      "chartQuery": "SELECT COALESCE(code, 'unknown') AS code, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' AND entrypoint IS NOT NULL GROUP BY code ORDER BY requests DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -980,7 +980,7 @@
     {
       "tile_id": "01KXQB959ZMVT5CJ9ADERYKMBD",
       "title": "Methods",
-      "chartQuery": "SELECT COALESCE(method, 'unknown') AS method, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY method ORDER BY requests DESC",
+      "chartQuery": "SELECT COALESCE(method, 'unknown') AS method, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' GROUP BY method ORDER BY requests DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1043,7 +1043,7 @@
     {
       "tile_id": "01KXQB959ZTA7X56NNFYF43BFJ",
       "title": "Protocols",
-      "chartQuery": "SELECT COALESCE(protocol, 'unknown') AS protocol, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' AND p_timestamp >= NOW() - INTERVAL '10 minutes' GROUP BY protocol ORDER BY requests DESC",
+      "chartQuery": "SELECT COALESCE(protocol, 'unknown') AS protocol, COUNT(*) AS requests FROM $metrics_dataset WHERE metric_name = 'traefik_entrypoint_requests_total' GROUP BY protocol ORDER BY requests DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1370,7 +1370,7 @@
     {
       "tile_id": "01KXQB959ZCH0PN5ECYTC4QARR",
       "title": "Top Services by Samples",
-      "chartQuery": "SELECT COALESCE(service, 'unknown') AS service, COUNT(*) AS samples, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'traefik_service_requests_total' AND p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY service ORDER BY samples DESC LIMIT 15",
+      "chartQuery": "SELECT COALESCE(service, 'unknown') AS service, COUNT(*) AS samples, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'traefik_service_requests_total' GROUP BY service ORDER BY samples DESC LIMIT 15",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1565,7 +1565,7 @@
     {
       "tile_id": "01KXQB959ZHPA1CE7R2DSVTD1K",
       "title": "Certificates by CN",
-      "chartQuery": "SELECT COALESCE(cn, 'unknown') AS cn, COUNT(*) AS certs FROM $metrics_dataset WHERE metric_name = 'traefik_tls_certs_not_after' AND p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY cn ORDER BY certs DESC",
+      "chartQuery": "SELECT COALESCE(cn, 'unknown') AS cn, COUNT(*) AS certs FROM $metrics_dataset WHERE metric_name = 'traefik_tls_certs_not_after' GROUP BY cn ORDER BY certs DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1628,7 +1628,7 @@
     {
       "tile_id": "01KXQB959ZPMQQTPQ3GMRWXB1A",
       "title": "Certificate Expiry",
-      "chartQuery": "SELECT cn, MAX(data_point_value) AS not_after_unix, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'traefik_tls_certs_not_after' AND p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY cn ORDER BY not_after_unix ASC",
+      "chartQuery": "SELECT cn, MAX(data_point_value) AS not_after_unix, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name = 'traefik_tls_certs_not_after' GROUP BY cn ORDER BY not_after_unix ASC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2089,7 +2089,7 @@
     {
       "tile_id": "01KXQB959Z0QTDG7QNK797TQHD",
       "title": "Access Logs",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik'",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik'",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2152,7 +2152,7 @@
     {
       "tile_id": "01KXQB959ZT8V21FX5CNA9EB6Z",
       "title": "5xx Access Logs",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' AND body LIKE '%\" 5__ %'",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' AND body LIKE '%\" 5__ %'",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2215,7 +2215,7 @@
     {
       "tile_id": "01KXQB959Z31EE30099J33JYJG",
       "title": "Logs Over Time",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY time_bucket ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY time_bucket ORDER BY time_bucket",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2278,7 +2278,7 @@
     {
       "tile_id": "01KXQB959ZW60BNPENAES0F3XB",
       "title": "Access Logs by Status",
-      "chartQuery": "SELECT COALESCE(array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 3), 'unknown') AS status_code, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY status_code ORDER BY logs DESC",
+      "chartQuery": "SELECT COALESCE(array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 3), 'unknown') AS status_code, COUNT(*) AS logs FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY status_code ORDER BY logs DESC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2341,7 +2341,7 @@
     {
       "tile_id": "01KXQB959ZBZDTBXE1SFWZ44C5",
       "title": "Access Logs by Method",
-      "chartQuery": "SELECT COALESCE(array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 1), 'unknown') AS method, COUNT(*) AS logs FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY method ORDER BY logs DESC",
+      "chartQuery": "SELECT COALESCE(array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 1), 'unknown') AS method, COUNT(*) AS logs FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' GROUP BY method ORDER BY logs DESC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2404,7 +2404,7 @@
     {
       "tile_id": "01KXQB959Z4QBZBQVCM45Y7XEV",
       "title": "Recent 5xx Access Logs",
-      "chartQuery": "SELECT p_timestamp, \"k8s.pod.name\" AS pod, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 1) AS method, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 2) AS path, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 3) AS status_code, body FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '1 hour' AND \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' AND body LIKE '%\" 5__ %' ORDER BY p_timestamp DESC LIMIT 50",
+      "chartQuery": "SELECT p_timestamp, \"k8s.pod.name\" AS pod, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 1) AS method, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 2) AS path, array_element(regexp_match(body, '\\\"([A-Z]+) ([^ ]+) HTTP/[0-9.]+\\\" ([0-9]{3})'), 3) AS status_code, body FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'traefik' AND \"k8s.container.name\" = 'traefik' AND body LIKE '%\" 5__ %' ORDER BY p_timestamp DESC LIMIT 50",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2467,7 +2467,7 @@
     {
       "tile_id": "01KXQB959ZF9H5ASQXS5FTZ60X",
       "title": "Traefik Metric Inventory",
-      "chartQuery": "SELECT metric_name, COUNT(*) AS samples, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '6 hours' AND metric_name LIKE 'traefik_%' GROUP BY metric_name ORDER BY metric_name",
+      "chartQuery": "SELECT metric_name, COUNT(*) AS samples, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE metric_name LIKE 'traefik_%' GROUP BY metric_name ORDER BY metric_name",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2530,7 +2530,7 @@
     {
       "tile_id": "01KXQB959ZY31CP7ABVQ6BPAVS",
       "title": "Traefik Pods",
-      "chartQuery": "SELECT \"k8s.pod.name\" AS pod, COUNT(DISTINCT metric_name) AS metrics, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' AND \"k8s.namespace.name\" = 'traefik' GROUP BY \"k8s.pod.name\" ORDER BY pod",
+      "chartQuery": "SELECT \"k8s.pod.name\" AS pod, COUNT(DISTINCT metric_name) AS metrics, MAX(p_timestamp) AS last_seen FROM $metrics_dataset WHERE \"k8s.namespace.name\" = 'traefik' GROUP BY \"k8s.pod.name\" ORDER BY pod",
       "dbName": [
         "$metrics_dataset"
       ],

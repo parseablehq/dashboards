@@ -265,7 +265,7 @@
     {
       "tile_id": "01KW42803W0D1HB29S7J5THYGC",
       "title": "Log Volume Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(p_log_category, 'unknown') AS category,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY time_bin, category\nORDER BY time_bin ASC, category ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(p_log_category, 'unknown') AS category, COUNT(*) AS logs\nFROM $dataset\nGROUP BY time_bin, category\nORDER BY time_bin ASC, category ASC",
       "dbName": [
         "$dataset"
       ],
@@ -321,7 +321,7 @@
     {
       "tile_id": "01KW42803W0G6VYZJ29BZGDVYR",
       "title": "Error / Warning Trend",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(*) FILTER (WHERE p_log_category = 'ERROR') AS errors,\n       COUNT(*) FILTER (WHERE p_log_category = 'WARN') AS warnings\nFROM $dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE p_log_category = 'ERROR') AS errors, COUNT(*) FILTER (WHERE p_log_category = 'WARN') AS warnings\nFROM $dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$dataset"
       ],
@@ -378,7 +378,7 @@
     {
       "tile_id": "01KW42803WTNJVTMRKKFJZGN2S",
       "title": "Logs by Category",
-      "chartQuery": "SELECT COALESCE(p_log_category, 'unknown') AS category,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY category\nORDER BY logs DESC",
+      "chartQuery": "SELECT COALESCE(p_log_category, 'unknown') AS category, COUNT(*) AS logs\nFROM $dataset\nGROUP BY category\nORDER BY logs DESC",
       "dbName": [
         "$dataset"
       ],
@@ -432,7 +432,7 @@
     {
       "tile_id": "01KW42803WDB9XGJFJNKY179JN",
       "title": "Top Components",
-      "chartQuery": "SELECT COALESCE(regexp_replace(\"log.file.name\", '^server\\.([^.]*)\\..*$', '$1'), 'unknown') AS component,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY component\nORDER BY logs DESC\nLIMIT 15",
+      "chartQuery": "SELECT COALESCE(regexp_replace(\"log.file.name\", '^server\\.([^.]*)\\..*$', '$1'), 'unknown') AS component, COUNT(*) AS logs\nFROM $dataset\nGROUP BY component\nORDER BY logs DESC\nLIMIT 15",
       "dbName": [
         "$dataset"
       ],
@@ -488,7 +488,7 @@
     {
       "tile_id": "01KW42803WCCYH23047KHX801Z",
       "title": "CPU Pressure",
-      "chartQuery": "SELECT COALESCE(regexp_replace(body, '^.* ([A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)+):[0-9]+:.*$', '$1'), 'unknown') AS module,\n       COUNT(*) AS errors\nFROM $dataset\nWHERE p_log_category IN ('ERROR', 'WARN')\nGROUP BY module\nORDER BY errors DESC\nLIMIT 15",
+      "chartQuery": "SELECT COALESCE(regexp_replace(body, '^.* ([A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)+):[0-9]+:.*$', '$1'), 'unknown') AS module, COUNT(*) AS errors\nFROM $dataset\nWHERE p_log_category IN ('ERROR', 'WARN')\nGROUP BY module\nORDER BY errors DESC\nLIMIT 15",
       "dbName": [
         "$dataset"
       ],
@@ -544,7 +544,7 @@
     {
       "tile_id": "01KW42803W6HBR6KVGG7PJ3ARW",
       "title": "Repeated Error Messages",
-      "chartQuery": "SELECT COALESCE(regexp_replace(body, '^.* [A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)+:[0-9]+: (.*)$', '$1'), 'unknown') AS message,\n       COUNT(*) AS occurrences\nFROM $dataset\nWHERE p_log_category IN ('ERROR', 'WARN')\nGROUP BY message\nORDER BY occurrences DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(regexp_replace(body, '^.* [A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)+:[0-9]+: (.*)$', '$1'), 'unknown') AS message, COUNT(*) AS occurrences\nFROM $dataset\nWHERE p_log_category IN ('ERROR', 'WARN')\nGROUP BY message\nORDER BY occurrences DESC\nLIMIT 20",
       "dbName": [
         "$dataset"
       ],
@@ -598,7 +598,7 @@
     {
       "tile_id": "01KW42803WVWTD8VBDH4EG5SRQ",
       "title": "Logs by Source IP",
-      "chartQuery": "SELECT COALESCE(p_src_ip, 'unknown') AS source_ip,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY source_ip\nORDER BY logs DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(p_src_ip, 'unknown') AS source_ip, COUNT(*) AS logs\nFROM $dataset\nGROUP BY source_ip\nORDER BY logs DESC\nLIMIT 20",
       "dbName": [
         "$dataset"
       ],
@@ -654,7 +654,7 @@
     {
       "tile_id": "01KW42803W9DK90BFBTR29605D",
       "title": "Logs by Log File",
-      "chartQuery": "SELECT COALESCE(\"log.file.name\", 'unknown') AS log_file,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY log_file\nORDER BY logs DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"log.file.name\", 'unknown') AS log_file, COUNT(*) AS logs\nFROM $dataset\nGROUP BY log_file\nORDER BY logs DESC\nLIMIT 20",
       "dbName": [
         "$dataset"
       ],
@@ -710,7 +710,7 @@
     {
       "tile_id": "01KW42803W4HEM872MEMYJJDN9",
       "title": "Module Severity Matrix",
-      "chartQuery": "SELECT COALESCE(regexp_replace(body, '^.* ([A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)+):[0-9]+:.*$', '$1'), 'unknown') AS module,\n       COALESCE(p_log_category, 'unknown') AS category,\n       COUNT(*) AS logs\nFROM $dataset\nGROUP BY module, category\nORDER BY logs DESC\nLIMIT 50",
+      "chartQuery": "SELECT COALESCE(regexp_replace(body, '^.* ([A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)+):[0-9]+:.*$', '$1'), 'unknown') AS module, COALESCE(p_log_category, 'unknown') AS category, COUNT(*) AS logs\nFROM $dataset\nGROUP BY module, category\nORDER BY logs DESC\nLIMIT 50",
       "dbName": [
         "$dataset"
       ],

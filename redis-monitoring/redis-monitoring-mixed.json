@@ -2717,7 +2717,7 @@
     {
       "tile_id": "01KXTTV511ZZMQSEQMYBD1AB92",
       "title": "Log Records",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes'",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2781,7 +2781,7 @@
     {
       "tile_id": "01KXTTV511BZN0N89YQ1ZXKZ58",
       "title": "Logs by Category",
-      "chartQuery": "SELECT COALESCE(p_log_category, severity_text, 'unknown') AS category, COUNT(*) AS records FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY category ORDER BY records DESC LIMIT 10",
+      "chartQuery": "SELECT COALESCE(p_log_category, severity_text, 'unknown') AS category, COUNT(*) AS records FROM $logs_dataset GROUP BY category ORDER BY records DESC LIMIT 10",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2847,7 +2847,7 @@
     {
       "tile_id": "01KXTTV51KVTDW13F9250C20C9",
       "title": "Redis Commands in Logs",
-      "chartQuery": "SELECT regexp_replace(body, '^.*\\\"([^\\\"]+)\\\".*$', '\\\\1') AS command, COUNT(*) AS records FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY command ORDER BY records DESC LIMIT 15",
+      "chartQuery": "SELECT regexp_replace(body, '^.*\\\"([^\\\"]+)\\\".*$', '\\\\1') AS command, COUNT(*) AS records FROM $logs_dataset GROUP BY command ORDER BY records DESC LIMIT 15",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2911,7 +2911,7 @@
     {
       "tile_id": "01KXTTV51K3J3P0RKVNPRM3J5M",
       "title": "Auth and Error-like Logs",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' AND (body ILIKE '%ERR%' OR body ILIKE '%error%' OR body ILIKE '%AUTH%') GROUP BY time_bucket ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE (body ILIKE '%ERR%' OR body ILIKE '%error%' OR body ILIKE '%AUTH%') GROUP BY time_bucket ORDER BY time_bucket",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2975,7 +2975,7 @@
     {
       "tile_id": "01KXTTV51K4PPDWKMRJZDMZB4S",
       "title": "Recent Redis Logs",
-      "chartQuery": "SELECT p_timestamp, COALESCE(p_log_category, severity_text, 'unknown') AS category, body FROM $logs_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' ORDER BY p_timestamp DESC LIMIT 100",
+      "chartQuery": "SELECT p_timestamp, COALESCE(p_log_category, severity_text, 'unknown') AS category, body FROM $logs_dataset ORDER BY p_timestamp DESC LIMIT 100",
       "dbName": [
         "$logs_dataset"
       ],
@@ -3039,7 +3039,7 @@
     {
       "tile_id": "01KXTTV51KK7Z7XC2TNA9WVSNF",
       "title": "Trace Spans",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes'",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3103,7 +3103,7 @@
     {
       "tile_id": "01KXTTV51KPZ9JJ9RYVBEW2WAM",
       "title": "Error Spans",
-      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' AND (span_status_code != 0 OR span_status_description != 'UNSET')",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset WHERE (span_status_code != 0 OR span_status_description != 'UNSET')",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3167,7 +3167,7 @@
     {
       "tile_id": "01KXTTV51KK1S9HH0B9X0JZCR1",
       "title": "p95 Span Duration",
-      "chartQuery": "SELECT approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes'",
+      "chartQuery": "SELECT approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3231,7 +3231,7 @@
     {
       "tile_id": "01KXTTV51K5R5H4Z0A6FRP9YDR",
       "title": "Spans by Operation",
-      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY operation ORDER BY spans DESC LIMIT 12",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, COUNT(*) AS spans FROM $traces_dataset GROUP BY operation ORDER BY spans DESC LIMIT 12",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3295,7 +3295,7 @@
     {
       "tile_id": "01KXTTV51K73K30X2JHZQ8R0E8",
       "title": "Span Status",
-      "chartQuery": "SELECT COALESCE(span_status_description, 'unknown') AS status, COUNT(*) AS spans FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY status ORDER BY spans DESC",
+      "chartQuery": "SELECT COALESCE(span_status_description, 'unknown') AS status, COUNT(*) AS spans FROM $traces_dataset GROUP BY status ORDER BY spans DESC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3361,7 +3361,7 @@
     {
       "tile_id": "01KXTTV51K9ZV7E4T66GV6YZF2",
       "title": "Latency by Operation",
-      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS p95_ms, avg(span_duration_ns)/1000000 AS avg_ms FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY operation ORDER BY p95_ms DESC LIMIT 15",
+      "chartQuery": "SELECT COALESCE(\"db.operation.name\", span_name, 'unknown') AS operation, approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS p95_ms, avg(span_duration_ns)/1000000 AS avg_ms FROM $traces_dataset GROUP BY operation ORDER BY p95_ms DESC LIMIT 15",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3425,7 +3425,7 @@
     {
       "tile_id": "01KXTTV51KJJ5F9F4KMVSTHJ8H",
       "title": "Recent Error Spans",
-      "chartQuery": "SELECT p_timestamp, span_trace_id, span_name, COALESCE(\"db.operation.name\", 'unknown') AS operation, span_status_description, span_status_message, span_duration_ns/1000000 AS duration_ms FROM $traces_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' AND (span_status_code != 0 OR span_status_description != 'UNSET') ORDER BY p_timestamp DESC LIMIT 100",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_name, COALESCE(\"db.operation.name\", 'unknown') AS operation, span_status_description, span_status_message, span_duration_ns/1000000 AS duration_ms FROM $traces_dataset WHERE (span_status_code != 0 OR span_status_description != 'UNSET') ORDER BY p_timestamp DESC LIMIT 100",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3757,7 +3757,7 @@
     {
       "tile_id": "01KXTTV51KCV8RWEM1J8HN2R4G",
       "title": "Metric Families by Prefix",
-      "chartQuery": "SELECT CASE WHEN metric_name LIKE 'redis.%' THEN 'otel-dotted' WHEN metric_name LIKE 'redis_%' THEN 'redis-exporter' WHEN metric_name LIKE 'process_%' THEN 'process' ELSE 'other' END AS prefix, COUNT(DISTINCT metric_name) AS families FROM $metrics_dataset WHERE p_timestamp >= NOW() - INTERVAL '30 minutes' GROUP BY prefix ORDER BY families DESC",
+      "chartQuery": "SELECT CASE WHEN metric_name LIKE 'redis.%' THEN 'otel-dotted' WHEN metric_name LIKE 'redis_%' THEN 'redis-exporter' WHEN metric_name LIKE 'process_%' THEN 'process' ELSE 'other' END AS prefix, COUNT(DISTINCT metric_name) AS families FROM $metrics_dataset GROUP BY prefix ORDER BY families DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -3823,7 +3823,7 @@
     {
       "tile_id": "01KXTTV51KC95TDNYXFCCP1TWY",
       "title": "Redis Instances Inventory",
-      "chartQuery": "SELECT DISTINCT COALESCE(\"service.instance.id\", 'unknown') AS instance, COALESCE(redis_role, 'unknown') AS role, COALESCE(release, 'unknown') AS release, COALESCE(\"server.address\", 'unknown') AS server_address FROM $metrics_dataset WHERE metric_name='redis_up' AND p_timestamp >= NOW() - INTERVAL '30 minutes' ORDER BY role, instance",
+      "chartQuery": "SELECT DISTINCT COALESCE(\"service.instance.id\", 'unknown') AS instance, COALESCE(redis_role, 'unknown') AS role, COALESCE(release, 'unknown') AS release, COALESCE(\"server.address\", 'unknown') AS server_address FROM $metrics_dataset WHERE metric_name='redis_up' ORDER BY role, instance",
       "dbName": [
         "$metrics_dataset"
       ],

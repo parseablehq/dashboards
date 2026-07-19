@@ -114,7 +114,7 @@
     {
       "tile_id": "01KW448M65XP6GEM7ZKWZKMVY1",
       "title": "UI API Error Calls",
-      "chartQuery": "SELECT COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND (body_status_code >= 400 OR body_error IS NOT NULL)",
+      "chartQuery": "SELECT COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%' AND (body_status_code >= 400 OR body_error IS NOT NULL)",
       "dbName": [
         "$dataset"
       ],
@@ -222,7 +222,7 @@
     {
       "tile_id": "01KW448M650PS4ZP150Z4JKEW3",
       "title": "UI API Avg Request Size",
-      "chartQuery": "SELECT ROUND(AVG(body_content_length), 2) AS avg_content_length\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND body_content_length IS NOT NULL",
+      "chartQuery": "SELECT ROUND(AVG(body_content_length), 2) AS avg_content_length\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%' AND body_content_length IS NOT NULL",
       "dbName": [
         "$dataset"
       ],
@@ -276,7 +276,7 @@
     {
       "tile_id": "01KW448M65VWCZ8XJGNB0YB2TP",
       "title": "UI API Volume Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(body_method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, COALESCE(body_method, 'unknown')\nORDER BY time_bin ASC, method ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(body_method, 'unknown') AS method, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, COALESCE(body_method, 'unknown')\nORDER BY time_bin ASC, method ASC",
       "dbName": [
         "$dataset"
       ],
@@ -332,7 +332,7 @@
     {
       "tile_id": "01KW448M65TJEFZV5J092BQT6N",
       "title": "UI API Error Trend",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(*) FILTER (WHERE body_status_code >= 400 OR body_error IS NOT NULL) AS errors,\n       COUNT(*) FILTER (WHERE body_status_code >= 500) AS server_errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE body_status_code >= 400 OR body_error IS NOT NULL) AS errors, COUNT(*) FILTER (WHERE body_status_code >= 500) AS server_errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$dataset"
       ],
@@ -386,7 +386,7 @@
     {
       "tile_id": "01KW448M65AA30SJVC5TQ0FSM6",
       "title": "UI API Status Code Mix",
-      "chartQuery": "SELECT CAST(body_status_code AS INT) AS status_code,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY status_code\nORDER BY requests DESC\nLIMIT 20",
+      "chartQuery": "SELECT CAST(body_status_code AS INT) AS status_code, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY status_code\nORDER BY requests DESC\nLIMIT 20",
       "dbName": [
         "$dataset"
       ],
@@ -440,7 +440,7 @@
     {
       "tile_id": "01KW448M65MB23WNFX2DAHHFPP",
       "title": "UI API Requests by Method",
-      "chartQuery": "SELECT COALESCE(body_method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY method\nORDER BY requests DESC",
+      "chartQuery": "SELECT COALESCE(body_method, 'unknown') AS method, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY method\nORDER BY requests DESC",
       "dbName": [
         "$dataset"
       ],
@@ -496,7 +496,7 @@
     {
       "tile_id": "01KW448M65HYSKPQ8PS27RBC3H",
       "title": "Auth Methods",
-      "chartQuery": "SELECT COALESCE(body_authorization_method, 'unknown') AS auth_method,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY auth_method\nORDER BY requests DESC",
+      "chartQuery": "SELECT COALESCE(body_authorization_method, 'unknown') AS auth_method, COUNT(*) AS requests\nFROM $dataset\nGROUP BY auth_method\nORDER BY requests DESC",
       "dbName": [
         "$dataset"
       ],
@@ -550,7 +550,7 @@
     {
       "tile_id": "01KW448M65MA3GP1QJPXHEMQHQ",
       "title": "Top UI API Paths",
-      "chartQuery": "SELECT COALESCE(body_path, 'unknown') AS path,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY path\nORDER BY requests DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(body_path, 'unknown') AS path, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY path\nORDER BY requests DESC\nLIMIT 20",
       "dbName": [
         "$dataset"
       ],
@@ -606,7 +606,7 @@
     {
       "tile_id": "01KW448M65SP5JCBP6W4Y1NT2J",
       "title": "Top UI API Error Paths",
-      "chartQuery": "SELECT COALESCE(body_path, 'unknown') AS path,\n       COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND (body_status_code >= 400 OR body_error IS NOT NULL)\nGROUP BY path\nORDER BY errors DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(body_path, 'unknown') AS path, COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%' AND (body_status_code >= 400 OR body_error IS NOT NULL)\nGROUP BY path\nORDER BY errors DESC\nLIMIT 20",
       "dbName": [
         "$dataset"
       ],
@@ -662,7 +662,7 @@
     {
       "tile_id": "01KW448M65JYMFTFERB9AMWGDY",
       "title": "Top UI API Users",
-      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user\nORDER BY requests DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user\nORDER BY requests DESC\nLIMIT 20",
       "dbName": [
         "$dataset"
       ],
@@ -718,7 +718,7 @@
     {
       "tile_id": "01KW448M65H11199SSHT0C6WTD",
       "title": "Top UI API Streams",
-      "chartQuery": "SELECT COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY stream\nORDER BY requests DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY stream\nORDER BY requests DESC\nLIMIT 20",
       "dbName": [
         "$dataset"
       ],
@@ -774,7 +774,7 @@
     {
       "tile_id": "01KW448M6559XF4B51VJ4FYP0Q",
       "title": "Server Mode",
-      "chartQuery": "SELECT COALESCE(body_server_mode, 'unknown') AS server_mode,\n       COUNT(*) AS requests\nFROM $dataset\nGROUP BY server_mode\nORDER BY requests DESC",
+      "chartQuery": "SELECT COALESCE(body_server_mode, 'unknown') AS server_mode, COUNT(*) AS requests\nFROM $dataset\nGROUP BY server_mode\nORDER BY requests DESC",
       "dbName": [
         "$dataset"
       ],
@@ -828,7 +828,7 @@
     {
       "tile_id": "01KW448M659MPP1S76JBW86QX4",
       "title": "Recent Failed UI API Calls",
-      "chartQuery": "SELECT p_timestamp, body_method AS method, body_path AS path, body_status_code AS status_code,\n       COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username,\n       body_tenant_id AS tenant_id, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name, body_error AS error\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND (body_status_code >= 400 OR body_error IS NOT NULL)\nORDER BY p_timestamp DESC\nLIMIT 50",
+      "chartQuery": "SELECT p_timestamp, body_method AS method, body_path AS path, body_status_code AS status_code, COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username, body_tenant_id AS tenant_id, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name, body_error AS error\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%' AND (body_status_code >= 400 OR body_error IS NOT NULL)\nORDER BY p_timestamp DESC\nLIMIT 50",
       "dbName": [
         "$dataset"
       ],
@@ -882,7 +882,7 @@
     {
       "tile_id": "01KW448M6579VP816221XNA7M1",
       "title": "Recent UI API Calls",
-      "chartQuery": "SELECT p_timestamp, body_method AS method, body_path AS path, body_status_code AS status_code,\n       COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username,\n       body_tenant_id AS tenant_id, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name,\n       body_authorization_method AS authorization_method, body_server_mode AS server_mode\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nORDER BY p_timestamp DESC\nLIMIT 50",
+      "chartQuery": "SELECT p_timestamp, body_method AS method, body_path AS path, body_status_code AS status_code, COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username, body_tenant_id AS tenant_id, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name, body_authorization_method AS authorization_method, body_server_mode AS server_mode\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nORDER BY p_timestamp DESC\nLIMIT 50",
       "dbName": [
         "$dataset"
       ],
@@ -1152,7 +1152,7 @@
     {
       "tile_id": "01KW768EJXBYFWG754B8FMVBN2",
       "title": "UI API Status Class Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       CASE WHEN body_status_code >= 500 THEN '5xx' WHEN body_status_code >= 400 THEN '4xx' WHEN body_status_code >= 300 THEN '3xx' WHEN body_status_code >= 200 THEN '2xx' ELSE 'unknown' END AS status_class,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, status_class\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, CASE WHEN body_status_code >= 500 THEN '5xx' WHEN body_status_code >= 400 THEN '4xx' WHEN body_status_code >= 300 THEN '3xx' WHEN body_status_code >= 200 THEN '2xx' ELSE 'unknown' END AS status_class, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, status_class\nORDER BY time_bin ASC",
       "dbName": [
         "$dataset"
       ],
@@ -1208,7 +1208,7 @@
     {
       "tile_id": "01KW71Z7VQDCPP1X0H7N60QP71",
       "title": "UI API Calls by User and Method",
-      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user,\n       COALESCE(body_method, 'unknown') AS method,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user, method\nORDER BY requests DESC\nLIMIT 30",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user, COALESCE(body_method, 'unknown') AS method, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user, method\nORDER BY requests DESC\nLIMIT 30",
       "dbName": [
         "$dataset"
       ],
@@ -1262,7 +1262,7 @@
     {
       "tile_id": "01KW7XNWGK7NKFKGEYARY7XMPS",
       "title": "UI API Calls by User and Stream",
-      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user,\n       COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream,\n       COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user, stream\nORDER BY requests DESC\nLIMIT 30",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY user, stream\nORDER BY requests DESC\nLIMIT 30",
       "dbName": [
         "$dataset"
       ],
@@ -1316,7 +1316,7 @@
     {
       "tile_id": "01KW7QYYJ230566RM5ZFPX2VFR",
       "title": "UI API Error Details by User",
-      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user,\n       COALESCE(body_method, 'unknown') AS method, body_path AS path, CAST(body_status_code AS INT) AS status_code,\n       COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream,\n       COALESCE(body_error, '') AS error, COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\n  AND (body_status_code >= 400 OR body_error IS NOT NULL)\nGROUP BY user, method, path, status_code, stream, error\nORDER BY errors DESC\nLIMIT 30",
+      "chartQuery": "SELECT COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS user, COALESCE(body_method, 'unknown') AS method, body_path AS path, CAST(body_status_code AS INT) AS status_code, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream, COALESCE(body_error, '') AS error, COUNT(*) AS errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%' AND (body_status_code >= 400 OR body_error IS NOT NULL)\nGROUP BY user, method, path, status_code, stream, error\nORDER BY errors DESC\nLIMIT 30",
       "sectionId": "01KW98XG1XRWZ6DBYS6TPTB9AK",
       "layout": {
         "i": "01KW7QYYJ230566RM5ZFPX2VFR",
@@ -1424,7 +1424,7 @@
     {
       "tile_id": "01KW7DFG92AN9JWCYJ0HSZV3GT",
       "title": "UI API Call Inventory",
-      "chartQuery": "SELECT DISTINCT body_path AS path, body_method AS method, CAST(body_status_code AS INT) AS status_code,\n       COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name,\n       COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username,\n       COALESCE(body_error, '') AS error\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nORDER BY path, method, status_code\nLIMIT 200",
+      "chartQuery": "SELECT DISTINCT body_path AS path, body_method AS method, CAST(body_status_code AS INT) AS status_code, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name, COALESCE(NULLIF(body_username, ''), NULLIF(body_user_id, ''), 'unknown') AS username, COALESCE(body_error, '') AS error\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nORDER BY path, method, status_code\nLIMIT 200",
       "dbName": [
         "$dataset"
       ],
@@ -1478,7 +1478,7 @@
     {
       "tile_id": "01KW7P6XZGVVGFY6TJ5TYFDX84",
       "title": "UI API Path Method Status Summary",
-      "chartQuery": "SELECT body_path AS path, COALESCE(body_method, 'unknown') AS method, CAST(body_status_code AS INT) AS status_code,\n       COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name,\n       COALESCE(body_error, '') AS error, COUNT(*) AS calls\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY path, method, status_code, stream_name, error\nORDER BY calls DESC\nLIMIT 100",
+      "chartQuery": "SELECT body_path AS path, COALESCE(body_method, 'unknown') AS method, CAST(body_status_code AS INT) AS status_code, COALESCE(NULLIF(body_stream_name, ''), NULLIF(\"body_headers_x-p-stream\", ''), 'unknown') AS stream_name, COALESCE(body_error, '') AS error, COUNT(*) AS calls\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY path, method, status_code, stream_name, error\nORDER BY calls DESC\nLIMIT 100",
       "dbName": [
         "$dataset"
       ],
@@ -1532,7 +1532,7 @@
     {
       "tile_id": "01KW4YENKXBXNTCRGRN5D6P1AP",
       "title": "User Actions",
-      "chartQuery": "SELECT DISTINCT\n  body_path,\n  body_method,\n  \"body_status_code\",\n  \"body_stream_name\",\n  \"body_error\"\nFROM\n  $dataset\nWHERE\n  body_username like '%$username%'\n  AND body_path NOT LIKE '%assets%'\n  AND body_error IS NULL",
+      "chartQuery": "SELECT DISTINCT body_path, body_method, \"body_status_code\", \"body_stream_name\", \"body_error\"\nFROM $dataset\nWHERE body_username like '%$username%' AND body_path NOT LIKE '%assets%' AND body_error IS NULL",
       "dbName": [
         "$dataset"
       ],

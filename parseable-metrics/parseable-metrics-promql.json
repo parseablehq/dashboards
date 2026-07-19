@@ -24,35 +24,43 @@
   "sections": [
     {
       "sectionId": "01KW9DTV340V1MDEK8D8P0B2J1",
-      "title": "Overview"
+      "title": "Overview",
+      "isExpanded": false
     },
     {
       "sectionId": "01KW9YRJGKWYYBCT5THZQD25K8",
-      "title": "HTTP Requests"
+      "title": "HTTP Requests",
+      "isExpanded": false
     },
     {
       "sectionId": "01KW92XR7M5WN2RM1CB5NBD9MK",
-      "title": "Storage & Ingestion"
+      "title": "Storage & Ingestion",
+      "isExpanded": false
     },
     {
       "sectionId": "01KW9TGDDJKW7JTTQJ33K02ERA",
-      "title": "Object Store"
+      "title": "Object Store",
+      "isExpanded": false
     },
     {
       "sectionId": "01KW9M028P3TRHP5K05MWR2EF0",
-      "title": "Process Resources"
+      "title": "Process Resources",
+      "isExpanded": false
     },
     {
       "sectionId": "01KW9CT7N3WVG3FRAPFJZKVE1Q",
-      "title": "Query & Cache"
+      "title": "Query & Cache",
+      "isExpanded": false
     },
     {
       "sectionId": "01KW9A0SKF3HD5E9TQQRTQJ1AW",
-      "title": "Latency & Histograms"
+      "title": "Latency & Histograms",
+      "isExpanded": false
     },
     {
       "sectionId": "01KW9XB94KQ7C1NFST01C7GPP7",
-      "title": "Tenants"
+      "title": "Tenants",
+      "isExpanded": false
     }
   ],
   "tiles": [

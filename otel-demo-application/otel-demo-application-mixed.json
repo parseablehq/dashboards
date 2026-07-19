@@ -573,7 +573,7 @@
     },
     {
       "tile_id": "01KW45FT88XCYW46DSPQYY4ZC0",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"service.name\", 'unknown') AS service,\n       COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -638,7 +638,7 @@
     },
     {
       "tile_id": "01KW45FT882WCSBS9H45Z8RRZH",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"service.name\", 'unknown') AS service,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -703,7 +703,7 @@
     },
     {
       "tile_id": "01KW45FT88WPZYYSWPEJC0FVJM",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"service.name\", 'unknown') AS service,\n       COUNT(*) FILTER (WHERE span_status_code = 2 OR \"error\" = 'true' OR \"error.type\" IS NOT NULL OR \"exception.type\" IS NOT NULL) AS errors\nFROM $traces_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, COUNT(*) FILTER (WHERE span_status_code = 2 OR \"error\" = 'true' OR \"error.type\" IS NOT NULL OR \"exception.type\" IS NOT NULL) AS errors\nFROM $traces_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -768,7 +768,7 @@
     },
     {
       "tile_id": "01KW45FT88KJWBST3BF2X4K119",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(severity_text, p_log_category, 'unknown') AS severity,\n       COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin ASC, severity ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, p_log_category, 'unknown') AS severity, COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin ASC, severity ASC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1033,7 +1033,7 @@
     },
     {
       "tile_id": "01KW45FT888EBHHEFFR1P89J04",
-      "chartQuery": "SELECT COALESCE(\"service.name\", 'unknown') AS service,\n       COUNT(*) AS spans,\n       COUNT(DISTINCT span_trace_id) AS traces,\n       COUNT(*) FILTER (WHERE span_status_code = 2 OR \"error\" = 'true' OR \"error.type\" IS NOT NULL OR \"exception.type\" IS NOT NULL) AS errors,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nGROUP BY service\nORDER BY spans DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"service.name\", 'unknown') AS service, COUNT(*) AS spans, COUNT(DISTINCT span_trace_id) AS traces, COUNT(*) FILTER (WHERE span_status_code = 2 OR \"error\" = 'true' OR \"error.type\" IS NOT NULL OR \"exception.type\" IS NOT NULL) AS errors, ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nGROUP BY service\nORDER BY spans DESC\nLIMIT 20",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1096,7 +1096,7 @@
     },
     {
       "tile_id": "01KW45FT88VA07Y3CA6GC0ARYC",
-      "chartQuery": "SELECT COALESCE(\"service.name\", 'unknown') AS service,\n       COALESCE(span_name, 'unknown') AS operation,\n       COUNT(*) AS spans,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE span_name IS NOT NULL\nGROUP BY service, operation\nORDER BY spans DESC\nLIMIT 25",
+      "chartQuery": "SELECT COALESCE(\"service.name\", 'unknown') AS service, COALESCE(span_name, 'unknown') AS operation, COUNT(*) AS spans, ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE span_name IS NOT NULL\nGROUP BY service, operation\nORDER BY spans DESC\nLIMIT 25",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1159,7 +1159,7 @@
     },
     {
       "tile_id": "01KW45FT889R0NYH6WVSMM5BQV",
-      "chartQuery": "SELECT COALESCE(\"http.response.status_code\", \"http.status_code\", 'unknown') AS status_code,\n       COUNT(*) AS spans\nFROM $traces_dataset\nWHERE \"http.response.status_code\" IS NOT NULL OR \"http.status_code\" IS NOT NULL\nGROUP BY status_code\nORDER BY spans DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"http.response.status_code\", \"http.status_code\", 'unknown') AS status_code, COUNT(*) AS spans\nFROM $traces_dataset\nWHERE \"http.response.status_code\" IS NOT NULL OR \"http.status_code\" IS NOT NULL\nGROUP BY status_code\nORDER BY spans DESC\nLIMIT 20",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1224,7 +1224,7 @@
     },
     {
       "tile_id": "01KW45FT88YJ9FNND2QCC5DRSS",
-      "chartQuery": "SELECT COALESCE(\"http.route\", \"url.path\", \"http.target\", 'unknown') AS route,\n       COUNT(*) AS spans,\n       ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE \"http.route\" IS NOT NULL OR \"url.path\" IS NOT NULL OR \"http.target\" IS NOT NULL\nGROUP BY route\nORDER BY spans DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"http.route\", \"url.path\", \"http.target\", 'unknown') AS route, COUNT(*) AS spans, ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE \"http.route\" IS NOT NULL OR \"url.path\" IS NOT NULL OR \"http.target\" IS NOT NULL\nGROUP BY route\nORDER BY spans DESC\nLIMIT 20",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1289,7 +1289,7 @@
     },
     {
       "tile_id": "01KW45FT88SSN91PCM3GJBP2MJ",
-      "chartQuery": "SELECT COALESCE(\"app.payment.card_type\", 'unknown') AS card_type,\n       COUNT(*) AS payments\nFROM $traces_dataset\nWHERE \"app.payment.card_type\" IS NOT NULL\nGROUP BY card_type\nORDER BY payments DESC",
+      "chartQuery": "SELECT COALESCE(\"app.payment.card_type\", 'unknown') AS card_type, COUNT(*) AS payments\nFROM $traces_dataset\nWHERE \"app.payment.card_type\" IS NOT NULL\nGROUP BY card_type\nORDER BY payments DESC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1352,7 +1352,7 @@
     },
     {
       "tile_id": "01KW45FT88FC1HAGYYDX84XABN",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COUNT(DISTINCT \"app.order.id\") AS orders,\n       ROUND(SUM(\"app.order.amount\"), 2) AS revenue\nFROM $traces_dataset\nWHERE \"app.order.id\" IS NOT NULL OR \"app.order.amount\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(DISTINCT \"app.order.id\") AS orders, ROUND(SUM(\"app.order.amount\"), 2) AS revenue\nFROM $traces_dataset\nWHERE \"app.order.id\" IS NOT NULL OR \"app.order.amount\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1418,7 +1418,7 @@
     },
     {
       "tile_id": "01KW45FT88XESBZR7K0N30W1CR",
-      "chartQuery": "SELECT p_timestamp,\n       COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service,\n       COALESCE(severity_text, p_log_category, 'unknown') AS severity,\n       body,\n       \"exception.message\" AS exception_message\nFROM $logs_dataset\nWHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.message\" IS NOT NULL\nORDER BY p_timestamp DESC\nLIMIT 50",
+      "chartQuery": "SELECT p_timestamp, COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service, COALESCE(severity_text, p_log_category, 'unknown') AS severity, body, \"exception.message\" AS exception_message\nFROM $logs_dataset\nWHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.message\" IS NOT NULL\nORDER BY p_timestamp DESC\nLIMIT 50",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1481,7 +1481,7 @@
     },
     {
       "tile_id": "01KW45FT8839EW3VQG5NAREN1W",
-      "chartQuery": "SELECT p_timestamp, \"service.name\" AS service, span_name, span_trace_id,\n       ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms,\n       span_status_code, \"error.type\", \"exception.message\"\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL\nORDER BY span_duration_ns DESC\nLIMIT 50",
+      "chartQuery": "SELECT p_timestamp, \"service.name\" AS service, span_name, span_trace_id, ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms, span_status_code, \"error.type\", \"exception.message\"\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL\nORDER BY span_duration_ns DESC\nLIMIT 50",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1544,7 +1544,7 @@
     },
     {
       "tile_id": "01KXCYTG4V5GKEPY2KHMKMF5YQ",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service,\n       COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service, COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1610,7 +1610,7 @@
     },
     {
       "tile_id": "01KXCYTG4VQJG3HQ650ZJTBC98",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       ROUND(100.0 * COUNT(*) FILTER (WHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.type\" IS NOT NULL OR \"exception.message\" IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $logs_dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(100.0 * COUNT(*) FILTER (WHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.type\" IS NOT NULL OR \"exception.message\" IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $logs_dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1674,7 +1674,7 @@
     },
     {
       "tile_id": "01KXCYTG4VD1XA3DP6XQSHN13T",
-      "chartQuery": "SELECT COALESCE(\"exception.type\", 'unknown') AS exception_type,\n       COUNT(*) AS errors\nFROM $logs_dataset\nWHERE \"exception.type\" IS NOT NULL OR \"exception.message\" IS NOT NULL\nGROUP BY exception_type\nORDER BY errors DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"exception.type\", 'unknown') AS exception_type, COUNT(*) AS errors\nFROM $logs_dataset\nWHERE \"exception.type\" IS NOT NULL OR \"exception.message\" IS NOT NULL\nGROUP BY exception_type\nORDER BY errors DESC\nLIMIT 20",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1739,7 +1739,7 @@
     },
     {
       "tile_id": "01KXCYTG4VT9ZMC536FDX1FTR3",
-      "chartQuery": "SELECT COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service,\n       COUNT(*) AS logs,\n       COUNT(*) FILTER (WHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.type\" IS NOT NULL OR \"exception.message\" IS NOT NULL) AS errors\nFROM $logs_dataset\nGROUP BY service\nORDER BY logs DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service, COUNT(*) AS logs, COUNT(*) FILTER (WHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.type\" IS NOT NULL OR \"exception.message\" IS NOT NULL) AS errors\nFROM $logs_dataset\nGROUP BY service\nORDER BY logs DESC\nLIMIT 20",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1802,7 +1802,7 @@
     },
     {
       "tile_id": "01KXCYTG4VW44PVAKHXQQ1AYZM",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       metric_family,\n       COUNT(*) AS samples\nFROM $metrics_dataset\nWHERE metric_family IS NOT NULL\nGROUP BY time_bin, metric_family\nORDER BY time_bin ASC, metric_family ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, metric_family, COUNT(*) AS samples\nFROM $metrics_dataset\nWHERE metric_family IS NOT NULL\nGROUP BY time_bin, metric_family\nORDER BY time_bin ASC, metric_family ASC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1868,7 +1868,7 @@
     },
     {
       "tile_id": "01KXCYTG4VXMEQJ7HJD20BZEFV",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       COALESCE(\"service.name\", \"metric_service.name\", 'unknown') AS service,\n       ROUND(SUM(data_point_value) / 1048576.0, 2) AS memory_mib\nFROM $metrics_dataset\nWHERE metric_name = 'jvm.memory.used'\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", \"metric_service.name\", 'unknown') AS service, ROUND(SUM(data_point_value) / 1048576.0, 2) AS memory_mib\nFROM $metrics_dataset\nWHERE metric_name = 'jvm.memory.used'\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1934,7 +1934,7 @@
     },
     {
       "tile_id": "01KXCYTG4V2AX1Q4V7DXH6A5DB",
-      "chartQuery": "SELECT COALESCE(CAST(\"metric_http.response.status_code\" AS VARCHAR), CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') AS status_code,\n       COUNT(*) AS samples\nFROM $metrics_dataset\nWHERE metric_name IN ('http.server.request.duration', 'http.server.duration')\n  AND (\"metric_http.response.status_code\" IS NOT NULL OR \"http.response.status_code\" IS NOT NULL)\nGROUP BY status_code\nORDER BY samples DESC\nLIMIT 20",
+      "chartQuery": "SELECT COALESCE(CAST(\"metric_http.response.status_code\" AS VARCHAR), CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') AS status_code, COUNT(*) AS samples\nFROM $metrics_dataset\nWHERE metric_name IN ('http.server.request.duration', 'http.server.duration') AND (\"metric_http.response.status_code\" IS NOT NULL OR \"http.response.status_code\" IS NOT NULL)\nGROUP BY status_code\nORDER BY samples DESC\nLIMIT 20",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1999,7 +1999,7 @@
     },
     {
       "tile_id": "01KXCYTG4V1JBQZTW5PAX9Y984",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n       metric_name,\n       SUM(data_point_value) AS value\nFROM $metrics_dataset\nWHERE metric_name IN ('jvm.thread.count', 'go.goroutine.count')\nGROUP BY time_bin, metric_name\nORDER BY time_bin ASC, metric_name ASC",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, metric_name, SUM(data_point_value) AS value\nFROM $metrics_dataset\nWHERE metric_name IN ('jvm.thread.count', 'go.goroutine.count')\nGROUP BY time_bin, metric_name\nORDER BY time_bin ASC, metric_name ASC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2068,7 +2068,7 @@
       "title": "Most Errored Service",
       "chartType": "table",
       "tileType": "code",
-      "chartQuery": "SELECT COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service,\n       COUNT(*) AS errors\nFROM $logs_dataset\nWHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.message\" IS NOT NULL OR \"exception.type\" IS NOT NULL\nGROUP BY service\nORDER BY errors DESC\nLIMIT 1",
+      "chartQuery": "SELECT COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service, COUNT(*) AS errors\nFROM $logs_dataset\nWHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.message\" IS NOT NULL OR \"exception.type\" IS NOT NULL\nGROUP BY service\nORDER BY errors DESC\nLIMIT 1",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2131,7 +2131,7 @@
       "title": "Longest Span From Service",
       "chartType": "table",
       "tileType": "code",
-      "chartQuery": "SELECT COALESCE(\"service.name\", 'unknown') AS service,\n       ROUND(MAX(span_duration_ns) / 1000000.0, 2) AS duration_ms\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL\nGROUP BY service\nORDER BY MAX(span_duration_ns) DESC\nLIMIT 1",
+      "chartQuery": "SELECT COALESCE(\"service.name\", 'unknown') AS service, ROUND(MAX(span_duration_ns) / 1000000.0, 2) AS duration_ms\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL\nGROUP BY service\nORDER BY MAX(span_duration_ns) DESC\nLIMIT 1",
       "dbName": [
         "$traces_dataset"
       ],
@@ -2194,7 +2194,7 @@
       "title": "Trace With Highest Number Of Spans",
       "chartType": "table",
       "tileType": "code",
-      "chartQuery": "SELECT span_trace_id AS trace_id,\n       COUNT(*) AS spans\nFROM $traces_dataset\nWHERE span_trace_id IS NOT NULL\nGROUP BY span_trace_id\nORDER BY spans DESC\nLIMIT 1",
+      "chartQuery": "SELECT span_trace_id AS trace_id, COUNT(*) AS spans\nFROM $traces_dataset\nWHERE span_trace_id IS NOT NULL\nGROUP BY span_trace_id\nORDER BY spans DESC\nLIMIT 1",
       "dbName": [
         "$traces_dataset"
       ],
@@ -2257,7 +2257,7 @@
       "title": "Trace With Highest Number Of Errors",
       "chartType": "table",
       "tileType": "code",
-      "chartQuery": "SELECT span_trace_id AS trace_id,\n       COUNT(*) AS errors\nFROM $traces_dataset\nWHERE span_trace_id IS NOT NULL\n  AND (span_status_code = 2 OR \"error\" = 'true' OR \"error.type\" IS NOT NULL OR \"exception.type\" IS NOT NULL)\nGROUP BY span_trace_id\nORDER BY errors DESC\nLIMIT 1",
+      "chartQuery": "SELECT span_trace_id AS trace_id, COUNT(*) AS errors\nFROM $traces_dataset\nWHERE span_trace_id IS NOT NULL AND (span_status_code = 2 OR \"error\" = 'true' OR \"error.type\" IS NOT NULL OR \"exception.type\" IS NOT NULL)\nGROUP BY span_trace_id\nORDER BY errors DESC\nLIMIT 1",
       "dbName": [
         "$traces_dataset"
       ],

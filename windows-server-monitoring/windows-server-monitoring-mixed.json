@@ -1,0 +1,4248 @@
+{
+  "tags": [
+    "windows",
+    "windows-server",
+    "infrastructure",
+    "metrics",
+    "logs",
+    "traces",
+    "promql"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Windows Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "windows-metrics"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "Windows Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "windows-logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "Windows Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "windows-traces"
+    },
+    {
+      "name": "environment",
+      "label": "Environment",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "deployment.environment.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "service",
+      "label": "Service",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "service.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "host",
+      "label": "Host",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "host.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "volume",
+      "label": "Volume",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "volume",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "nic",
+      "label": "NIC",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "nic",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXXHKX9PTEASC89P3SYDSE88",
+      "title": "CPU & System",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXXHKX9PC1TH7702TYNR1DXB",
+      "title": "Memory",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "title": "Disk & Filesystem",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXXHKX9PRDG699A9Q6YXRKHJ",
+      "title": "Network & TCP",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXXHKX9P6SJKMTS8KSCWTJGD",
+      "title": "Services & Processes",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXXHKX9PSEAGZ1VX72WZT2GX",
+      "title": "Windows Events",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXXHKX9PNRRFJ5S0KYDE1TWK",
+      "title": "Traces & Workload",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KXXHKX9PR1WD2M89G1CH19XV",
+      "title": "Exporter & Inventory",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KXXHKX9PV5XATNSGCHWZ25X5",
+      "title": "Windows Hosts Up",
+      "chartQuery": [
+        "100 * avg(up{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "layout": {
+        "i": "01KXXHKX9PV5XATNSGCHWZ25X5",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9P7D4S4B9QPJR3QX8T",
+      "title": "Host Count",
+      "chartQuery": [
+        "count(count(up{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}) by (service_instance_id))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "layout": {
+        "i": "01KXXHKX9P7D4S4B9QPJR3QX8T",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9P01STB4DVJTKAWWSW",
+      "title": "CPU Used %",
+      "chartQuery": [
+        "100 * (1 - avg(rate(windows_cpu_time_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",mode=\"idle\"}[2m])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "layout": {
+        "i": "01KXXHKX9P01STB4DVJTKAWWSW",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PW5RTDRZDV18JSKHC",
+      "title": "Memory Used %",
+      "chartQuery": [
+        "100 * (1 - sum(windows_memory_available_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}) / sum(windows_memory_physical_total_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "layout": {
+        "i": "01KXXHKX9PW5RTDRZDV18JSKHC",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PXX9C877KA14B2EMY",
+      "title": "Disk Used %",
+      "chartQuery": [
+        "100 * (1 - sum(windows_logical_disk_free_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}) / sum(windows_logical_disk_size_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "gauge",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "layout": {
+        "i": "01KXXHKX9PXX9C877KA14B2EMY",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PG15A13RMB37EGZP5",
+      "title": "Processes",
+      "chartQuery": [
+        "sum(windows_system_processes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "layout": {
+        "i": "01KXXHKX9PG15A13RMB37EGZP5",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PPDV8FPMPJ1F9V32D",
+      "title": "Running Services",
+      "chartQuery": [
+        "sum(windows_service_state{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",state=\"running\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "layout": {
+        "i": "01KXXHKX9PPDV8FPMPJ1F9V32D",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9P9QM0Q610518HPSC5",
+      "title": "Uptime",
+      "chartQuery": [
+        "max(time() - windows_system_boot_time_timestamp{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PEAGND9EA5NJK379K",
+      "layout": {
+        "i": "01KXXHKX9P9QM0Q610518HPSC5",
+        "x": 21,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PMDB1S4WYNXF31HKT",
+      "title": "CPU Usage by Mode",
+      "chartQuery": [
+        "sum(rate(windows_cpu_time_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m])) by (mode)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PTEASC89P3SYDSE88",
+      "layout": {
+        "i": "01KXXHKX9PMDB1S4WYNXF31HKT",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PT57C2GBEW7G9FKDF",
+      "title": "CPU Interrupts / sec",
+      "chartQuery": [
+        "sum(rate(windows_cpu_interrupts_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PTEASC89P3SYDSE88",
+      "layout": {
+        "i": "01KXXHKX9PT57C2GBEW7G9FKDF",
+        "x": 6,
+        "y": 15,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9P3QMMR4ZBCH90TZQK",
+      "title": "Processor Queue Length",
+      "chartQuery": [
+        "sum(windows_system_processor_queue_length{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PTEASC89P3SYDSE88",
+      "layout": {
+        "i": "01KXXHKX9P3QMMR4ZBCH90TZQK",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PQ0HJ157P61YZEPTW",
+      "title": "Context Switches / sec",
+      "chartQuery": [
+        "sum(rate(windows_system_context_switches_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PTEASC89P3SYDSE88",
+      "layout": {
+        "i": "01KXXHKX9PQ0HJ157P61YZEPTW",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PTX8845XSB9YG1GXX",
+      "title": "System Calls / sec",
+      "chartQuery": [
+        "sum(rate(windows_system_system_calls_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PTEASC89P3SYDSE88",
+      "layout": {
+        "i": "01KXXHKX9PTX8845XSB9YG1GXX",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PJHQWX4DAGYPSFPXP",
+      "title": "Threads",
+      "chartQuery": [
+        "sum(windows_system_threads{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PTEASC89P3SYDSE88",
+      "layout": {
+        "i": "01KXXHKX9PJHQWX4DAGYPSFPXP",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PVB3W2NE78K86JC23",
+      "title": "Memory Available",
+      "chartQuery": [
+        "sum(windows_memory_available_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PC1TH7702TYNR1DXB",
+      "layout": {
+        "i": "01KXXHKX9PVB3W2NE78K86JC23",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PHD53KT5TYH6MAZ49",
+      "title": "Physical Memory Total",
+      "chartQuery": [
+        "sum(windows_memory_physical_total_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PC1TH7702TYNR1DXB",
+      "layout": {
+        "i": "01KXXHKX9PHD53KT5TYH6MAZ49",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PCC8QVWP9WC6CHMVD",
+      "title": "Committed Memory",
+      "chartQuery": [
+        "sum(windows_memory_committed_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PC1TH7702TYNR1DXB",
+      "layout": {
+        "i": "01KXXHKX9PCC8QVWP9WC6CHMVD",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9P3GGP11V4FHCBS0QG",
+      "title": "Commit Limit",
+      "chartQuery": [
+        "sum(windows_memory_commit_limit{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PC1TH7702TYNR1DXB",
+      "layout": {
+        "i": "01KXXHKX9P3GGP11V4FHCBS0QG",
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9P1QA7MD9TMQBE803Z",
+      "title": "Page Faults / sec",
+      "chartQuery": [
+        "sum(rate(windows_memory_page_faults_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PC1TH7702TYNR1DXB",
+      "layout": {
+        "i": "01KXXHKX9P1QA7MD9TMQBE803Z",
+        "x": 0,
+        "y": 14,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PEMVB1KF659T1JX16",
+      "title": "Cache Bytes",
+      "chartQuery": [
+        "sum(windows_memory_cache_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PC1TH7702TYNR1DXB",
+      "layout": {
+        "i": "01KXXHKX9PEMVB1KF659T1JX16",
+        "x": 6,
+        "y": 14,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PC1FM23080S1VS829",
+      "title": "Pool Paged / Nonpaged",
+      "chartQuery": [
+        "sum(windows_memory_pool_paged_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}) or sum(windows_memory_pool_nonpaged_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PC1TH7702TYNR1DXB",
+      "layout": {
+        "i": "01KXXHKX9PC1FM23080S1VS829",
+        "x": 0,
+        "y": 22,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PGRZFGTQ7CDMFZA4Q",
+      "title": "Logical Disk Used %",
+      "chartQuery": [
+        "100 * (1 - sum(windows_logical_disk_free_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}) by (volume) / sum(windows_logical_disk_size_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}) by (volume))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "layout": {
+        "i": "01KXXHKX9PGRZFGTQ7CDMFZA4Q",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PRNANGFXK23GBEV47",
+      "title": "Logical Disk Free",
+      "chartQuery": [
+        "sum(windows_logical_disk_free_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}) by (volume)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "layout": {
+        "i": "01KXXHKX9PRNANGFXK23GBEV47",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PNX2XEFBKSD1NRM75",
+      "title": "Logical Disk Read/Write Bytes",
+      "chartQuery": [
+        "sum(rate(windows_logical_disk_read_bytes_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}[2m])) by (volume) or sum(rate(windows_logical_disk_write_bytes_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}[2m])) by (volume)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "layout": {
+        "i": "01KXXHKX9PNX2XEFBKSD1NRM75",
+        "x": 6,
+        "y": 9,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "B/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PVA3Z820XR5HFXJEJ",
+      "title": "Logical Disk Read Latency",
+      "chartQuery": [
+        "sum(rate(windows_logical_disk_read_latency_seconds_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}[2m])) by (volume)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "layout": {
+        "i": "01KXXHKX9PVA3Z820XR5HFXJEJ",
+        "x": 0,
+        "y": 9,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PXREY0P58TCW59SC9",
+      "title": "Logical Disk Write Latency",
+      "chartQuery": [
+        "sum(rate(windows_logical_disk_write_latency_seconds_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}[2m])) by (volume)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "layout": {
+        "i": "01KXXHKX9PXREY0P58TCW59SC9",
+        "x": 0,
+        "y": 17,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9PCMJY2HQRV3KD9B3P",
+      "title": "Disk Queue Length",
+      "chartQuery": [
+        "sum(windows_logical_disk_requests_queued{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",volume=~\"$volume\"}) by (volume)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "layout": {
+        "i": "01KXXHKX9PCMJY2HQRV3KD9B3P",
+        "x": 6,
+        "y": 9,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9P3Q23GJAXPTT7H1FH",
+      "title": "Physical Disk Read/Write Bytes",
+      "chartQuery": [
+        "sum(rate(windows_physical_disk_read_bytes_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m])) or sum(rate(windows_physical_disk_write_bytes_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "layout": {
+        "i": "01KXXHKX9P3Q23GJAXPTT7H1FH",
+        "x": 6,
+        "y": 25,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "B/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QMV7VZW9KJJEJHY2R",
+      "title": "Physical Disk Queue",
+      "chartQuery": [
+        "sum(windows_physical_disk_requests_queued{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PMWXGANEJ8X37NH53",
+      "layout": {
+        "i": "01KXXHKX9QMV7VZW9KJJEJHY2R",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9Q0S5G51KZEPA2M1KQ",
+      "title": "Network Throughput",
+      "chartQuery": [
+        "sum(rate(windows_net_bytes_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",nic=~\"$nic\"}[2m])) by (nic)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PRDG699A9Q6YXRKHJ",
+      "layout": {
+        "i": "01KXXHKX9Q0S5G51KZEPA2M1KQ",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "B/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QPXSBV3ATYAGK5PKA",
+      "title": "Network Received / Sent",
+      "chartQuery": [
+        "sum(rate(windows_net_bytes_received_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",nic=~\"$nic\"}[2m])) by (nic) or sum(rate(windows_net_bytes_sent_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",nic=~\"$nic\"}[2m])) by (nic)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PRDG699A9Q6YXRKHJ",
+      "layout": {
+        "i": "01KXXHKX9QPXSBV3ATYAGK5PKA",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "B/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QTDPVDZP8324W71EC",
+      "title": "Network Errors",
+      "chartQuery": [
+        "sum(rate(windows_net_packets_received_errors_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",nic=~\"$nic\"}[2m])) by (nic) or sum(rate(windows_net_packets_outbound_errors_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",nic=~\"$nic\"}[2m])) by (nic)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PRDG699A9Q6YXRKHJ",
+      "layout": {
+        "i": "01KXXHKX9QTDPVDZP8324W71EC",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "err/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QM3FBTK54KSWSARHR",
+      "title": "Output Queue Length",
+      "chartQuery": [
+        "sum(windows_net_output_queue_length_packets{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",nic=~\"$nic\"}) by (nic)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PRDG699A9Q6YXRKHJ",
+      "layout": {
+        "i": "01KXXHKX9QM3FBTK54KSWSARHR",
+        "x": 0,
+        "y": 9,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QJF7SJA4HGJFZGD8T",
+      "title": "TCP Established",
+      "chartQuery": [
+        "sum(windows_tcp_connections_established{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PRDG699A9Q6YXRKHJ",
+      "layout": {
+        "i": "01KXXHKX9QJF7SJA4HGJFZGD8T",
+        "x": 0,
+        "y": 17,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9Q8D391AEHM53GMWEX",
+      "title": "TCP Retransmits / sec",
+      "chartQuery": [
+        "sum(rate(windows_tcp_segments_retransmitted_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PRDG699A9Q6YXRKHJ",
+      "layout": {
+        "i": "01KXXHKX9Q8D391AEHM53GMWEX",
+        "x": 6,
+        "y": 17,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9Q96KYWV7SW3578W9P",
+      "title": "Services by State",
+      "chartQuery": [
+        "sum(windows_service_state{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}) by (state)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9P6SJKMTS8KSCWTJGD",
+      "layout": {
+        "i": "01KXXHKX9Q96KYWV7SW3578W9P",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QR4WW7M1160TS9SGA",
+      "title": "Stopped Services",
+      "chartQuery": [
+        "topk(20, sum(windows_service_state{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\",state=\"stopped\"}) by (name))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9P6SJKMTS8KSCWTJGD",
+      "layout": {
+        "i": "01KXXHKX9QR4WW7M1160TS9SGA",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QBMBK2GAA9YFGXJE6",
+      "title": "Top Process CPU",
+      "chartQuery": [
+        "topk(10, sum(rate(windows_process_cpu_time_total{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}[2m])) by (process))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9P6SJKMTS8KSCWTJGD",
+      "layout": {
+        "i": "01KXXHKX9QBMBK2GAA9YFGXJE6",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 12,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QG5C1AC6QBSAB2CPH",
+      "title": "Top Process Working Set",
+      "chartQuery": [
+        "topk(10, sum(windows_process_working_set_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}) by (process))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9P6SJKMTS8KSCWTJGD",
+      "layout": {
+        "i": "01KXXHKX9QG5C1AC6QBSAB2CPH",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 12,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QA450Z7TBCC7QT8GJ",
+      "title": "Process Handles",
+      "chartQuery": [
+        "topk(10, sum(windows_process_handles{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}) by (process))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9P6SJKMTS8KSCWTJGD",
+      "layout": {
+        "i": "01KXXHKX9QA450Z7TBCC7QT8GJ",
+        "x": 0,
+        "y": 22,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QK97NJQD5T575THV8",
+      "title": "Scheduled Task Missed Runs",
+      "chartQuery": [
+        "sum(windows_scheduled_task_missed_runs{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9P6SJKMTS8KSCWTJGD",
+      "layout": {
+        "i": "01KXXHKX9QK97NJQD5T575THV8",
+        "x": 6,
+        "y": 22,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QZCAK9QNJRKJVA289",
+      "title": "Windows Event Records",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PSEAGZ1VX72WZT2GX",
+      "layout": {
+        "i": "01KXXHKX9QZCAK9QNJRKJVA289",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QXM4DJBKC2RWKX7DK",
+      "title": "Events by Severity",
+      "chartQuery": "SELECT COALESCE(severity_text, p_log_category, 'unknown') AS severity, COUNT(*) AS records FROM $logs_dataset GROUP BY severity ORDER BY records DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PSEAGZ1VX72WZT2GX",
+      "layout": {
+        "i": "01KXXHKX9QXM4DJBKC2RWKX7DK",
+        "x": 3,
+        "y": 0,
+        "w": 4,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "severity",
+            "title": "severity",
+            "display": true
+          },
+          "y": {
+            "field": "severity",
+            "title": "severity",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "severity"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QN5XDZHGBCQRN7G3M",
+      "title": "Events by Category",
+      "chartQuery": "SELECT COALESCE(p_log_category, 'unknown') AS category, COUNT(*) AS records FROM $logs_dataset GROUP BY category ORDER BY records DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PSEAGZ1VX72WZT2GX",
+      "layout": {
+        "i": "01KXXHKX9QN5XDZHGBCQRN7G3M",
+        "x": 3,
+        "y": 6,
+        "w": 5,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "category",
+            "title": "category",
+            "display": true
+          },
+          "y": {
+            "field": "category",
+            "title": "category",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "category"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QW1A702G95YTY3981",
+      "title": "Events by Host",
+      "chartQuery": "SELECT COALESCE(\"host.name\", 'unknown') AS host_name, COUNT(*) AS records FROM $logs_dataset GROUP BY host_name ORDER BY records DESC LIMIT 20",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PSEAGZ1VX72WZT2GX",
+      "layout": {
+        "i": "01KXXHKX9QW1A702G95YTY3981",
+        "x": 7,
+        "y": 0,
+        "w": 5,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "host_name",
+            "title": "host_name",
+            "display": true
+          },
+          "y": {
+            "field": "host_name",
+            "title": "host_name",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "host_name"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9Q3WHWKGN3SV0PYM65",
+      "title": "Error and Warning Events",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $logs_dataset WHERE severity_text IN ('ERROR','WARN','WARNING') OR p_log_category IN ('ERROR','WARN','WARNING')",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PSEAGZ1VX72WZT2GX",
+      "layout": {
+        "i": "01KXXHKX9Q3WHWKGN3SV0PYM65",
+        "x": 0,
+        "y": 6,
+        "w": 3,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QKCZ1YHBAF7NRH9XT",
+      "title": "Event Trend",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "line",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PSEAGZ1VX72WZT2GX",
+      "layout": {
+        "i": "01KXXHKX9QKCZ1YHBAF7NRH9XT",
+        "x": 0,
+        "y": 7,
+        "w": 12,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QCJ7DC6CFFQM681DQ",
+      "title": "Recent Windows Events",
+      "chartQuery": "SELECT p_timestamp, COALESCE(severity_text, p_log_category, 'unknown') AS severity, COALESCE(\"host.name\", 'unknown') AS host_name, body FROM $logs_dataset ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PSEAGZ1VX72WZT2GX",
+      "layout": {
+        "i": "01KXXHKX9QCJ7DC6CFFQM681DQ",
+        "x": 12,
+        "y": 7,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "body",
+            "title": "body",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9Q6161316AWS9JWENH",
+      "title": "Trace Spans",
+      "chartQuery": "SELECT COUNT(*) AS value FROM $traces_dataset",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PNRRFJ5S0KYDE1TWK",
+      "layout": {
+        "i": "01KXXHKX9Q6161316AWS9JWENH",
+        "x": 0,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QV9E1JM7SRT6E88R0",
+      "title": "p95 Workload Duration",
+      "chartQuery": "SELECT approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PNRRFJ5S0KYDE1TWK",
+      "layout": {
+        "i": "01KXXHKX9QV9E1JM7SRT6E88R0",
+        "x": 2,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9Q2R316SF8SC88ZHGS",
+      "title": "Spans by Status",
+      "chartQuery": "SELECT COALESCE(span_status_description, 'unknown') AS status, COUNT(*) AS spans FROM $traces_dataset GROUP BY status ORDER BY spans DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PNRRFJ5S0KYDE1TWK",
+      "layout": {
+        "i": "01KXXHKX9Q2R316SF8SC88ZHGS",
+        "x": 0,
+        "y": 5,
+        "w": 5,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "status",
+            "title": "status",
+            "display": true
+          },
+          "y": {
+            "field": "status",
+            "title": "status",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9Q9AKD2JJY1TAZ43AG",
+      "title": "Spans by Name",
+      "chartQuery": "SELECT COALESCE(span_name, 'unknown') AS span_name, COUNT(*) AS spans FROM $traces_dataset GROUP BY span_name ORDER BY spans DESC LIMIT 20",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "pie",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PNRRFJ5S0KYDE1TWK",
+      "layout": {
+        "i": "01KXXHKX9Q9AKD2JJY1TAZ43AG",
+        "x": 5,
+        "y": 5,
+        "w": 5,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "pie",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "span_name",
+            "title": "span_name",
+            "display": true
+          },
+          "y": {
+            "field": "span_name",
+            "title": "span_name",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "span_name"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QB8PZNWPK342SY2PB",
+      "title": "Workload CPU Iterations",
+      "chartQuery": "SELECT approx_percentile_cont(CAST(COALESCE(\"workload.cpu_iterations\", '0') AS DOUBLE), 0.95) AS value FROM $traces_dataset",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PNRRFJ5S0KYDE1TWK",
+      "layout": {
+        "i": "01KXXHKX9QB8PZNWPK342SY2PB",
+        "x": 5,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "metric",
+            "title": "metric",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9Q4P40GETV3P1XAWX3",
+      "title": "Workload Latency Trend",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, approx_percentile_cont(span_duration_ns, 0.95)/1000000 AS value FROM $traces_dataset GROUP BY time_bucket ORDER BY time_bucket",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "line",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PNRRFJ5S0KYDE1TWK",
+      "layout": {
+        "i": "01KXXHKX9Q4P40GETV3P1XAWX3",
+        "x": 0,
+        "y": 7,
+        "w": 12,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QP48FVF7M6W90RD8N",
+      "title": "Recent Workload Spans",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_name, span_status_description, span_duration_ns/1000000 AS duration_ms FROM $traces_dataset ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PNRRFJ5S0KYDE1TWK",
+      "layout": {
+        "i": "01KXXHKX9QP48FVF7M6W90RD8N",
+        "x": 12,
+        "y": 7,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QGHAZZSKJ0CJF653R",
+      "title": "Exporter Collector Success",
+      "chartQuery": [
+        "sum(windows_exporter_collector_success{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}) by (collector)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PR1WD2M89G1CH19XV",
+      "layout": {
+        "i": "01KXXHKX9QGHAZZSKJ0CJF653R",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QZ94MJMFKQTQGXWZY",
+      "title": "Exporter Collector Duration",
+      "chartQuery": [
+        "avg(windows_exporter_collector_duration_seconds{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"}) by (collector)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PR1WD2M89G1CH19XV",
+      "layout": {
+        "i": "01KXXHKX9QZ94MJMFKQTQGXWZY",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QRSTWKX7FSXH6TJ81",
+      "title": "Scrape Duration",
+      "chartQuery": [
+        "avg(windows_exporter_scrape_duration_seconds{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PR1WD2M89G1CH19XV",
+      "layout": {
+        "i": "01KXXHKX9QRSTWKX7FSXH6TJ81",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QK7YAHD2Z8DTN80XQ",
+      "title": "Exporter Process RSS",
+      "chartQuery": [
+        "sum(process_resident_memory_bytes{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PR1WD2M89G1CH19XV",
+      "layout": {
+        "i": "01KXXHKX9QK7YAHD2Z8DTN80XQ",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9QEX6RMJRAB527G6NB",
+      "title": "Exporter Go Routines",
+      "chartQuery": [
+        "sum(go_goroutines{\"deployment.environment.name\"=~\"$environment\",\"service.name\"=~\"$service\",\"host.name\"=~\"$host\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "01KXXHKX9PR1WD2M89G1CH19XV",
+      "layout": {
+        "i": "01KXXHKX9QEX6RMJRAB527G6NB",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "01KXXHKX9Q72Q0C3Y70AE00TS9",
+      "title": "Metric Families by Prefix",
+      "chartQuery": "SELECT CASE WHEN metric_name LIKE 'windows_%' THEN 'windows_exporter' WHEN metric_name LIKE 'go_%' THEN 'go' WHEN metric_name LIKE 'process_%' THEN 'process' ELSE 'other' END AS prefix, COUNT(DISTINCT metric_name) AS families FROM $metrics_dataset GROUP BY prefix ORDER BY families DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PR1WD2M89G1CH19XV",
+      "layout": {
+        "i": "01KXXHKX9Q72Q0C3Y70AE00TS9",
+        "x": 6,
+        "y": 17,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "prefix",
+            "title": "prefix",
+            "display": true
+          },
+          "y": {
+            "field": "prefix",
+            "title": "prefix",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "prefix"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KXXHKX9QZ1XV3QVF4RPPJG9N",
+      "title": "Host Inventory",
+      "chartQuery": "SELECT DISTINCT COALESCE(\"host.name\", 'unknown') AS host_name, COALESCE(\"service.instance.id\", 'unknown') AS instance, COALESCE(\"host.type\", 'unknown') AS host_type, COALESCE(\"cloud.provider\", 'unknown') AS cloud_provider, COALESCE(\"cloud.region\", 'unknown') AS cloud_region FROM $metrics_dataset ORDER BY host_name LIMIT 100",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01KXXHKX9PR1WD2M89G1CH19XV",
+      "layout": {
+        "i": "01KXXHKX9QZ1XV3QVF4RPPJG9N",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "host_name",
+            "title": "host_name",
+            "display": true
+          },
+          "y": {
+            "field": "instance",
+            "title": "instance",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

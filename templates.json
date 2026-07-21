@@ -10,7 +10,8 @@
       "tags": [
         "agent-observability",
         "cost"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "Agent Observability",
@@ -23,7 +24,8 @@
         "genai",
         "sql",
         "agent-observability"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "Claude Code Usage",
@@ -35,7 +37,8 @@
         "claude-code",
         "usage",
         "genai"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "K8s Cluster Monitoring",
@@ -94,7 +97,8 @@
         "logs",
         "traces",
         "promql"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "Redis Monitoring",
@@ -110,7 +114,8 @@
         "logs",
         "traces",
         "promql"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "SQL Server Monitoring",
@@ -126,7 +131,8 @@
         "logs",
         "traces",
         "promql"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "Windows Server Monitoring",
@@ -142,7 +148,8 @@
         "logs",
         "traces",
         "promql"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "MongoDB Monitoring",
@@ -157,7 +164,8 @@
         "logs",
         "traces",
         "promql"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "Node Metrics Dashboard - PromQL",
@@ -182,7 +190,8 @@
         "collector",
         "metrics",
         "promql"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "OTel Demo Application",
@@ -194,7 +203,8 @@
         "otel-demo",
         "astronomy-shop",
         "observability"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "Parseable Audit Logs",
@@ -207,7 +217,8 @@
         "parseable",
         "logs",
         "azure"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "Parseable Metrics",
@@ -219,7 +230,8 @@
         "metrics",
         "parseable",
         "promql"
-      ]
+      ],
+      "image": "screenshot.png"
     },
     {
       "name": "Parseable Server Logs",
@@ -232,7 +244,8 @@
         "parseable",
         "logs",
         "azure"
-      ]
+      ],
+      "image": "screenshot.png"
     }
   ]
 }

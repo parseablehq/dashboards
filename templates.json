@@ -149,7 +149,7 @@
         "traces",
         "promql"
       ],
-      "image": "screenshot.png"
+      "mdx": "windows-server-monitoring.mdx"
     },
     {
       "name": "MongoDB Monitoring",

@@ -34,8 +34,10 @@ Each dashboard follows this layout:
 
 ```text
 <dashboard-name>/
+  assets/
+    <dashboard-preview>.png
   README.md
   <dashboard-name>-<source>.json
 ```
 
-The naming convention is `name-of-dashboard-source.json`, where source is typically `sql`, `promql`, or `mixed`.
+The naming convention is `name-of-dashboard-source.json`, where source is typically `sql`, `promql`, or `mixed`. Dashboards with multiple preview images keep them in `assets/`.

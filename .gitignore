@@ -5,3 +5,8 @@ node_modules/
 .vscode/
 .idea/
 *.swp
+
+# Agents
+AGENTS.md
+.claude/
+.firecrawl/

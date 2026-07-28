@@ -20,7 +20,7 @@ Track GenAI agent invocations, outcomes, latency, tool usage, token consumption,
 
 **Tags:** `swe-agent`, `genai`, `sql`, `agent-observability`
 
-**Filter variables:** `log_dataset`, `trace_dataset`
+**Filter variables:** `trace_dataset`
 
 **Panels:**
 
@@ -62,31 +62,31 @@ Track GenAI agent invocations, outcomes, latency, tool usage, token consumption,
 - Highest Cost Invocations
 - Invocation Cost Distribution
 - Cost vs Tokens by Invocation
-- Cost by User
+- Cost by Service
 - Cost by Agent Name
-- Cost by User and Model
+- Cost by Service and Model
 - Cost by Agent and Model
 - Total tool calls
 - Total cost
 - Total input tokens
 - Average cost per agent run
 - P95 Invocation Latency by Agent
-- Invocation Latency by Username
+- Invocation Latency by Service
 - P95 Input/Output Tokens Over Time
 - P95 Chat Cost Over Time
-- Active Users
+- Active Services
 - Cache Hit Rate
 - Avg Input Tokens / LLM Call
 - Avg Output Tokens / LLM Call
 - High Retry Loop Runs
-- Budget Breaches
+- Cost by Service
 - Cost Usage / Minute
 - Token Usage / Minute
 - Tokens by Type
 - Tokens by Model
 - Cost per Agent Run
-- Cost per User
-- Cost per Team
+- Cost per Service
+- Cost per Dataset Tag
 - Cost per Model
 - Token Component Share
 - Component Cost Split
@@ -95,9 +95,9 @@ Track GenAI agent invocations, outcomes, latency, tool usage, token consumption,
 - Judges/Evals Tokens
 - Tool Overhead Tokens
 - Output Tokens
-- Workspace Rollups
+- Service Rollups
 - Cost per Query
 - Token Explorer
 - High Retry Loop Details
-- Budget Burn Alerts
+- Service Cost Rollup
 - Cached Tokens

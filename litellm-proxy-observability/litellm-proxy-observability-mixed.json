@@ -1,0 +1,2839 @@
+{
+  "tags": [
+    "litellm",
+    "llm",
+    "genai",
+    "metrics",
+    "traces",
+    "promql",
+    "observability"
+  ],
+  "variables": [
+    {
+      "name": "trace_dataset",
+      "label": "Trace Dataset",
+      "type": "dataset",
+      "defaultValue": "litellm-proxy-traces"
+    },
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "litellm-proxy-metrics"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "N0FWFB0QPG15EY72CW7AVB1P53",
+      "title": "Traffic & Reliability",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "81RRT51Y6DS6ACHMNSRJ7G4XQT",
+      "title": "Latency",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G",
+      "title": "Tokens & Cost",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "3MV2EHV4TEBQ96PWJHEAWMQARC",
+      "title": "Models & Usage",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "P8833SHKAWNDKMNN3FRXF0TFNT",
+      "title": "Trace Explorer",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "0CH8J1C1M7KEC5D10ABP2KMEWX",
+      "title": "Requests",
+      "chartQuery": "SELECT COUNT(DISTINCT span_trace_id) AS requests\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0CH8J1C1M7KEC5D10ABP2KMEWX",
+        "x": 0,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8"
+    },
+    {
+      "tile_id": "0740XS4K0KGDYSC5PCCY9V9JXJ",
+      "title": "Trace Error Rate",
+      "chartQuery": "WITH requests AS (\n  SELECT DISTINCT span_trace_id FROM $trace_dataset WHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\n), errors AS (\n  SELECT DISTINCT span_trace_id FROM $trace_dataset\n  WHERE span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"error.message\" IS NOT NULL\n)\nSELECT ROUND(COUNT(DISTINCT CASE WHEN e.span_trace_id IS NOT NULL THEN r.span_trace_id END) * 100.0 / NULLIF(COUNT(DISTINCT r.span_trace_id), 0), 2) AS error_rate_pct\nFROM requests r LEFT JOIN errors e ON r.span_trace_id = e.span_trace_id",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_rate_pct",
+            "title": "error_rate_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0740XS4K0KGDYSC5PCCY9V9JXJ",
+        "x": 2,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8"
+    },
+    {
+      "tile_id": "0A6950JYQ5VR5VKYFT47VYPJW0",
+      "title": "Total Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\", '0') AS DOUBLE) + CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\", '0') AS DOUBLE)), 0) AS total_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0A6950JYQ5VR5VKYFT47VYPJW0",
+        "x": 4,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8"
+    },
+    {
+      "tile_id": "0FSMPSYFKVW8Y9MN1NE13T99C0",
+      "title": "Total Spend",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(\"litellm.cost.total\"), 0), 8) AS spend_usd\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "USD",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "spend_usd",
+            "title": "spend_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0FSMPSYFKVW8Y9MN1NE13T99C0",
+        "x": 6,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8"
+    },
+    {
+      "tile_id": "0KA0X4XBJG7CH9BBSZFT00J0QN",
+      "title": "Avg Request Latency",
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_latency_s\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_latency_s",
+            "title": "avg_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0KA0X4XBJG7CH9BBSZFT00J0QN",
+        "x": 8,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8"
+    },
+    {
+      "tile_id": "0H0QQMK4H7FHGJ48PMZ9YET7NY",
+      "title": "P95 Request Latency",
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_latency_s\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_latency_s",
+            "title": "p95_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0H0QQMK4H7FHGJ48PMZ9YET7NY",
+        "x": 10,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8"
+    },
+    {
+      "tile_id": "06HJ92N6DQNBN9BBR085V0MZXK",
+      "title": "P95 Time to First Token",
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(\"gen_ai.response.time_to_first_chunk\", 0.95), 4) AS p95_ttft_s\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat' AND \"gen_ai.response.time_to_first_chunk\" IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ttft_s",
+            "title": "p95_ttft_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "06HJ92N6DQNBN9BBR085V0MZXK",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8"
+    },
+    {
+      "tile_id": "0F8F71D5Q6CTQ87A8B2PSMMWKV",
+      "title": "In-flight Requests",
+      "chartQuery": [
+        "sum(litellm_in_flight_requests)"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0F8F71D5Q6CTQ87A8B2PSMMWKV",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "04TT6RXVD8SRFGNCXTPTYVWC1Z",
+      "title": "Request Volume by Model",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\", 'unknown') AS model,\n  COUNT(DISTINCT span_trace_id) AS requests\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "requests"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "04TT6RXVD8SRFGNCXTPTYVWC1Z",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "TBR3FB95H25C3D1GDA0TN0GGM8"
+    },
+    {
+      "tile_id": "0QT4AXZ6C7VHD74YP0SKHNXYW9",
+      "title": "Proxy Request Rate by Model & Status",
+      "chartQuery": [
+        "sum by (requested_model, status_code) (rate(litellm_proxy_total_requests_metric_total{requested_model=~\".*\",route=~\".*\",status_code=~\".*\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0QT4AXZ6C7VHD74YP0SKHNXYW9",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N0FWFB0QPG15EY72CW7AVB1P53",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0SVTA9GZN7HSE3E526KEKJ3W7E",
+      "title": "Request vs Failure Rate",
+      "chartQuery": [
+        "sum(rate(litellm_proxy_total_requests_metric_total{requested_model=~\".*\",route=~\".*\",status_code=~\".*\"}[2m]))",
+        "sum(rate(litellm_proxy_failed_requests_metric_total{requested_model=~\".*\",route=~\".*\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0SVTA9GZN7HSE3E526KEKJ3W7E",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N0FWFB0QPG15EY72CW7AVB1P53",
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0A52T1NA83CAC9GV8AVA5F049R",
+      "title": "Failures by Exception",
+      "chartQuery": [
+        "sum by (exception_class, exception_status) (rate(litellm_proxy_failed_requests_metric_total{requested_model=~\".*\",route=~\".*\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "errors/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0A52T1NA83CAC9GV8AVA5F049R",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N0FWFB0QPG15EY72CW7AVB1P53",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "03WECDQZ3DW88ZHSEM1JWPX3DA",
+      "title": "Deployment State",
+      "chartQuery": [
+        "max by (litellm_model_name, api_provider) (litellm_deployment_state{litellm_model_name=~\".*\"})"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "03WECDQZ3DW88ZHSEM1JWPX3DA",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N0FWFB0QPG15EY72CW7AVB1P53",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0J0G4PXZD8CR28T3RS5ZYNZYVM",
+      "title": "Trace Errors Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"error.type\", span_status_description, 'unknown') AS error_type,\n  COUNT(*) AS errors\nFROM $trace_dataset\nWHERE (span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"error.message\" IS NOT NULL)\nGROUP BY time_bin, error_type\nORDER BY time_bin ASC, error_type ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "errors"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "error_type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0J0G4PXZD8CR28T3RS5ZYNZYVM",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N0FWFB0QPG15EY72CW7AVB1P53"
+    },
+    {
+      "tile_id": "0B9VH06RK06QEQJDCBJMRB1P68",
+      "title": "Request Rate by Route",
+      "chartQuery": [
+        "sum by (route) (rate(litellm_proxy_total_requests_metric_total{requested_model=~\".*\",route=~\".*\",status_code=~\".*\"}[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0B9VH06RK06QEQJDCBJMRB1P68",
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N0FWFB0QPG15EY72CW7AVB1P53",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0FPTT0N9E8QWGPP29EDJ71AW5Z",
+      "title": "LLM API Latency Percentiles",
+      "chartQuery": [
+        "histogram_quantile(0.50, sum by (le, model) (rate(litellm_llm_api_latency_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.90, sum by (le, model) (rate(litellm_llm_api_latency_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.95, sum by (le, model) (rate(litellm_llm_api_latency_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.99, sum by (le, model) (rate(litellm_llm_api_latency_metric_bucket{model=~\".*\"}[2m])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0FPTT0N9E8QWGPP29EDJ71AW5Z",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "81RRT51Y6DS6ACHMNSRJ7G4XQT",
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0MJ2KE7DZDNE1GZ86N6SQC0RCT",
+      "title": "Total Request Latency Percentiles",
+      "chartQuery": [
+        "histogram_quantile(0.50, sum by (le, model) (rate(litellm_request_total_latency_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.90, sum by (le, model) (rate(litellm_request_total_latency_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.95, sum by (le, model) (rate(litellm_request_total_latency_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.99, sum by (le, model) (rate(litellm_request_total_latency_metric_bucket{model=~\".*\"}[2m])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0MJ2KE7DZDNE1GZ86N6SQC0RCT",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "81RRT51Y6DS6ACHMNSRJ7G4XQT",
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0NT7DY9G0W8NW8Y0VFJN03DX7H",
+      "title": "Time to First Token Percentiles",
+      "chartQuery": [
+        "histogram_quantile(0.50, sum by (le, model) (rate(litellm_llm_api_time_to_first_token_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.90, sum by (le, model) (rate(litellm_llm_api_time_to_first_token_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.95, sum by (le, model) (rate(litellm_llm_api_time_to_first_token_metric_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.99, sum by (le, model) (rate(litellm_llm_api_time_to_first_token_metric_bucket{model=~\".*\"}[2m])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0NT7DY9G0W8NW8Y0VFJN03DX7H",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "81RRT51Y6DS6ACHMNSRJ7G4XQT",
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "00XVD6GPSTPWWSXP4TSA3578RF",
+      "title": "Queue Time Percentiles",
+      "chartQuery": [
+        "histogram_quantile(0.50, sum by (le, model) (rate(litellm_request_queue_time_seconds_bucket{model=~\".*\"}[2m])))",
+        "histogram_quantile(0.95, sum by (le, model) (rate(litellm_request_queue_time_seconds_bucket{model=~\".*\"}[2m])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 5,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "00XVD6GPSTPWWSXP4TSA3578RF",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "81RRT51Y6DS6ACHMNSRJ7G4XQT",
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0HEHNWFYRAYYHZKGQ8CY3ZV386",
+      "title": "Trace Request Latency",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "p50_s",
+              "p95_s",
+              "p99_s"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0HEHNWFYRAYYHZKGQ8CY3ZV386",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "81RRT51Y6DS6ACHMNSRJ7G4XQT"
+    },
+    {
+      "tile_id": "015NGJQ37Q4E2G6550RBM64HR1",
+      "title": "Latency by Model",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", 'unknown') AS model,\n  COUNT(*) AS requests,\n  ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_s,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(MAX(span_duration_ns / 1000000000.0), 3) AS max_s\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nGROUP BY model\nORDER BY p95_s DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "p95_s",
+            "title": "p95_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "015NGJQ37Q4E2G6550RBM64HR1",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "81RRT51Y6DS6ACHMNSRJ7G4XQT"
+    },
+    {
+      "tile_id": "0460D17XSSD0F695W00X8T0X7C",
+      "title": "Input Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\", '0') AS DOUBLE)), 0) AS input_tokens\nFROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "input_tokens",
+            "title": "input_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0460D17XSSD0F695W00X8T0X7C",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G"
+    },
+    {
+      "tile_id": "0WETMAE9TMAPDAD0KR3D013HTE",
+      "title": "Output Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\", '0') AS DOUBLE)), 0) AS output_tokens\nFROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "output_tokens",
+            "title": "output_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0WETMAE9TMAPDAD0KR3D013HTE",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G"
+    },
+    {
+      "tile_id": "0PQHM9BVEZQCN82PZN3G8SZAC8",
+      "title": "Avg Cost per LLM Call",
+      "chartQuery": "SELECT ROUND(AVG(\"litellm.cost.total\"), 8) AS avg_cost_usd\nFROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_cost_usd",
+            "title": "avg_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0PQHM9BVEZQCN82PZN3G8SZAC8",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G"
+    },
+    {
+      "tile_id": "0T12XMQ508XNE6G4ZFFQ1E3339",
+      "title": "Avg Tokens per LLM Call",
+      "chartQuery": "SELECT ROUND(AVG(CAST(COALESCE(\"gen_ai.usage.total_tokens\", '0') AS DOUBLE)), 2) AS avg_tokens\nFROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat'",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_tokens",
+            "title": "avg_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0T12XMQ508XNE6G4ZFFQ1E3339",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G"
+    },
+    {
+      "tile_id": "0RNT3X04MPMXD7MVXCGMFXJM42",
+      "title": "Token Rate by Model",
+      "chartQuery": [
+        "sum by (model) (rate(litellm_input_tokens_metric_total[2m]))",
+        "sum by (model) (rate(litellm_output_tokens_metric_total[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "tokens/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0RNT3X04MPMXD7MVXCGMFXJM42",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G",
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0G3DBEP80G8G7BQ6R7TFRRVRRF",
+      "title": "Spend Rate by Model",
+      "chartQuery": [
+        "sum by (model) (rate(litellm_spend_metric_total[2m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "USD/s",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "__series_hash",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "COUNT_STAR",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0G3DBEP80G8G7BQ6R7TFRRVRRF",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0RYSQTC457G2XHWZMVGMGDM1EV",
+      "title": "Token Consumption Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\", '0') AS DOUBLE)) AS input_tokens,\n  SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\", '0') AS DOUBLE)) AS output_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "input_tokens",
+              "output_tokens"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0RYSQTC457G2XHWZMVGMGDM1EV",
+        "x": 0,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G"
+    },
+    {
+      "tile_id": "05QKKE086P2HWW34RA7AQH75NB",
+      "title": "Cost by Model Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n  ROUND(SUM(\"litellm.cost.total\"), 8) AS cost_usd\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat' AND \"litellm.cost.total\" IS NOT NULL\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "USD",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "cost_usd"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "05QKKE086P2HWW34RA7AQH75NB",
+        "x": 6,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G"
+    },
+    {
+      "tile_id": "098Q1JBW546BNP339CWYDVMW4S",
+      "title": "Cost by Model",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n  ROUND(SUM(\"litellm.cost.total\"), 8) AS cost_usd\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY model\nORDER BY cost_usd DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "USD",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "model",
+            "title": "model",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "098Q1JBW546BNP339CWYDVMW4S",
+        "x": 0,
+        "y": 21,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G"
+    },
+    {
+      "tile_id": "0PPB6TQZDT90915RNV2KCSBNTS",
+      "title": "Spend by User",
+      "chartQuery": [
+        "topk(10, sum by (user) (litellm_spend_metric_total))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 4,
+          "humanize": false
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "cost",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0PPB6TQZDT90915RNV2KCSBNTS",
+        "x": 6,
+        "y": 21,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "KG9EBPZN9EWFZR8KYXVS5B6V4G",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0CXD6RC3DF7ZFS29GMS93NH404",
+      "title": "Model Distribution",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", 'unknown') AS model,\n  COUNT(DISTINCT span_trace_id) AS requests\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nGROUP BY model\nORDER BY requests DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "model",
+            "title": "model",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0CXD6RC3DF7ZFS29GMS93NH404",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3MV2EHV4TEBQ96PWJHEAWMQARC"
+    },
+    {
+      "tile_id": "044RPB5J55RET25JQBE23K61MB",
+      "title": "Provider Distribution",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\", 'unknown') AS provider,\n  COUNT(*) AS calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY provider\nORDER BY calls DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "provider",
+            "title": "provider",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "provider"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "044RPB5J55RET25JQBE23K61MB",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3MV2EHV4TEBQ96PWJHEAWMQARC"
+    },
+    {
+      "tile_id": "01CNXBGD3QPXM14JBP9041BN0C",
+      "title": "Finish Reasons",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.response.finish_reasons\", 'unknown') AS finish_reason,\n  COUNT(*) AS calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY finish_reason\nORDER BY calls DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "finish_reason",
+            "title": "finish_reason",
+            "display": true
+          },
+          "y": {
+            "field": "finish_reason",
+            "title": "finish_reason",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "finish_reason"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01CNXBGD3QPXM14JBP9041BN0C",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3MV2EHV4TEBQ96PWJHEAWMQARC"
+    },
+    {
+      "tile_id": "00TB02HEAC5TRHM7J51VA2XNBC",
+      "title": "Model Performance & Cost",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\", 'unknown') AS provider,\n  COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n  COUNT(*) AS calls,\n  ROUND(COUNT(*) FILTER (WHERE span_status_code = 2) * 100.0 / NULLIF(COUNT(*), 0), 2) AS error_rate_pct,\n  ROUND(AVG(span_duration_ns / 1000000000.0), 4) AS avg_latency_s,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 4) AS p95_latency_s,\n  SUM(CAST(COALESCE(\"gen_ai.usage.total_tokens\", '0') AS DOUBLE)) AS total_tokens,\n  ROUND(SUM(COALESCE(\"litellm.cost.total\", 0)), 8) AS cost_usd\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY provider, model\nORDER BY calls DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "00TB02HEAC5TRHM7J51VA2XNBC",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3MV2EHV4TEBQ96PWJHEAWMQARC"
+    },
+    {
+      "tile_id": "089W0836F0PTWDM81RTV9GM573",
+      "title": "Service & SDK Inventory",
+      "chartQuery": "SELECT COALESCE(\"service.name\", 'unknown') AS service,\n  COALESCE(\"deployment.environment\", 'unknown') AS environment,\n  COALESCE(\"telemetry.sdk.language\", 'unknown') AS language,\n  COALESCE(\"telemetry.sdk.name\", 'unknown') AS sdk,\n  COALESCE(\"telemetry.sdk.version\", 'unknown') AS sdk_version,\n  COUNT(*) AS spans\nFROM $trace_dataset\nGROUP BY service, environment, language, sdk, sdk_version\nORDER BY spans DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "service",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "089W0836F0PTWDM81RTV9GM573",
+        "x": 0,
+        "y": 17,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3MV2EHV4TEBQ96PWJHEAWMQARC"
+    },
+    {
+      "tile_id": "01W43WA2PHFQ7BFAE5KMBGT0F0",
+      "title": "Streaming vs Non-streaming",
+      "chartQuery": "SELECT CASE WHEN COALESCE(\"litellm.request.streaming\", \"llm.is_streaming\", false) THEN 'streaming' ELSE 'non-streaming' END AS mode,\n  COUNT(*) AS calls\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY mode\nORDER BY calls DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "mode",
+            "title": "mode",
+            "display": true
+          },
+          "y": {
+            "field": "mode",
+            "title": "mode",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "mode"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01W43WA2PHFQ7BFAE5KMBGT0F0",
+        "x": 6,
+        "y": 17,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3MV2EHV4TEBQ96PWJHEAWMQARC"
+    },
+    {
+      "tile_id": "017WX92M9MHKV70MAHEVNF1XE6",
+      "title": "Recent Request Traces",
+      "chartQuery": "WITH requests AS (\n  SELECT p_timestamp AS start_time, span_trace_id,\n    COALESCE(\"gen_ai.request.model\", 'unknown') AS requested_model,\n    ROUND(span_duration_ns / 1000000000.0, 4) AS duration_s,\n    span_status_code\n  FROM $trace_dataset WHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\n), llm AS (\n  SELECT span_trace_id,\n    MAX(\"gen_ai.provider.name\") AS provider,\n    MAX(COALESCE(\"gen_ai.response.model\", \"gen_ai.request.model\")) AS response_model,\n    SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\", '0') AS DOUBLE)) AS input_tokens,\n    SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\", '0') AS DOUBLE)) AS output_tokens,\n    ROUND(SUM(COALESCE(\"litellm.cost.total\", 0)), 8) AS cost_usd,\n    MAX(span_status_code) AS llm_status\n  FROM $trace_dataset WHERE \"gen_ai.operation.name\" = 'chat' GROUP BY span_trace_id\n)\nSELECT r.start_time, r.span_trace_id, r.requested_model, l.provider, l.response_model,\n  r.duration_s, COALESCE(l.input_tokens, 0) AS input_tokens,\n  COALESCE(l.output_tokens, 0) AS output_tokens,\n  COALESCE(l.cost_usd, 0) AS cost_usd,\n  CASE WHEN GREATEST(r.span_status_code, COALESCE(l.llm_status, 0)) = 2 THEN 'error' ELSE 'ok' END AS status\nFROM requests r LEFT JOIN llm l ON r.span_trace_id = l.span_trace_id\nORDER BY r.start_time DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "start_time",
+            "title": "start_time",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "017WX92M9MHKV70MAHEVNF1XE6",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "P8833SHKAWNDKMNN3FRXF0TFNT"
+    },
+    {
+      "tile_id": "0ZNWEJW156ZPAFY26Y290PN74X",
+      "title": "Recent LLM Calls",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id,\n  COALESCE(\"gen_ai.provider.name\", 'unknown') AS provider,\n  COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n  ROUND(span_duration_ns / 1000000000.0, 5) AS duration_s,\n  ROUND(\"gen_ai.response.time_to_first_chunk\", 5) AS ttft_s,\n  CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\", '0') AS DOUBLE) AS input_tokens,\n  CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\", '0') AS DOUBLE) AS output_tokens,\n  ROUND(COALESCE(\"litellm.cost.total\", 0), 8) AS cost_usd,\n  span_status_description, \"error.type\" AS error_type\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 5,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0ZNWEJW156ZPAFY26Y290PN74X",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "P8833SHKAWNDKMNN3FRXF0TFNT"
+    },
+    {
+      "tile_id": "0MGWY2YFNY1V43R8CHM27QR60S",
+      "title": "Recent Errors",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, span_name,\n  COALESCE(\"gen_ai.request.model\", 'unknown') AS model,\n  COALESCE(\"gen_ai.provider.name\", 'unknown') AS provider,\n  ROUND(span_duration_ns / 1000000000.0, 4) AS duration_s,\n  COALESCE(\"error.type\", \"event_exception.type\", span_status_description, 'unknown') AS error_type,\n  COALESCE(\"error.message\", \"event_exception.message\", span_status_message, 'unknown') AS error_message\nFROM $trace_dataset\nWHERE span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"error.message\" IS NOT NULL\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0MGWY2YFNY1V43R8CHM27QR60S",
+        "x": 0,
+        "y": 20,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "P8833SHKAWNDKMNN3FRXF0TFNT"
+    },
+    {
+      "tile_id": "0CB8H0T55ER8QRRM5QH5GREG1A",
+      "title": "Slowest Requests",
+      "chartQuery": "SELECT p_timestamp, span_trace_id,\n  COALESCE(\"gen_ai.request.model\", 'unknown') AS model,\n  COALESCE(\"http.route\", \"http.target\", 'unknown') AS route,\n  ROUND(span_duration_ns / 1000000000.0, 4) AS duration_s,\n  span_status_description\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nORDER BY span_duration_ns DESC LIMIT 50",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0CB8H0T55ER8QRRM5QH5GREG1A",
+        "x": 6,
+        "y": 20,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "P8833SHKAWNDKMNN3FRXF0TFNT"
+    },
+    {
+      "tile_id": "0RQJ5PHW6GJWRPHA9ADCCR4NFG",
+      "title": "Recent Span Timeline Data",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, span_parent_span_id, span_name,\n  COALESCE(\"gen_ai.operation.name\", 'http') AS operation,\n  COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n  ROUND(span_duration_ns / 1000000.0, 3) AS duration_ms,\n  span_status_description\nFROM $trace_dataset\nWHERE 1 = 1\nORDER BY p_timestamp DESC, span_start_time_unix_nano ASC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0RQJ5PHW6GJWRPHA9ADCCR4NFG",
+        "x": 0,
+        "y": 30,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "P8833SHKAWNDKMNN3FRXF0TFNT"
+    }
+  ]
+}

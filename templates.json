@@ -5,7 +5,7 @@
       "name": "Agent Cost Analysis",
       "dirName": "agent-cost-analysis",
       "fileName": "agent-cost-analysis-sql.json",
-      "description": "Analyze GenAI agent spend, token consumption, and cost distribution across models, users, tools, and sessions.",
+      "description": "Analyze GenAI agent spend, token consumption, and cost distribution across models, services, tools, and sessions.",
       "source": "SQL",
       "tags": [
         "agent-observability",
@@ -26,6 +26,22 @@
         "agent-observability"
       ],
       "thumbnail": "screenshot.png"
+    },
+    {
+      "name": "LiteLLM Proxy Observability",
+      "dirName": "litellm-proxy-observability",
+      "fileName": "litellm-proxy-observability-mixed.json",
+      "description": "Monitor LiteLLM proxy traffic, reliability, latency, token usage, spend, model behavior, deployment health, and request traces.",
+      "source": "Mixed",
+      "tags": [
+        "litellm",
+        "llm",
+        "genai",
+        "metrics",
+        "traces",
+        "promql",
+        "observability"
+      ]
     },
     {
       "name": "Claude Code Usage",

@@ -14,7 +14,7 @@ Browse all dashboard templates in the [Parseable dashboards repository](../READM
 
 **File:** `agent-cost-analysis-sql.json`
 
-Analyze GenAI agent spend, token consumption, and cost distribution across models, users, tools, and sessions. Use it to identify high-cost sessions, expensive model usage, pricing coverage gaps, and agent FinOps trends.
+Analyze GenAI agent spend, token consumption, and cost distribution across models, services, tools, and sessions. Use it to identify high-cost sessions, expensive model usage, pricing coverage gaps, and agent FinOps trends.
 
 **Source:** `SQL`
 
@@ -50,7 +50,7 @@ Analyze GenAI agent spend, token consumption, and cost distribution across model
 - Success Rate
 - Cost per Agent Job Over Time
 - Cost by Outcome
-- Cost by User
+- Cost by Service
 - Cost by Agent Name
-- Cost by User and Model
+- Cost by Service and Model
 - Cost by Agent and Model

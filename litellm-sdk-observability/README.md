@@ -1,66 +1,42 @@
 # LiteLLM SDK Observability
 
-Prism dashboard template for LiteLLM SDK OpenTelemetry logs, traces, and metrics.
+Monitor LiteLLM SDK calls, reliability, latency, TTFT, token usage, spend, models, providers, correlated logs, traces, and metric health. It uses SQL across OpenTelemetry logs, traces, and metrics so correlated SDK behavior can be investigated in one place.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Overview:** panels include LLM Calls, Success Rate, Errors, Total Tokens, Total Spend, and Average Latency, plus related signals.
+- **Traffic & Reliability:** panels include Calls, Successes & Errors, Errors by Type, HTTP Status Codes, Scenario Outcomes, and Provider Reliability.
+- **Performance & Latency:** panels include Latency Percentiles, SDK vs Provider Latency (Native Metrics), Streaming TTFT & Time per Output Token, Latency by Model, and Slowest LLM Calls.
+- **Tokens & Cost:** panels include Token Consumption, Input vs Output Tokens, Spend by Model Over Time, and Model Economics.
+- **Models & Usage:** panels include Model Distribution, Provider Distribution, Streaming Mix, Scenario Mix, and Service & SDK Inventory.
+- **Logs:** panels include Logs by Severity, SDK Log Events, Recent SDK Request/Response Logs, Recent Error Logs, and Logs with Trace Context.
+- **Trace Explorer:** panels include Recent LLM Calls, Error Traces, Scenario Trace Roots, and Recent Span Timeline Data.
+- **Metrics & Telemetry:** panels include Latest Native Metric Rollup, Metric Export Volume, and Metric & Instrumentation Inventory.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `litellm-sdk-observability-sql.json` | LiteLLM SDK Observability | 40 |
+## Data used
 
-## LiteLLM SDK Observability
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Logs | `litellm-sdk-logs` | SQL | Log records for volume, severity, errors, activity, and recent-event investigation |
+| Traces | `litellm-sdk-traces` | SQL | Spans for latency, errors, operations, request behavior, and trace investigation |
+| Metrics | `litellm-sdk-metrics` | SQL | Operational metrics for availability, throughput, saturation, latency, resource use, and inventory |
 
-**File:** `litellm-sdk-observability-sql.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Monitor LiteLLM SDK calls, reliability, latency, time to first token, token usage, spend, model and provider behavior, correlated logs, traces, and OpenTelemetry metric health.
+## Filters
 
-**Source:** `SQL`
+8 dashboard variables let users select telemetry sources and scope relevant panels:
 
-**Tags:** `litellm`, `sdk`, `llm`, `genai`, `opentelemetry`, `logs`, `traces`, `metrics`, `observability`
+- Dataset selectors: Logs Dataset, Traces Dataset, and Metrics Dataset
+- Scope filters: Service, Environment, Request Model, Provider, and Log Level
 
-**Filter variables:** `logs_dataset`, `traces_dataset`, `metrics_dataset`, `service`, `environment`, `model`, `provider`, `severity`
+## Dashboard contents
 
-**Panels:**
+- **40 tiles** across **8 collapsible sections**
+- SQL panels over Parseable datasets
+- Screenshot assets directory: [`assets/`](assets/)
+- Importable template: [`litellm-sdk-observability-sql.json`](litellm-sdk-observability-sql.json)
 
-- LLM Calls
-- Success Rate
-- Errors
-- Total Tokens
-- Total Spend
-- Average Latency
-- P95 Latency
-- Average TTFT
-- LLM Calls by Model & Outcome
-- Calls, Successes & Errors
-- Errors by Type
-- HTTP Status Codes
-- Scenario Outcomes
-- Provider Reliability
-- Latency Percentiles
-- SDK vs Provider Latency (Native Metrics)
-- Streaming TTFT & Time per Output Token
-- Latency by Model
-- Slowest LLM Calls
-- Token Consumption
-- Input vs Output Tokens
-- Spend by Model Over Time
-- Model Economics
-- Model Distribution
-- Provider Distribution
-- Streaming Mix
-- Scenario Mix
-- Service & SDK Inventory
-- Logs by Severity
-- SDK Log Events
-- Recent SDK Request/Response Logs
-- Recent Error Logs
-- Logs with Trace Context
-- Recent LLM Calls
-- Error Traces
-- Scenario Trace Roots
-- Recent Span Timeline Data
-- Latest Native Metric Rollup
-- Metric Export Volume
-- Metric & Instrumentation Inventory
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

@@ -1,0 +1,2734 @@
+{
+  "tags": [
+    "modal",
+    "datadog",
+    "logs",
+    "traces",
+    "metrics",
+    "observability"
+  ],
+  "variables": [
+    {
+      "name": "logs_dataset",
+      "label": "Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "modal-logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "modal-traces"
+    },
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "modal-metrics"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "XTQG7NMS4DFDQ0P2GRP491CJSB",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "title": "Capacity & Utilization",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "WQMFQX246ZNR64QDQ0GBQJ1AT9",
+      "title": "GPU",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "VN1G95MJPM05JQS3NRCA74HYKS",
+      "title": "Input Events",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "9C6DP1VEP6H6ZA8SZAYDH3CQHG",
+      "title": "Traces",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "04NJGCAV8P7P9GDJNVMF85N59A",
+      "title": "Logs",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "YZP6396AXE5PW7J00GRCD0E7GG",
+      "title": "Inventory",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "6BEZTF1EGMSPPY9JTJHKXAB4YY",
+      "title": "Correlation",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "6HFD1JR1QF3315GGB73JNMKJSR",
+      "title": "Total Logs",
+      "chartQuery": "SELECT COUNT(*) AS logs FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All')",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "logs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6HFD1JR1QF3315GGB73JNMKJSR",
+        "x": 0,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XTQG7NMS4DFDQ0P2GRP491CJSB"
+    },
+    {
+      "tile_id": "4A83KWA8NP0QZT89H1A9C08H24",
+      "title": "Total Traces",
+      "chartQuery": "SELECT COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "traces",
+            "title": "traces",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4A83KWA8NP0QZT89H1A9C08H24",
+        "x": 2,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XTQG7NMS4DFDQ0P2GRP491CJSB"
+    },
+    {
+      "tile_id": "7MMTEFS7WE8YNNXJYFZ58ZTAPW",
+      "title": "Total Inputs",
+      "chartQuery": [
+        "sum(modal.input_events.elapsed_time_us_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "total_inputs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7MMTEFS7WE8YNNXJYFZ58ZTAPW",
+        "x": 4,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XTQG7NMS4DFDQ0P2GRP491CJSB",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "69M89ACVX6MXQEKZ102XDX514B",
+      "title": "Avg Input Duration",
+      "chartQuery": [
+        "(sum(modal.input_events.elapsed_time_us_sum{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"}) / sum(modal.input_events.elapsed_time_us_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})) / 1000"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "success_rate_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "69M89ACVX6MXQEKZ102XDX514B",
+        "x": 6,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XTQG7NMS4DFDQ0P2GRP491CJSB",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0QEEYWWYK2Y1NNADMDMY29801C",
+      "title": "Running Containers",
+      "chartQuery": [
+        "avg(modal.container.running{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "running_containers",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0QEEYWWYK2Y1NNADMDMY29801C",
+        "x": 8,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XTQG7NMS4DFDQ0P2GRP491CJSB",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "5P8GEGFMP4ZWWTRFZVCZDZ2Y1N",
+      "title": "Trace Error Rate",
+      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE span_status_code = 2) * 100.0 / NULLIF(COUNT(*),0), 2) AS error_rate_pct FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_rate_pct",
+            "title": "error_rate_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5P8GEGFMP4ZWWTRFZVCZDZ2Y1N",
+        "x": 10,
+        "y": 0,
+        "w": 2,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XTQG7NMS4DFDQ0P2GRP491CJSB"
+    },
+    {
+      "tile_id": "3QPYD34YMAGK7SEJRPV55DXQGM",
+      "title": "Logs and Traces Volume",
+      "chartQuery": "WITH l AS (SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') time_bin, COUNT(*) logs FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') GROUP BY time_bin),\ntr AS (SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') time_bin, COUNT(*) spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin)\nSELECT COALESCE(l.time_bin,tr.time_bin) AS time_bin, COALESCE(logs,0) AS logs, COALESCE(spans,0) AS spans FROM l FULL OUTER JOIN tr ON l.time_bin=tr.time_bin ORDER BY time_bin ASC",
+      "dbName": [
+        "$logs_dataset",
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "logs",
+              "spans"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3QPYD34YMAGK7SEJRPV55DXQGM",
+        "x": 0,
+        "y": 5,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XTQG7NMS4DFDQ0P2GRP491CJSB"
+    },
+    {
+      "tile_id": "4SV5AAK3C9A3CQTQHDV7XX49ZE",
+      "title": "CPU Utilization",
+      "chartQuery": [
+        "avg by (function_name) (modal.cpu.utilization{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "cpu_utilization",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4SV5AAK3C9A3CQTQHDV7XX49ZE",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "2V6FV8Z5QY34C55HX2RJ6DD9MZ",
+      "title": "Memory Utilization",
+      "chartQuery": [
+        "avg by (function_name) (modal.memory.utilization{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "memory_utilization",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2V6FV8Z5QY34C55HX2RJ6DD9MZ",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "10EB099R0C1DKWGXGXTMERVXR3",
+      "title": "Memory Usage MB",
+      "chartQuery": [
+        "avg by (function_name) (modal.memory.usage{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"}) / 1048576"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "memory_mb",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "10EB099R0C1DKWGXGXTMERVXR3",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "6V41YGSDW036X9A4ENY9EH8JV4",
+      "title": "Running Containers",
+      "chartQuery": [
+        "avg(modal.container.running{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "containers",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6V41YGSDW036X9A4ENY9EH8JV4",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "5S5V6NWT3W4J4TSSG3ATGPCKBK",
+      "title": "Pending Inputs",
+      "chartQuery": [
+        "avg by (function_name) (modal.function.pending_inputs{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "pending_inputs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5S5V6NWT3W4J4TSSG3ATGPCKBK",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "7C3G4GXQ4DPJA8HF2PJ4EVRPDH",
+      "title": "Running Inputs",
+      "chartQuery": [
+        "avg by (function_name) (modal.function.running_inputs{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "running_inputs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7C3G4GXQ4DPJA8HF2PJ4EVRPDH",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "6GW73N0TQWNSRXHJ8EP7HKHTWG",
+      "title": "Container Series Count",
+      "chartQuery": [
+        "count by (function_name) (modal.container.running{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "terminations",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6GW73N0TQWNSRXHJ8EP7HKHTWG",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0GW6J06E785WCQF43Z233BKQQJ",
+      "title": "Pending Inputs by Function",
+      "chartQuery": [
+        "avg by (function_name) (modal.function.pending_inputs{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "avg_pending_inputs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0GW6J06E785WCQF43Z233BKQQJ",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "XN33CEJ0RW23082QF7XP6TMERH",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "7M0STZS5080C9P250A44B0HHVT",
+      "title": "GPU Compute Utilization",
+      "chartQuery": [
+        "avg by (function_name) (modal.gpu.compute.utilization{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "gpu_compute_utilization",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7M0STZS5080C9P250A44B0HHVT",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WQMFQX246ZNR64QDQ0GBQJ1AT9",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "251FDWHG02QDJNXCYX7G0QPSV8",
+      "title": "GPU Memory Utilization",
+      "chartQuery": [
+        "avg by (function_name) (modal.gpu.memory.utilization{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "gpu_memory_utilization",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "251FDWHG02QDJNXCYX7G0QPSV8",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WQMFQX246ZNR64QDQ0GBQJ1AT9",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "7HZMGY2R69YJTPCFXV8PDZXVTQ",
+      "title": "GPU Memory Usage MB",
+      "chartQuery": [
+        "avg by (function_name) (modal.gpu.memory.usage{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"}) / 1048576"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "MB",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "gpu_memory_mb",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7HZMGY2R69YJTPCFXV8PDZXVTQ",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WQMFQX246ZNR64QDQ0GBQJ1AT9",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "3JYD8GFKHD3GCRSA6XG5DA1R9N",
+      "title": "GPU Power Usage",
+      "chartQuery": [
+        "avg by (function_name) (modal.gpu.power.usage{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "W",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "gpu_power_w",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3JYD8GFKHD3GCRSA6XG5DA1R9N",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WQMFQX246ZNR64QDQ0GBQJ1AT9",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "2ZNS7VD878YJKC2YKACT0YXJCQ",
+      "title": "GPU Power Utilization",
+      "chartQuery": [
+        "avg by (function_name) (modal.gpu.power.utilization{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "gpu_power_utilization",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2ZNS7VD878YJKC2YKACT0YXJCQ",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WQMFQX246ZNR64QDQ0GBQJ1AT9",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "639VX4X3QNEFQHREG5GP0XFPMF",
+      "title": "GPU Temperature",
+      "chartQuery": [
+        "avg by (function_name) (modal.gpu.temperature{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "C",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "gpu_temperature_c",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "639VX4X3QNEFQHREG5GP0XFPMF",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WQMFQX246ZNR64QDQ0GBQJ1AT9",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0GV7DYH1VMVWRKD2XJ6RW3BX52",
+      "title": "Input Event Counts",
+      "chartQuery": [
+        "sum by (function_name) (modal.input_events.elapsed_time_us_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})",
+        "sum by (function_name) (demo.work.duration_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "inputs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0GV7DYH1VMVWRKD2XJ6RW3BX52",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VN1G95MJPM05JQS3NRCA74HYKS",
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "7SKHC2SMSMHPERB153XDX99Y6R",
+      "title": "Elapsed Time ms",
+      "chartQuery": [
+        "(sum by (function_name) (modal.input_events.elapsed_time_us_sum{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"}) / sum by (function_name) (modal.input_events.elapsed_time_us_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})) / 1000"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "elapsed_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7SKHC2SMSMHPERB153XDX99Y6R",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VN1G95MJPM05JQS3NRCA74HYKS",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "4WX3VQW9J5KSS1W00RNXKWC9EQ",
+      "title": "Queue Time ms",
+      "chartQuery": [
+        "(sum by (function_name) (modal.input_events.input_queue_time_us_sum{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"}) / sum by (function_name) (modal.input_events.input_queue_time_us_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})) / 1000"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "queue_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4WX3VQW9J5KSS1W00RNXKWC9EQ",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VN1G95MJPM05JQS3NRCA74HYKS",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "4G0P2XZAG1QKPXRQ71BYMRHXPE",
+      "title": "Coldstart Time ms",
+      "chartQuery": [
+        "(sum by (function_name) (modal.input_events.coldstart_time_us_sum{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"}) / sum by (function_name) (modal.input_events.coldstart_time_us_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})) / 1000"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "coldstart_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4G0P2XZAG1QKPXRQ71BYMRHXPE",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VN1G95MJPM05JQS3NRCA74HYKS",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "7VS8DC8HYCCDE4PAD2XNZJBMMJ",
+      "title": "Demo Work Duration ms",
+      "chartQuery": [
+        "sum by (function_name) (demo.work.duration_sum{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"}) / sum by (function_name) (demo.work.duration_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "work_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7VS8DC8HYCCDE4PAD2XNZJBMMJ",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VN1G95MJPM05JQS3NRCA74HYKS",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "18874BY9F8XJ2CVQMVTFWMS6JZ",
+      "title": "Spans Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(span_name, 'unknown') AS span_name, COUNT(*) AS spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin, span_name ORDER BY time_bin ASC, span_name ASC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "span_name"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "18874BY9F8XJ2CVQMVTFWMS6JZ",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "9C6DP1VEP6H6ZA8SZAYDH3CQHG"
+    },
+    {
+      "tile_id": "2BMPE203D8TMZSBQFXWCVHMZY5",
+      "title": "Trace Latency",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(span_duration_ns/1000000.0),2) AS avg_ms, ROUND(approx_percentile_cont(span_duration_ns/1000000.0,0.95),2) AS p95_ms FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin ORDER BY time_bin ASC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_ms",
+              "p95_ms"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2BMPE203D8TMZSBQFXWCVHMZY5",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "9C6DP1VEP6H6ZA8SZAYDH3CQHG"
+    },
+    {
+      "tile_id": "7R81C603KFNJ391GNSF5WHZK51",
+      "title": "Trace Errors Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE span_status_code = 2) AS errors, COUNT(*) AS spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin ORDER BY time_bin ASC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "spans",
+              "errors"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7R81C603KFNJ391GNSF5WHZK51",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "9C6DP1VEP6H6ZA8SZAYDH3CQHG"
+    },
+    {
+      "tile_id": "3SKJBWMQN84YRBAHV82XQ3ZNZ5",
+      "title": "Span Performance Summary",
+      "chartQuery": "SELECT COALESCE(span_name, 'unknown') AS span_name, COALESCE(\"modal.function.kind\", 'unknown') AS function_kind, COUNT(*) AS spans, COUNT(*) FILTER (WHERE span_status_code = 2) AS errors, ROUND(AVG(span_duration_ns/1000000.0),2) AS avg_ms, ROUND(approx_percentile_cont(span_duration_ns/1000000.0,0.95),2) AS p95_ms FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY span_name, function_kind ORDER BY spans DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "span_name",
+            "title": "span_name",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3SKJBWMQN84YRBAHV82XQ3ZNZ5",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "9C6DP1VEP6H6ZA8SZAYDH3CQHG"
+    },
+    {
+      "tile_id": "3J3JFTK3E73EYWEG26FEPCP8KM",
+      "title": "Recent Trace Detail",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, COALESCE(span_name,'unknown') AS span_name, COALESCE(\"service.name\", 'unknown') AS service_name, COALESCE(\"modal.function.kind\", 'unknown') AS function_kind, ROUND(span_duration_ns/1000000.0,2) AS duration_ms, span_status_code, COALESCE(span_status_message, span_status_description) AS status_message FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3J3JFTK3E73EYWEG26FEPCP8KM",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "9C6DP1VEP6H6ZA8SZAYDH3CQHG"
+    },
+    {
+      "tile_id": "2K5NYMWW7M2MNR6E8NQZB8Z9JH",
+      "title": "Logs by Level",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') AS log_level, COUNT(*) AS logs FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') GROUP BY time_bin, log_level ORDER BY time_bin ASC, log_level ASC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "logs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "log_level"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2K5NYMWW7M2MNR6E8NQZB8Z9JH",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "04NJGCAV8P7P9GDJNVMF85N59A"
+    },
+    {
+      "tile_id": "7VBWC386ENNZACYJNAK88V3JQ4",
+      "title": "Logs by Function",
+      "chartQuery": "SELECT COALESCE(function_name, 'unknown') AS function_name, COUNT(*) AS logs FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') GROUP BY function_name ORDER BY logs DESC LIMIT 20",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "function_name",
+            "title": "function_name",
+            "display": true
+          },
+          "y": {
+            "field": "logs",
+            "title": "logs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7VBWC386ENNZACYJNAK88V3JQ4",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "04NJGCAV8P7P9GDJNVMF85N59A"
+    },
+    {
+      "tile_id": "3XW6V45NG6YYEW9TCXGK1JHCZQ",
+      "title": "Recent Error Logs",
+      "chartQuery": "SELECT p_timestamp, COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') AS log_level, COALESCE(app_name, 'unknown') AS app_name, COALESCE(function_name, 'unknown') AS function_name, trace_id, span_id, body FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') AND (LOWER(COALESCE(severity_text, level, body, '')) LIKE '%error%' OR severity_number >= 17) ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "log_level",
+            "title": "log_level",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3XW6V45NG6YYEW9TCXGK1JHCZQ",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "04NJGCAV8P7P9GDJNVMF85N59A"
+    },
+    {
+      "tile_id": "6FXDK0V3P92CAGFBPF11C5KQHK",
+      "title": "Recent Logs",
+      "chartQuery": "SELECT p_timestamp, COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') AS log_level, COALESCE(app_name, 'unknown') AS app_name, COALESCE(function_name, 'unknown') AS function_name, trace_id, span_id, body FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "log_level",
+            "title": "log_level",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6FXDK0V3P92CAGFBPF11C5KQHK",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "04NJGCAV8P7P9GDJNVMF85N59A"
+    },
+    {
+      "tile_id": "6CA38GSFNS1BHFKQZ8PV0JPAEM",
+      "title": "Core Modal Metric Coverage",
+      "chartQuery": [
+        "count by (function_name) (modal.container.running{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})",
+        "count by (function_name) (modal.cpu.utilization{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})",
+        "count by (function_name) (modal.memory.usage{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})",
+        "count by (function_name) (modal.input_events.elapsed_time_us_count{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})",
+        "count by (function_name) (modal.gpu.compute.utilization{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "points",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6CA38GSFNS1BHFKQZ8PV0JPAEM",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "YZP6396AXE5PW7J00GRCD0E7GG",
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range",
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "4XPRC10X61MHCJ5DFJ0VFX3D0H",
+      "title": "Function Metric Series",
+      "chartQuery": [
+        "count by (app_name, function_name) (modal.function.pending_inputs{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "table",
+      "tileType": "promql",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "metric_points",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4XPRC10X61MHCJ5DFJ0VFX3D0H",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "YZP6396AXE5PW7J00GRCD0E7GG",
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "1RSBSPJKXQD8WP46HJPXP0VGHE",
+      "title": "Service Inventory",
+      "chartQuery": "SELECT COALESCE(\"service.name\", 'unknown') AS service_name, COALESCE(\"service.namespace\", 'unknown') AS service_namespace, COALESCE(\"deployment.environment.name\", 'unknown') AS environment, COALESCE(\"telemetry.sdk.language\", 'unknown') AS sdk_language, COALESCE(\"telemetry.sdk.version\", 'unknown') AS sdk_version, COUNT(*) AS spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY service_name, service_namespace, environment, sdk_language, sdk_version ORDER BY spans DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "service_name",
+            "title": "service_name",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1RSBSPJKXQD8WP46HJPXP0VGHE",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "YZP6396AXE5PW7J00GRCD0E7GG"
+    },
+    {
+      "tile_id": "73FX0NF7X886RP044N62C5DB0E",
+      "title": "Logs with Trace Context",
+      "chartQuery": "SELECT l.p_timestamp, l.trace_id, l.span_id, COALESCE(l.app_name, 'unknown') AS app_name, COALESCE(l.function_name, 'unknown') AS function_name, COALESCE(l.severity_text, l.level, 'unknown') AS log_level, t.span_name, ROUND(t.span_duration_ns/1000000.0,2) AS span_duration_ms, l.body FROM $logs_dataset l LEFT JOIN $traces_dataset t ON l.trace_id = t.span_trace_id AND l.span_id = t.span_span_id WHERE ('All' = 'All' OR COALESCE(l.app_name, 'unknown') = 'All') AND ('All' = 'All' OR COALESCE(l.function_name, 'unknown') = 'All') AND ('All' = 'All' OR COALESCE(l.workspace, 'unknown') = 'All') AND ('All' = 'All' OR COALESCE(l.environment, l.\"deployment.environment.name\", 'unknown') = 'All') AND ('All' = 'All' OR COALESCE(l.severity_text, l.level, l.file_descriptor, l.p_log_category, 'unknown') = 'All') ORDER BY l.p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset",
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "span_duration_ms",
+            "title": "span_duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "73FX0NF7X886RP044N62C5DB0E",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6BEZTF1EGMSPPY9JTJHKXAB4YY"
+    },
+    {
+      "tile_id": "388FXKZYKH57VMWR0FZ77ZG3ZA",
+      "title": "Function Metric Rollup",
+      "chartQuery": [
+        "avg by (function_name) (modal.function.pending_inputs{app_name=~\".*\",function_name=~\".*\",workspace_name=~\".*\",environment_name=~\".*\"})"
+      ],
+      "dbName": "modal-metrics",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "__series_hash",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "total_inputs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "388FXKZYKH57VMWR0FZ77ZG3ZA",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6BEZTF1EGMSPPY9JTJHKXAB4YY",
+      "promqlQueryType": [
+        "range"
+      ]
+    }
+  ]
+}

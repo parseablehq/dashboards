@@ -1,92 +1,40 @@
 # Parseable Metrics
 
-Prism dashboard template for Parseable service metrics.
+Monitor Parseable service metrics including ingestion, query behavior, storage, runtime health, and system-level PromQL signals. It uses PromQL panels for time-series monitoring, breakdowns, and operational inventory.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Overview:** panels include Total Storage, Lifetime Events, Lifetime Ingested, Staging Files, Request Rate (All), and Error Rate (All), plus related signals.
+- **HTTP Requests:** panels include Request Rate by Status (All), Response Code Rate (All), Request Rate ($node_type), Request Rate by Status ($node_type), Response Code Rate ($node_type), and Top Endpoint Request Rate ($node_type).
+- **Storage & Ingestion:** panels include Storage by Stream, Storage Trend, Ingested Events by Stream, Ingested Size by Stream, Deleted Events by Stream, and Storage ($node_type), plus related signals.
+- **Object Store:** panels include Object Store Calls by Method (All), Object Store Bytes Scanned, Object Store Calls by Method ($node_type), Object Store Bytes Scanned ($node_type), Files Scanned in Object Store ($node_type), and Partial Object Store Scans.
+- **Process Resources:** panels include Process Memory (All), Virtual Memory (All), Open File Descriptors (All), Process Threads (All), CPU Seconds Rate (All), and RSS Memory ($node_type), plus related signals.
+- **Query & Cache:** panels include PromQL Cache Operations (All), Query Calls ($node_type), Bytes Scanned in Query ($node_type), PromQL Cache Operations ($node_type), Cache Hit Metrics, and Query Scan Metrics ($node_type).
+- **Latency & Histograms:** panels include Latency p95 Histograms (All), Latency p95 Histograms ($node_type), Latency Histogram Counts ($node_type), Latency Histogram Sums ($node_type), and Request p95 Latency by Endpoint.
+- **Tenants:** panels include Top Tenants by Storage and Top Tenants by Ingested Events.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `parseable-metrics-promql.json` | Parseable Metrics | 66 |
+## Data used
 
-## Parseable Metrics
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Metrics | `parseable-metrics` | PromQL | Parseable service, ingestion, storage, query, cache, latency, process, and tenant metrics |
 
-**File:** `parseable-metrics-promql.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Monitor Parseable service metrics including ingestion, query behavior, storage, runtime health, and system-level PromQL signals. Use it to understand Parseable cluster health and service performance from metrics data.
+## Filters
 
-**Source:** `PromQL`
+2 dashboard variables let users select telemetry sources and scope relevant panels:
 
-**Tags:** `metrics`, `parseable`, `promql`
+- Dataset selectors: Dataset
+- Scope filters: Node Type
 
-**Filter variables:** `node_type`, `dataset`
+## Dashboard contents
 
-**Panels:**
+- **66 tiles** across **8 collapsible sections**
+- PromQL panels over metric datasets
+- Dashboard screenshot in [`assets/`](assets/)
+- Importable template: [`parseable-metrics-promql.json`](parseable-metrics-promql.json)
 
-- Total Storage
-- Lifetime Events
-- Lifetime Ingested
-- Staging Files
-- Request Rate (All)
-- Error Rate (All)
-- Request Rate by Status (All)
-- Response Code Rate (All)
-- Top Endpoint Request Rate (All)
-- Object Store Calls by Method (All)
-- Storage by Stream
-- Storage Trend
-- Ingested Events by Stream
-- Ingested Size by Stream
-- Staging Files by Stream
-- Deleted Events by Stream
-- Object Store Bytes Scanned
-- Storage Requests Inflight (All)
-- Process Memory (All)
-- Virtual Memory (All)
-- Open File Descriptors (All)
-- Process Threads (All)
-- CPU Seconds Rate (All)
-- PromQL Cache Operations (All)
-- Request Rate ($node_type)
-- Error Rate ($node_type)
-- Storage ($node_type)
-- Staging Files ($node_type)
-- RSS Memory ($node_type)
-- CPU Rate ($node_type)
-- Request Rate by Status ($node_type)
-- Response Code Rate ($node_type)
-- Top Endpoint Request Rate ($node_type)
-- Storage by Stream ($node_type)
-- Events Ingested by Stream ($node_type)
-- Events Ingested Size by Stream ($node_type)
-- Object Store Calls by Method ($node_type)
-- Object Store Bytes Scanned ($node_type)
-- Storage Requests Inflight ($node_type)
-- Process Memory ($node_type)
-- Open FDs / Threads ($node_type)
-- CPU Seconds Rate ($node_type)
-- Query Calls ($node_type)
-- Bytes Scanned in Query ($node_type)
-- PromQL Cache Operations ($node_type)
-- Files Scanned in Object Store ($node_type)
-- Cache Hit Metrics
-- Partial Object Store Scans
-- Process Limit Metrics ($node_type)
-- Process Start Metrics ($node_type)
-- Latency p95 Histograms (All)
-- Deleted Size Metrics by Stream (All)
-- Lifetime Storage Metrics by Stream (All)
-- Event Date Metrics - Counts (All)
-- Event Date Metrics - Size (All)
-- Collection Count Metrics ($node_type)
-- Collection Size Metrics ($node_type)
-- Parquet Metrics ($node_type)
-- Query Scan Metrics ($node_type)
-- Latency p95 Histograms ($node_type)
-- Latency Histogram Counts ($node_type)
-- Latency Histogram Sums ($node_type)
-- Top Tenants by Storage
-- Top Tenants by Ingested Events
-- Request p95 Latency by Endpoint
-- File Descriptor Usage Percent
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

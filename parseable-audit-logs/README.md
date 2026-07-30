@@ -1,54 +1,39 @@
 # Parseable Audit Logs
 
-Prism dashboard template for Parseable audit log analysis.
+Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets. It uses SQL panels to analyze telemetry directly from the selected Parseable datasets.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Overview:** panels include UI API Calls, UI API Error Calls, UI API Error Rate, UI API Avg Request Size, UI API Distinct Users, and UI API Streams Touched, plus related signals.
+- **Request Trends:** panels include UI API Volume Over Time, UI API Error Trend, and UI API Status Class Over Time.
+- **Status & Auth:** panels include UI API Status Code Mix, UI API Requests by Method, Auth Methods, Server Mode, and UI API Path Method Status Summary.
+- **Users & Streams:** panels include Top UI API Users and Top UI API Streams.
+- **API Paths:** panels include Top UI API Paths, Slow APIs, and UI API Call Inventory.
+- **Failures:** panels include Top UI API Error Paths, Recent Failed UI API Calls, and UI API Error Details by User.
+- **Recent Events:** panels include Recent UI API Calls and User Actions.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `parseable-audit-logs-sql.json` | Parseable Audit Logs | 28 |
+## Data used
 
-## Parseable Audit Logs
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Audit logs | `azure-prod-parseable-audit` | SQL | Audit records for users, authentication, API activity, status, and failure investigation |
 
-**File:** `parseable-audit-logs-sql.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets. Use it for security reviews, operational audit trails, and compliance-oriented activity analysis.
+## Filters
 
-**Source:** `SQL`
+2 dashboard variables let users select telemetry sources and scope relevant panels:
 
-**Tags:** `audit`, `parseable`, `logs`, `azure`
+- Dataset selectors: Dataset
+- Scope filters: Username
 
-**Filter variables:** `dataset`, `username`
+## Dashboard contents
 
-**Panels:**
+- **28 tiles** across **7 collapsible sections**
+- SQL panels over Parseable datasets
+- Dashboard screenshot in [`assets/`](assets/)
+- Importable template: [`parseable-audit-logs-sql.json`](parseable-audit-logs-sql.json)
 
-- UI API Calls
-- UI API Error Calls
-- UI API Error Rate
-- UI API Avg Request Size
-- UI API Volume Over Time
-- UI API Error Trend
-- UI API Status Code Mix
-- UI API Requests by Method
-- Auth Methods
-- Top UI API Paths
-- Top UI API Error Paths
-- Top UI API Users
-- Top UI API Streams
-- Server Mode
-- Recent Failed UI API Calls
-- Recent UI API Calls
-- UI API Distinct Users
-- UI API Streams Touched
-- UI API Paths Touched
-- UI API Workspaces Touched
-- UI API Status Class Over Time
-- UI API Calls by User and Method
-- UI API Calls by User and Stream
-- UI API Error Details by User
-- Slow APIs
-- UI API Call Inventory
-- UI API Path Method Status Summary
-- User Actions
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

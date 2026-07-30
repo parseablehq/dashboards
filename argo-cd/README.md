@@ -1,68 +1,40 @@
 # Argo CD
 
-Prism dashboard template for Argo CD monitoring.
+Monitor Argo CD applications, sync health, controller activity, Kubernetes API behavior, Redis/cache signals, metrics inventory, and Argo CD logs. It combines PromQL metrics with SQL telemetry so operational signals can be investigated together.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Overview:** panels include Applications, Healthy Apps, Out Of Sync Apps, Connected Clusters, Orphaned Resources, and Kubectl Retries, plus related signals.
+- **Applications:** panels include Applications by Health, Applications by Sync Status, Applications by Project, Applications by Destination Namespace, Out Of Sync Applications, and Apps with Orphaned Resources.
+- **Sync & Reconciliation:** panels include Sync Rate by Phase, Sync Duration Rate, Reconcile Duration Buckets, Reconcile Count Rate, Resource Events Processed in Batch, and Top Sync Activity by App.
+- **Clusters & Kubernetes API:** panels include Cluster Connection Status, Cluster Cache Age, Cluster Events by Kind, API Resource Objects, Kubectl Requests by Code, and Kubectl Requests by Method, plus related signals.
+- **Redis & Cache:** panels include Redis Request Rate, Redis Duration Buckets, Redis Requests by Initiator, Redis Failures, Kubectl Transport Cache Entries, and Kubectl Transport Create Calls.
+- **Inventory:** panels include Argo CD Metric Inventory and Argo CD Scrape Targets.
+- **Logs:** panels include Argo CD Log Events, Argo CD Error Logs, Argo CD Logs Over Time, Argo CD Logs by Component, Argo CD Logs by Severity, and Recent Argo CD Error Logs.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `argo-cd-mixed.json` | Argo CD | 42 |
+## Data used
 
-## Argo CD
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Metrics | `azure-prod-cluster-metrics` | PromQL / SQL | Operational metrics for availability, throughput, saturation, latency, resource use, and inventory |
+| Logs | `azure-prod-pod-logs` | SQL | Log records for volume, severity, errors, activity, and recent-event investigation |
 
-**File:** `argo-cd-mixed.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Monitor Argo CD applications, sync health, controller activity, Kubernetes API behavior, Redis/cache signals, metrics inventory, and Argo CD logs.
+## Filters
 
-**Source:** `Mixed`
+8 dashboard variables let users select telemetry sources and scope relevant panels:
 
-**Tags:** `argocd`, `gitops`, `kubernetes`, `promql`, `logs`
+- Dataset selectors: Metrics Dataset and Logs Dataset
+- Scope filters: Argo CD Namespace, Project, Application, Sync Status, Health Status, and Pod
 
-**Filter variables:** `metrics_dataset`, `logs_dataset`, `namespace`, `project`, `application`, `sync_status`, `health_status`, `pod`
+## Dashboard contents
 
-**Panels:**
+- **42 tiles** across **7 collapsible sections**
+- PromQL metrics and SQL telemetry in one mixed-source dashboard
+- Dashboard screenshot in [`assets/`](assets/)
+- Importable template: [`argo-cd-mixed.json`](argo-cd-mixed.json)
 
-- Applications
-- Healthy Apps
-- Out Of Sync Apps
-- Connected Clusters
-- Orphaned Resources
-- Kubectl Retries
-- App Health %
-- App Sync %
-- Applications by Health
-- Applications by Sync Status
-- Applications by Project
-- Applications by Destination Namespace
-- Out Of Sync Applications
-- Apps with Orphaned Resources
-- Sync Rate by Phase
-- Sync Duration Rate
-- Reconcile Duration Buckets
-- Reconcile Count Rate
-- Resource Events Processed in Batch
-- Top Sync Activity by App
-- Cluster Connection Status
-- Cluster Cache Age
-- Cluster Events by Kind
-- API Resource Objects
-- Kubectl Requests by Code
-- Kubectl Requests by Method
-- Kubectl Duration Buckets
-- Kubectl Exec Pending
-- Redis Request Rate
-- Redis Duration Buckets
-- Redis Requests by Initiator
-- Redis Failures
-- Kubectl Transport Cache Entries
-- Kubectl Transport Create Calls
-- Argo CD Metric Inventory
-- Argo CD Scrape Targets
-- Argo CD Log Events
-- Argo CD Error Logs
-- Argo CD Logs Over Time
-- Argo CD Logs by Component
-- Argo CD Logs by Severity
-- Recent Argo CD Error Logs
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

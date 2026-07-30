@@ -1,100 +1,43 @@
 # K8s Cluster Monitoring
 
-Prism dashboard template for Kubernetes cluster monitoring.
+Monitor Kubernetes cluster health, nodes, pods, containers, workloads, logs, events, capacity, and kubelet/runtime signals. It combines PromQL metrics with SQL telemetry so operational signals can be investigated together.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Overview:** panels include Nodes, Namespaces, Pods Seen, Containers Seen, Pod Log Events, and K8s Event Records, plus related signals.
+- **Node Metrics:** panels include Node CPU Usage %, Node Memory Working Set %, Node Filesystem Usage, Node Network IO Rate, Node Conditions, and Node Pressure Conditions, plus related signals.
+- **Pod and Container Metrics:** panels include Pod CPU by Namespace, Pod Memory by Namespace, Container CPU by Namespace, Container Memory by Namespace, Pod Network IO Rate, and Pod Network Error Rate, plus related signals.
+- **Workloads:** panels include Deployment Desired vs Available, Deployment Available, DaemonSet Desired vs Ready, DaemonSet Ready Nodes, StatefulSet Ready vs Desired, and ReplicaSet Available vs Desired, plus related signals.
+- **Pod logs:** panels include Pod Logs Over Time, Top Log Namespaces, and Top Log Pods.
+- **Pod Log Errors:** panels include Top Pod Errors, Pod Errors Over Time, Pod Log Errors by Pod, and Pod Log Errors by Namespace.
+- **K8s Events:** panels include Events Over Time, Warnings Over Time, Events by Type, Top Event Reasons, Top Event Namespaces, and Events by Component, plus related signals.
+- **Capacity and Limits:** panels include Node Allocatable CPU, Node Allocatable Memory, Container CPU Requests by Namespace, Container CPU Limits by Namespace, Container Memory Requests by Namespace, and Container Memory Limits by Namespace, plus related signals.
+- **Kubelet and Runtime:** panels include Kubelet Runtime Operation Errors and Kubelet HTTP Request Rate.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `k8s-cluster-monitoring-mixed.json` | K8s Cluster Monitoring | 74 |
+## Data used
 
-## K8s Cluster Monitoring
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Metrics | `azure-prod-cluster-metrics` | PromQL / SQL | Operational metrics for availability, throughput, saturation, latency, resource use, and inventory |
+| Logs | `azure-prod-pod-logs` | SQL | Log records for volume, severity, errors, activity, and recent-event investigation |
+| Events | `azure-prod-events` | SQL | Kubernetes events for scheduling, lifecycle, warning, and failure analysis |
 
-**File:** `k8s-cluster-monitoring-mixed.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Monitor Kubernetes cluster health, nodes, pods, containers, workloads, logs, events, capacity, and kubelet/runtime signals.
+## Filters
 
-**Source:** `Mixed`
+7 dashboard variables let users select telemetry sources and scope relevant panels:
 
-**Tags:** `kubernetes`, `k8s`, `cluster`, `metrics`, `logs`, `events`
+- Dataset selectors: Cluster Metrics Dataset, K8s Pod Logs Dataset, and K8s Events Dataset
+- Scope filters: Namespace, Node, Pod, and Container
 
-**Filter variables:** `cluster_metrics_dataset`, `pod_logs_dataset`, `events_dataset`, `namespace`, `node`, `pod`, `container`
+## Dashboard contents
 
-**Panels:**
+- **74 tiles** across **9 collapsible sections**
+- PromQL metrics and SQL telemetry in one mixed-source dashboard
+- Dashboard screenshot in [`assets/`](assets/)
+- Importable template: [`k8s-cluster-monitoring-mixed.json`](k8s-cluster-monitoring-mixed.json)
 
-- Nodes
-- Namespaces
-- Pods Seen
-- Containers Seen
-- Pod Log Events
-- Node CPU Usage %
-- Node Memory Working Set %
-- Node Filesystem Usage
-- Node Network IO Rate
-- Pod CPU by Namespace
-- Pod Memory by Namespace
-- Container CPU by Namespace
-- Container Memory by Namespace
-- Pod Network IO Rate
-- Pod Network Error Rate
-- Pod Phase by Namespace
-- Node Conditions
-- Deployment Desired vs Available
-- Deployment Available
-- DaemonSet Desired vs Ready
-- DaemonSet Ready Nodes
-- Pod Logs Over Time
-- Top Log Namespaces
-- Top Log Pods
-- Container Restarts
-- Top Pod CPU
-- Top Pod Memory
-- K8s Event Records
-- Warning Events
-- Event Occurrences
-- Warning Occurrences
-- Events Over Time
-- Warnings Over Time
-- Events by Type
-- Top Event Reasons
-- Top Event Namespaces
-- Events by Component
-- High Occurrence Warnings
-- Recent Warning Events
-- Top Pod Errors
-- Pod Errors Over Time
-- Pod Log Errors by Pod
-- Pod Log Errors by Namespace
-- Node Allocatable CPU
-- Node Allocatable Memory
-- Node Pressure Conditions
-- Container Ready by Namespace
-- Container CPU Requests by Namespace
-- Container CPU Limits by Namespace
-- Container Memory Requests by Namespace
-- Container Memory Limits by Namespace
-- Pod Filesystem Usage by Namespace
-- Pod Filesystem Available by Namespace
-- Kubelet Runtime Operation Errors
-- Kubelet HTTP Request Rate
-- Running Containers by State
-- StatefulSet Ready vs Desired
-- ReplicaSet Available vs Desired
-- Node Ready %
-- Cluster CPU Usage %
-- Cluster Memory Usage %
-- Cluster Filesystem Usage %
-- Pods by Phase
-- Namespaces by Phase
-- Node Filesystem Usage %
-- Node Network Errors
-- Pod Restarts Over Time
-- Top Restarting Containers
-- Pod Network Errors by Namespace
-- Unavailable Deployments
-- DaemonSets Misscheduled
-- StatefulSets Not Ready
-- Namespace CPU Request vs Usage
-- Namespace Memory Request vs Usage
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

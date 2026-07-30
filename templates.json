@@ -11,7 +11,7 @@
         "agent-observability",
         "cost"
       ],
-      "thumbnail": "assets/screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Agent Observability",
@@ -25,7 +25,7 @@
         "sql",
         "agent-observability"
       ],
-      "thumbnail": "assets/screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "LiteLLM Proxy Observability",
@@ -41,7 +41,8 @@
         "traces",
         "promql",
         "observability"
-      ]
+      ],
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "LiteLLM SDK Observability",
@@ -59,7 +60,8 @@
         "traces",
         "metrics",
         "observability"
-      ]
+      ],
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Modal Observability",
@@ -74,7 +76,8 @@
         "traces",
         "metrics",
         "observability"
-      ]
+      ],
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Claude Code Usage",
@@ -87,7 +90,7 @@
         "usage",
         "genai"
       ],
-      "thumbnail": "assets/screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "K8s Cluster Monitoring",
@@ -150,7 +153,7 @@
         "traces",
         "promql"
       ],
-      "thumbnail": "assets/screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Redis Monitoring",
@@ -167,7 +170,7 @@
         "traces",
         "promql"
       ],
-      "thumbnail": "assets/screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "SQL Server Monitoring",
@@ -242,7 +245,7 @@
         "metrics",
         "promql"
       ],
-      "thumbnail": "assets/screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "OTel Demo Application",
@@ -255,7 +258,7 @@
         "astronomy-shop",
         "observability"
       ],
-      "thumbnail": "assets/screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Parseable Audit Logs",

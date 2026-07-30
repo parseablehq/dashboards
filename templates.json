@@ -44,6 +44,24 @@
       ]
     },
     {
+      "name": "LiteLLM SDK Observability",
+      "dirName": "litellm-sdk-observability",
+      "fileName": "litellm-sdk-observability-sql.json",
+      "description": "Monitor LiteLLM SDK calls, reliability, latency, TTFT, token usage, spend, models, providers, correlated logs, traces, and metric health.",
+      "source": "SQL",
+      "tags": [
+        "litellm",
+        "sdk",
+        "llm",
+        "genai",
+        "opentelemetry",
+        "logs",
+        "traces",
+        "metrics",
+        "observability"
+      ]
+    },
+    {
       "name": "Claude Code Usage",
       "dirName": "claude-code-usage",
       "fileName": "claude-code-usage-mixed.json",

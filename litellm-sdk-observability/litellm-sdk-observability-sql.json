@@ -1,0 +1,2753 @@
+{
+  "tags": [
+    "litellm",
+    "sdk",
+    "llm",
+    "genai",
+    "opentelemetry",
+    "logs",
+    "traces",
+    "metrics",
+    "observability"
+  ],
+  "variables": [
+    {
+      "name": "logs_dataset",
+      "label": "Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "litellm-sdk-logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "litellm-sdk-traces"
+    },
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "litellm-sdk-metrics"
+    },
+    {
+      "name": "service",
+      "label": "Service",
+      "type": "custom",
+      "options": [
+        "All",
+        "litellm-sdk-app"
+      ],
+      "defaultValue": "All",
+      "stream": "litellm-sdk-traces",
+      "labelName": "service.name"
+    },
+    {
+      "name": "environment",
+      "label": "Environment",
+      "type": "custom",
+      "options": [
+        "All",
+        "staging"
+      ],
+      "defaultValue": "All",
+      "stream": "litellm-sdk-traces",
+      "labelName": "deployment.environment"
+    },
+    {
+      "name": "model",
+      "label": "Request Model",
+      "type": "custom",
+      "options": [
+        "All",
+        "gpt-4o-mini",
+        "claude-3-5-haiku-latest"
+      ],
+      "defaultValue": "All",
+      "stream": "litellm-sdk-traces",
+      "labelName": "gen_ai.request.model"
+    },
+    {
+      "name": "provider",
+      "label": "Provider",
+      "type": "custom",
+      "options": [
+        "All",
+        "openai",
+        "anthropic"
+      ],
+      "defaultValue": "All",
+      "stream": "litellm-sdk-traces",
+      "labelName": "gen_ai.provider.name"
+    },
+    {
+      "name": "severity",
+      "label": "Log Level",
+      "type": "custom",
+      "options": [
+        "All",
+        "INFO",
+        "ERROR"
+      ],
+      "defaultValue": "All",
+      "stream": "litellm-sdk-logs",
+      "labelName": "severity_text"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "77JPZS35BBJ28R06V7XPZQVAP3",
+      "title": "Traffic & Reliability",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "6FAJGDYHGP6AGYHFH09BJH7AJM",
+      "title": "Performance & Latency",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "3TEYFWN36FYP192H4BYZTM90W7",
+      "title": "Tokens & Cost",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "7JHMDEW8HHBA94Z17WGMMQQDHD",
+      "title": "Models & Usage",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "4C1KKAXV10FKDJSN3VZPGDVXR6",
+      "title": "Logs",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "271WYVKYGAGSB2GMQ9K1TXJCSD",
+      "title": "Trace Explorer",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "2QJBKDMDF17S020EF6PYBS9468",
+      "title": "Metrics & Telemetry",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "6EAASPDC5R1ET383NZW0DH2121",
+      "title": "LLM Calls",
+      "chartQuery": "SELECT COUNT(*) AS calls FROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6EAASPDC5R1ET383NZW0DH2121",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "5DMGK5RKFWYFFZ30EHSAMK6WV3",
+      "title": "Success Rate",
+      "chartQuery": "SELECT ROUND(COUNT(*) FILTER (WHERE span_status_code = 1) * 100.0 / NULLIF(COUNT(*),0), 2) AS success_rate_pct FROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "success_rate_pct",
+            "title": "success_rate_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5DMGK5RKFWYFFZ30EHSAMK6WV3",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "22J8XR41GGG7D64N9JGH3DVKGS",
+      "title": "Errors",
+      "chartQuery": "SELECT COUNT(*) FILTER (WHERE span_status_code = 2 OR \"error.type\" IS NOT NULL) AS errors FROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "errors",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "22J8XR41GGG7D64N9JGH3DVKGS",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "2QH3KFDFQ1E3WKS2TEZY6YX6GK",
+      "title": "Total Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\",'0') AS DOUBLE) + CAST(COALESCE(\"gen_ai.usage.output_tokens\",'0') AS DOUBLE)),0) AS total_tokens FROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2QH3KFDFQ1E3WKS2TEZY6YX6GK",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "0MTQDM83K4EYD7R354CXTSAJ37",
+      "title": "Total Spend",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(\"gen_ai.cost.total_cost\"),0),8) AS spend_usd FROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "spend_usd",
+            "title": "spend_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0MTQDM83K4EYD7R354CXTSAJ37",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "5V4CGQNWGD6KHFRABQEYJDG08X",
+      "title": "Average Latency",
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns/1000000000.0),3) AS avg_latency_s FROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_latency_s",
+            "title": "avg_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5V4CGQNWGD6KHFRABQEYJDG08X",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "12DCH5C7JAABKV4ZTQ7CV6WDSV",
+      "title": "P95 Latency",
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),3) AS p95_latency_s FROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_latency_s",
+            "title": "p95_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "12DCH5C7JAABKV4ZTQ7CV6WDSV",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "7FYJHJGM7TVPFB936RR7PEZZP9",
+      "title": "Average TTFT",
+      "chartQuery": "WITH latest_ts AS (\n  SELECT metric_name, \"__series_hash\" AS series_hash, MAX(p_timestamp) AS latest\n  FROM $metrics_dataset WHERE metric_name='gen_ai.client.response.time_to_first_token' AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\n  GROUP BY metric_name, \"__series_hash\"\n)\nSELECT ROUND(SUM(m.data_point_sum)/NULLIF(SUM(m.data_point_count),0),3) AS avg_ttft_s\nFROM $metrics_dataset m JOIN latest_ts l\n  ON m.metric_name=l.metric_name AND m.\"__series_hash\"=l.series_hash AND m.p_timestamp=l.latest\nWHERE ('$service' = 'All' OR COALESCE(m.\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(m.\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(m.\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(m.\"gen_ai.system\", 'unknown') = '$provider')",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_ttft_s",
+            "title": "avg_ttft_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7FYJHJGM7TVPFB936RR7PEZZP9",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "48J4BJGZH865NXVR91559JAKXX",
+      "title": "LLM Calls by Model & Outcome",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  CASE WHEN span_status_code=1 THEN 'success' WHEN span_status_code=2 THEN 'error' ELSE 'unset' END AS outcome,\n  COUNT(*) AS calls\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin,model,outcome ORDER BY time_bin,model,outcome",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "calls"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model",
+              "outcome"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "48J4BJGZH865NXVR91559JAKXX",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3GSXDQJEZPPE3SAA4W798JQSPP"
+    },
+    {
+      "tile_id": "3A93V7MN7ET0RZ8CVDPHBPC4GW",
+      "title": "Calls, Successes & Errors",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS calls,\n  COUNT(*) FILTER (WHERE span_status_code=1) AS successes,\n  COUNT(*) FILTER (WHERE span_status_code=2 OR \"error.type\" IS NOT NULL) AS errors\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "calls",
+              "successes",
+              "errors"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3A93V7MN7ET0RZ8CVDPHBPC4GW",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "77JPZS35BBJ28R06V7XPZQVAP3"
+    },
+    {
+      "tile_id": "4SP490NR9F6QA5FFBQP6T97RWC",
+      "title": "Errors by Type",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"error.type\",\"event_exception.type\",span_status_description,'unknown') AS error_type,\n  COUNT(*) AS errors\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT' AND (span_status_code=2 OR \"error.type\" IS NOT NULL)\nGROUP BY time_bin,error_type ORDER BY time_bin,error_type",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "errors"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "error_type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4SP490NR9F6QA5FFBQP6T97RWC",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "77JPZS35BBJ28R06V7XPZQVAP3"
+    },
+    {
+      "tile_id": "1MZMM3S21BGFQYFSGK93R8822J",
+      "title": "HTTP Status Codes",
+      "chartQuery": "SELECT COALESCE(\"http.response.status_code\",'none') AS http_status,COUNT(*) AS calls\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY http_status ORDER BY calls DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "http_status",
+            "title": "http_status",
+            "display": true
+          },
+          "y": {
+            "field": "http_status",
+            "title": "http_status",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "http_status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1MZMM3S21BGFQYFSGK93R8822J",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "77JPZS35BBJ28R06V7XPZQVAP3"
+    },
+    {
+      "tile_id": "0G9T0TQ3P3TEV5T5WT8WD1N37Z",
+      "title": "Scenario Outcomes",
+      "chartQuery": "SELECT COALESCE(\"scenario.name\",'unknown') AS scenario,\n  COALESCE(\"scenario.status\",CASE WHEN span_status_code=2 THEN 'error' ELSE 'unset' END) AS outcome,\n  COUNT(*) AS runs,\n  ROUND(AVG(span_duration_ns/1000000.0),2) AS avg_duration_ms,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000.0,0.95),2) AS p95_duration_ms\nFROM $traces_dataset\nWHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment') AND span_name='sdk.scenario'\nGROUP BY scenario,outcome ORDER BY runs DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "scenario",
+            "title": "scenario",
+            "display": true
+          },
+          "y": {
+            "field": "runs",
+            "title": "runs",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0G9T0TQ3P3TEV5T5WT8WD1N37Z",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "77JPZS35BBJ28R06V7XPZQVAP3"
+    },
+    {
+      "tile_id": "4HSKJS6FD3DGHMMQ9REDAHE97E",
+      "title": "Provider Reliability",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\",'unknown') AS provider,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  COUNT(*) AS calls,\n  COUNT(*) FILTER (WHERE span_status_code=1) AS successes,\n  COUNT(*) FILTER (WHERE span_status_code=2) AS errors,\n  ROUND(COUNT(*) FILTER (WHERE span_status_code=1)*100.0/NULLIF(COUNT(*),0),2) AS success_rate_pct,\n  ROUND(AVG(span_duration_ns/1000000000.0),3) AS avg_latency_s\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY provider,model ORDER BY calls DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4HSKJS6FD3DGHMMQ9REDAHE97E",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "77JPZS35BBJ28R06V7XPZQVAP3"
+    },
+    {
+      "tile_id": "789TATAX6JVVYP4TYA9JHZ1YD9",
+      "title": "Latency Percentiles",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.50),3) AS p50_s,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),3) AS p95_s,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.99),3) AS p99_s\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "p50_s",
+              "p95_s",
+              "p99_s"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "789TATAX6JVVYP4TYA9JHZ1YD9",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6FAJGDYHGP6AGYHFH09BJH7AJM"
+    },
+    {
+      "tile_id": "5CTQERF8TQ2YYQ8ETYP7P8KH7F",
+      "title": "SDK vs Provider Latency (Native Metrics)",
+      "chartQuery": "WITH base AS (\n  SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,p_timestamp,metric_name,\n    \"__series_hash\" AS series_hash,data_point_sum,data_point_count\n  FROM $metrics_dataset\n  WHERE metric_name IN ('gen_ai.client.operation.duration','gen_ai.client.response.duration') AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\n), latest AS (\n  SELECT time_bin,metric_name,series_hash,MAX(p_timestamp) AS latest_ts FROM base GROUP BY time_bin,metric_name,series_hash\n), points AS (\n  SELECT b.* FROM base b JOIN latest l ON b.time_bin=l.time_bin AND b.metric_name=l.metric_name\n    AND b.series_hash=l.series_hash AND b.p_timestamp=l.latest_ts\n)\nSELECT time_bin,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.operation.duration')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.operation.duration'),0),4) AS sdk_operation_s,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.duration')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.duration'),0),4) AS provider_response_s\nFROM points GROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "sdk_operation_s",
+              "provider_response_s"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5CTQERF8TQ2YYQ8ETYP7P8KH7F",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6FAJGDYHGP6AGYHFH09BJH7AJM"
+    },
+    {
+      "tile_id": "18DV6W8K7KRR8NSGA8W32FTEB5",
+      "title": "Streaming TTFT & Time per Output Token",
+      "chartQuery": "WITH base AS (\n  SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,p_timestamp,metric_name,\n    \"__series_hash\" AS series_hash,data_point_sum,data_point_count\n  FROM $metrics_dataset\n  WHERE metric_name IN ('gen_ai.client.response.time_to_first_token','gen_ai.client.response.time_per_output_token') AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\n), latest AS (\n  SELECT time_bin,metric_name,series_hash,MAX(p_timestamp) AS latest_ts FROM base GROUP BY time_bin,metric_name,series_hash\n), points AS (\n  SELECT b.* FROM base b JOIN latest l ON b.time_bin=l.time_bin AND b.metric_name=l.metric_name\n    AND b.series_hash=l.series_hash AND b.p_timestamp=l.latest_ts\n)\nSELECT time_bin,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.time_to_first_token')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.time_to_first_token'),0),4) AS avg_ttft_s,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.time_per_output_token')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.time_per_output_token'),0),4) AS avg_time_per_output_token_s\nFROM points GROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_ttft_s",
+              "avg_time_per_output_token_s"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "18DV6W8K7KRR8NSGA8W32FTEB5",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6FAJGDYHGP6AGYHFH09BJH7AJM"
+    },
+    {
+      "tile_id": "4R457NJ5P09WAYDNFAFQ1GEXNY",
+      "title": "Latency by Model",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\",'unknown') AS provider,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  COUNT(*) AS calls,\n  ROUND(AVG(span_duration_ns/1000000000.0),4) AS avg_s,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.50),4) AS p50_s,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),4) AS p95_s,\n  ROUND(MAX(span_duration_ns/1000000000.0),4) AS max_s\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY provider,model ORDER BY calls DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4R457NJ5P09WAYDNFAFQ1GEXNY",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6FAJGDYHGP6AGYHFH09BJH7AJM"
+    },
+    {
+      "tile_id": "5JVG54B70FES20T3A576FRF4D8",
+      "title": "Slowest LLM Calls",
+      "chartQuery": "SELECT p_timestamp,span_trace_id,span_span_id,\n  COALESCE(\"gen_ai.provider.name\",'unknown') AS provider,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  ROUND(span_duration_ns/1000000000.0,4) AS duration_s,\n  CASE WHEN span_status_code=2 THEN 'error' ELSE 'ok' END AS status,\n  \"error.type\" AS error_type\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nORDER BY span_duration_ns DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5JVG54B70FES20T3A576FRF4D8",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6FAJGDYHGP6AGYHFH09BJH7AJM"
+    },
+    {
+      "tile_id": "37K8THMFPACQ7GA1C608GBVBMV",
+      "title": "Token Consumption",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\",'0') AS DOUBLE)) AS input_tokens,\n  SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\",'0') AS DOUBLE)) AS output_tokens\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "tokens",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "input_tokens",
+              "output_tokens"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "37K8THMFPACQ7GA1C608GBVBMV",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3TEYFWN36FYP192H4BYZTM90W7"
+    },
+    {
+      "tile_id": "7V5JM9TX5J9AD4JWF3C6BA5T9T",
+      "title": "Input vs Output Tokens",
+      "chartQuery": "SELECT 'input' AS token_type,SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\",'0') AS DOUBLE)) AS tokens\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nUNION ALL\nSELECT 'output' AS token_type,SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\",'0') AS DOUBLE)) AS tokens\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "tokens",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "token_type",
+            "title": "token_type",
+            "display": true
+          },
+          "y": {
+            "field": "token_type",
+            "title": "token_type",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "token_type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7V5JM9TX5J9AD4JWF3C6BA5T9T",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3TEYFWN36FYP192H4BYZTM90W7"
+    },
+    {
+      "tile_id": "26KC355NQ831RMJS9ZRG272H0R",
+      "title": "Spend by Model Over Time",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  ROUND(SUM(COALESCE(\"gen_ai.cost.total_cost\",0)),8) AS spend_usd\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin,model ORDER BY time_bin,model",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "USD",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "spend_usd"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "26KC355NQ831RMJS9ZRG272H0R",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3TEYFWN36FYP192H4BYZTM90W7"
+    },
+    {
+      "tile_id": "4Z0F51856EG0QANFTYK8NK1P30",
+      "title": "Model Economics",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\",'unknown') AS provider,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  COUNT(*) AS calls,\n  SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\",'0') AS DOUBLE)) AS input_tokens,\n  SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\",'0') AS DOUBLE)) AS output_tokens,\n  ROUND(SUM(COALESCE(\"gen_ai.cost.total_cost\",0)),8) AS spend_usd,\n  ROUND(AVG(COALESCE(\"gen_ai.cost.total_cost\",0)),8) AS avg_cost_per_call,\n  ROUND(SUM(COALESCE(\"gen_ai.cost.total_cost\",0))*1000000.0/\n    NULLIF(SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\",'0') AS DOUBLE)+CAST(COALESCE(\"gen_ai.usage.output_tokens\",'0') AS DOUBLE)),0),6) AS usd_per_million_tokens\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY provider,model ORDER BY spend_usd DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "USD",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4Z0F51856EG0QANFTYK8NK1P30",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3TEYFWN36FYP192H4BYZTM90W7"
+    },
+    {
+      "tile_id": "0AN1YS56GDP56E7T6NZQ9ZDBD1",
+      "title": "Model Distribution",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\",'unknown') AS model,COUNT(*) AS calls\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY model ORDER BY calls DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "model",
+            "title": "model",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0AN1YS56GDP56E7T6NZQ9ZDBD1",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "7JHMDEW8HHBA94Z17WGMMQQDHD"
+    },
+    {
+      "tile_id": "6GF8X5DH9Q3JYZBZPVHSAJHC3F",
+      "title": "Provider Distribution",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.provider.name\",'unknown') AS provider,COUNT(*) AS calls\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY provider ORDER BY calls DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "provider",
+            "title": "provider",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "provider"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6GF8X5DH9Q3JYZBZPVHSAJHC3F",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "7JHMDEW8HHBA94Z17WGMMQQDHD"
+    },
+    {
+      "tile_id": "0Z6AGTVXGKQ5J0XQYWN172XAYY",
+      "title": "Streaming Mix",
+      "chartQuery": "SELECT CASE WHEN COALESCE(\"gen_ai.request.stream\",false) THEN 'streaming' ELSE 'non-streaming' END AS mode,\n  COUNT(*) AS calls\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY mode ORDER BY calls DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "mode",
+            "title": "mode",
+            "display": true
+          },
+          "y": {
+            "field": "mode",
+            "title": "mode",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "mode"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0Z6AGTVXGKQ5J0XQYWN172XAYY",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "7JHMDEW8HHBA94Z17WGMMQQDHD"
+    },
+    {
+      "tile_id": "2798E5SXGC84EGHY7W54Y37CV6",
+      "title": "Scenario Mix",
+      "chartQuery": "SELECT COALESCE(\"scenario.name\",'unknown') AS scenario,COUNT(*) AS runs\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment') AND span_name='sdk.scenario'\nGROUP BY scenario ORDER BY runs DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "scenario",
+            "title": "scenario",
+            "display": true
+          },
+          "y": {
+            "field": "scenario",
+            "title": "scenario",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "scenario"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2798E5SXGC84EGHY7W54Y37CV6",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "7JHMDEW8HHBA94Z17WGMMQQDHD"
+    },
+    {
+      "tile_id": "4M8AZ4S2FDTWVSVZ1XVF8SBATP",
+      "title": "Service & SDK Inventory",
+      "chartQuery": "SELECT COALESCE(\"service.name\",'unknown') AS service,\n  COALESCE(\"deployment.environment\",'unknown') AS environment,\n  COALESCE(\"telemetry.sdk.language\",'unknown') AS language,\n  COALESCE(\"telemetry.sdk.name\",'unknown') AS sdk,\n  COALESCE(\"telemetry.sdk.version\",'unknown') AS sdk_version,\n  COALESCE(\"telemetry.sdk.integration\",'unknown') AS integration,\n  COUNT(*) AS spans\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\nGROUP BY service,environment,language,sdk,sdk_version,integration ORDER BY spans DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "service",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4M8AZ4S2FDTWVSVZ1XVF8SBATP",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "7JHMDEW8HHBA94Z17WGMMQQDHD"
+    },
+    {
+      "tile_id": "4ZXFXXZ0BMGXZJW6XR3SJC34BV",
+      "title": "Logs by Severity",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(severity_text,'unknown') AS severity,COUNT(*) AS logs\nFROM $logs_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$severity' = 'All' OR COALESCE(severity_text, 'unknown') = '$severity')\nGROUP BY time_bin,severity ORDER BY time_bin,severity",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "logs"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "severity"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4ZXFXXZ0BMGXZJW6XR3SJC34BV",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "4C1KKAXV10FKDJSN3VZPGDVXR6"
+    },
+    {
+      "tile_id": "60A8Y8NECQ0FZM0MGR1KGNBMS7",
+      "title": "SDK Log Events",
+      "chartQuery": "SELECT COALESCE(body_event,'instrumentation') AS event,COUNT(*) AS logs\nFROM $logs_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$severity' = 'All' OR COALESCE(severity_text, 'unknown') = '$severity')\nGROUP BY event ORDER BY logs DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "event",
+            "title": "event",
+            "display": true
+          },
+          "y": {
+            "field": "event",
+            "title": "event",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "event"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "60A8Y8NECQ0FZM0MGR1KGNBMS7",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "4C1KKAXV10FKDJSN3VZPGDVXR6"
+    },
+    {
+      "tile_id": "2R4ZAJQ6D9RPEARV9HP6GRXCD0",
+      "title": "Recent SDK Request/Response Logs",
+      "chartQuery": "SELECT p_timestamp,severity_text,body_event,body_scenario,body_model,\n  body_streaming,body_input_tokens,body_output_tokens,trace_id,span_id,body\nFROM $logs_dataset\nWHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$severity' = 'All' OR COALESCE(severity_text, 'unknown') = '$severity') AND body_event IN ('llm.request','llm.response')\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "body_output_tokens",
+            "title": "body_output_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2R4ZAJQ6D9RPEARV9HP6GRXCD0",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "4C1KKAXV10FKDJSN3VZPGDVXR6"
+    },
+    {
+      "tile_id": "3Q0SQMNFTG6GM68MS9J3CJF3C6",
+      "title": "Recent Error Logs",
+      "chartQuery": "SELECT p_timestamp,severity_text,body_scenario,\n  \"body_error.type\" AS error_type,\"body_error.message\" AS error_message,\n  trace_id,span_id,body\nFROM $logs_dataset\nWHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$severity' = 'All' OR COALESCE(severity_text, 'unknown') = '$severity') AND (severity_number>=17 OR severity_text='ERROR' OR body_event='llm.error')\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "severity_text",
+            "title": "severity_text",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3Q0SQMNFTG6GM68MS9J3CJF3C6",
+        "x": 0,
+        "y": 18,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "4C1KKAXV10FKDJSN3VZPGDVXR6"
+    },
+    {
+      "tile_id": "4STHHZG79NHEZNSF75FZ3XRPA6",
+      "title": "Logs with Trace Context",
+      "chartQuery": "SELECT l.p_timestamp,l.severity_text,l.body_event,l.body_scenario,l.body_model,\n  l.trace_id,l.span_id,t.span_name,\n  ROUND(t.span_duration_ns/1000000.0,3) AS span_duration_ms,\n  CASE WHEN t.span_status_code=2 THEN 'error' ELSE 'ok' END AS span_status,\n  l.body\nFROM $logs_dataset l\nLEFT JOIN $traces_dataset t ON l.trace_id=t.span_trace_id AND l.span_id=t.span_span_id\nWHERE ('$service' = 'All' OR COALESCE(l.\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(l.\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$severity' = 'All' OR COALESCE(l.severity_text, 'unknown') = '$severity')\nORDER BY l.p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset",
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "span_duration_ms",
+            "title": "span_duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4STHHZG79NHEZNSF75FZ3XRPA6",
+        "x": 6,
+        "y": 18,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "4C1KKAXV10FKDJSN3VZPGDVXR6"
+    },
+    {
+      "tile_id": "2YWVM72VCF4P6XB67NDZ1J8HB3",
+      "title": "Recent LLM Calls",
+      "chartQuery": "SELECT p_timestamp,span_trace_id,span_span_id,\n  COALESCE(\"gen_ai.provider.name\",'unknown') AS provider,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS request_model,\n  COALESCE(\"gen_ai.response.model\",'unknown') AS response_model,\n  ROUND(span_duration_ns/1000000000.0,4) AS duration_s,\n  CAST(COALESCE(\"gen_ai.usage.input_tokens\",'0') AS DOUBLE) AS input_tokens,\n  CAST(COALESCE(\"gen_ai.usage.output_tokens\",'0') AS DOUBLE) AS output_tokens,\n  ROUND(COALESCE(\"gen_ai.cost.total_cost\",0),8) AS cost_usd,\n  CASE WHEN span_status_code=2 THEN 'error' ELSE 'ok' END AS status\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2YWVM72VCF4P6XB67NDZ1J8HB3",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "271WYVKYGAGSB2GMQ9K1TXJCSD"
+    },
+    {
+      "tile_id": "5PTNTBVJ5Q9A61FWEH084X8YCG",
+      "title": "Error Traces",
+      "chartQuery": "SELECT p_timestamp,span_trace_id,span_span_id,span_name,\n  COALESCE(\"gen_ai.provider.name\",'unknown') AS provider,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  \"http.response.status_code\" AS http_status,\n  COALESCE(\"error.type\",\"event_exception.type\",span_status_description,'unknown') AS error_type,\n  COALESCE(\"error.message\",\"event_exception.message\",span_status_message,'unknown') AS error_message,\n  ROUND(span_duration_ns/1000000.0,3) AS duration_ms\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT' AND (span_status_code=2 OR \"error.type\" IS NOT NULL)\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5PTNTBVJ5Q9A61FWEH084X8YCG",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "271WYVKYGAGSB2GMQ9K1TXJCSD"
+    },
+    {
+      "tile_id": "1MZHZHMGM1852NA9Z77RX2X1GN",
+      "title": "Scenario Trace Roots",
+      "chartQuery": "SELECT p_timestamp,span_trace_id,span_span_id,\n  COALESCE(\"scenario.name\",'unknown') AS scenario,\n  COALESCE(\"scenario.status\",CASE WHEN span_status_code=2 THEN 'error' ELSE 'unset' END) AS outcome,\n  ROUND(span_duration_ns/1000000000.0,4) AS duration_s,\n  span_status_message\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment') AND span_name='sdk.scenario'\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1MZHZHMGM1852NA9Z77RX2X1GN",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "271WYVKYGAGSB2GMQ9K1TXJCSD"
+    },
+    {
+      "tile_id": "5Z89DCPDD23WGRABEGM2X88JVV",
+      "title": "Recent Span Timeline Data",
+      "chartQuery": "SELECT p_timestamp,span_trace_id,span_span_id,span_parent_span_id,\n  span_name,span_kind_description,\n  COALESCE(\"gen_ai.request.model\",\"scenario.name\",'unknown') AS model_or_scenario,\n  ROUND(span_duration_ns/1000000.0,3) AS duration_ms,\n  CASE WHEN span_status_code=2 THEN 'error' WHEN span_status_code=1 THEN 'ok' ELSE 'unset' END AS status\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\nORDER BY p_timestamp DESC,span_start_time_unix_nano ASC LIMIT 200",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5Z89DCPDD23WGRABEGM2X88JVV",
+        "x": 0,
+        "y": 20,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "271WYVKYGAGSB2GMQ9K1TXJCSD"
+    },
+    {
+      "tile_id": "2TCNADVYXR107YETRH15R3DHC0",
+      "title": "Latest Native Metric Rollup",
+      "chartQuery": "WITH latest_ts AS (\n  SELECT metric_name,\"__series_hash\" AS series_hash,MAX(p_timestamp) AS latest\n  FROM $metrics_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\n  GROUP BY metric_name,\"__series_hash\"\n)\nSELECT m.metric_name,\n  COALESCE(m.\"gen_ai.system\",'unknown') AS provider,\n  COALESCE(m.\"gen_ai.request.model\",'unknown') AS model,\n  COALESCE(m.\"gen_ai.token.type\",'all') AS token_type,\n  SUM(m.data_point_count) AS observations,\n  ROUND(SUM(m.data_point_sum),8) AS cumulative_sum,\n  ROUND(SUM(m.data_point_sum)/NULLIF(SUM(m.data_point_count),0),6) AS cumulative_avg,\n  MIN(m.min) AS min_value,MAX(m.max) AS max_value,m.metric_unit\nFROM $metrics_dataset m JOIN latest_ts l\n ON m.metric_name=l.metric_name AND m.\"__series_hash\"=l.series_hash AND m.p_timestamp=l.latest\nWHERE ('$service' = 'All' OR COALESCE(m.\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(m.\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(m.\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(m.\"gen_ai.system\", 'unknown') = '$provider')\nGROUP BY m.metric_name,provider,model,token_type,m.metric_unit\nORDER BY m.metric_name,provider,model,token_type",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "observations",
+            "title": "observations",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2TCNADVYXR107YETRH15R3DHC0",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "2QJBKDMDF17S020EF6PYBS9468"
+    },
+    {
+      "tile_id": "4YKEPYGFP70C4ZPQ04C9G9G58E",
+      "title": "Metric Export Volume",
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  metric_name,COUNT(*) AS points\nFROM $metrics_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\nGROUP BY time_bin,metric_name ORDER BY time_bin,metric_name",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "points"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "metric_name"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4YKEPYGFP70C4ZPQ04C9G9G58E",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "2QJBKDMDF17S020EF6PYBS9468"
+    },
+    {
+      "tile_id": "5A7GW8QV7GXJP7QRCRBPF3238X",
+      "title": "Metric & Instrumentation Inventory",
+      "chartQuery": "SELECT metric_name,metric_type,metric_unit,metric_description,\n  COALESCE(\"service.name\",'unknown') AS service,\n  COALESCE(\"deployment.environment\",'unknown') AS environment,\n  COALESCE(\"gen_ai.framework\",'unknown') AS framework,\n  COALESCE(\"telemetry.sdk.language\",'unknown') AS language,\n  COALESCE(\"telemetry.sdk.name\",'unknown') AS sdk,\n  COALESCE(\"telemetry.sdk.version\",'unknown') AS sdk_version,\n  COUNT(DISTINCT \"__series_hash\") AS series,\n  COUNT(*) AS exported_points\nFROM $metrics_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\nGROUP BY metric_name,metric_type,metric_unit,metric_description,service,environment,framework,language,sdk,sdk_version\nORDER BY metric_name",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "exported_points",
+            "title": "exported_points",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5A7GW8QV7GXJP7QRCRBPF3238X",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "2QJBKDMDF17S020EF6PYBS9468"
+    }
+  ]
+}

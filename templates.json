@@ -11,7 +11,7 @@
         "agent-observability",
         "cost"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Agent Observability",
@@ -25,7 +25,7 @@
         "sql",
         "agent-observability"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "LiteLLM Proxy Observability",
@@ -41,7 +41,8 @@
         "traces",
         "promql",
         "observability"
-      ]
+      ],
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "LiteLLM SDK Observability",
@@ -59,7 +60,24 @@
         "traces",
         "metrics",
         "observability"
-      ]
+      ],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
+      "name": "Modal Observability",
+      "dirName": "modal-observability",
+      "fileName": "modal-observability-mixed.json",
+      "description": "Monitor Modal application logs, traces, function and container capacity, CPU, memory, GPU, input events, latency, errors, and correlated telemetry.",
+      "source": "Mixed",
+      "tags": [
+        "modal",
+        "datadog",
+        "logs",
+        "traces",
+        "metrics",
+        "observability"
+      ],
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Claude Code Usage",
@@ -72,7 +90,7 @@
         "usage",
         "genai"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "K8s Cluster Monitoring",
@@ -87,7 +105,8 @@
         "metrics",
         "logs",
         "events"
-      ]
+      ],
+      "thumbnail": "assets/screenshot.png"
     },
     {
       "name": "Argo CD",
@@ -101,7 +120,8 @@
         "kubernetes",
         "promql",
         "logs"
-      ]
+      ],
+      "thumbnail": "assets/screenshot.png"
     },
     {
       "name": "Traefik Monitoring",
@@ -115,7 +135,8 @@
         "ingress",
         "promql",
         "logs"
-      ]
+      ],
+      "thumbnail": "assets/screenshot.png"
     },
     {
       "name": "Postgres Monitoring",
@@ -132,7 +153,7 @@
         "traces",
         "promql"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Redis Monitoring",
@@ -149,7 +170,7 @@
         "traces",
         "promql"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "SQL Server Monitoring",
@@ -166,7 +187,7 @@
         "traces",
         "promql"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/screenshot.png"
     },
     {
       "name": "Windows Server Monitoring",
@@ -198,8 +219,7 @@
         "logs",
         "traces",
         "promql"
-      ],
-      "thumbnail": "screenshot.png"
+      ]
     },
     {
       "name": "Node Metrics Dashboard - PromQL",
@@ -225,7 +245,7 @@
         "metrics",
         "promql"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "OTel Demo Application",
@@ -238,7 +258,7 @@
         "astronomy-shop",
         "observability"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "Parseable Audit Logs",
@@ -252,7 +272,7 @@
         "logs",
         "azure"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/screenshot.png"
     },
     {
       "name": "Parseable Metrics",
@@ -265,7 +285,7 @@
         "parseable",
         "promql"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/screenshot.png"
     },
     {
       "name": "Parseable Server Logs",
@@ -279,7 +299,7 @@
         "logs",
         "azure"
       ],
-      "thumbnail": "screenshot.png"
+      "thumbnail": "assets/screenshot.png"
     }
   ]
 }

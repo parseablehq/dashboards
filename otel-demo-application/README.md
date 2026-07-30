@@ -1,63 +1,41 @@
 # OTel Demo Application
 
-Prism dashboard template for the OpenTelemetry demo application.
+Explore application, service, and telemetry behavior for the OpenTelemetry Astronomy Shop demo application. It combines PromQL metrics with SQL telemetry so operational signals can be investigated together.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Logs Overview:** panels include Total Logs, Error Logs, and Most Errored Service.
+- **Traces Overview:** panels include Total Traces, Total Spans, Trace Services, Error Spans, Longest Span From Service, and Trace With Highest Number Of Spans, plus related signals.
+- **Metrics Overview:** panels include Total Metric Points and Total Unique Metrics.
+- **Trace Performance:** panels include Span Volume by Service, Latency p95 by Service, Top Services by Span Count, Top Operations, and Slowest Spans.
+- **Logs & Errors:** panels include Trace Errors Over Time, Log Volume by Severity, Recent Error Logs, Log Volume by Service, Log Error Rate Over Time, and Exception Types, plus related signals.
+- **HTTP:** panels include HTTP Server p95 Latency (PromQL), HTTP Status Mix, and Top HTTP Routes.
+- **Business Metrics:** panels include Orders, Total Revenue, Payment Card Types, and Orders Over Time.
+- **Runtime Metrics:** panels include Process CPU Rate (PromQL), Process Memory by Service (PromQL), Metric Samples by Family, JVM Memory Used by Service, HTTP Metric Status Mix, and Runtime Concurrency.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `otel-demo-application-mixed.json` | OTel Demo Application | 37 |
+## Data used
 
-## OTel Demo Application
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Logs | `astronomy-shop-logs` | SQL | Log records for volume, severity, errors, activity, and recent-event investigation |
+| Traces | `astronomy-shop-traces` | SQL | Spans for latency, errors, operations, request behavior, and trace investigation |
+| Metrics | `astronomy-shop-metrics` | PromQL / SQL | Operational metrics for availability, throughput, saturation, latency, resource use, and inventory |
 
-**File:** `otel-demo-application-mixed.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Explore application, service, and telemetry behavior for the OpenTelemetry Astronomy Shop demo. Use it as a sample observability view for application logs, traces, metrics, and service-level operational signals.
+## Filters
 
-**Source:** `Mixed`
+3 dashboard variables let users select telemetry sources and scope relevant panels:
 
-**Tags:** `otel-demo`, `astronomy-shop`, `observability`
+- Dataset selectors: Logs Dataset, Traces Dataset, and Metrics Dataset
 
-**Filter variables:** `logs_dataset`, `traces_dataset`, `metrics_dataset`
+## Dashboard contents
 
-**Panels:**
+- **37 tiles** across **8 collapsible sections**
+- PromQL metrics and SQL telemetry in one mixed-source dashboard
+- Dashboard screenshot in [`assets/`](assets/)
+- Importable template: [`otel-demo-application-mixed.json`](otel-demo-application-mixed.json)
 
-- Total Traces
-- Total Spans
-- Trace Services
-- Error Spans
-- Total Logs
-- Error Logs
-- Orders
-- Total Revenue
-- Span Volume by Service
-- Latency p95 by Service
-- Trace Errors Over Time
-- Log Volume by Severity
-- HTTP Server p95 Latency (PromQL)
-- Process CPU Rate (PromQL)
-- Process Memory by Service (PromQL)
-- Top Services by Span Count
-- Top Operations
-- HTTP Status Mix
-- Top HTTP Routes
-- Payment Card Types
-- Orders Over Time
-- Recent Error Logs
-- Slowest Spans
-- Log Volume by Service
-- Log Error Rate Over Time
-- Exception Types
-- Top Log Services
-- Metric Samples by Family
-- JVM Memory Used by Service
-- HTTP Metric Status Mix
-- Runtime Concurrency
-- Most Errored Service
-- Longest Span From Service
-- Trace With Highest Number Of Spans
-- Trace With Highest Number Of Errors
-- Total Metric Points
-- Total Unique Metrics
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

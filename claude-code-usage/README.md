@@ -1,47 +1,39 @@
 # Claude Code Usage
 
-Prism dashboard template for Claude Code usage monitoring.
+Monitor Claude Code sessions, model usage, request patterns, token consumption, and PromQL-backed runtime signals. It combines PromQL metrics with SQL telemetry so operational signals can be investigated together.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Overview:** panels include Total Cost, API Requests, Sessions, and Errors.
+- **Cost & Tokens:** panels include Cost and API Requests Over Time, Tokens Over Time, Token Usage by Type, and Cost by Model.
+- **Models & Requests:** panels include API Requests by Model and Events by Type.
+- **Tools & Commands:** panels include Top Tools, Top Hooks, Top Commands, and Plugins.
+- **Activity & Code Changes:** panels include Active Time Over Time, Lines Changed Over Time, and Code Edit Decisions.
+- **Errors:** panels include Errors by Type and Recent Errors.
+- **Sessions:** panels include Recent Sessions and Session Count Over Time.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `claude-code-usage-mixed.json` | Claude Code Usage | 21 |
+## Data used
 
-## Claude Code Usage
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Logs | `claudecode-logs` | SQL | Log records for volume, severity, errors, activity, and recent-event investigation |
+| Metrics | `claudecode-metrics` | PromQL | Operational metrics for availability, throughput, saturation, latency, resource use, and inventory |
 
-**File:** `claude-code-usage-mixed.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Monitor Claude Code sessions, request patterns, model usage, token consumption, and supporting runtime signals. Use it to understand developer usage, adoption, and operational behavior across Claude Code workflows.
+## Filters
 
-**Source:** `Mixed`
+2 dashboard variables let users select telemetry sources and scope relevant panels:
 
-**Tags:** `claude-code`, `usage`, `genai`
+- Dataset selectors: Logs Dataset and Metrics Dataset
 
-**Filter variables:** `logs_dataset`, `metrics_dataset`
+## Dashboard contents
 
-**Panels:**
+- **21 tiles** across **7 collapsible sections**
+- PromQL metrics and SQL telemetry in one mixed-source dashboard
+- Dashboard screenshot in [`assets/`](assets/)
+- Importable template: [`claude-code-usage-mixed.json`](claude-code-usage-mixed.json)
 
-- Total Cost
-- API Requests
-- Sessions
-- Errors
-- Cost and API Requests Over Time
-- Tokens Over Time
-- Token Usage by Type
-- Cost by Model
-- API Requests by Model
-- Events by Type
-- Top Tools
-- Top Hooks
-- Top Commands
-- Plugins
-- Active Time Over Time
-- Lines Changed Over Time
-- Errors by Type
-- Recent Errors
-- Recent Sessions
-- Session Count Over Time
-- Code Edit Decisions
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

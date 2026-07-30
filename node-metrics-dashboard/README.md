@@ -1,152 +1,48 @@
 # Node Metrics Dashboard - PromQL
 
-Prism dashboard template for node-level infrastructure metrics.
+Monitor host-level CPU, memory, disk, network, filesystem, and load metrics from node exporter style PromQL data. It uses PromQL panels for time-series monitoring, breakdowns, and operational inventory.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Quick CPU / Mem / Disk:** panels include CPU Pressure, Memory Pressure, IO Pressure, CPU Busy in percent, Sys Load, and RAM Used, plus related signals.
+- **Basic CPU / Mem / Net / Disk:** panels include CPU Basic, Memory Basic, Network Traffic Basic, and Disk Space Used Basic.
+- **CPU / Memory / Net / Disk:** panels include CPU Details, Memory in details, Disk IOPS, I/O Usage Read/Write, Network Traffic, and Network Saturation, plus related signals.
+- **Memory Meminfo:** panels include Memory Committed, Memory Writeback and Dirty, Memory Slab, Memory Shared and Mapped, Memory LRU Active / Inactive (%), and Memory LRU Active / Inactive Detail, plus related signals.
+- **Memory Vmstat:** panels include Memory Pages In / Out, Memory Pages Swap In / Out, Memory Page Faults, and OOM Killer.
+- **System Timesync:** panels include Time Synchronized Drift, Time PLL Adjust, Time Synchronized Status, PPS Frequency / Stability, PPS Time Accuracy, and PPS Sync Events, plus related signals.
+- **System Processes:** panels include Processes Status, Processes Detailed States, Processes Forks, PIDs Number and Limit, and Threads Number and Limit.
+- **System Misc:** panels include Irq Pressure, Reboot Required, CPU Saturation per Core, Context Switches / Interrupts, System Load, and CPU Frequency Scaling, plus related signals.
+- **Hardware Misc:** panels include Hardware Temperature Monitor, Cooling Device Utilization, Power Supply, and Hardware Fan Speed.
+- **Systemd:** panels include Systemd Units State, Systemd Sockets Current, Systemd Sockets Accepted, and Systemd Sockets Refused.
+- **Storage Disk:** panels include Disk Read/Write IOps, Disk Read/Write Data, Disk Average Wait Time, Average Queue Size, Disk R/W Merged, and Disk Ops Discards / Flush, plus related signals.
+- **Storage Filesystem:** panels include File Descriptor, File Nodes Free, Filesystem in ReadOnly / Error, and File Nodes Size.
+- **Network Traffic:** panels include Network Traffic by Packets, Network Traffic Errors, Network Traffic Drop, Network Traffic Compressed, Network Traffic Multicast, and Network Traffic NoHandler, plus related signals.
+- **Network Sockstat:** panels include Sockstat TCP, Sockstat UDP, Sockstat Used, Sockstat FRAG / RAW, TCP/UDP Kernel Buffer Memory Pages, and Sockstat Memory Size, plus related signals.
+- **Network Netstat:** panels include Netstat IP In / Out Octets, TCP In / Out, UDP In / Out, ICMP In / Out, TCP Errors, and UDP Errors, plus related signals.
+- **Node Exporter:** panels include Node Exporter Scrape Time, Exporter Process CPU Usage, Exporter Processes Memory, Exporter File Descriptor Usage, Node Exporter Scrape - collector, and Node Exporter Scrape - textfile.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `node-metrics-dashboard-promql.json` | Node Metrics Dashboard - PromQL | 126 |
+## Data used
 
-## Node Metrics Dashboard - PromQL
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Metrics | `box3-node-metrics` | PromQL | Operational metrics for availability, throughput, saturation, latency, resource use, and inventory |
 
-**File:** `node-metrics-dashboard-promql.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Monitor host-level CPU, memory, disk, network, filesystem, and load metrics from node exporter style PromQL data. Use it for infrastructure health checks, capacity review, and node-level troubleshooting.
+## Filters
 
-**Source:** `PromQL`
+3 dashboard variables let users select telemetry sources and scope relevant panels:
 
-**Tags:** `node`, `promql`
+- Dataset selectors: Dataset
+- Scope filters: node and Job
 
-**Filter variables:** `node`, `job`, `dataset`
+## Dashboard contents
 
-**Panels:**
+- **126 tiles** across **16 collapsible sections**
+- PromQL panels over metric datasets
+- Screenshot assets directory: [`assets/`](assets/)
+- Importable template: [`node-metrics-dashboard-promql.json`](node-metrics-dashboard-promql.json)
 
-- CPU Pressure
-- Memory Pressure
-- IO Pressure
-- CPU Busy in percent
-- Sys Load
-- RAM Used
-- SWAP Used
-- Root FS Used
-- CPU Cores
-- Root FS Total
-- RAM Total in GB
-- SWAP Total in GB
-- Uptime in weeks
-- CPU Basic
-- Memory Basic
-- Network Traffic Basic
-- Disk Space Used Basic
-- CPU Details
-- Memory in details
-- Disk IOPS
-- I/O Usage Read/Write
-- Irq Pressure
-- Reboot Required
-- Network Traffic
-- Network Saturation
-- Filesystem Space Available
-- Filesystem Used
-- Disk I/O Utilization
-- Pressure Stall Information
-- Memory Committed
-- Memory Writeback and Dirty
-- Memory Slab
-- Memory Shared and Mapped
-- Memory LRU Active / Inactive (%)
-- Memory LRU Active / Inactive Detail
-- Memory Kernel / CPU / IO
-- Memory Vmalloc
-- Memory Anonymous
-- Memory Unevictable and MLocked
-- Memory DirectMap
-- Memory HugePages
-- Memory Pages In / Out
-- Memory Pages Swap In / Out
-- Memory Page Faults
-- OOM Killer
-- Time Synchronized Drift
-- Time PLL Adjust
-- Time Synchronized Status
-- PPS Frequency / Stability
-- PPS Time Accuracy
-- PPS Sync Events
-- Processes Status
-- Processes Detailed States
-- Processes Forks
-- CPU Saturation per Core
-- PIDs Number and Limit
-- Threads Number and Limit
-- Context Switches / Interrupts
-- System Load
-- CPU Frequency Scaling
-- CPU Schedule Timeslices
-- IRQ Detail
-- Entropy
-- Hardware Temperature Monitor
-- Cooling Device Utilization
-- Power Supply
-- Hardware Fan Speed
-- Systemd Units State
-- Systemd Sockets Current
-- Systemd Sockets Accepted
-- Systemd Sockets Refused
-- Disk Read/Write IOps
-- Disk Read/Write Data
-- Disk Average Wait Time
-- Average Queue Size
-- Disk R/W Merged
-- Time Spent Doing I/Os
-- Disk Ops Discards / Flush
-- Disk Sectors Discarded Successfully
-- Instantaneous Queue Size
-- File Descriptor
-- File Nodes Free
-- Filesystem in ReadOnly / Error
-- File Nodes Size
-- Network Traffic by Packets
-- Network Traffic Errors
-- Network Traffic Drop
-- Network Traffic Compressed
-- Network Traffic Multicast
-- Network Traffic NoHandler
-- Network Traffic Frame
-- Network Traffic Fifo
-- Network Traffic Collision
-- Network Traffic Carrier Errors
-- ARP Entries
-- NF Conntrack
-- Network Operational Status
-- Speed
-- MTU
-- Sockstat TCP
-- Sockstat UDP
-- Sockstat Used
-- Sockstat FRAG / RAW
-- TCP/UDP Kernel Buffer Memory Pages
-- Sockstat Memory Size
-- Softnet Packets
-- Softnet Out of Quota
-- Softnet RPS
-- Netstat IP In / Out Octets
-- TCP In / Out
-- UDP In / Out
-- ICMP In / Out
-- TCP Errors
-- UDP Errors
-- ICMP Errors
-- TCP SynCookie
-- TCP Connections
-- UDP Queue
-- TCP Direct Transition
-- TCP Stat
-- Node Exporter Scrape Time
-- Exporter Process CPU Usage
-- Exporter Processes Memory
-- Exporter File Descriptor Usage
-- Node Exporter Scrape - collector
-- Node Exporter Scrape - textfile
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

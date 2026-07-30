@@ -1,103 +1,40 @@
 # Agent Observability
 
-Prism dashboard template for agent observability.
+Track GenAI agent invocations, outcomes, latency, tools, tokens, cost, and request-level behavior. It uses SQL panels to analyze telemetry directly from the selected Parseable datasets.
 
-Browse all dashboard templates in the [Parseable dashboards repository](../README.md).
+## What the dashboard shows
 
-## Dashboards
+- **Overview:** panels include Total invocations, Error rate, Average agent run duration, P95 agent run duration, Total tool calls, and Total cost, plus related signals.
+- **Cost:** panels include Cost by Model, Cost by Provider and Model, Total cost over time, Cost by Service, Cost by Agent Name, and Cost by Service and Model, plus related signals.
+- **Performance and latency:** panels include Agents run over time, Errors, Tool latency, Overall agent latency, Slowest Invocations, and Recent Invocation Detail, plus related signals.
+- **Tokens:** panels include Token consumption by Model, Model Chat Calls, Provider / Model Health, P95 Input/Output Tokens Over Time, Avg Input Tokens / LLM Call, and Avg Output Tokens / LLM Call, plus related signals.
+- **Tools:** panels include Tool P95 Latency, Tool Calls Over Time, Top Tools, Tool Failures, Tool Failure Rate by Tool, and Tool Usage Over Time, plus related signals.
+- **Submissions & Outcomes:** panels include Finish Status, Submission Rate Over Time, and Exit Status Over Time.
+- **Details:** panels include Problem Hotspots, Environment / Version Breakdown, Service Rollups, Token Explorer, High Retry Loop Details, and Service Cost Rollup.
+- **Cost Trends:** panels include Cost Over Time, Cost Rate of Change, Cumulative Cost, Cost per Token Over Time, P95 Chat Cost Over Time, and Cost Usage / Minute.
+- **Invocation Cost:** panels include Highest Cost Invocations, Invocation Cost Distribution, Cost vs Tokens by Invocation, Cost per Agent Run, and Cost per Query.
 
-| File | Dashboard | Panels |
-| --- | --- | ---: |
-| `agent-observability-sql.json` | Agent Observability | 77 |
+## Data used
 
-## Agent Observability
+| Signal | Default dataset | Query language | Purpose |
+| --- | --- | --- | --- |
+| Traces | `pydantic-ai-traces` | SQL | Spans for latency, errors, operations, request behavior, and trace investigation |
 
-**File:** `agent-observability-sql.json`
+Expected fields and labels follow the panel queries and the relevant OpenTelemetry or exporter conventions. Dataset names can be changed after import through dashboard variables.
 
-Track GenAI agent invocations, outcomes, latency, tool usage, token consumption, cost, and request-level behavior. Use it to inspect execution paths, failure concentration, and heavy usage patterns.
+## Filters
 
-**Source:** `SQL`
+1 dashboard variable lets users select telemetry sources and scope relevant panels:
 
-**Tags:** `swe-agent`, `genai`, `sql`, `agent-observability`
+- Dataset selectors: Trace Dataset
 
-**Filter variables:** `trace_dataset`
+## Dashboard contents
 
-**Panels:**
+- **77 tiles** across **9 collapsible sections**
+- SQL panels over Parseable datasets
+- Dashboard screenshot in [`assets/`](assets/)
+- Importable template: [`agent-observability-sql.json`](agent-observability-sql.json)
 
-- Total invocations
-- Error rate
-- Average agent run duration
-- P95 agent run duration
-- Agents run over time
-- Errors
-- Tool latency
-- Token consumption by Model
-- Tool P95 Latency
-- Tool Calls Over Time
-- Model Chat Calls
-- Top Tools
-- Finish Status
-- Overall agent latency
-- Slowest Invocations
-- Tool Failures
-- Recent Invocation Detail
-- Submission Rate Over Time
-- Exit Status Over Time
-- Tool Failure Rate by Tool
-- Problem Hotspots
-- Environment / Version Breakdown
-- Provider / Model Health
-- Total tokens per invocation
-- Recent Trace Summary
-- Tool Usage Over Time
-- Tool Latency Over Time
-- Tool Performance Summary
-- Cost Over Time
-- Cost Rate of Change
-- Cumulative Cost
-- Cost per Token Over Time
-- Cost by Model
-- Cost by Provider and Model
-- Total cost over time
-- Highest Cost Invocations
-- Invocation Cost Distribution
-- Cost vs Tokens by Invocation
-- Cost by Service
-- Cost by Agent Name
-- Cost by Service and Model
-- Cost by Agent and Model
-- Total tool calls
-- Total cost
-- Total input tokens
-- Average cost per agent run
-- P95 Invocation Latency by Agent
-- Invocation Latency by Service
-- P95 Input/Output Tokens Over Time
-- P95 Chat Cost Over Time
-- Active Services
-- Cache Hit Rate
-- Avg Input Tokens / LLM Call
-- Avg Output Tokens / LLM Call
-- High Retry Loop Runs
-- Cost by Service
-- Cost Usage / Minute
-- Token Usage / Minute
-- Tokens by Type
-- Tokens by Model
-- Cost per Agent Run
-- Cost per Service
-- Cost per Dataset Tag
-- Cost per Model
-- Token Component Share
-- Component Cost Split
-- Executor Tokens
-- Planner Tokens
-- Judges/Evals Tokens
-- Tool Overhead Tokens
-- Output Tokens
-- Service Rollups
-- Cost per Query
-- Token Explorer
-- High Retry Loop Details
-- Service Cost Rollup
-- Cached Tokens
+## Import
+
+Download the JSON file and use Parseable's dashboard import flow. During import or after creation, map the dataset variables to the datasets receiving this telemetry.

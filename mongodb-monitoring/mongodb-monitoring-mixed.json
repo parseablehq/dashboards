@@ -104,7 +104,7 @@
       "tile_id": "01KXRH8JB65683NGQ1VF94Z61V",
       "title": "MongoDB Instances",
       "chartQuery": [
-        "count(count(mongodb_connection_count) by (server_address))"
+        "sum(mongodb_up)"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "query-value",
@@ -170,7 +170,7 @@
       "tile_id": "01KXRH8JB6HQTKJDRYTD69A16S",
       "title": "Databases",
       "chartQuery": [
-        "max(mongodb_database_count)"
+        "count(count(mongodb_dbstats_collections) by (database))"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "query-value",
@@ -236,7 +236,7 @@
       "tile_id": "01KXRH8JB6648H4D8H7R165HTM",
       "title": "Current Connections",
       "chartQuery": [
-        "sum(mongodb_connection_count{type=\"current\"})"
+        "sum(mongodb_connections{state=\"current\"})"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "query-value",
@@ -302,7 +302,7 @@
       "tile_id": "01KXRH8JB640ST7VT4FEH1WNSQ",
       "title": "Active Connections",
       "chartQuery": [
-        "sum(mongodb_connection_count{type=\"active\"})"
+        "sum(mongodb_connections{state=\"active\"})"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "query-value",
@@ -368,7 +368,7 @@
       "tile_id": "01KXRH8JB6SGTAZMZDARBMWY8Q",
       "title": "Ops / Sec",
       "chartQuery": [
-        "sum(rate(mongodb_operation_count[5m]))"
+        "sum(rate(mongodb_ss_opcounters[5m]))"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "query-value",
@@ -434,7 +434,7 @@
       "tile_id": "01KXRH8JB62EZ9QSAKZ1H4PEZW",
       "title": "Network Requests / Sec",
       "chartQuery": [
-        "sum(rate(mongodb_network_request_count[5m]))"
+        "sum(rate(mongodb_ss_network_numRequests[5m]))"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "query-value",
@@ -500,7 +500,7 @@
       "tile_id": "01KXRH8JB6C757GSWKC7QM1ADN",
       "title": "Memory Usage",
       "chartQuery": [
-        "sum(mongodb_memory_usage{type=\"resident\"})"
+        "sum(mongodb_ss_mem_resident) * 1024 * 1024"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "query-value",
@@ -632,7 +632,7 @@
       "tile_id": "01KXRH8JB64P5JPF2S238YHK9N",
       "title": "Connections by Type",
       "chartQuery": [
-        "sum(mongodb_connection_count) by (type)"
+        "sum(mongodb_connections) by (state)"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "donut",
@@ -698,7 +698,7 @@
       "tile_id": "01KXRH8JB63TDE0QR8MW27JPDE",
       "title": "Operations by Type",
       "chartQuery": [
-        "sum(rate(mongodb_operation_count[5m])) by (operation)"
+        "sum(rate(mongodb_ss_opcounters[5m])) by (legacy_op_type)"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "pie",
@@ -764,7 +764,7 @@
       "tile_id": "01KXRH8JB6MC6R9DSM0J0MET7B",
       "title": "Operations Over Time",
       "chartQuery": [
-        "sum(rate(mongodb_operation_count[5m])) by (operation)"
+        "sum(rate(mongodb_ss_opcounters[5m])) by (legacy_op_type)"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "timeseries",
@@ -830,7 +830,7 @@
       "tile_id": "01KXRH8JB68HNK6EY1JY90RCHJ",
       "title": "Document Operations",
       "chartQuery": [
-        "sum(rate(mongodb_document_operation_count[5m])) by (operation,database)"
+        "sum(rate(mongodb_mongod_metrics_document_total[5m])) by (state)"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "timeseries",
@@ -896,7 +896,7 @@
       "tile_id": "01KXRH8JB66KF1S6BH38HHY1S5",
       "title": "Operation Time",
       "chartQuery": [
-        "sum(rate(mongodb_operation_time[5m])) by (operation)"
+        "sum(rate(mongodb_mongod_op_latencies_latency_total[5m])) by (type)"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "timeseries",
@@ -962,8 +962,8 @@
       "tile_id": "01KXRH8JB633S5PAYCXFMQ6EFT",
       "title": "Network IO",
       "chartQuery": [
-        "sum(rate(mongodb_network_io_receive[5m]))",
-        "sum(rate(mongodb_network_io_transmit[5m]))"
+        "sum(rate(mongodb_ss_network_bytesIn[5m]))",
+        "sum(rate(mongodb_ss_network_bytesOut[5m]))"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "timeseries",
@@ -1095,7 +1095,7 @@
     {
       "tile_id": "01KXRH8JB6K2KB6VS5X7S8VDK8",
       "title": "Data Size by Database",
-      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb.data.size' GROUP BY database_name ORDER BY bytes DESC",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb_dbstats_dataSize' GROUP BY database_name ORDER BY bytes DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1136,7 +1136,7 @@
           },
           "y": {
             "field": "bytes",
-            "title": "Rows",
+            "title": "Bytes",
             "display": true
           },
           "groupBy": {
@@ -1158,7 +1158,7 @@
     {
       "tile_id": "01KXRH8JB6YJWYJQFKVX836PSM",
       "title": "Storage Size by Database",
-      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb.storage.size' GROUP BY database_name ORDER BY bytes DESC",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb_dbstats_storageSize' GROUP BY database_name ORDER BY bytes DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1199,7 +1199,7 @@
           },
           "y": {
             "field": "bytes",
-            "title": "Rows",
+            "title": "Bytes",
             "display": true
           },
           "groupBy": {
@@ -1222,7 +1222,7 @@
       "tile_id": "01KXRH8JB6BPGD7XNSCW6ANYVF",
       "title": "Collections by Database",
       "chartQuery": [
-        "max(mongodb_collection_count) by (database)"
+        "max(mongodb_dbstats_collections) by (database)"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "donut",
@@ -1287,7 +1287,7 @@
     {
       "tile_id": "01KXRH8JB6ZF9F7ETYCYQEJ9DF",
       "title": "Index Size by Database",
-      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb.index.size' GROUP BY database_name ORDER BY bytes DESC",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS bytes FROM $metrics_dataset WHERE metric_name='mongodb_dbstats_indexSize' GROUP BY database_name ORDER BY bytes DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1328,7 +1328,7 @@
           },
           "y": {
             "field": "bytes",
-            "title": "Rows",
+            "title": "Bytes",
             "display": true
           },
           "groupBy": {
@@ -1350,7 +1350,7 @@
     {
       "tile_id": "01KXRH8JB65FAPZDJX4TJ8QTVV",
       "title": "Index Count by Database",
-      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS indexes FROM $metrics_dataset WHERE metric_name='mongodb.index.count' GROUP BY database_name ORDER BY indexes DESC",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS indexes FROM $metrics_dataset WHERE metric_name='mongodb_dbstats_indexes' GROUP BY database_name ORDER BY indexes DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1391,7 +1391,7 @@
           },
           "y": {
             "field": "indexes",
-            "title": "Rows",
+            "title": "Indexes",
             "display": true
           },
           "groupBy": {
@@ -1413,7 +1413,7 @@
     {
       "tile_id": "01KXRH8JB6WR8Y0W3J4QE65SRM",
       "title": "Object Count by Database",
-      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS objects FROM $metrics_dataset WHERE metric_name='mongodb.object.count' GROUP BY database_name ORDER BY objects DESC",
+      "chartQuery": "SELECT COALESCE(database,'unknown') AS database_name, MAX(data_point_value) AS objects FROM $metrics_dataset WHERE metric_name='mongodb_dbstats_objects' GROUP BY database_name ORDER BY objects DESC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1454,7 +1454,7 @@
           },
           "y": {
             "field": "objects",
-            "title": "Rows",
+            "title": "Objects",
             "display": true
           },
           "groupBy": {
@@ -1674,7 +1674,8 @@
       "tile_id": "01KXRH8JB6GRCWTSB3H1BTN9GQ",
       "title": "Cache Hit / Miss",
       "chartQuery": [
-        "sum(rate(mongodb_cache_operations[5m])) by (type)"
+        "sum(rate(mongodb_ss_wt_block_cache_number_of_hits[5m]))",
+        "sum(rate(mongodb_ss_wt_block_cache_number_of_misses[5m]))"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "donut",
@@ -1733,6 +1734,7 @@
         }
       },
       "promqlQueryType": [
+        "range",
         "range"
       ]
     },
@@ -1808,7 +1810,7 @@
       "tile_id": "01KXRH8JB6K9G7ET16FF4SG2C5",
       "title": "Global Lock Time",
       "chartQuery": [
-        "sum(rate(mongodb_global_lock_time[5m]))"
+        "sum(rate(mongodb_ss_globalLock_totalTime[5m]))"
       ],
       "dbName": "$metrics_dataset",
       "chartType": "timeseries",
@@ -2332,10 +2334,10 @@
       "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
       "layout": {
         "i": "01KXRH8JB7VN1QN7AEM9MBN8FR",
-        "x": 6,
-        "y": 0,
+        "x": 0,
+        "y": 5,
         "w": 6,
-        "h": 8,
+        "h": 9,
         "moved": false,
         "static": false
       },
@@ -2395,10 +2397,10 @@
       "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
       "layout": {
         "i": "01KXRH8JB7CTY04X7YB1R6S4MP",
-        "x": 0,
-        "y": 8,
-        "w": 4,
-        "h": 7,
+        "x": 6,
+        "y": 0,
+        "w": 2,
+        "h": 5,
         "moved": false,
         "static": false
       },
@@ -2427,11 +2429,13 @@
           },
           "y": {
             "field": "severity",
-            "title": "Severity",
+            "title": "severity",
             "display": true
           },
           "groupBy": {
-            "field": []
+            "field": [
+              "severity"
+            ]
           }
         },
         "advanced": {
@@ -2458,10 +2462,10 @@
       "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
       "layout": {
         "i": "01KXRH8JB76XAFR8KBS31V6GWN",
-        "x": 4,
-        "y": 8,
+        "x": 8,
+        "y": 0,
         "w": 4,
-        "h": 7,
+        "h": 5,
         "moved": false,
         "static": false
       },
@@ -2490,11 +2494,13 @@
           },
           "y": {
             "field": "component",
-            "title": "Component",
+            "title": "component",
             "display": true
           },
           "groupBy": {
-            "field": []
+            "field": [
+              "component"
+            ]
           }
         },
         "advanced": {
@@ -2521,10 +2527,10 @@
       "sectionId": "01KXRH8JB6HZEQATYRTB0050GV",
       "layout": {
         "i": "01KXRH8JB7D47F5EHR0573C4C3",
-        "x": 8,
-        "y": 8,
-        "w": 4,
-        "h": 7,
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 9,
         "moved": false,
         "static": false
       },
@@ -2931,11 +2937,13 @@
           },
           "y": {
             "field": "operation",
-            "title": "Operation",
+            "title": "operation",
             "display": true
           },
           "groupBy": {
-            "field": []
+            "field": [
+              "operation"
+            ]
           }
         },
         "advanced": {

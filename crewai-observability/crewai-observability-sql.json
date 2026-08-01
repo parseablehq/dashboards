@@ -1,0 +1,2462 @@
+{
+  "tags": [
+    "crewai",
+    "agents",
+    "openinference",
+    "opentelemetry",
+    "traces",
+    "observability"
+  ],
+  "variables": [
+    {
+      "name": "trace_dataset",
+      "label": "Trace Dataset",
+      "type": "dataset",
+      "defaultValue": "crewai-traces"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "title": "Overview",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KYXZ7VVSE0CVQFRR6GY8RDB9",
+      "title": "Runs & Performance",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KYXZ7VVSBMQATYAJCZSH8MCE",
+      "title": "Agents & Tasks",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "title": "LLM & Tokens",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
+      "title": "Tools",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
+      "title": "Errors & Trace Detail",
+      "isExpanded": true
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KYXZ7VVSX9AWV2S3QEC61WAZ",
+      "title": "Total Traces",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COUNT(DISTINCT span_trace_id) AS traces FROM $trace_dataset",
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "layout": {
+        "i": "01KYXZ7VVSX9AWV2S3QEC61WAZ",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "traces",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSX7HYFMB814ESJTVB",
+      "title": "Crew Runs",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COUNT(*) AS crew_runs FROM $trace_dataset WHERE \"openinference.span.kind\"='CHAIN' AND crew_id IS NOT NULL AND span_name LIKE '%.kickoff'",
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "layout": {
+        "i": "01KYXZ7VVSX7HYFMB814ESJTVB",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "crew_runs",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSGRAT3TMXWFVKYY10",
+      "title": "Crew Success Rate",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE span_status_code=1) / NULLIF(COUNT(*),0), 2) AS success_rate_pct FROM $trace_dataset WHERE \"openinference.span.kind\"='CHAIN' AND crew_id IS NOT NULL AND span_name LIKE '%.kickoff'",
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "layout": {
+        "i": "01KYXZ7VVSGRAT3TMXWFVKYY10",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "success_rate_pct",
+            "title": "%",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSG1CBNP2GEG13NV9C",
+      "title": "Error Spans",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COUNT(*) AS error_spans FROM $trace_dataset WHERE span_status_code=2",
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "layout": {
+        "i": "01KYXZ7VVSG1CBNP2GEG13NV9C",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_spans",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSGPHAY9DEAAJ541T4",
+      "title": "Average Crew Duration",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns)/1000000000.0,2) AS avg_duration_s FROM $trace_dataset WHERE \"openinference.span.kind\"='CHAIN' AND crew_id IS NOT NULL AND span_name LIKE '%.kickoff'",
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "layout": {
+        "i": "01KYXZ7VVSGPHAY9DEAAJ541T4",
+        "x": 0,
+        "y": 4,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_duration_s",
+            "title": "s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSR6AJNV17MYWFFDR8",
+      "title": "P95 Crew Duration",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),2) AS p95_duration_s FROM $trace_dataset WHERE \"openinference.span.kind\"='CHAIN' AND crew_id IS NOT NULL AND span_name LIKE '%.kickoff'",
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "layout": {
+        "i": "01KYXZ7VVSR6AJNV17MYWFFDR8",
+        "x": 3,
+        "y": 4,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_duration_s",
+            "title": "s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSQWCM2X20HGYT379Y",
+      "title": "LLM Calls",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COUNT(*) AS llm_calls FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM'",
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "layout": {
+        "i": "01KYXZ7VVSQWCM2X20HGYT379Y",
+        "x": 6,
+        "y": 4,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "llm_calls",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSM10N9BGBPYWZJCA4",
+      "title": "Tool Calls",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COUNT(*) AS tool_calls FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL'",
+      "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
+      "layout": {
+        "i": "01KYXZ7VVSM10N9BGBPYWZJCA4",
+        "x": 9,
+        "y": 4,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "tool_calls",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSRXVQXQ6FFMQ816QV",
+      "title": "Scenario Runs Over Time",
+      "tileType": "code",
+      "chartType": "timeseries",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"load_test.scenario\",'manual') AS scenario, COUNT(*) AS runs FROM $trace_dataset WHERE span_name='load_test.scenario' GROUP BY time_bin,scenario ORDER BY time_bin,scenario",
+      "sectionId": "01KYXZ7VVSE0CVQFRR6GY8RDB9",
+      "layout": {
+        "i": "01KYXZ7VVSRXVQXQ6FFMQ816QV",
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "runs",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "scenario"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSQ2PVZPZCGS920BWG",
+      "title": "Scenario Mix",
+      "tileType": "code",
+      "chartType": "donut",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COALESCE(\"load_test.scenario\",'manual') AS scenario, COUNT(*) AS runs FROM $trace_dataset WHERE span_name='load_test.scenario' GROUP BY scenario ORDER BY runs DESC",
+      "sectionId": "01KYXZ7VVSE0CVQFRR6GY8RDB9",
+      "layout": {
+        "i": "01KYXZ7VVSQ2PVZPZCGS920BWG",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "runs",
+            "title": "runs",
+            "display": true
+          },
+          "y": {
+            "field": "scenario",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS1C6ARSF1BWVC3VEG",
+      "title": "Latency by Scenario",
+      "tileType": "code",
+      "chartType": "bar",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COALESCE(\"load_test.scenario\",'manual') AS scenario, ROUND(AVG(span_duration_ns)/1000000000.0,2) AS avg_s, ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),2) AS p95_s FROM $trace_dataset WHERE span_name='load_test.scenario' GROUP BY scenario ORDER BY avg_s DESC",
+      "sectionId": "01KYXZ7VVSE0CVQFRR6GY8RDB9",
+      "layout": {
+        "i": "01KYXZ7VVS1C6ARSF1BWVC3VEG",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "scenario",
+            "title": "scenario",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_s",
+              "p95_s"
+            ],
+            "title": "s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSEV1B2DS6RHNG250P",
+      "title": "Recent Scenario Runs",
+      "tileType": "code",
+      "chartType": "table",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT p_timestamp, \"load_test.run_id\" AS run_id, \"load_test.scenario\" AS scenario, \"load_test.outcome\" AS outcome, ROUND(span_duration_ns/1000000000.0,2) AS duration_s, span_trace_id FROM $trace_dataset WHERE span_name='load_test.scenario' ORDER BY p_timestamp DESC LIMIT 50",
+      "sectionId": "01KYXZ7VVSE0CVQFRR6GY8RDB9",
+      "layout": {
+        "i": "01KYXZ7VVSEV1B2DS6RHNG250P",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS1638MBR75K6Q4H1N",
+      "title": "Agent Executions",
+      "tileType": "code",
+      "chartType": "bar",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT span_name AS agent, COUNT(*) AS runs FROM $trace_dataset WHERE \"openinference.span.kind\"='AGENT' GROUP BY agent ORDER BY runs DESC",
+      "sectionId": "01KYXZ7VVSBMQATYAJCZSH8MCE",
+      "layout": {
+        "i": "01KYXZ7VVS1638MBR75K6Q4H1N",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "agent",
+            "title": "agent",
+            "display": true
+          },
+          "y": {
+            "field": "runs",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSYBV6KBG3H1RFE83A",
+      "title": "Agent Status",
+      "tileType": "code",
+      "chartType": "donut",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT CASE span_status_code WHEN 1 THEN 'OK' WHEN 2 THEN 'ERROR' ELSE 'UNSET' END AS status, COUNT(*) AS spans FROM $trace_dataset WHERE \"openinference.span.kind\"='AGENT' GROUP BY status ORDER BY spans DESC",
+      "sectionId": "01KYXZ7VVSBMQATYAJCZSH8MCE",
+      "layout": {
+        "i": "01KYXZ7VVSYBV6KBG3H1RFE83A",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "spans",
+            "title": "spans",
+            "display": true
+          },
+          "y": {
+            "field": "status",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSJ0T71E54Y1HH5XQT",
+      "title": "Agent Error Rate",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(100.0*COUNT(*) FILTER (WHERE span_status_code=2)/NULLIF(COUNT(*),0),2) AS error_rate_pct FROM $trace_dataset WHERE \"openinference.span.kind\"='AGENT'",
+      "sectionId": "01KYXZ7VVSBMQATYAJCZSH8MCE",
+      "layout": {
+        "i": "01KYXZ7VVSJ0T71E54Y1HH5XQT",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_rate_pct",
+            "title": "%",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSAYXM12XCP9MQ78C8",
+      "title": "P95 Agent Duration",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),2) AS p95_agent_s FROM $trace_dataset WHERE \"openinference.span.kind\"='AGENT'",
+      "sectionId": "01KYXZ7VVSBMQATYAJCZSH8MCE",
+      "layout": {
+        "i": "01KYXZ7VVSAYXM12XCP9MQ78C8",
+        "x": 9,
+        "y": 4,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_agent_s",
+            "title": "s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS2BMDW74ATDWZ8N30",
+      "title": "Agent Performance",
+      "tileType": "code",
+      "chartType": "table",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT span_name AS agent, COUNT(*) AS runs, COUNT(*) FILTER (WHERE span_status_code=2) AS errors, ROUND(AVG(span_duration_ns)/1000000000.0,2) AS avg_s, ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),2) AS p95_s FROM $trace_dataset WHERE \"openinference.span.kind\"='AGENT' GROUP BY agent ORDER BY p95_s DESC",
+      "sectionId": "01KYXZ7VVSBMQATYAJCZSH8MCE",
+      "layout": {
+        "i": "01KYXZ7VVS2BMDW74ATDWZ8N30",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "agent",
+            "title": "agent",
+            "display": true
+          },
+          "y": {
+            "field": "p95_s",
+            "title": "s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSNTHX43YQRSX72A9R",
+      "title": "Input Tokens",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT SUM(CAST(\"llm.token_count.prompt\" AS BIGINT)) AS input_tokens FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM'",
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "layout": {
+        "i": "01KYXZ7VVSNTHX43YQRSX72A9R",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "input_tokens",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSRSDYHKWA9PRK7F5R",
+      "title": "Output Tokens",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT SUM(CAST(\"llm.token_count.completion\" AS BIGINT)) AS output_tokens FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM'",
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "layout": {
+        "i": "01KYXZ7VVSRSDYHKWA9PRK7F5R",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "output_tokens",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSVEMSYYMG6ZG333A1",
+      "title": "Total Tokens",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT SUM(CAST(\"llm.token_count.total\" AS BIGINT)) AS total_tokens FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM'",
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "layout": {
+        "i": "01KYXZ7VVSVEMSYYMG6ZG333A1",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSAF55GC057BNEB32E",
+      "title": "Average Tokens / Call",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(AVG(CAST(\"llm.token_count.total\" AS DOUBLE)),2) AS avg_tokens FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM'",
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "layout": {
+        "i": "01KYXZ7VVSAF55GC057BNEB32E",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_tokens",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS2WBYQPW8BXT63APJ",
+      "title": "Token Usage Over Time",
+      "tileType": "code",
+      "chartType": "timeseries",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, SUM(CAST(\"llm.token_count.prompt\" AS BIGINT)) AS input_tokens, SUM(CAST(\"llm.token_count.completion\" AS BIGINT)) AS output_tokens FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM' GROUP BY time_bin ORDER BY time_bin",
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "layout": {
+        "i": "01KYXZ7VVS2WBYQPW8BXT63APJ",
+        "x": 0,
+        "y": 4,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "input_tokens",
+              "output_tokens"
+            ],
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSE01YM60D8BE0HQWM",
+      "title": "Model Usage",
+      "tileType": "code",
+      "chartType": "donut",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COALESCE(\"llm.model_name\",'unknown') AS model, COUNT(*) AS calls FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM' GROUP BY model ORDER BY calls DESC",
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "layout": {
+        "i": "01KYXZ7VVSE01YM60D8BE0HQWM",
+        "x": 8,
+        "y": 4,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "calls",
+            "title": "calls",
+            "display": true
+          },
+          "y": {
+            "field": "model",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS18KQ6YYAVPSCWPM8",
+      "title": "LLM Latency Over Time",
+      "tileType": "code",
+      "chartType": "timeseries",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(span_duration_ns)/1000000000.0,2) AS avg_s, ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),2) AS p95_s FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM' GROUP BY time_bin ORDER BY time_bin",
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "layout": {
+        "i": "01KYXZ7VVS18KQ6YYAVPSCWPM8",
+        "x": 0,
+        "y": 12,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_s",
+              "p95_s"
+            ],
+            "title": "s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSJGVX3ABAEEG2AYZJ",
+      "title": "LLM Outcomes",
+      "tileType": "code",
+      "chartType": "donut",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT CASE span_status_code WHEN 1 THEN 'OK' WHEN 2 THEN 'ERROR' ELSE 'UNSET' END AS status, COUNT(*) AS calls FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM' GROUP BY status ORDER BY calls DESC",
+      "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
+      "layout": {
+        "i": "01KYXZ7VVSJGVX3ABAEEG2AYZJ",
+        "x": 8,
+        "y": 12,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "calls",
+            "title": "calls",
+            "display": true
+          },
+          "y": {
+            "field": "status",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSRRWA7M69MQ4RHC3H",
+      "title": "Tool Error Rate",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(100.0*COUNT(*) FILTER (WHERE span_status_code=2)/NULLIF(COUNT(*),0),2) AS error_rate_pct FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL'",
+      "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
+      "layout": {
+        "i": "01KYXZ7VVSRRWA7M69MQ4RHC3H",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_rate_pct",
+            "title": "%",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSP0XR2FGGQ4E627G7",
+      "title": "Average Tool Duration",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns)/1000000.0,2) AS avg_duration_ms FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL'",
+      "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
+      "layout": {
+        "i": "01KYXZ7VVSP0XR2FGGQ4E627G7",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_duration_ms",
+            "title": "ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS0M4NHXYQXARTKEG3",
+      "title": "P95 Tool Duration",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(span_duration_ns/1000000.0,0.95),2) AS p95_duration_ms FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL'",
+      "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
+      "layout": {
+        "i": "01KYXZ7VVS0M4NHXYQXARTKEG3",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_duration_ms",
+            "title": "ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSM7ABS84JCA5490K4",
+      "title": "Failed Tool Calls",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COUNT(*) AS failures FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL' AND span_status_code=2",
+      "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
+      "layout": {
+        "i": "01KYXZ7VVSM7ABS84JCA5490K4",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "failures",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSS4ZQYV01862MM5H1",
+      "title": "Tool Calls by Name",
+      "tileType": "code",
+      "chartType": "bar",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COALESCE(\"tool.name\",\"gen_ai.tool.name\",span_name) AS tool, COUNT(*) AS calls FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL' GROUP BY tool ORDER BY calls DESC",
+      "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
+      "layout": {
+        "i": "01KYXZ7VVSS4ZQYV01862MM5H1",
+        "x": 0,
+        "y": 4,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "tool",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS4MZ61CK40T4K0WWG",
+      "title": "Tool Performance",
+      "tileType": "code",
+      "chartType": "table",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COALESCE(\"tool.name\",\"gen_ai.tool.name\",span_name) AS tool, COUNT(*) AS calls, COUNT(*) FILTER (WHERE span_status_code=2) AS failures, ROUND(AVG(span_duration_ns)/1000000.0,2) AS avg_ms, ROUND(approx_percentile_cont(span_duration_ns/1000000.0,0.95),2) AS p95_ms FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL' GROUP BY tool ORDER BY calls DESC",
+      "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
+      "layout": {
+        "i": "01KYXZ7VVS4MZ61CK40T4K0WWG",
+        "x": 6,
+        "y": 4,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "tool",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSEWTY2GHNBDPBKHF4",
+      "title": "Tool Calls Over Time",
+      "tileType": "code",
+      "chartType": "timeseries",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE span_status_code<>2) AS successful, COUNT(*) FILTER (WHERE span_status_code=2) AS failed FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL' GROUP BY time_bin ORDER BY time_bin",
+      "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
+      "layout": {
+        "i": "01KYXZ7VVSEWTY2GHNBDPBKHF4",
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "successful",
+              "failed"
+            ],
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSSMJ07F765E70BSB0",
+      "title": "Span Error Rate",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT ROUND(100.0*COUNT(*) FILTER (WHERE span_status_code=2)/NULLIF(COUNT(*),0),2) AS error_rate_pct FROM $trace_dataset",
+      "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
+      "layout": {
+        "i": "01KYXZ7VVSSMJ07F765E70BSB0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_rate_pct",
+            "title": "%",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSBV1BE91WMS5551TS",
+      "title": "Failed Traces",
+      "tileType": "code",
+      "chartType": "query-value",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COUNT(DISTINCT span_trace_id) AS failed_traces FROM $trace_dataset WHERE span_status_code=2",
+      "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
+      "layout": {
+        "i": "01KYXZ7VVSBV1BE91WMS5551TS",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 4,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "failed_traces",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSRC1VMM5EQ4ETR1AE",
+      "title": "Errors by Span Kind",
+      "tileType": "code",
+      "chartType": "donut",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT COALESCE(\"openinference.span.kind\",'ROOT') AS kind, COUNT(*) AS errors FROM $trace_dataset WHERE span_status_code=2 GROUP BY kind ORDER BY errors DESC",
+      "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
+      "layout": {
+        "i": "01KYXZ7VVSRC1VMM5EQ4ETR1AE",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "donut",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "errors",
+            "title": "errors",
+            "display": true
+          },
+          "y": {
+            "field": "kind",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVSX7RHZHA3M0EF7BND",
+      "title": "Errors Over Time",
+      "tileType": "code",
+      "chartType": "timeseries",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"openinference.span.kind\",'ROOT') AS kind, COUNT(*) AS errors FROM $trace_dataset WHERE span_status_code=2 GROUP BY time_bin,kind ORDER BY time_bin,kind",
+      "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
+      "layout": {
+        "i": "01KYXZ7VVSX7RHZHA3M0EF7BND",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "kind"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS1FG5NKNR6TQ167J1",
+      "title": "Recent Error Spans",
+      "tileType": "code",
+      "chartType": "table",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT p_timestamp, COALESCE(\"openinference.span.kind\",'ROOT') AS kind, span_name, span_status_message, ROUND(span_duration_ns/1000000.0,2) AS duration_ms, span_trace_id, span_span_id FROM $trace_dataset WHERE span_status_code=2 ORDER BY p_timestamp DESC LIMIT 50",
+      "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
+      "layout": {
+        "i": "01KYXZ7VVS1FG5NKNR6TQ167J1",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01KYXZ7VVS6WJMJDXZT7N9Q8E4",
+      "title": "Trace Summary",
+      "tileType": "code",
+      "chartType": "table",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartQuery": "SELECT span_trace_id, MIN(p_timestamp) AS started_at, COUNT(*) AS spans, COUNT(*) FILTER (WHERE \"openinference.span.kind\"='AGENT') AS agent_spans, COUNT(*) FILTER (WHERE \"openinference.span.kind\"='LLM') AS llm_calls, COUNT(*) FILTER (WHERE \"openinference.span.kind\"='TOOL') AS tool_calls, COUNT(*) FILTER (WHERE span_status_code=2) AS errors, ROUND(MAX(span_duration_ns)/1000000000.0,2) AS longest_span_s FROM $trace_dataset GROUP BY span_trace_id ORDER BY started_at DESC LIMIT 50",
+      "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
+      "layout": {
+        "i": "01KYXZ7VVS6WJMJDXZT7N9Q8E4",
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "started_at",
+            "title": "started_at",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

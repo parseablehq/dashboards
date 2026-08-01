@@ -8,6 +8,7 @@ Monitor LiteLLM proxy traffic, reliability, latency, token usage, spend, model b
 - **Traffic & Reliability:** panels include Proxy Request Rate by Model & Status, Request vs Failure Rate, Failures by Exception, Deployment State, Trace Errors Over Time, and Request Rate by Route.
 - **Latency:** panels include LLM API Latency Percentiles, Total Request Latency Percentiles, Time to First Token Percentiles, Queue Time Percentiles, Trace Request Latency, and Latency by Model.
 - **Tokens & Cost:** panels include Input Tokens, Output Tokens, Avg Cost per LLM Call, Avg Tokens per LLM Call, Token Rate by Model, and Spend Rate by Model, plus related signals.
+- **Cost & FinOps:** panels include Estimated Cost, Recorded Cost, Average Cost per Request, Pricing Coverage, cost trends, model efficiency, unpriced models, and the most expensive requests.
 - **Models & Usage:** panels include Model Distribution, Provider Distribution, Finish Reasons, Model Performance & Cost, Service & SDK Inventory, and Streaming vs Non-streaming.
 - **Trace Explorer:** panels include Recent Request Traces, Recent LLM Calls, Recent Errors, Slowest Requests, and Recent Span Timeline Data.
 
@@ -28,7 +29,7 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 ## Dashboard contents
 
-- **42 tiles** across **6 collapsible sections**
+- **52 tiles** across **7 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
 - Screenshot assets directory: [`assets/`](assets/)
 - Importable template: [`litellm-proxy-observability-mixed.json`](litellm-proxy-observability-mixed.json)

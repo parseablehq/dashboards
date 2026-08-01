@@ -8,6 +8,7 @@ Monitor LiteLLM SDK calls, reliability, latency, TTFT, token usage, spend, model
 - **Traffic & Reliability:** panels include Calls, Successes & Errors, Errors by Type, HTTP Status Codes, Scenario Outcomes, and Provider Reliability.
 - **Performance & Latency:** panels include Latency Percentiles, SDK vs Provider Latency (Native Metrics), Streaming TTFT & Time per Output Token, Latency by Model, and Slowest LLM Calls.
 - **Tokens & Cost:** panels include Token Consumption, Input vs Output Tokens, Spend by Model Over Time, and Model Economics.
+- **Cost & FinOps:** panels include Estimated Cost, Recorded Cost, Average Cost per Request, Pricing Coverage, cost trends, model efficiency, unpriced models, and the most expensive requests.
 - **Models & Usage:** panels include Model Distribution, Provider Distribution, Streaming Mix, Scenario Mix, and Service & SDK Inventory.
 - **Logs:** panels include Logs by Severity, SDK Log Events, Recent SDK Request/Response Logs, Recent Error Logs, and Logs with Trace Context.
 - **Trace Explorer:** panels include Recent LLM Calls, Error Traces, Scenario Trace Roots, and Recent Span Timeline Data.
@@ -32,7 +33,7 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 ## Dashboard contents
 
-- **40 tiles** across **8 collapsible sections**
+- **50 tiles** across **9 collapsible sections**
 - SQL panels over Parseable datasets
 - Screenshot assets directory: [`assets/`](assets/)
 - Importable template: [`litellm-sdk-observability-sql.json`](litellm-sdk-observability-sql.json)

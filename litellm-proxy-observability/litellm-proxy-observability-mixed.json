@@ -44,6 +44,11 @@
       "isExpanded": false
     },
     {
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y",
+      "title": "Cost & FinOps",
+      "isExpanded": false
+    },
+    {
       "sectionId": "3MV2EHV4TEBQ96PWJHEAWMQARC",
       "title": "Models & Usage",
       "isExpanded": false
@@ -250,7 +255,7 @@
     {
       "tile_id": "0FSMPSYFKVW8Y9MN1NE13T99C0",
       "title": "Total Spend",
-      "chartQuery": "SELECT ROUND(COALESCE(SUM(\"litellm.cost.total\"), 0), 8) AS spend_usd\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE))), 0), 8) AS spend_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL",
       "dbName": [
         "$trace_dataset"
       ],
@@ -269,7 +274,7 @@
           },
           "legendPosition": "bottom",
           "label": false,
-          "unit": "USD",
+          "unit": "$",
           "precision": 8,
           "humanize": true
         },
@@ -1944,7 +1949,7 @@
           },
           "legendPosition": "bottom",
           "label": false,
-          "unit": "USD",
+          "unit": "$",
           "precision": 8,
           "humanize": true
         },
@@ -2834,6 +2839,652 @@
         "static": false
       },
       "sectionId": "P8833SHKAWNDKMNN3FRXF0TFNT"
+    },
+    {
+      "tile_id": "58A473VEF6PCWVMPP08D2THD8V",
+      "title": "Estimated Cost (agent_cost)",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 0), 6) AS estimated_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "58A473VEF6PCWVMPP08D2THD8V",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "0DRNW2ZC2CWAM8B8KR5BDQZPW0",
+      "title": "Recorded Cost",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(CAST(\"litellm.cost.total\" AS DOUBLE)), 0), 6) AS recorded_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "recorded_cost_usd",
+            "title": "recorded_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0DRNW2ZC2CWAM8B8KR5BDQZPW0",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "6AB1XGFPQDBEWQD7YTKBBDKJCM",
+      "title": "Average Cost per Request",
+      "chartQuery": "SELECT ROUND(AVG(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE))), 6) AS avg_cost_per_request_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_cost_per_request_usd",
+            "title": "avg_cost_per_request_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6AB1XGFPQDBEWQD7YTKBBDKJCM",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "0KN4K23MCYPWHQ2TC2KK2TSRB4",
+      "title": "Pricing Coverage",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp) IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS pricing_coverage_pct FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "pricing_coverage_pct",
+            "title": "pricing_coverage_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0KN4K23MCYPWHQ2TC2KK2TSRB4",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "73WWTZC8HNEWNVN2F5PS7NEZW2",
+      "title": "Estimated Cost Over Time",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "estimated_cost_usd"
+            ],
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "73WWTZC8HNEWNVN2F5PS7NEZW2",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "6R3CWCJ2VRYRMG9GQY9FBGJASS",
+      "title": "Estimated vs Recorded Cost",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"litellm.cost.total\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(SUM(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE))), 6) AS resolved_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "estimated_cost_usd",
+              "recorded_cost_usd",
+              "resolved_cost_usd"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6R3CWCJ2VRYRMG9GQY9FBGJASS",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "23AYB59KQZES8WR0H36729MD4T",
+      "title": "Estimated Cost by Model",
+      "chartQuery": "SELECT \"gen_ai.request.model\" AS model, COUNT(*) AS requests, COUNT(*) FILTER (WHERE agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp) IS NOT NULL) AS priced_requests, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"litellm.cost.total\" AS DOUBLE)), 6) AS recorded_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL GROUP BY \"gen_ai.request.model\" ORDER BY estimated_cost_usd DESC NULLS LAST",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "23AYB59KQZES8WR0H36729MD4T",
+        "x": 0,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "0XMWVV9RDTA0MFS56FHKT2Z61J",
+      "title": "Model Cost Efficiency",
+      "chartQuery": "SELECT \"gen_ai.provider.name\" AS provider, \"gen_ai.request.model\" AS model, COUNT(*) AS requests, COUNT(*) FILTER (WHERE agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp) IS NOT NULL) AS priced_requests, SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE)) AS input_tokens, SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE)) AS output_tokens, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"litellm.cost.total\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(AVG(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE))), 6) AS avg_cost_per_request_usd, ROUND(1000.0 * SUM(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE))) / NULLIF(SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE) + CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE)), 0), 6) AS cost_per_1k_tokens_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL GROUP BY \"gen_ai.provider.name\", \"gen_ai.request.model\" ORDER BY estimated_cost_usd DESC NULLS LAST",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0XMWVV9RDTA0MFS56FHKT2Z61J",
+        "x": 6,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "3VBZTNBZ7EPKCHY346C94YABH0",
+      "title": "Unpriced Models",
+      "chartQuery": "SELECT \"gen_ai.provider.name\" AS provider, \"gen_ai.request.model\" AS model, COUNT(*) AS unpriced_requests, SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE)) AS input_tokens, SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE)) AS output_tokens, ROUND(SUM(CAST(\"litellm.cost.total\" AS DOUBLE)), 6) AS recorded_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL AND agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp) IS NULL GROUP BY \"gen_ai.provider.name\", \"gen_ai.request.model\" ORDER BY unpriced_requests DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "unpriced_requests",
+            "title": "unpriced_requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3VBZTNBZ7EPKCHY346C94YABH0",
+        "x": 0,
+        "y": 21,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
+    },
+    {
+      "tile_id": "4QFJX5YCMWV9JR7TD890VPPPBQ",
+      "title": "Most Expensive Requests",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, \"gen_ai.provider.name\" AS provider, \"gen_ai.request.model\" AS model, CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE) AS input_tokens, CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE) AS output_tokens, ROUND(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), 6) AS estimated_cost_usd, ROUND(CAST(\"litellm.cost.total\" AS DOUBLE), 6) AS recorded_cost_usd, ROUND(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE)), 6) AS resolved_cost_usd, ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL AND COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE)) IS NOT NULL ORDER BY resolved_cost_usd DESC LIMIT 50",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "resolved_cost_usd",
+            "title": "resolved_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4QFJX5YCMWV9JR7TD890VPPPBQ",
+        "x": 6,
+        "y": 21,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8H2XZW31GH23QNX9BM52TT329Y"
     }
   ]
 }

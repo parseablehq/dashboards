@@ -302,6 +302,23 @@
       "source": "SQL",
       "tags": ["server-logs", "parseable", "logs", "azure"],
       "thumbnail": "assets/screenshot.png"
+    },
+    {
+      "name": "Website Performance & Visits",
+      "dirName": "website-performance-and-visits",
+      "fileName": "website-performance-and-visits-mixed.json",
+      "description": "Monitor frontend traffic, page activity, API performance, HTTP reliability, external dependencies, traces, and telemetry health.",
+      "source": "Mixed",
+      "tags": [
+        "frontend",
+        "website",
+        "rum",
+        "performance",
+        "traces",
+        "metrics",
+        "promql"
+      ],
+      "thumbnail": "assets/Overview.png"
     }
   ]
 }

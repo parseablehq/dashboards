@@ -1,0 +1,3013 @@
+{
+  "tags": [
+    "frontend",
+    "website",
+    "rum",
+    "performance",
+    "traces",
+    "metrics",
+    "promql"
+  ],
+  "variables": [
+    {
+      "name": "trace_dataset",
+      "label": "Trace Dataset",
+      "type": "dataset",
+      "defaultValue": "frontend-traces"
+    },
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "frontend-metrics"
+    },
+    {
+      "name": "environment",
+      "label": "Environment",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "deployment.environment",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "service",
+      "label": "Service",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "service.name",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "page",
+      "label": "Page",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "page.path",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "host",
+      "label": "Host",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "http.host",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "status",
+      "label": "HTTP Status",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "http.status_code",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "method",
+      "label": "HTTP Method",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "http.method",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "referrer",
+      "label": "Referrer",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "page.referrer",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    },
+    {
+      "name": "navigation",
+      "label": "Navigation Type",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "labelName": "navigation.type",
+      "labelFilters": [],
+      "includeAll": true,
+      "defaultValue": ".*"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "7QV8YF8YN48N7VY70B1G90CVNS",
+      "title": "Traffic & Visits",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "1MH0XHA9HN1TMFRE73P97S5CV0",
+      "title": "API Performance",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "7WAAPV4TD42F1XSBM2H4QAD1VK",
+      "title": "Reliability & Errors",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "6HZNBC2V18RG6R4GHR2NMRWV21",
+      "title": "External Dependencies",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "3K9VA8CST4H8NNRP599J7S3Y7Q",
+      "title": "Trace Explorer",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "0YQ2TQEPG463VK55SGPFFPF2YA",
+      "title": "Telemetry & Inventory",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "730CNVJ4Z36ZGEBT4R66JE2R0E",
+      "title": "Page Views (24h)",
+      "chartQuery": [
+        "sum(sum_over_time(page_views{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"page.path\"=~\"$page\"}[24h]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "layout": {
+        "i": "730CNVJ4Z36ZGEBT4R66JE2R0E",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "0XTZAK2MQVJ252CFD05DQHT5F7",
+      "title": "API Requests / sec",
+      "chartQuery": [
+        "sum(rate(api_calls{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"http.host\"=~\"$host\",\"http.status_code\"=~\"$status\",\"http.method\"=~\"$method\"}[15m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "layout": {
+        "i": "0XTZAK2MQVJ252CFD05DQHT5F7",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "6XQ69DZS29D5ETY6CBQRJ137AM",
+      "title": "Average Request Duration",
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' ",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "layout": {
+        "i": "6XQ69DZS29D5ETY6CBQRJ137AM",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "avg_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "777T01B20E13GE08V5CH9CHZHV",
+      "title": "P95 Request Duration",
+      "chartQuery": "SELECT ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' ",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "layout": {
+        "i": "777T01B20E13GE08V5CH9CHZHV",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2X18T0BD7H0WRX9CTVYCADEMP4",
+      "title": "Successful Requests",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (\n  WHERE (\"http.status_code\" LIKE '2%' OR \"http.status_code\" LIKE '3%') AND span_status_code <> 2\n) / NULLIF(COUNT(*), 0), 2) AS success_pct\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' ",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "gauge",
+      "tileType": "code",
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "layout": {
+        "i": "2X18T0BD7H0WRX9CTVYCADEMP4",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "gauge",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "success_pct",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "70S74H9QNH6TVNADCJ6YQPXR4W",
+      "title": "Error Requests",
+      "chartQuery": "SELECT COUNT(*) AS errors FROM $trace_dataset\nWHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "layout": {
+        "i": "70S74H9QNH6TVNADCJ6YQPXR4W",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "50N2ACG7J3YS8Y93HDWMGZSJ8E",
+      "title": "Unique Pages",
+      "chartQuery": "SELECT COUNT(DISTINCT \"page.path\") AS pages FROM $trace_dataset\nWHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' ",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "layout": {
+        "i": "50N2ACG7J3YS8Y93HDWMGZSJ8E",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "pages",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "50DR39J7H738PW4X635DJJ3E4X",
+      "title": "Observed Hosts",
+      "chartQuery": "SELECT COUNT(DISTINCT \"http.host\") AS hosts FROM $trace_dataset\nWHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.host\" IS NOT NULL AND \"http.host\" <> '' ",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "5DQ506BM1XB7YHTVJK8VZ8DMPX",
+      "layout": {
+        "i": "50DR39J7H738PW4X635DJJ3E4X",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "hosts",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "33W1AGTQZ47YP39Q7W1AQB6B89",
+      "title": "Page-context Requests Over Time",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS requests\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "7QV8YF8YN48N7VY70B1G90CVNS",
+      "layout": {
+        "i": "33W1AGTQZ47YP39Q7W1AQB6B89",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "requests"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6GVPDFQEATGZWNVE001T7Y7THF",
+      "title": "Top Pages by Page Views (24h)",
+      "chartQuery": [
+        "topk(15, sum by (\"page.path\") (sum_over_time(page_views{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"page.path\"=~\"$page\"}[24h])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "7QV8YF8YN48N7VY70B1G90CVNS",
+      "layout": {
+        "i": "6GVPDFQEATGZWNVE001T7Y7THF",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "views",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "5DBKCX4Q3YBG0NAF5VAFNH449H",
+      "title": "Page Views by Referrer (24h)",
+      "chartQuery": [
+        "topk(15, sum by (\"page.referrer\") (sum_over_time(page_views{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"page.path\"=~\"$page\",\"page.referrer\"=~\"$referrer\"}[24h])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "7QV8YF8YN48N7VY70B1G90CVNS",
+      "layout": {
+        "i": "5DBKCX4Q3YBG0NAF5VAFNH449H",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "views",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "1XAESP13EJ10CSZ16DV9C53RQQ",
+      "title": "Page Views by Navigation Type (24h)",
+      "chartQuery": [
+        "sum by (\"navigation.type\") (sum_over_time(page_views{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"page.path\"=~\"$page\",\"navigation.type\"=~\"$navigation\"}[24h]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "7QV8YF8YN48N7VY70B1G90CVNS",
+      "layout": {
+        "i": "1XAESP13EJ10CSZ16DV9C53RQQ",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "views",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "3QJHJ7W32BQJAG5A1KE05VRZXC",
+      "title": "Requests by Page",
+      "chartQuery": "SELECT \"page.path\" AS page, COUNT(*) AS requests\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY page ORDER BY requests DESC LIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "7QV8YF8YN48N7VY70B1G90CVNS",
+      "layout": {
+        "i": "3QJHJ7W32BQJAG5A1KE05VRZXC",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "page",
+            "title": "page",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "67RXKDBZ6P1JS25C6XQVFZ9Z2Y",
+      "title": "Recent Page View Metrics",
+      "chartQuery": "SELECT p_timestamp, \"page.path\" AS page, \"page.url\" AS url,\n  COALESCE(\"page.referrer\", 'direct') AS referrer,\n  COALESCE(\"navigation.type\", 'initial') AS navigation_type,\n  data_point_value AS value\nFROM $metrics_dataset\nWHERE metric_name = 'page_views'\n  AND COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\n  AND COALESCE(\"page.path\", 'unknown') ~ '$page'\n  AND COALESCE(\"page.referrer\", '') ~ '$referrer'\n  AND COALESCE(\"navigation.type\", '') ~ '$navigation'\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "7QV8YF8YN48N7VY70B1G90CVNS",
+      "layout": {
+        "i": "67RXKDBZ6P1JS25C6XQVFZ9Z2Y",
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7F8ZY1GXCNWF90V819YDNXQ2Y8",
+      "title": "API Request Rate by Status",
+      "chartQuery": [
+        "sum by (\"http.status_code\") (rate(api_calls{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"http.host\"=~\"$host\",\"http.status_code\"=~\"$status\",\"http.method\"=~\"$method\"}[15m]))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "1MH0XHA9HN1TMFRE73P97S5CV0",
+      "layout": {
+        "i": "7F8ZY1GXCNWF90V819YDNXQ2Y8",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "29AD7Y3BP0F6E9N2G6P2D6NXZ9",
+      "title": "API Request Rate by Endpoint",
+      "chartQuery": [
+        "topk(10, sum by (\"http.target\") (rate(api_calls{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"http.host\"=~\"$host\",\"http.status_code\"=~\"$status\",\"http.method\"=~\"$method\"}[15m])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "1MH0XHA9HN1TMFRE73P97S5CV0",
+      "layout": {
+        "i": "29AD7Y3BP0F6E9N2G6P2D6NXZ9",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "7NYAH1WRX54Q6MS31RK9Q8TRXF",
+      "title": "API Duration p50 / p95 (1h window)",
+      "chartQuery": [
+        "histogram_quantile(0.50, sum by (le) (increase(api_duration_ms_bucket{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"http.status_code\"=~\"$status\",\"http.method\"=~\"$method\"}[1h])))",
+        "histogram_quantile(0.95, sum by (le) (increase(api_duration_ms_bucket{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"http.status_code\"=~\"$status\",\"http.method\"=~\"$method\"}[1h])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "1MH0XHA9HN1TMFRE73P97S5CV0",
+      "layout": {
+        "i": "7NYAH1WRX54Q6MS31RK9Q8TRXF",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range",
+        "range"
+      ]
+    },
+    {
+      "tile_id": "1GGCJHJ0HBJEP9CMET3WKS1EZP",
+      "title": "Trace Latency Trend",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms,\n  ROUND(MAX(span_duration_ns / 1000000.0), 2) AS max_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "1MH0XHA9HN1TMFRE73P97S5CV0",
+      "layout": {
+        "i": "1GGCJHJ0HBJEP9CMET3WKS1EZP",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_ms",
+              "max_ms"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0CS18QBFN1RZQR3CYFGDZTGVQH",
+      "title": "Slowest Targets",
+      "chartQuery": "SELECT COALESCE(\"http.target\", \"http.url\", 'unknown') AS target,\n  \"http.host\" AS host, COUNT(*) AS requests,\n  ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY target, host ORDER BY p95_ms DESC LIMIT 25",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "1MH0XHA9HN1TMFRE73P97S5CV0",
+      "layout": {
+        "i": "0CS18QBFN1RZQR3CYFGDZTGVQH",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "target",
+            "title": "target",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7SHK0KGC5PWSBW612EFJYW1Q2E",
+      "title": "Slowest External Hosts",
+      "chartQuery": "SELECT \"http.host\" AS host, COUNT(*) AS requests,\n  ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.host\" IS NOT NULL\nGROUP BY host ORDER BY p95_ms DESC LIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "1MH0XHA9HN1TMFRE73P97S5CV0",
+      "layout": {
+        "i": "7SHK0KGC5PWSBW612EFJYW1Q2E",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "host",
+            "title": "host",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "45C8DEBNHVRRN3Q13DKFWAGZ11",
+      "title": "Recent Slow Requests",
+      "chartQuery": "SELECT p_timestamp, \"page.path\" AS page, \"http.host\" AS host,\n  \"http.method\" AS method, \"http.target\" AS target, \"http.status_code\" AS status,\n  ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms, span_trace_id\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nORDER BY span_duration_ns / 1000000.0 DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "1MH0XHA9HN1TMFRE73P97S5CV0",
+      "layout": {
+        "i": "45C8DEBNHVRRN3Q13DKFWAGZ11",
+        "x": 0,
+        "y": 33,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1QCDF0P1D0RV6WGH82Z6BF3F55",
+      "title": "Error Rate Over Time",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COUNT(*) FILTER (WHERE (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "7WAAPV4TD42F1XSBM2H4QAD1VK",
+      "layout": {
+        "i": "1QCDF0P1D0RV6WGH82Z6BF3F55",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "error_rate_pct"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0TA8ENXZX33M20PBQFP2HD9KAJ",
+      "title": "Status Classes Over Time",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '2%') AS success_2xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '3%') AS redirect_3xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '4%') AS client_error_4xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '5%') AS server_error_5xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" = '0') AS network_error\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "7WAAPV4TD42F1XSBM2H4QAD1VK",
+      "layout": {
+        "i": "0TA8ENXZX33M20PBQFP2HD9KAJ",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "success_2xx",
+              "redirect_3xx",
+              "client_error_4xx",
+              "server_error_5xx",
+              "network_error"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3Z51V7E34QZBVTQ6MTJ3WB041C",
+      "title": "Errors by Page",
+      "chartQuery": "SELECT \"page.path\" AS page, COUNT(*) AS errors\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)\nGROUP BY page ORDER BY errors DESC LIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "7WAAPV4TD42F1XSBM2H4QAD1VK",
+      "layout": {
+        "i": "3Z51V7E34QZBVTQ6MTJ3WB041C",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "errors",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "page",
+            "title": "page",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7SQFV0QCEXH01AKC3SGSXRMSPN",
+      "title": "Errors by Host",
+      "chartQuery": "SELECT \"http.host\" AS host, COUNT(*) AS errors\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)\nGROUP BY host ORDER BY errors DESC LIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "7WAAPV4TD42F1XSBM2H4QAD1VK",
+      "layout": {
+        "i": "7SQFV0QCEXH01AKC3SGSXRMSPN",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "errors",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "host",
+            "title": "host",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2T8GVESA5EN4GQE7AQK1F6R599",
+      "title": "Top Non-success Targets",
+      "chartQuery": "SELECT COALESCE(\"http.target\", \"http.url\", 'unknown') AS target,\n  \"http.host\" AS host, \"http.method\" AS method, \"http.status_code\" AS status,\n  COUNT(*) AS errors, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)\nGROUP BY target, host, method, status ORDER BY errors DESC, avg_ms DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "7WAAPV4TD42F1XSBM2H4QAD1VK",
+      "layout": {
+        "i": "2T8GVESA5EN4GQE7AQK1F6R599",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "target",
+            "title": "target",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0CTR6N0Y72ASFC8MRX0ZBKX9F0",
+      "title": "404 URLs",
+      "chartQuery": "SELECT COALESCE(\"http.target\", \"http.url\", 'unknown') AS url,\n  \"page.path\" AS page, \"http.host\" AS host, COUNT(*) AS occurrences\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.status_code\" = '404'\nGROUP BY url, page, host ORDER BY occurrences DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "7WAAPV4TD42F1XSBM2H4QAD1VK",
+      "layout": {
+        "i": "0CTR6N0Y72ASFC8MRX0ZBKX9F0",
+        "x": 0,
+        "y": 26,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "url",
+            "title": "url",
+            "display": true
+          },
+          "y": {
+            "field": "occurrences",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1MET67M24XQ5N0PTDEVE11DCTJ",
+      "title": "Requests by Host",
+      "chartQuery": "SELECT \"http.host\" AS host, COUNT(*) AS requests\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.host\" IS NOT NULL\nGROUP BY host ORDER BY requests DESC LIMIT 20",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "6HZNBC2V18RG6R4GHR2NMRWV21",
+      "layout": {
+        "i": "1MET67M24XQ5N0PTDEVE11DCTJ",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "host",
+            "title": "host",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3J6HMV0B36EWG9XAXA0V1GQ93W",
+      "title": "Host Latency Trends",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"http.host\" AS host, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.host\" IS NOT NULL\nGROUP BY time_bin, host ORDER BY time_bin, host",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "6HZNBC2V18RG6R4GHR2NMRWV21",
+      "layout": {
+        "i": "3J6HMV0B36EWG9XAXA0V1GQ93W",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "avg_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "host"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4C8GFRFMSA8QS5ZDY74N1EFWJJ",
+      "title": "Host Reliability",
+      "chartQuery": "SELECT \"http.host\" AS host, COUNT(*) AS requests,\n  COUNT(*) FILTER (WHERE (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)) AS errors,\n  ROUND(100.0 * COUNT(*) FILTER (WHERE NOT (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)) / NULLIF(COUNT(*), 0), 2) AS success_pct,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.host\" IS NOT NULL\nGROUP BY host ORDER BY errors DESC, p95_ms DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "6HZNBC2V18RG6R4GHR2NMRWV21",
+      "layout": {
+        "i": "4C8GFRFMSA8QS5ZDY74N1EFWJJ",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "host",
+            "title": "host",
+            "display": true
+          },
+          "y": {
+            "field": "success_pct",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0H0RVR4HC8WTP6XENDBYNTRD1W",
+      "title": "API Request Rate by Host",
+      "chartQuery": [
+        "topk(10, sum by (\"http.host\") (rate(api_calls{\"deployment.environment\"=~\"$environment\",\"service.name\"=~\"$service\",\"http.host\"=~\"$host\",\"http.status_code\"=~\"$status\",\"http.method\"=~\"$method\"}[15m])))"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "tileType": "promql",
+      "sectionId": "6HZNBC2V18RG6R4GHR2NMRWV21",
+      "layout": {
+        "i": "0H0RVR4HC8WTP6XENDBYNTRD1W",
+        "x": 0,
+        "y": 17,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 3
+        },
+        "axes": {
+          "x": {
+            "field": "time_bucket",
+            "title": "time_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "promqlQueryType": [
+        "range"
+      ]
+    },
+    {
+      "tile_id": "606JH8WVJY2PSPG1PFAX60G0NP",
+      "title": "Recent External Requests",
+      "chartQuery": "SELECT p_timestamp, \"page.path\" AS page, \"http.host\" AS host,\n  \"http.method\" AS method, \"http.target\" AS target, \"http.status_code\" AS status,\n  ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.host\" IS NOT NULL\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "6HZNBC2V18RG6R4GHR2NMRWV21",
+      "layout": {
+        "i": "606JH8WVJY2PSPG1PFAX60G0NP",
+        "x": 0,
+        "y": 25,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0DDQA4S6T2BNY1RB08SBQ01WDR",
+      "title": "Trace Volume",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS spans, COUNT(*) FILTER (WHERE (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)) AS error_spans\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "3K9VA8CST4H8NNRP599J7S3Y7Q",
+      "layout": {
+        "i": "0DDQA4S6T2BNY1RB08SBQ01WDR",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "spans",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "spans",
+              "error_spans"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7YK32JEB3EGSACTKKMYYE34NEE",
+      "title": "Request Duration Distribution",
+      "chartQuery": "WITH spans AS (\n  SELECT span_duration_ns / 1000000.0 AS request_ms FROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \n)\nSELECT CASE\n  WHEN request_ms < 100 THEN '<100 ms'\n  WHEN request_ms < 250 THEN '100-249 ms'\n  WHEN request_ms < 500 THEN '250-499 ms'\n  WHEN request_ms < 1000 THEN '500-999 ms'\n  WHEN request_ms < 2500 THEN '1-2.49 s'\n  WHEN request_ms < 5000 THEN '2.5-4.99 s'\n  ELSE '>=5 s' END AS latency_bucket,\n  COUNT(*) AS requests\nFROM spans GROUP BY latency_bucket ORDER BY MIN(request_ms)",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "3K9VA8CST4H8NNRP599J7S3Y7Q",
+      "layout": {
+        "i": "7YK32JEB3EGSACTKKMYYE34NEE",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "latency_bucket",
+            "title": "latency_bucket",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4RA9K15WVFERQBX1RZR2T1641W",
+      "title": "Requests by Method",
+      "chartQuery": "SELECT \"http.method\" AS method, COUNT(*) AS requests\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY method ORDER BY requests DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "3K9VA8CST4H8NNRP599J7S3Y7Q",
+      "layout": {
+        "i": "4RA9K15WVFERQBX1RZR2T1641W",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "method",
+            "title": "method",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3YB0GJR0XZPF2TEEXS5J6NYZEA",
+      "title": "Recent Request Spans",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id,\n  \"page.path\" AS page, \"http.host\" AS host, \"http.method\" AS method,\n  \"http.target\" AS target, \"http.status_code\" AS status,\n  ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "3K9VA8CST4H8NNRP599J7S3Y7Q",
+      "layout": {
+        "i": "3YB0GJR0XZPF2TEEXS5J6NYZEA",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "34EYA48TFT5T23G4QQGH7JZJ5B",
+      "title": "Slowest Request Spans",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id,\n  \"page.path\" AS page, \"http.host\" AS host, \"http.method\" AS method,\n  \"http.target\" AS target, \"http.status_code\" AS status,\n  ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nORDER BY span_duration_ns / 1000000.0 DESC LIMIT 100",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "3K9VA8CST4H8NNRP599J7S3Y7Q",
+      "layout": {
+        "i": "34EYA48TFT5T23G4QQGH7JZJ5B",
+        "x": 0,
+        "y": 26,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7GK7SDDHGXAB30P15DXN0KN4RE",
+      "title": "Frontend Service Inventory",
+      "chartQuery": "SELECT COALESCE(\"deployment.environment\", 'unknown') AS environment,\n  COALESCE(\"service.name\", 'unknown') AS service,\n  COALESCE(\"service.version\", 'unknown') AS version,\n  COALESCE(scope_name, 'unknown') AS scope,\n  COUNT(*) AS spans, MAX(p_timestamp) AS latest\nFROM $trace_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY environment, service, version, scope ORDER BY spans DESC",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "3K9VA8CST4H8NNRP599J7S3Y7Q",
+      "layout": {
+        "i": "7GK7SDDHGXAB30P15DXN0KN4RE",
+        "x": 0,
+        "y": 36,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "service",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0N0283NZQZ5TPM8Q3SG06FT1CY",
+      "title": "Metric Families",
+      "chartQuery": "SELECT metric_name, metric_type, metric_unit,\n  COUNT(*) AS points, MAX(p_timestamp) AS latest\nFROM $metrics_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY metric_name, metric_type, metric_unit ORDER BY metric_name",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "0YQ2TQEPG463VK55SGPFFPF2YA",
+      "layout": {
+        "i": "0N0283NZQZ5TPM8Q3SG06FT1CY",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "points",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "24CARN0RQM6F7B1Z8V0RG9XEAS",
+      "title": "Metric Record Volume",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  metric_name, COUNT(*) AS points\nFROM $metrics_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin, metric_name ORDER BY time_bin, metric_name",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "0YQ2TQEPG463VK55SGPFFPF2YA",
+      "layout": {
+        "i": "24CARN0RQM6F7B1Z8V0RG9XEAS",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "points",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "points",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "metric_name"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1BAFS4PDDY80SPYEJR25CA061R",
+      "title": "Telemetry Freshness",
+      "chartQuery": "SELECT 'traces' AS signal, MAX(p_timestamp) AS latest FROM $trace_dataset\nUNION ALL\nSELECT 'metrics' AS signal, MAX(p_timestamp) AS latest FROM $metrics_dataset\nORDER BY signal",
+      "dbName": [
+        "$trace_dataset",
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "0YQ2TQEPG463VK55SGPFFPF2YA",
+      "layout": {
+        "i": "1BAFS4PDDY80SPYEJR25CA061R",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "signal",
+            "title": "signal",
+            "display": true
+          },
+          "y": {
+            "field": "latest",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5PEBKJZMJAE2FVZFR5HJ9EJ267",
+      "title": "Trace Attribute Coverage",
+      "chartQuery": "SELECT COUNT(*) AS spans,\n  ROUND(100.0 * COUNT(\"page.path\") / NULLIF(COUNT(*), 0), 2) AS page_pct,\n  ROUND(100.0 * COUNT(\"http.host\") / NULLIF(COUNT(*), 0), 2) AS host_pct,\n  ROUND(100.0 * COUNT(\"http.status_code\") / NULLIF(COUNT(*), 0), 2) AS status_pct,\n  ROUND(100.0 * COUNT(span_trace_id) / NULLIF(COUNT(*), 0), 2) AS trace_id_pct,\n  ROUND(100.0 * COUNT(span_duration_ns) / NULLIF(COUNT(*), 0), 2) AS duration_pct\nFROM $trace_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service' ",
+      "dbName": [
+        "$trace_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "0YQ2TQEPG463VK55SGPFFPF2YA",
+      "layout": {
+        "i": "5PEBKJZMJAE2FVZFR5HJ9EJ267",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "spans",
+            "title": "spans",
+            "display": true
+          },
+          "y": {
+            "field": "page_pct",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4T8NVHRWGCGXGXB7P0FFY34SAP",
+      "title": "Metric Resource Inventory",
+      "chartQuery": "SELECT metric_name,\n  COALESCE(\"deployment.environment\", 'unknown') AS environment,\n  COALESCE(\"service.name\", 'unknown') AS service,\n  COALESCE(\"service.version\", 'unknown') AS version,\n  COUNT(*) AS points, MAX(p_timestamp) AS latest\nFROM $metrics_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY metric_name, environment, service, version ORDER BY metric_name, points DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "0YQ2TQEPG463VK55SGPFFPF2YA",
+      "layout": {
+        "i": "4T8NVHRWGCGXGXB7P0FFY34SAP",
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "points",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6QV11ZW3QB44BX9NASMVHTDCTR",
+      "title": "Telemetry Volume",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  'traces' AS signal, COUNT(*) AS records\nFROM $trace_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin\nUNION ALL\nSELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  'metrics' AS signal, COUNT(*) AS records\nFROM $metrics_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin\nORDER BY time_bin, signal",
+      "dbName": [
+        "$trace_dataset",
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "sectionId": "0YQ2TQEPG463VK55SGPFFPF2YA",
+      "layout": {
+        "i": "6QV11ZW3QB44BX9NASMVHTDCTR",
+        "x": 0,
+        "y": 32,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              60,
+              85
+            ],
+            "isPercent": false
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "records",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "signal"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

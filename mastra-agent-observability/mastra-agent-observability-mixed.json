@@ -1,0 +1,2497 @@
+{
+  "tags": [
+    "mastra",
+    "agents",
+    "genai",
+    "opentelemetry",
+    "openai",
+    "logs",
+    "traces",
+    "metrics",
+    "cost"
+  ],
+  "variables": [
+    {
+      "name": "traces_dataset",
+      "label": "Mastra Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "mastra-traces"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "Mastra Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "mastra-logs"
+    },
+    {
+      "name": "metrics_dataset",
+      "label": "Mastra Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "mastra-metrics"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "87FYKDPKDY323HCFTZA1E03B3K",
+      "title": "Agent Activity & Reliability",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "XPMPNZKVYH6J0GQHVRF98QDGQ1",
+      "title": "Models, Tokens & Cost",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "6PN88ZP9N8ABAWGYTEEBB7GQ23",
+      "title": "Tools",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "0AEY3R3JHVBXJGSDFTHMEYJXYQ",
+      "title": "Performance & Latency",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "49EP3W08JXZ9TPVDZK0ANNW2DE",
+      "title": "Logs & Errors",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "WKH9JY6BVK4CCJFKHR56C6DDY4",
+      "title": "Trace Explorer",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "D51P5TV55XKGB6EDZPTW7HWYT8",
+      "title": "Metrics & Telemetry",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "6H43ZPXF5NXW9T6GQ2F1DV56DG",
+      "title": "Agent Runs",
+      "chartQuery": "SELECT COUNT(*) AS agent_runs FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' ",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "layout": {
+        "i": "6H43ZPXF5NXW9T6GQ2F1DV56DG",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "agent_runs",
+            "title": "agent_runs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5E623P88V6VTY2S47RNWYBVNF3",
+      "title": "Run Success Rate",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE span_status_code <> 2) / NULLIF(COUNT(*), 0), 2) AS success_rate_pct FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' ",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "layout": {
+        "i": "5E623P88V6VTY2S47RNWYBVNF3",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "success_rate_pct",
+            "title": "success_rate_pct",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7633XNH23WDSXQSVGDD0B3QW82",
+      "title": "Total Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS total_tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "layout": {
+        "i": "7633XNH23WDSXQSVGDD0B3QW82",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "54FWJRTQM1M2BRDGN6TKC7V3TV",
+      "title": "P95 Agent Latency",
+      "chartQuery": "SELECT ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_agent_ms FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' ",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "layout": {
+        "i": "54FWJRTQM1M2BRDGN6TKC7V3TV",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "p95_agent_ms",
+            "title": "p95_agent_ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1TP8203073E8B0JMJ985AKN689",
+      "title": "Workload Scenarios",
+      "chartQuery": "SELECT COALESCE(\"mastra.log.scenario\", 'unspecified') AS scenario, body AS event, COUNT(*) AS records FROM $logs_dataset WHERE body IN ('Mastra workload started', 'Mastra workload completed', 'Mastra workload failed') GROUP BY scenario, event ORDER BY scenario, event",
+      "dbName": "$logs_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "87FYKDPKDY323HCFTZA1E03B3K",
+      "layout": {
+        "i": "1TP8203073E8B0JMJ985AKN689",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "scenario",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "records",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "event"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "38VKMR8T8GD9VS1XRJ0ER9CJAD",
+      "title": "Agent Runs Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.agent.name\" AS agent, COUNT(*) AS runs FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY time_bin, agent ORDER BY time_bin, agent",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "87FYKDPKDY323HCFTZA1E03B3K",
+      "layout": {
+        "i": "38VKMR8T8GD9VS1XRJ0ER9CJAD",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "runs",
+            "title": "runs",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "agent"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5B59FMFCBQQ6WV1G3GHJP856TX",
+      "title": "Reasoning Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.reasoning_tokens\" AS DOUBLE)), 0) AS reasoning_tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "XPMPNZKVYH6J0GQHVRF98QDGQ1",
+      "layout": {
+        "i": "5B59FMFCBQQ6WV1G3GHJP856TX",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "reasoning_tokens",
+            "title": "reasoning_tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4BK1W6XJY5JHGYRTSN54BA2E5C",
+      "title": "Input Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0) AS input_tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "XPMPNZKVYH6J0GQHVRF98QDGQ1",
+      "layout": {
+        "i": "4BK1W6XJY5JHGYRTSN54BA2E5C",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "input_tokens",
+            "title": "input_tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0PNBKGKW1H3PCXWRCQA0RNZRXM",
+      "title": "Avg Tokens / Call",
+      "chartQuery": "SELECT ROUND(AVG(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 2) AS avg_tokens_per_call FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "XPMPNZKVYH6J0GQHVRF98QDGQ1",
+      "layout": {
+        "i": "0PNBKGKW1H3PCXWRCQA0RNZRXM",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "avg_tokens_per_call",
+            "title": "avg_tokens_per_call",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3KDGE40CJSQZ199BEJ6QT5T10G",
+      "title": "Token Usage Over Time",
+      "chartQuery": "SELECT time_bin, token_type, SUM(tokens) AS tokens FROM (\n          SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'input' AS token_type, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n          UNION ALL\n          SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'output' AS token_type, CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n          UNION ALL\n          SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'reasoning' AS token_type, CAST(\"gen_ai.usage.reasoning_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n        ) token_events GROUP BY time_bin, token_type ORDER BY time_bin, token_type",
+      "dbName": "$traces_dataset",
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "XPMPNZKVYH6J0GQHVRF98QDGQ1",
+      "layout": {
+        "i": "3KDGE40CJSQZ199BEJ6QT5T10G",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "tokens",
+            "title": "tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "token_type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3XNEPHB62ABF4XZ6YC3V4VQXS5",
+      "title": "Tool Error Details",
+      "chartQuery": "SELECT p_timestamp, \"gen_ai.tool.name\" AS tool, \"error.type\" AS error_type, COALESCE(\"error.message\", span_status_message) AS error_message, \"gen_ai.tool.call.arguments\" AS arguments, span_trace_id, ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms FROM $traces_dataset WHERE \"mastra.span.type\" = 'tool_call' AND span_status_code = 2 ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "6PN88ZP9N8ABAWGYTEEBB7GQ23",
+      "layout": {
+        "i": "3XNEPHB62ABF4XZ6YC3V4VQXS5",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "28940QY3KEVZSN7ANEVQNGRGG4",
+      "title": "Model & Agent Economics",
+      "chartQuery": "SELECT \"gen_ai.agent.name\" AS agent, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") AS model, \"gen_ai.provider.name\" AS provider, COUNT(*) AS calls, SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens, SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens, SUM(CAST(\"gen_ai.usage.reasoning_tokens\" AS DOUBLE)) AS reasoning_tokens, ROUND(SUM(agent_cost(CASE WHEN \"gen_ai.provider.name\" LIKE 'openai%' THEN 'openai' ELSE \"gen_ai.provider.name\" END, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY agent, model, provider ORDER BY cost_usd DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "XPMPNZKVYH6J0GQHVRF98QDGQ1",
+      "layout": {
+        "i": "28940QY3KEVZSN7ANEVQNGRGG4",
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "agent",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "cost_usd",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "79F90Z1CKMDGEW19V06EJR7P88",
+      "title": "Agent Latency Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.agent.name\" AS agent, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY time_bin, agent ORDER BY time_bin, agent",
+      "dbName": "$traces_dataset",
+      "chartType": "line",
+      "tileType": "code",
+      "sectionId": "0AEY3R3JHVBXJGSDFTHMEYJXYQ",
+      "layout": {
+        "i": "79F90Z1CKMDGEW19V06EJR7P88",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_ms",
+              "p95_ms"
+            ],
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "agent"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7TN2VHA0FC562SK0YZ75Y5K2MZ",
+      "title": "Latency by Agent",
+      "chartQuery": "SELECT \"gen_ai.agent.name\" AS agent, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.50), 2) AS p50_ms, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY agent ORDER BY p95_ms DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "0AEY3R3JHVBXJGSDFTHMEYJXYQ",
+      "layout": {
+        "i": "7TN2VHA0FC562SK0YZ75Y5K2MZ",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "agent",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_ms",
+              "p50_ms",
+              "p95_ms"
+            ],
+            "title": "Value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0KW536DZ3FNWZ0Y20M32EZKWJS",
+      "title": "Operation P95 Latency",
+      "chartQuery": "SELECT \"mastra.span.type\" AS operation, COUNT(*) AS spans, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms FROM $traces_dataset WHERE \"mastra.span.type\" IS NOT NULL GROUP BY operation ORDER BY p95_ms DESC LIMIT 15",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "0AEY3R3JHVBXJGSDFTHMEYJXYQ",
+      "layout": {
+        "i": "0KW536DZ3FNWZ0Y20M32EZKWJS",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "p95_ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2NRGX3XSRQNDG2EW13MY0AVYCE",
+      "title": "Slowest Agent Runs",
+      "chartQuery": "SELECT p_timestamp, \"gen_ai.agent.name\" AS agent, span_trace_id, ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s, CASE WHEN span_status_code = 2 THEN 'error' ELSE 'success' END AS outcome, SUBSTRING(\"mastra.agent_run.input\", 1, 220) AS input_preview FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' ORDER BY span_duration_ns DESC LIMIT 25",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "0AEY3R3JHVBXJGSDFTHMEYJXYQ",
+      "layout": {
+        "i": "2NRGX3XSRQNDG2EW13MY0AVYCE",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1A6D3YMAR56D5N1FPN73JRD5AW",
+      "title": "Log Severity Distribution",
+      "chartQuery": "SELECT COALESCE(severity_text, p_log_category, 'UNSPECIFIED') AS severity, COUNT(*) AS records FROM $logs_dataset GROUP BY severity ORDER BY records DESC",
+      "dbName": "$logs_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "49EP3W08JXZ9TPVDZK0ANNW2DE",
+      "layout": {
+        "i": "1A6D3YMAR56D5N1FPN73JRD5AW",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "severity",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "records",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "58TBR8SWV43PP4A4FE5AAJ3J6F",
+      "title": "Logs Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, p_log_category, 'UNSPECIFIED') AS severity, COUNT(*) AS records FROM $logs_dataset GROUP BY time_bin, severity ORDER BY time_bin, severity",
+      "dbName": "$logs_dataset",
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "49EP3W08JXZ9TPVDZK0ANNW2DE",
+      "layout": {
+        "i": "58TBR8SWV43PP4A4FE5AAJ3J6F",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "records",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "severity"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4A2K0DD7GVBVFA32DM42HX93ZS",
+      "title": "Error Logs",
+      "chartQuery": "SELECT p_timestamp, severity_text, body, COALESCE(\"mastra.log.agent\", \"mastra.log.agentName\", 'unknown') AS agent, \"mastra.log.scenario\" AS scenario, \"mastra.log.tool\" AS tool, \"mastra.log.error\" AS error, trace_id, span_id FROM $logs_dataset WHERE COALESCE(severity_text, p_log_category) IN ('ERROR', 'FATAL') ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": "$logs_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "49EP3W08JXZ9TPVDZK0ANNW2DE",
+      "layout": {
+        "i": "4A2K0DD7GVBVFA32DM42HX93ZS",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "severity_text",
+            "title": "severity_text",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2X94WWAKYAMBY6NZZZRBTEAP03",
+      "title": "Recent Mastra Logs",
+      "chartQuery": "SELECT p_timestamp, severity_text, body, COALESCE(\"mastra.log.agent\", \"mastra.log.agentName\", 'unknown') AS agent, \"mastra.log.scenario\" AS scenario, trace_id, span_id FROM $logs_dataset ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": "$logs_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "49EP3W08JXZ9TPVDZK0ANNW2DE",
+      "layout": {
+        "i": "2X94WWAKYAMBY6NZZZRBTEAP03",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "severity_text",
+            "title": "severity_text",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1K29H4HAN05QDHXFVWMX2F08E4",
+      "title": "Recent Spans",
+      "chartQuery": "SELECT p_timestamp, span_name, \"mastra.span.type\" AS span_type, \"gen_ai.operation.name\" AS operation, \"gen_ai.agent.name\" AS agent, \"gen_ai.tool.name\" AS tool, CASE WHEN span_status_code = 2 THEN 'error' ELSE 'ok' END AS status, ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms, span_trace_id, span_span_id, span_parent_span_id FROM $traces_dataset ORDER BY p_timestamp DESC LIMIT 150",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "WKH9JY6BVK4CCJFKHR56C6DDY4",
+      "layout": {
+        "i": "1K29H4HAN05QDHXFVWMX2F08E4",
+        "x": 0,
+        "y": 18,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4MAR2X293MZ63G5VEXRXFNFD6B",
+      "title": "Tool Executions by Status",
+      "chartQuery": [
+        "sum by (status) (increase(mastra_tool_duration_ms_count[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "promql",
+      "sectionId": "D51P5TV55XKGB6EDZPTW7HWYT8",
+      "layout": {
+        "i": "4MAR2X293MZ63G5VEXRXFNFD6B",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5DV3NYT5KR1FGHKCCXJCY9XNRQ",
+      "title": "Model Tokens",
+      "chartQuery": [
+        "sum(mastra_model_total_input_tokens) + sum(mastra_model_total_output_tokens)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "D51P5TV55XKGB6EDZPTW7HWYT8",
+      "layout": {
+        "i": "5DV3NYT5KR1FGHKCCXJCY9XNRQ",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1BYRAX60GX2ZTP54FYG9P9G922",
+      "title": "Metric Inventory",
+      "chartQuery": "SELECT metric_name, metric_type, metric_unit, COUNT(*) AS samples, MIN(p_timestamp) AS first_seen, MAX(p_timestamp) AS last_seen, COUNT(DISTINCT __series_hash) AS series FROM $metrics_dataset GROUP BY metric_name, metric_type, metric_unit ORDER BY metric_name",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "D51P5TV55XKGB6EDZPTW7HWYT8",
+      "layout": {
+        "i": "1BYRAX60GX2ZTP54FYG9P9G922",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "45CAM22HHNFSERK99WGKQAXXJ3",
+      "title": "Error Spans",
+      "chartQuery": "SELECT COUNT(*) AS error_spans FROM $traces_dataset WHERE span_status_code = 2",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "layout": {
+        "i": "45CAM22HHNFSERK99WGKQAXXJ3",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "error_spans",
+            "title": "error_spans",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "31TRG5C0C4F3TS6ZSTY38X141M",
+      "title": "Model Calls",
+      "chartQuery": "SELECT COUNT(*) AS model_calls FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' ",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "layout": {
+        "i": "31TRG5C0C4F3TS6ZSTY38X141M",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "model_calls",
+            "title": "model_calls",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1VWJ6K607JA0G7E2KWMBX94A3N",
+      "title": "Tool Calls",
+      "chartQuery": "SELECT COUNT(*) AS tool_calls FROM $traces_dataset WHERE \"mastra.span.type\" = 'tool_call' ",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "layout": {
+        "i": "1VWJ6K607JA0G7E2KWMBX94A3N",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "tool_calls",
+            "title": "tool_calls",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "02Y0P2WD082ZK51KVQ2HQ7QVN5",
+      "title": "Estimated Cost",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(agent_cost(CASE WHEN \"gen_ai.provider.name\" LIKE 'openai%' THEN 'openai' ELSE \"gen_ai.provider.name\" END, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 0), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "9HT7M5BGEX9F3EQW8G4KX9XBJW",
+      "layout": {
+        "i": "02Y0P2WD082ZK51KVQ2HQ7QVN5",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "estimated_cost_usd",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "15RR8BCM5M8T5S3GBD51YWGSM9",
+      "title": "Agent Summary",
+      "chartQuery": "SELECT \"gen_ai.agent.name\" AS agent, COUNT(*) AS runs, SUM(CASE WHEN span_status_code = 2 THEN 1 ELSE 0 END) AS errors, ROUND(100.0 * COUNT(*) FILTER (WHERE span_status_code <> 2) / NULLIF(COUNT(*), 0), 2) AS success_rate_pct, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY agent ORDER BY runs DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "87FYKDPKDY323HCFTZA1E03B3K",
+      "layout": {
+        "i": "15RR8BCM5M8T5S3GBD51YWGSM9",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "agent",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "runs",
+            "title": "runs",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6ZAWMMBNGC2B3MJZF4RNRASPW8",
+      "title": "Span Volume by Type",
+      "chartQuery": "SELECT COALESCE(\"mastra.span.type\", 'unknown') AS span_type, COUNT(*) AS spans FROM $traces_dataset GROUP BY span_type ORDER BY spans DESC LIMIT 15",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "87FYKDPKDY323HCFTZA1E03B3K",
+      "layout": {
+        "i": "6ZAWMMBNGC2B3MJZF4RNRASPW8",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "span_type",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7BRAZD71D14S6X19MWSMW3RK43",
+      "title": "Output Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS output_tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "XPMPNZKVYH6J0GQHVRF98QDGQ1",
+      "layout": {
+        "i": "7BRAZD71D14S6X19MWSMW3RK43",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "output_tokens",
+            "title": "output_tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "49RMNGD36EA3YHMFRM8R9VFVEW",
+      "title": "Estimated Cost Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN \"gen_ai.provider.name\" LIKE 'openai%' THEN 'openai' ELSE \"gen_ai.provider.name\" END, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "dbName": "$traces_dataset",
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "XPMPNZKVYH6J0GQHVRF98QDGQ1",
+      "layout": {
+        "i": "49RMNGD36EA3YHMFRM8R9VFVEW",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "cost_usd",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2180FBB1JEA7YER7E5Y6C3WS4D",
+      "title": "Tool Calls Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.tool.name\" AS tool, COUNT(*) AS calls FROM $traces_dataset WHERE \"mastra.span.type\" = 'tool_call' GROUP BY time_bin, tool ORDER BY time_bin, tool",
+      "dbName": "$traces_dataset",
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "6PN88ZP9N8ABAWGYTEEBB7GQ23",
+      "layout": {
+        "i": "2180FBB1JEA7YER7E5Y6C3WS4D",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "tool"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3SCX7QZHFQDH1710PA297VYNDP",
+      "title": "Tool Calls by Outcome",
+      "chartQuery": "SELECT \"gen_ai.tool.name\" AS tool, CASE WHEN span_status_code = 2 THEN 'error' ELSE 'success' END AS outcome, COUNT(*) AS calls FROM $traces_dataset WHERE \"mastra.span.type\" = 'tool_call' GROUP BY tool, outcome ORDER BY calls DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "6PN88ZP9N8ABAWGYTEEBB7GQ23",
+      "layout": {
+        "i": "3SCX7QZHFQDH1710PA297VYNDP",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "outcome"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6X61E0CWFW8891KWX5KKDF23VP",
+      "title": "Tool Latency",
+      "chartQuery": "SELECT \"gen_ai.tool.name\" AS tool, COUNT(*) AS calls, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms, SUM(CASE WHEN span_status_code = 2 THEN 1 ELSE 0 END) AS errors FROM $traces_dataset WHERE \"mastra.span.type\" = 'tool_call' GROUP BY tool ORDER BY p95_ms DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "6PN88ZP9N8ABAWGYTEEBB7GQ23",
+      "layout": {
+        "i": "6X61E0CWFW8891KWX5KKDF23VP",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "p95_ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7DK8QSRTQBR26GBPP4JZ2A1TFB",
+      "title": "Trace Summary",
+      "chartQuery": "WITH roots AS (\n          SELECT span_trace_id, MIN(p_timestamp) AS started_at, MAX(\"gen_ai.agent.name\") AS agent, MAX(span_duration_ns) AS duration_ns, MAX(span_status_code) AS status_code FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY span_trace_id\n        ), usage AS (\n          SELECT span_trace_id, MAX(COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\")) AS model, SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens, SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens, SUM(CAST(\"gen_ai.usage.reasoning_tokens\" AS DOUBLE)) AS reasoning_tokens, SUM(agent_cost(CASE WHEN \"gen_ai.provider.name\" LIKE 'openai%' THEN 'openai' ELSE \"gen_ai.provider.name\" END, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY span_trace_id\n        ), tool_stats AS (\n          SELECT span_trace_id, COUNT(*) AS tool_calls, SUM(CASE WHEN span_status_code = 2 THEN 1 ELSE 0 END) AS tool_errors FROM $traces_dataset WHERE \"mastra.span.type\" = 'tool_call' GROUP BY span_trace_id\n        )\n        SELECT r.started_at, r.agent, r.span_trace_id, u.model, ROUND(r.duration_ns / 1000000000.0, 3) AS duration_s, CASE WHEN r.status_code = 2 THEN 'error' ELSE 'success' END AS outcome, COALESCE(t.tool_calls, 0) AS tool_calls, COALESCE(t.tool_errors, 0) AS tool_errors, u.input_tokens, u.output_tokens, u.reasoning_tokens, ROUND(u.cost_usd, 6) AS cost_usd FROM roots r LEFT JOIN usage u ON r.span_trace_id = u.span_trace_id LEFT JOIN tool_stats t ON r.span_trace_id = t.span_trace_id ORDER BY r.started_at DESC LIMIT 50",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "WKH9JY6BVK4CCJFKHR56C6DDY4",
+      "layout": {
+        "i": "7DK8QSRTQBR26GBPP4JZ2A1TFB",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "started_at",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "75EQP4KDF74RY1C3N5GE0ZG33K",
+      "title": "Model Call Details",
+      "chartQuery": "SELECT p_timestamp, \"gen_ai.agent.name\" AS agent, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\") AS model, \"gen_ai.provider.name\" AS provider, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS input_tokens, CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS output_tokens, CAST(\"gen_ai.usage.reasoning_tokens\" AS DOUBLE) AS reasoning_tokens, ROUND(agent_cost(CASE WHEN \"gen_ai.provider.name\" LIKE 'openai%' THEN 'openai' ELSE \"gen_ai.provider.name\" END, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), 6) AS cost_usd, ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms, \"gen_ai.response.finish_reasons\" AS finish_reason, span_trace_id FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "WKH9JY6BVK4CCJFKHR56C6DDY4",
+      "layout": {
+        "i": "75EQP4KDF74RY1C3N5GE0ZG33K",
+        "x": 0,
+        "y": 9,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2A8JBGXKK2N0SCDSV3MJPR1337",
+      "title": "Completed Workloads",
+      "chartQuery": [
+        "sum(increase(mastra_workload_requests_total{status=\"completed\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "D51P5TV55XKGB6EDZPTW7HWYT8",
+      "layout": {
+        "i": "2A8JBGXKK2N0SCDSV3MJPR1337",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "25CHYSTFW1GG1QZ1KT3AH7EBT4",
+      "title": "P95 Agent Duration",
+      "chartQuery": [
+        "histogram_quantile(0.95, sum by (le) (rate(mastra_agent_duration_ms_bucket[5m])))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "D51P5TV55XKGB6EDZPTW7HWYT8",
+      "layout": {
+        "i": "25CHYSTFW1GG1QZ1KT3AH7EBT4",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

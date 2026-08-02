@@ -36,6 +36,27 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "Mastra Agent Observability",
+      "dirName": "mastra-agent-observability",
+      "fileName": "mastra-agent-observability-mixed.json",
+      "description": "Monitor Mastra agent runs, model calls, tokens, estimated cost, tools, latency, correlated logs, traces, and native metrics.",
+      "source": "Mixed",
+      "tags": [
+        "mastra",
+        "agents",
+        "genai",
+        "opentelemetry",
+        "openai",
+        "logs",
+        "traces",
+        "metrics",
+        "promql",
+        "observability",
+        "cost"
+      ],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
       "name": "LiteLLM Proxy Observability",
       "dirName": "litellm-proxy-observability",
       "fileName": "litellm-proxy-observability-mixed.json",

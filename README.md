@@ -34,6 +34,7 @@ Use Parseable's dashboard import flow with either a downloaded JSON file or the 
 | Parseable Audit Logs | Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets. | SQL | 28 | 7 | 2 | [JSON](parseable-audit-logs/parseable-audit-logs-sql.json) | [Raw](https://raw.githubusercontent.com/parseablehq/dashboards/main/parseable-audit-logs/parseable-audit-logs-sql.json) |
 | Parseable Metrics | Monitor Parseable service metrics including ingestion, query behavior, storage, runtime health, and system-level PromQL signals. | PromQL | 66 | 8 | 2 | [JSON](parseable-metrics/parseable-metrics-promql.json) | [Raw](https://raw.githubusercontent.com/parseablehq/dashboards/main/parseable-metrics/parseable-metrics-promql.json) |
 | Parseable Server Logs | Analyze Parseable server logs, error patterns, request activity, status distribution, and runtime log trends. | SQL | 14 | 6 | 1 | [JSON](parseable-server-logs/parseable-server-logs-sql.json) | [Raw](https://raw.githubusercontent.com/parseablehq/dashboards/main/parseable-server-logs/parseable-server-logs-sql.json) |
+| Website Performance & Visits | Monitor frontend traffic, page activity, API performance, HTTP reliability, external dependencies, traces, and telemetry health. | Mixed | 44 | 7 | 10 | [JSON](website-performance-and-visits/website-performance-and-visits-mixed.json) | [Raw](https://raw.githubusercontent.com/parseablehq/dashboards/main/website-performance-and-visits/website-performance-and-visits-mixed.json) |
 
 ## Structure
 

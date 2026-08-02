@@ -97,6 +97,38 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "Codex Observability",
+      "dirName": "codex-observability",
+      "fileName": "codex-observability-sql.json",
+      "description": "Monitor Codex sessions, turns, token and cache usage, estimated cost, latency, tools, MCP activity, approvals, errors, logs, and traces.",
+      "source": "SQL",
+      "tags": [
+        "codex",
+        "openai",
+        "developer-tools",
+        "opentelemetry",
+        "logs",
+        "traces",
+        "metrics",
+        "observability"
+      ]
+    },
+    {
+      "name": "OpenRouter Observability",
+      "dirName": "openrouter-observability",
+      "fileName": "openrouter-observability-sql.json",
+      "description": "Monitor OpenRouter requests, routing, reliability, provider attempts, retries, latency, tokens, cache usage, cost, models, and traces.",
+      "source": "SQL",
+      "tags": [
+        "openrouter",
+        "llm",
+        "genai",
+        "opentelemetry",
+        "traces",
+        "observability"
+      ]
+    },
+    {
       "name": "K8s Cluster Monitoring",
       "dirName": "k8s-cluster-monitoring",
       "fileName": "k8s-cluster-monitoring-mixed.json",

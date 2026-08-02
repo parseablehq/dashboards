@@ -1,0 +1,2706 @@
+{
+  "tags": [
+    "openrouter",
+    "llm",
+    "genai",
+    "opentelemetry",
+    "traces",
+    "observability"
+  ],
+  "variables": [
+    {
+      "name": "traces_dataset",
+      "label": "Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "openrouter-traces"
+    },
+    {
+      "name": "model",
+      "label": "Model",
+      "type": "custom",
+      "options": [
+        "All",
+        "openai/gpt-3.5-turbo",
+        "openai/gpt-4.1-mini",
+        "openai/gpt-4o",
+        "openai/gpt-4o-mini",
+        "openai/o4-mini"
+      ],
+      "defaultValue": "All",
+      "stream": "openrouter-traces",
+      "labelName": "gen_ai.request.model"
+    },
+    {
+      "name": "provider",
+      "label": "Provider",
+      "type": "custom",
+      "options": [
+        "All",
+        "OpenAI",
+        "Azure"
+      ],
+      "defaultValue": "All",
+      "stream": "openrouter-traces",
+      "labelName": "trace.metadata.openrouter.provider_name"
+    },
+    {
+      "name": "api_key",
+      "label": "API Key",
+      "type": "custom",
+      "options": [
+        "All",
+        "Default key"
+      ],
+      "defaultValue": "All",
+      "stream": "openrouter-traces",
+      "labelName": "trace.metadata.openrouter.api_key_name"
+    },
+    {
+      "name": "finish_reason",
+      "label": "Finish Reason",
+      "type": "custom",
+      "options": [
+        "All",
+        "completed",
+        "length",
+        "max_output_tokens",
+        "stop"
+      ],
+      "defaultValue": "All",
+      "stream": "openrouter-traces",
+      "labelName": "trace.metadata.openrouter.finish_reason"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "PHZE6HPGMHT25YYB69HAMYJAYF",
+      "title": "Traffic & Reliability",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "H91P5KF9XTYY347DA0WQ3NBDWK",
+      "title": "Performance & Latency",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "6J5M9YP8F3HP0E1SJMYMQBWXMW",
+      "title": "Tokens & Cost",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N",
+      "title": "Cost & FinOps",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "R1G4YMSXM34PDV2SWXYX1PQK91",
+      "title": "Models & Routing",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "MGNFQKRRRMGAMDQR711P343PTN",
+      "title": "Trace Explorer",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "7M3V8B64A33QTM7KY776YWXXNG",
+      "title": "Requests",
+      "chartQuery": "SELECT COUNT(*) AS requests FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7M3V8B64A33QTM7KY776YWXXNG",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT"
+    },
+    {
+      "tile_id": "2AR87FWBB11TJCR1NF8H9JAYMA",
+      "title": "Final Success Rate",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE span_status_code <> 2 AND COALESCE(\"span.level\", 'DEFAULT') <> 'ERROR') / NULLIF(COUNT(*), 0), 2) AS success_rate_pct FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "success_rate_pct",
+            "title": "success_rate_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2AR87FWBB11TJCR1NF8H9JAYMA",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT"
+    },
+    {
+      "tile_id": "0260M055JY4ECBR1XTYRSYZA04",
+      "title": "Failed Provider Attempts",
+      "chartQuery": "SELECT COUNT(*) AS failed_attempts FROM $traces_dataset WHERE \"span.type\" = 'span' AND (span_status_code = 2 OR \"span.level\" = 'ERROR') AND span_trace_id IN (SELECT span_trace_id FROM $traces_dataset\n  WHERE \"span.type\" = 'generation'\n    AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n    AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n    AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n    AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason'))",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "failed_attempts",
+            "title": "failed_attempts",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0260M055JY4ECBR1XTYRSYZA04",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT"
+    },
+    {
+      "tile_id": "6RP7GT51SYJ854D55AXZHPMS32",
+      "title": "Requests Retried",
+      "chartQuery": "SELECT COUNT(DISTINCT span_trace_id) AS retried_requests FROM $traces_dataset WHERE \"span.type\" = 'span' AND (span_status_code = 2 OR \"span.level\" = 'ERROR') AND span_trace_id IN (SELECT span_trace_id FROM $traces_dataset\n  WHERE \"span.type\" = 'generation'\n    AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n    AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n    AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n    AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason'))",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "retried_requests",
+            "title": "retried_requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6RP7GT51SYJ854D55AXZHPMS32",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT"
+    },
+    {
+      "tile_id": "304EP52CCR35A8JE73ARKQ9QE9",
+      "title": "Total Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.total_tokens\" AS DOUBLE)), 0) AS total_tokens FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "304EP52CCR35A8JE73ARKQ9QE9",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT"
+    },
+    {
+      "tile_id": "7G096CR0Z8D87FKVSYNSZWK3GQ",
+      "title": "Total Cost",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE))), 0), 8) AS total_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_cost_usd",
+            "title": "total_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7G096CR0Z8D87FKVSYNSZWK3GQ",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT"
+    },
+    {
+      "tile_id": "7NB9AVT3073WFCJP19AZQQ1ZRN",
+      "title": "P95 Request Latency",
+      "chartQuery": "SELECT ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_latency_s FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_latency_s",
+            "title": "p95_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7NB9AVT3073WFCJP19AZQQ1ZRN",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT"
+    },
+    {
+      "tile_id": "4S2K80058K71BVGZ7ZNANKS8D1",
+      "title": "Input Cache Utilization",
+      "chartQuery": "SELECT ROUND(100.0 * COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE)), 0) / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0), 2) AS cache_utilization_pct FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "cache_utilization_pct",
+            "title": "cache_utilization_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4S2K80058K71BVGZ7ZNANKS8D1",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "N9PNTX79QZNTAD4EN04TSDWSKT"
+    },
+    {
+      "tile_id": "5N8QHPVH19MCEZD79NHZMHC5WA",
+      "title": "Requests & Final Outcomes",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS requests,\n  COUNT(*) FILTER (WHERE span_status_code <> 2 AND COALESCE(\"span.level\", 'DEFAULT') <> 'ERROR') AS successes,\n  COUNT(*) FILTER (WHERE span_status_code = 2 OR \"span.level\" = 'ERROR') AS final_errors\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "requests",
+              "successes",
+              "final_errors"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5N8QHPVH19MCEZD79NHZMHC5WA",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "PHZE6HPGMHT25YYB69HAMYJAYF"
+    },
+    {
+      "tile_id": "7V7KZKWHY5PXYM1M0S5XYM965H",
+      "title": "Requests by Model",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"gen_ai.request.model\" AS model, COUNT(*) AS requests\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin, model ORDER BY time_bin, model",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "requests"
+            ],
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7V7KZKWHY5PXYM1M0S5XYM965H",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "PHZE6HPGMHT25YYB69HAMYJAYF"
+    },
+    {
+      "tile_id": "7YSQ334018P0ZHZSEJW6YFFMKJ",
+      "title": "Finish Reasons",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"trace.metadata.openrouter.finish_reason\", 'unknown') AS finish_reason, COUNT(*) AS requests\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin, finish_reason ORDER BY time_bin, finish_reason",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "requests"
+            ],
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "finish_reason"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7YSQ334018P0ZHZSEJW6YFFMKJ",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "PHZE6HPGMHT25YYB69HAMYJAYF"
+    },
+    {
+      "tile_id": "098FSSGNWEMCV9DA0VQ5JE3VY1",
+      "title": "Provider Attempt Outcomes",
+      "chartQuery": "SELECT COALESCE(\"trace.metadata.openrouter.provider_name\", 'unknown') AS provider,\n  CASE WHEN span_status_code = 2 OR \"span.level\" = 'ERROR' THEN 'failed' ELSE 'succeeded' END AS outcome,\n  COUNT(*) AS attempts\nFROM $traces_dataset\nWHERE \"span.type\" = 'span' AND span_trace_id IN (SELECT span_trace_id FROM $traces_dataset\n  WHERE \"span.type\" = 'generation'\n    AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n    AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n    AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n    AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason'))\nGROUP BY provider, outcome ORDER BY provider, outcome",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "attempts",
+            "title": "attempts",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "outcome"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "098FSSGNWEMCV9DA0VQ5JE3VY1",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "PHZE6HPGMHT25YYB69HAMYJAYF"
+    },
+    {
+      "tile_id": "1NFZDFZMCAG6WHYYP8JG3F6R26",
+      "title": "Reliability by Model",
+      "chartQuery": "WITH retries AS (\n  SELECT span_trace_id, COUNT(*) AS failed_attempts\n  FROM $traces_dataset\n  WHERE \"span.type\" = 'span' AND (span_status_code = 2 OR \"span.level\" = 'ERROR')\n  GROUP BY span_trace_id\n)\nSELECT g.\"gen_ai.request.model\" AS model,\n  COUNT(*) AS requests,\n  COUNT(*) FILTER (WHERE g.span_status_code = 2 OR g.\"span.level\" = 'ERROR') AS final_errors,\n  ROUND(100.0 * COUNT(*) FILTER (WHERE g.span_status_code <> 2 AND COALESCE(g.\"span.level\", 'DEFAULT') <> 'ERROR') / NULLIF(COUNT(*), 0), 2) AS success_rate_pct,\n  COUNT(*) FILTER (WHERE COALESCE(r.failed_attempts, 0) > 0) AS requests_retried\nFROM $traces_dataset g\nLEFT JOIN retries r ON g.span_trace_id = r.span_trace_id\nWHERE g.\"span.type\" = 'generation'\n  AND ('$model' = 'All' OR g.\"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR g.\"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR g.\"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR g.\"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY model ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1NFZDFZMCAG6WHYYP8JG3F6R26",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "PHZE6HPGMHT25YYB69HAMYJAYF"
+    },
+    {
+      "tile_id": "62TN2P6STYV4PVZXQVEH258BWB",
+      "title": "Request Latency Percentiles",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "p50_s",
+              "p95_s",
+              "p99_s"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "62TN2P6STYV4PVZXQVEH258BWB",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "H91P5KF9XTYY347DA0WQ3NBDWK"
+    },
+    {
+      "tile_id": "0H5TFAFZRXY6ES5RXJ03AP13JT",
+      "title": "Latency by Model",
+      "chartQuery": "SELECT \"gen_ai.request.model\" AS model,\n  ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_latency_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_latency_s\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY model ORDER BY p95_latency_s DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "p95_latency_s",
+            "title": "p95_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0H5TFAFZRXY6ES5RXJ03AP13JT",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "H91P5KF9XTYY347DA0WQ3NBDWK"
+    },
+    {
+      "tile_id": "4N3A0SSER4J2VS7H1V0MWGNCZ5",
+      "title": "Provider Attempt Latency",
+      "chartQuery": "SELECT COALESCE(\"trace.metadata.openrouter.provider_name\", 'unknown') AS provider,\n  COALESCE(\"span.metadata.attempt_index\", 'unknown') AS attempt,\n  CASE WHEN span_status_code = 2 OR \"span.level\" = 'ERROR' THEN 'failed' ELSE 'succeeded' END AS outcome,\n  COUNT(*) AS attempts,\n  ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE \"span.type\" = 'span' AND span_trace_id IN (SELECT span_trace_id FROM $traces_dataset\n  WHERE \"span.type\" = 'generation'\n    AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n    AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n    AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n    AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason'))\nGROUP BY provider, attempt, outcome ORDER BY provider, attempt, outcome",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "attempts",
+            "title": "attempts",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4N3A0SSER4J2VS7H1V0MWGNCZ5",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "H91P5KF9XTYY347DA0WQ3NBDWK"
+    },
+    {
+      "tile_id": "7ENNE2SF3Y09SCP66CAMB94RVY",
+      "title": "Slowest Requests",
+      "chartQuery": "SELECT p_timestamp, span_trace_id,\n  \"gen_ai.request.model\" AS model,\n  \"trace.metadata.openrouter.provider_name\" AS provider,\n  ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s,\n  CAST(\"gen_ai.usage.total_tokens\" AS DOUBLE) AS total_tokens,\n  ROUND(\"gen_ai.usage.total_cost\", 8) AS cost_usd,\n  \"trace.metadata.openrouter.finish_reason\" AS finish_reason\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nORDER BY span_duration_ns DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7ENNE2SF3Y09SCP66CAMB94RVY",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "H91P5KF9XTYY347DA0WQ3NBDWK"
+    },
+    {
+      "tile_id": "1C35M6NNT9FVFWN3W43VJ6ANHF",
+      "title": "Token Consumption",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens,\n  SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens,\n  SUM(CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE)) AS cached_input_tokens,\n  SUM(CAST(\"gen_ai.usage.output_tokens.reasoning\" AS DOUBLE)) AS reasoning_tokens\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "input_tokens",
+              "output_tokens",
+              "cached_input_tokens",
+              "reasoning_tokens"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1C35M6NNT9FVFWN3W43VJ6ANHF",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6J5M9YP8F3HP0E1SJMYMQBWXMW"
+    },
+    {
+      "tile_id": "0M16EVCFXJ9QMH4819HB2AGKSH",
+      "title": "Cost Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(SUM(\"gen_ai.usage.total_cost\"), 8) AS total_cost_usd\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "total_cost_usd"
+            ],
+            "title": "total_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0M16EVCFXJ9QMH4819HB2AGKSH",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6J5M9YP8F3HP0E1SJMYMQBWXMW"
+    },
+    {
+      "tile_id": "0SJP34WWMMCF354ZMRHVYJE287",
+      "title": "Tokens by Model",
+      "chartQuery": "SELECT \"gen_ai.request.model\" AS model,\n  SUM(CAST(\"gen_ai.usage.total_tokens\" AS DOUBLE)) AS total_tokens\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY model ORDER BY total_tokens DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0SJP34WWMMCF354ZMRHVYJE287",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6J5M9YP8F3HP0E1SJMYMQBWXMW"
+    },
+    {
+      "tile_id": "7ZWTWWFCS3S8BAF885SC5FCW1N",
+      "title": "Cost by Model",
+      "chartQuery": "SELECT \"gen_ai.request.model\" AS model,\n  ROUND(SUM(\"gen_ai.usage.total_cost\"), 8) AS total_cost_usd\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY model ORDER BY total_cost_usd DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "total_cost_usd",
+            "title": "total_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7ZWTWWFCS3S8BAF885SC5FCW1N",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6J5M9YP8F3HP0E1SJMYMQBWXMW"
+    },
+    {
+      "tile_id": "7CV08X585KRPW255KKBFHWYTDE",
+      "title": "Token Composition by Model",
+      "chartQuery": "SELECT \"gen_ai.request.model\" AS model, COUNT(*) AS requests,\n  SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens,\n  SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens,\n  SUM(CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE)) AS cached_input_tokens,\n  SUM(CAST(\"gen_ai.usage.output_tokens.reasoning\" AS DOUBLE)) AS reasoning_tokens,\n  ROUND(AVG(CAST(\"gen_ai.usage.total_tokens\" AS DOUBLE)), 2) AS avg_tokens_per_request\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY model ORDER BY input_tokens + output_tokens DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7CV08X585KRPW255KKBFHWYTDE",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6J5M9YP8F3HP0E1SJMYMQBWXMW"
+    },
+    {
+      "tile_id": "29XDMFZH8DGEMWBJ7PS8NE8AAB",
+      "title": "Cache Utilization Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE)), 0) / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0), 2) AS cache_utilization_pct\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "cache_utilization_pct"
+            ],
+            "title": "cache_utilization_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "29XDMFZH8DGEMWBJ7PS8NE8AAB",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6J5M9YP8F3HP0E1SJMYMQBWXMW"
+    },
+    {
+      "tile_id": "5HDCPM075NQWYMAREEFKP12BRZ",
+      "title": "Model Adoption",
+      "chartQuery": "SELECT \"gen_ai.request.model\" AS model, COUNT(*) AS requests\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY model ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5HDCPM075NQWYMAREEFKP12BRZ",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "R1G4YMSXM34PDV2SWXYX1PQK91"
+    },
+    {
+      "tile_id": "06H4R4YPPXWG9B3JJ95KX1XD8X",
+      "title": "Provider Routing",
+      "chartQuery": "SELECT \"trace.metadata.openrouter.provider_name\" AS provider, COUNT(*) AS requests\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY provider ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "06H4R4YPPXWG9B3JJ95KX1XD8X",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "R1G4YMSXM34PDV2SWXYX1PQK91"
+    },
+    {
+      "tile_id": "07V7RG0MKGEJXZRTHNGMFK6G9X",
+      "title": "Model, Provider & Pricing",
+      "chartQuery": "SELECT \"gen_ai.request.model\" AS model,\n  \"trace.metadata.openrouter.provider_name\" AS provider,\n  COUNT(*) AS requests,\n  ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_latency_s,\n  SUM(CAST(\"gen_ai.usage.total_tokens\" AS DOUBLE)) AS total_tokens,\n  ROUND(SUM(\"gen_ai.usage.total_cost\"), 8) AS total_cost_usd,\n  ROUND(AVG(\"trace.metadata.openrouter.input_unit_price\"), 10) AS avg_input_unit_price,\n  ROUND(AVG(\"trace.metadata.openrouter.output_unit_price\"), 10) AS avg_output_unit_price\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY model, provider ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "07V7RG0MKGEJXZRTHNGMFK6G9X",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "R1G4YMSXM34PDV2SWXYX1PQK91"
+    },
+    {
+      "tile_id": "74VH27EHR2S6Z984XPQJE2T8YA",
+      "title": "Recent Requests",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id,\n  \"gen_ai.request.model\" AS model,\n  \"trace.metadata.openrouter.provider_name\" AS provider,\n  \"trace.metadata.openrouter.api_key_name\" AS api_key,\n  ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s,\n  CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS input_tokens,\n  CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS output_tokens,\n  ROUND(\"gen_ai.usage.total_cost\", 8) AS cost_usd,\n  \"trace.metadata.openrouter.finish_reason\" AS finish_reason\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "74VH27EHR2S6Z984XPQJE2T8YA",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "MGNFQKRRRMGAMDQR711P343PTN"
+    },
+    {
+      "tile_id": "5B4PRTJEVQE4Z1SJ0N791NVQCH",
+      "title": "Failed Provider Attempts",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id,\n  \"trace.metadata.openrouter.provider_name\" AS provider,\n  \"span.metadata.attempt_index\" AS attempt,\n  \"span.metadata.endpoint_id\" AS endpoint_id,\n  \"span.metadata.status_code\" AS http_status,\n  ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms,\n  span_status_message\nFROM $traces_dataset\nWHERE \"span.type\" = 'span' AND (span_status_code = 2 OR \"span.level\" = 'ERROR')\n  AND span_trace_id IN (SELECT span_trace_id FROM $traces_dataset\n  WHERE \"span.type\" = 'generation'\n    AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n    AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n    AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n    AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason'))\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5B4PRTJEVQE4Z1SJ0N791NVQCH",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "MGNFQKRRRMGAMDQR711P343PTN"
+    },
+    {
+      "tile_id": "70VRX35NMWY0H35NT4F1C4CJ9T",
+      "title": "Most Expensive Requests",
+      "chartQuery": "SELECT p_timestamp, span_trace_id,\n  \"gen_ai.request.model\" AS model,\n  \"trace.metadata.openrouter.provider_name\" AS provider,\n  CAST(\"gen_ai.usage.total_tokens\" AS DOUBLE) AS total_tokens,\n  ROUND(\"gen_ai.usage.total_cost\", 8) AS cost_usd,\n  ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nORDER BY \"gen_ai.usage.total_cost\" DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "70VRX35NMWY0H35NT4F1C4CJ9T",
+        "x": 0,
+        "y": 19,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "MGNFQKRRRMGAMDQR711P343PTN"
+    },
+    {
+      "tile_id": "3A8JTCNFSX90HKCNGR9K1GBTAB",
+      "title": "Retry Trace Summary",
+      "chartQuery": "SELECT g.p_timestamp, g.span_trace_id,\n  g.\"gen_ai.request.model\" AS model,\n  g.\"trace.metadata.openrouter.provider_name\" AS final_provider,\n  COUNT(a.span_span_id) AS provider_attempts,\n  COUNT(a.span_span_id) FILTER (WHERE a.span_status_code = 2 OR a.\"span.level\" = 'ERROR') AS failed_attempts,\n  ROUND(g.span_duration_ns / 1000000000.0, 3) AS request_duration_s,\n  ROUND(g.\"gen_ai.usage.total_cost\", 8) AS cost_usd\nFROM $traces_dataset g\nJOIN $traces_dataset a ON g.span_trace_id = a.span_trace_id AND a.\"span.type\" = 'span'\nWHERE g.\"span.type\" = 'generation'\n  AND ('$model' = 'All' OR g.\"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR g.\"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR g.\"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR g.\"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY g.p_timestamp, g.span_trace_id, model, final_provider, g.span_duration_ns, g.\"gen_ai.usage.total_cost\"\nHAVING COUNT(a.span_span_id) FILTER (WHERE a.span_status_code = 2 OR a.\"span.level\" = 'ERROR') > 0\nORDER BY g.p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "provider_attempts",
+            "title": "provider_attempts",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3A8JTCNFSX90HKCNGR9K1GBTAB",
+        "x": 6,
+        "y": 19,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "MGNFQKRRRMGAMDQR711P343PTN"
+    },
+    {
+      "tile_id": "64XKBGSZDR9CHH1A7M6YB79QAT",
+      "title": "Estimated Cost (agent_cost)",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 0), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "64XKBGSZDR9CHH1A7M6YB79QAT",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "5C70YREY1CV9DDH82FZD7BJYEB",
+      "title": "Recorded Cost",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)), 0), 6) AS recorded_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "recorded_cost_usd",
+            "title": "recorded_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5C70YREY1CV9DDH82FZD7BJYEB",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "13AW7RZ2J29E2ABE2QEEEW17PP",
+      "title": "Average Cost per Request",
+      "chartQuery": "SELECT ROUND(AVG(COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE))), 6) AS avg_cost_per_request_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_cost_per_request_usd",
+            "title": "avg_cost_per_request_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "13AW7RZ2J29E2ABE2QEEEW17PP",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "06RGM8E609F8FRK70PMFH8ZMRS",
+      "title": "Pricing Coverage",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS pricing_coverage_pct FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "pricing_coverage_pct",
+            "title": "pricing_coverage_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "06RGM8E609F8FRK70PMFH8ZMRS",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "2YCNHJ5XWAF738P8DFXSZXGNVJ",
+      "title": "Estimated Cost Over Time",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') GROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "estimated_cost_usd"
+            ],
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2YCNHJ5XWAF738P8DFXSZXGNVJ",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "3FJ9VCRATP28HJ2BPZNXNS7F1B",
+      "title": "Estimated vs Recorded Cost",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(SUM(COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE))), 6) AS resolved_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') GROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "estimated_cost_usd",
+              "recorded_cost_usd",
+              "resolved_cost_usd"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3FJ9VCRATP28HJ2BPZNXNS7F1B",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "44C87MDYQ8ESG49KHKYE61J9FN",
+      "title": "Estimated Cost by Model",
+      "chartQuery": "SELECT \"gen_ai.request.model\" AS model, COUNT(*) AS requests, COUNT(*) FILTER (WHERE agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL) AS priced_requests, ROUND(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)), 6) AS recorded_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') GROUP BY \"gen_ai.request.model\" ORDER BY estimated_cost_usd DESC NULLS LAST",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "44C87MDYQ8ESG49KHKYE61J9FN",
+        "x": 0,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "0CWKFK95FT8GPNQB2Z9RJD2V2M",
+      "title": "Model Cost Efficiency",
+      "chartQuery": "SELECT \"trace.metadata.openrouter.provider_name\" AS provider, \"gen_ai.request.model\" AS model, COUNT(*) AS requests, COUNT(*) FILTER (WHERE agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL) AS priced_requests, SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens, SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens, ROUND(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(AVG(COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE))), 6) AS avg_cost_per_request_usd, ROUND(1000.0 * SUM(COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE))) / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0), 6) AS cost_per_1k_tokens_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') GROUP BY \"trace.metadata.openrouter.provider_name\", \"gen_ai.request.model\" ORDER BY estimated_cost_usd DESC NULLS LAST",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0CWKFK95FT8GPNQB2Z9RJD2V2M",
+        "x": 6,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "2ZFNJCX1T10JFYTHST7ENTYZNT",
+      "title": "Unpriced Models",
+      "chartQuery": "SELECT \"trace.metadata.openrouter.provider_name\" AS provider, \"gen_ai.request.model\" AS model, COUNT(*) AS unpriced_requests, SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens, SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens, ROUND(SUM(CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)), 6) AS recorded_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') AND agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NULL GROUP BY \"trace.metadata.openrouter.provider_name\", \"gen_ai.request.model\" ORDER BY unpriced_requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "unpriced_requests",
+            "title": "unpriced_requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2ZFNJCX1T10JFYTHST7ENTYZNT",
+        "x": 0,
+        "y": 21,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    },
+    {
+      "tile_id": "6XQ4WGVMZVN3QJC8KSZ0Y5XKBW",
+      "title": "Most Expensive Requests",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, \"trace.metadata.openrouter.provider_name\" AS provider, \"gen_ai.request.model\" AS model, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS input_tokens, CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS output_tokens, ROUND(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), 6) AS estimated_cost_usd, ROUND(CAST(\"gen_ai.usage.total_cost\" AS DOUBLE), 6) AS recorded_cost_usd, ROUND(COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)), 6) AS resolved_cost_usd, ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') AND COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)) IS NOT NULL ORDER BY resolved_cost_usd DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "resolved_cost_usd",
+            "title": "resolved_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6XQ4WGVMZVN3QJC8KSZ0Y5XKBW",
+        "x": 6,
+        "y": 21,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WV790S12DZQD72H7E0C76YAJ5N"
+    }
+  ]
+}

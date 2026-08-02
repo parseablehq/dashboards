@@ -1,0 +1,3170 @@
+{
+  "tags": [
+    "codex",
+    "openai",
+    "developer-tools",
+    "opentelemetry",
+    "logs",
+    "traces",
+    "metrics",
+    "observability"
+  ],
+  "variables": [
+    {
+      "name": "logs_dataset",
+      "label": "Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "codex-logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "codex-traces"
+    },
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "codex-metrics"
+    },
+    {
+      "name": "service",
+      "label": "Client / Service",
+      "type": "custom",
+      "options": [
+        "All",
+        "codex-app-server",
+        "codex_cli_rs"
+      ],
+      "defaultValue": "All",
+      "stream": "codex-metrics",
+      "labelName": "service.name"
+    },
+    {
+      "name": "model",
+      "label": "Model",
+      "type": "custom",
+      "options": [
+        "All",
+        "gpt-5.6-sol",
+        "gpt-5.6-luna"
+      ],
+      "defaultValue": "All",
+      "stream": "codex-metrics",
+      "labelName": "model"
+    },
+    {
+      "name": "app_version",
+      "label": "App Version",
+      "type": "custom",
+      "options": [
+        "All",
+        "0.145.0",
+        "0.146.0",
+        "0.146.0-alpha.9.2"
+      ],
+      "defaultValue": "All",
+      "stream": "codex-metrics",
+      "labelName": "app.version"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP",
+      "title": "Adoption & Activity",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "136P9XD2AWN1QA3WWDXBKGAQPX",
+      "title": "Tokens & Cache",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4",
+      "title": "Cost & FinOps",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "VK73CHZ0WXYYG8ZMA8PFZH5AF7",
+      "title": "Performance & Latency",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "3YMTX45Q7YCFBHQ0CQH2V7YSMT",
+      "title": "Tools & MCP",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "61QW9P81RX6KHCZQ2A3G3DWCHW",
+      "title": "Safety & Approvals",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "FKNJH8XY2F4GP59M8FEPD7C7Z3",
+      "title": "Logs & Errors",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "WGPBQN680BPB9A7X50AWY12P5S",
+      "title": "Trace Explorer",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "20SKPWN9ADRSED58MTKECCCF6K",
+      "title": "Sessions",
+      "chartQuery": "SELECT COALESCE(SUM(data_point_value), 0) AS sessions FROM $metrics_dataset WHERE metric_name = 'codex.thread.started' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "sessions",
+            "title": "sessions",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "20SKPWN9ADRSED58MTKECCCF6K",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    },
+    {
+      "tile_id": "68RCY1JZMTY9ZCVDREZ679JVVJ",
+      "title": "Conversation Turns",
+      "chartQuery": "SELECT COUNT(*) AS turns FROM $logs_dataset WHERE \"event.name\" = 'codex.user_prompt' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "turns",
+            "title": "turns",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "68RCY1JZMTY9ZCVDREZ679JVVJ",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    },
+    {
+      "tile_id": "22N96TP0SHFXH1XXNQW4QPKAQ7",
+      "title": "Total Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(data_point_sum), 0) AS total_tokens FROM $metrics_dataset WHERE metric_name = 'codex.turn.token_usage' AND token_type = 'total' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "22N96TP0SHFXH1XXNQW4QPKAQ7",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    },
+    {
+      "tile_id": "5T33SRWRXXJHH8T5SKT52TEVXE",
+      "title": "Tool Calls",
+      "chartQuery": "SELECT COALESCE(SUM(data_point_value), 0) AS tool_calls FROM $metrics_dataset WHERE metric_name = 'codex.tool.call' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "tool_calls",
+            "title": "tool_calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "5T33SRWRXXJHH8T5SKT52TEVXE",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    },
+    {
+      "tile_id": "1PVN0QCAARN35CT6DEGERD4MGF",
+      "title": "Prompt Cache Utilization",
+      "chartQuery": "SELECT ROUND(100.0 * COALESCE(SUM(data_point_sum) FILTER (WHERE token_type = 'cached_input'), 0) / NULLIF(SUM(data_point_sum) FILTER (WHERE token_type = 'input'), 0), 2) AS cache_utilization_pct FROM $metrics_dataset WHERE metric_name = 'codex.turn.token_usage' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "cache_utilization_pct",
+            "title": "cache_utilization_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1PVN0QCAARN35CT6DEGERD4MGF",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    },
+    {
+      "tile_id": "6B1XGNCCZA2Z59TPWE7FMEH03F",
+      "title": "Tool Success Rate",
+      "chartQuery": "SELECT ROUND(100.0 * COALESCE(SUM(data_point_value) FILTER (WHERE success = 'true'), 0) / NULLIF(SUM(data_point_value), 0), 2) AS tool_success_rate_pct FROM $metrics_dataset WHERE metric_name = 'codex.tool.call' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "tool_success_rate_pct",
+            "title": "tool_success_rate_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6B1XGNCCZA2Z59TPWE7FMEH03F",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    },
+    {
+      "tile_id": "2NSGC539JA2BYY87BZMJBW6GXE",
+      "title": "P95 Turn Latency",
+      "chartQuery": "SELECT ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_turn_latency_s FROM $traces_dataset WHERE span_name = 'session_task.turn' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_turn_latency_s",
+            "title": "p95_turn_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2NSGC539JA2BYY87BZMJBW6GXE",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    },
+    {
+      "tile_id": "563ZANFTV013AEDDN7155V3565",
+      "title": "P95 Time to First Token",
+      "chartQuery": "SELECT ROUND(APPROX_PERCENTILE_CONT(CAST(duration_ms AS DOUBLE) / 1000.0, 0.95), 3) AS p95_ttft_s FROM $logs_dataset WHERE \"event.name\" = 'codex.turn_ttft' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ttft_s",
+            "title": "p95_ttft_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "563ZANFTV013AEDDN7155V3565",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    },
+    {
+      "tile_id": "0HK41C3N2XPKRVR43D91CYYRK1",
+      "title": "Sessions Started",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(data_point_value) AS sessions\nFROM $metrics_dataset WHERE metric_name = 'codex.thread.started' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "sessions"
+            ],
+            "title": "sessions",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0HK41C3N2XPKRVR43D91CYYRK1",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP"
+    },
+    {
+      "tile_id": "1F9T36C7PB6FB1KF8716A89Y7N",
+      "title": "Conversation Turns",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS turns\nFROM $logs_dataset WHERE \"event.name\" = 'codex.user_prompt' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "turns"
+            ],
+            "title": "turns",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1F9T36C7PB6FB1KF8716A89Y7N",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP"
+    },
+    {
+      "tile_id": "12PKVTRCMWTV44WKZJMTHGSS3W",
+      "title": "Active Conversations",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(DISTINCT \"conversation.id\") AS active_conversations\nFROM $logs_dataset WHERE \"conversation.id\" IS NOT NULL AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "active_conversations"
+            ],
+            "title": "active_conversations",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "12PKVTRCMWTV44WKZJMTHGSS3W",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP"
+    },
+    {
+      "tile_id": "7YXGJNZMTCM957ZEGR52EP9F80",
+      "title": "Turns by Model",
+      "chartQuery": "SELECT model, COUNT(*) AS turns\nFROM $logs_dataset WHERE \"event.name\" = 'codex.user_prompt' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY model ORDER BY turns DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "turns",
+            "title": "turns",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7YXGJNZMTCM957ZEGR52EP9F80",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP"
+    },
+    {
+      "tile_id": "3FAH4AQ81EZSBR6CKXYR5YDPHM",
+      "title": "Client, Version & Terminal",
+      "chartQuery": "SELECT \"service.name\" AS service, \"app.version\" AS app_version,\n  COALESCE(\"terminal.type\", 'unknown') AS terminal, COUNT(DISTINCT \"conversation.id\") AS conversations,\n  COUNT(*) AS events\nFROM $logs_dataset WHERE ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY service, app_version, terminal ORDER BY events DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "service",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "events",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3FAH4AQ81EZSBR6CKXYR5YDPHM",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP"
+    },
+    {
+      "tile_id": "6AZH6PDHQXZ56RVV60DJH3R050",
+      "title": "Token Usage by Type",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  token_type, SUM(data_point_sum) AS tokens\nFROM $metrics_dataset WHERE metric_name = 'codex.turn.token_usage' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin, token_type ORDER BY time_bin, token_type",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "tokens"
+            ],
+            "title": "tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "token_type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6AZH6PDHQXZ56RVV60DJH3R050",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "136P9XD2AWN1QA3WWDXBKGAQPX"
+    },
+    {
+      "tile_id": "0V3CDSVS2ZQK0QBJF76Y6E7468",
+      "title": "Total Tokens by Model",
+      "chartQuery": "SELECT model, SUM(data_point_sum) AS total_tokens\nFROM $metrics_dataset WHERE metric_name = 'codex.turn.token_usage' AND token_type = 'total' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY model ORDER BY total_tokens DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0V3CDSVS2ZQK0QBJF76Y6E7468",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "136P9XD2AWN1QA3WWDXBKGAQPX"
+    },
+    {
+      "tile_id": "44YY7EWTZQE6QS7F0GCPVXQBM3",
+      "title": "Token Composition by Model",
+      "chartQuery": "SELECT model,\n  SUM(data_point_count) FILTER (WHERE token_type = 'total') AS turns,\n  SUM(data_point_sum) FILTER (WHERE token_type = 'input') AS input_tokens,\n  SUM(data_point_sum) FILTER (WHERE token_type = 'cached_input') AS cached_input_tokens,\n  SUM(data_point_sum) FILTER (WHERE token_type = 'cache_write_input') AS cache_write_tokens,\n  SUM(data_point_sum) FILTER (WHERE token_type = 'output') AS output_tokens,\n  SUM(data_point_sum) FILTER (WHERE token_type = 'reasoning_output') AS reasoning_tokens,\n  ROUND(100.0 * SUM(data_point_sum) FILTER (WHERE token_type = 'cached_input') / NULLIF(SUM(data_point_sum) FILTER (WHERE token_type = 'input'), 0), 2) AS cache_utilization_pct\nFROM $metrics_dataset WHERE metric_name = 'codex.turn.token_usage' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY model ORDER BY input_tokens DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "turns",
+            "title": "turns",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "44YY7EWTZQE6QS7F0GCPVXQBM3",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "136P9XD2AWN1QA3WWDXBKGAQPX"
+    },
+    {
+      "tile_id": "6VSZZ4ZG3AY5JS9AA0QZCQ5MX4",
+      "title": "Cache Utilization Over Time",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COALESCE(SUM(data_point_sum) FILTER (WHERE token_type = 'cached_input'), 0) / NULLIF(SUM(data_point_sum) FILTER (WHERE token_type = 'input'), 0), 2) AS cache_utilization_pct\nFROM $metrics_dataset WHERE metric_name = 'codex.turn.token_usage' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "cache_utilization_pct"
+            ],
+            "title": "cache_utilization_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6VSZZ4ZG3AY5JS9AA0QZCQ5MX4",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "136P9XD2AWN1QA3WWDXBKGAQPX"
+    },
+    {
+      "tile_id": "6KFEP0FXQ31J4V6H0PZ4TFA0Z8",
+      "title": "Highest Token Turns",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, \"conversation.id\" AS conversation_id,\n  model, \"codex.turn.reasoning_effort\" AS reasoning_effort,\n  CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE) AS input_tokens,\n  CAST(\"codex.turn.token_usage.cached_input_tokens\" AS DOUBLE) AS cached_input_tokens,\n  CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE) AS output_tokens,\n  CAST(\"codex.turn.token_usage.reasoning_output_tokens\" AS DOUBLE) AS reasoning_tokens,\n  CAST(\"codex.turn.token_usage.total_tokens\" AS DOUBLE) AS total_tokens,\n  ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s\nFROM $traces_dataset WHERE span_name = 'session_task.turn' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')\nORDER BY total_tokens DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6KFEP0FXQ31J4V6H0PZ4TFA0Z8",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "136P9XD2AWN1QA3WWDXBKGAQPX"
+    },
+    {
+      "tile_id": "17D011NCKV1X24ZWMEDNE76F64",
+      "title": "Turn Latency Percentiles",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $traces_dataset WHERE span_name = 'session_task.turn' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "p50_s",
+              "p95_s",
+              "p99_s"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "17D011NCKV1X24ZWMEDNE76F64",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VK73CHZ0WXYYG8ZMA8PFZH5AF7"
+    },
+    {
+      "tile_id": "2J9K9K80YETRZ0WN221971943F",
+      "title": "Time to First Token",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(CAST(duration_ms AS DOUBLE) / 1000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(CAST(duration_ms AS DOUBLE) / 1000.0, 0.95), 3) AS p95_s\nFROM $logs_dataset WHERE \"event.name\" = 'codex.turn_ttft' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "p50_s",
+              "p95_s"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2J9K9K80YETRZ0WN221971943F",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VK73CHZ0WXYYG8ZMA8PFZH5AF7"
+    },
+    {
+      "tile_id": "06B1BRX9V2BA9RPH0Z9YS0NPFD",
+      "title": "Turn Performance by Model",
+      "chartQuery": "SELECT model, COUNT(*) AS turns,\n  ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_duration_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(AVG(CAST(\"codex.turn.token_usage.total_tokens\" AS DOUBLE)), 0) AS avg_tokens\nFROM $traces_dataset WHERE span_name = 'session_task.turn' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')\nGROUP BY model ORDER BY p95_s DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "turns",
+            "title": "turns",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "06B1BRX9V2BA9RPH0Z9YS0NPFD",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VK73CHZ0WXYYG8ZMA8PFZH5AF7"
+    },
+    {
+      "tile_id": "3R7FNPMADB70DA8NA497V26CPM",
+      "title": "Slowest Turns",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, \"conversation.id\" AS conversation_id, model,\n  \"codex.turn.reasoning_effort\" AS reasoning_effort,\n  ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s,\n  CAST(\"codex.turn.token_usage.total_tokens\" AS DOUBLE) AS total_tokens,\n  CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE) AS output_tokens\nFROM $traces_dataset WHERE span_name = 'session_task.turn' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')\nORDER BY span_duration_ns DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3R7FNPMADB70DA8NA497V26CPM",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "VK73CHZ0WXYYG8ZMA8PFZH5AF7"
+    },
+    {
+      "tile_id": "34PEYWZRCB20JZSRZP2N37QDXT",
+      "title": "Tool Calls & Failures",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(data_point_value) AS tool_calls,\n  SUM(data_point_value) FILTER (WHERE success = 'false') AS failures\nFROM $metrics_dataset WHERE metric_name = 'codex.tool.call' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "tool_calls",
+              "failures"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "34PEYWZRCB20JZSRZP2N37QDXT",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3YMTX45Q7YCFBHQ0CQH2V7YSMT"
+    },
+    {
+      "tile_id": "68XZMBE1V79JVG90A79YNZT87N",
+      "title": "Tool Calls by Outcome",
+      "chartQuery": "SELECT tool, CASE WHEN success = 'true' THEN 'succeeded' ELSE 'failed' END AS outcome,\n  SUM(data_point_value) AS calls\nFROM $metrics_dataset WHERE metric_name = 'codex.tool.call' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY tool, success ORDER BY calls DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "tool",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "outcome"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "68XZMBE1V79JVG90A79YNZT87N",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3YMTX45Q7YCFBHQ0CQH2V7YSMT"
+    },
+    {
+      "tile_id": "1N06TFY2B590060TCVMEYAGCM6",
+      "title": "Tool Reliability & Latency",
+      "chartQuery": "SELECT tool,\n  SUM(data_point_value) FILTER (WHERE metric_name = 'codex.tool.call') AS calls,\n  SUM(data_point_value) FILTER (WHERE metric_name = 'codex.tool.call' AND success = 'false') AS failures,\n  ROUND(100.0 * SUM(data_point_value) FILTER (WHERE metric_name = 'codex.tool.call' AND success = 'true') / NULLIF(SUM(data_point_value) FILTER (WHERE metric_name = 'codex.tool.call'), 0), 2) AS success_rate_pct,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name = 'codex.tool.call.duration_ms') / NULLIF(SUM(data_point_count) FILTER (WHERE metric_name = 'codex.tool.call.duration_ms'), 0), 2) AS avg_duration_ms,\n  MAX(max) FILTER (WHERE metric_name = 'codex.tool.call.duration_ms') AS max_duration_ms\nFROM $metrics_dataset WHERE metric_name IN ('codex.tool.call', 'codex.tool.call.duration_ms') AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY tool ORDER BY calls DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "tool",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1N06TFY2B590060TCVMEYAGCM6",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3YMTX45Q7YCFBHQ0CQH2V7YSMT"
+    },
+    {
+      "tile_id": "6K3KNPSJ7R3JCQPKVQATZ8JJCM",
+      "title": "Recent Failed Tool Calls",
+      "chartQuery": "SELECT p_timestamp, trace_id, span_id, \"conversation.id\" AS conversation_id,\n  tool_name, success, duration_ms, \"error.message\" AS error_message\nFROM $logs_dataset WHERE \"event.name\" = 'codex.tool_result' AND success = 'false' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6K3KNPSJ7R3JCQPKVQATZ8JJCM",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3YMTX45Q7YCFBHQ0CQH2V7YSMT"
+    },
+    {
+      "tile_id": "7V7QP7G6KQZDB03BCBWRWH87WC",
+      "title": "MCP Activity",
+      "chartQuery": "SELECT metric_name, COALESCE(server, 'unknown') AS server, COALESCE(tool, 'unknown') AS tool,\n  SUM(data_point_value) AS calls,\n  SUM(data_point_count) AS duration_samples,\n  ROUND(SUM(data_point_sum) / NULLIF(SUM(data_point_count), 0), 2) AS avg_duration_ms,\n  MAX(max) AS max_duration_ms\nFROM $metrics_dataset WHERE metric_name IN ('codex.mcp.call', 'codex.mcp.call.duration_ms', 'codex.mcp.tools.list.duration_ms', 'codex.mcp.tools.fetch_uncached.duration_ms') AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY metric_name, server, tool ORDER BY metric_name, calls DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7V7QP7G6KQZDB03BCBWRWH87WC",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "3YMTX45Q7YCFBHQ0CQH2V7YSMT"
+    },
+    {
+      "tile_id": "12ZTH9E433PBFQFVRZY6E9FENH",
+      "title": "Approval Activity",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(approved, 'unknown') AS outcome, SUM(data_point_value) AS approvals\nFROM $metrics_dataset WHERE metric_name = 'codex.approval.requested' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin, approved ORDER BY time_bin, approved",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "approvals"
+            ],
+            "title": "approvals",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "outcome"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "12ZTH9E433PBFQFVRZY6E9FENH",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "61QW9P81RX6KHCZQ2A3G3DWCHW"
+    },
+    {
+      "tile_id": "7SZGK38SBGJXA4KHC04427GGHM",
+      "title": "Tool Decisions",
+      "chartQuery": "SELECT COALESCE(decision, 'unknown') AS decision, tool_name, COUNT(*) AS decisions\nFROM $logs_dataset WHERE \"event.name\" = 'codex.tool_decision' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY decision, tool_name ORDER BY decisions DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool_name",
+            "title": "tool_name",
+            "display": true
+          },
+          "y": {
+            "field": "decisions",
+            "title": "decisions",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "decision"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7SZGK38SBGJXA4KHC04427GGHM",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "61QW9P81RX6KHCZQ2A3G3DWCHW"
+    },
+    {
+      "tile_id": "10N8GRK7TWGYBW0ANX8M8ZQE5H",
+      "title": "Sandbox Policy Distribution",
+      "chartQuery": "SELECT COALESCE(sandbox_policy, 'unknown') AS sandbox_policy, SUM(data_point_value) AS tool_calls\nFROM $metrics_dataset WHERE metric_name = 'codex.tool.call' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY sandbox_policy ORDER BY tool_calls DESC",
+      "dbName": [
+        "$metrics_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "sandbox_policy",
+            "title": "sandbox_policy",
+            "display": true
+          },
+          "y": {
+            "field": "tool_calls",
+            "title": "tool_calls",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "10N8GRK7TWGYBW0ANX8M8ZQE5H",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "61QW9P81RX6KHCZQ2A3G3DWCHW"
+    },
+    {
+      "tile_id": "7S00F02ANG5W6EWQH9VKRCRNH5",
+      "title": "Sandbox Outcomes",
+      "chartQuery": "SELECT p_timestamp, trace_id, span_id, \"conversation.id\" AS conversation_id,\n  tool_name, outcome, sandbox_policy, approval_policy, \"error.message\" AS error_message\nFROM $logs_dataset WHERE \"event.name\" = 'codex.sandbox_outcome' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "outcome",
+            "title": "outcome",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7S00F02ANG5W6EWQH9VKRCRNH5",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "61QW9P81RX6KHCZQ2A3G3DWCHW"
+    },
+    {
+      "tile_id": "31T446E8DARFQZZ76W15421SZ9",
+      "title": "Structured Events",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"event.name\" AS event_name, COUNT(*) AS events\nFROM $logs_dataset WHERE \"event.name\" IS NOT NULL AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin, event_name ORDER BY time_bin, event_name",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "events"
+            ],
+            "title": "events",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "event_name"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "31T446E8DARFQZZ76W15421SZ9",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "FKNJH8XY2F4GP59M8FEPD7C7Z3"
+    },
+    {
+      "tile_id": "17T29S04RECB1RM959S11HD28A",
+      "title": "Event Distribution",
+      "chartQuery": "SELECT \"event.name\" AS event_name, COUNT(*) AS events\nFROM $logs_dataset WHERE \"event.name\" IS NOT NULL AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY event_name ORDER BY events DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "event_name",
+            "title": "event_name",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "events",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "17T29S04RECB1RM959S11HD28A",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "FKNJH8XY2F4GP59M8FEPD7C7Z3"
+    },
+    {
+      "tile_id": "0BXYQC4W3BFKWPBVD4MT3QP7WM",
+      "title": "Recent Error Signals",
+      "chartQuery": "SELECT p_timestamp, severity_text, \"event.name\" AS event_name, trace_id, span_id,\n  tool_name, success, outcome, \"http.response.status_code\" AS http_status,\n  \"error.message\" AS error_message, body\nFROM $logs_dataset\nWHERE (severity_number >= 17 OR success = 'false' OR \"error.message\" IS NOT NULL OR outcome IN ('denied', 'error', 'failed'))\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "severity_text",
+            "title": "severity_text",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0BXYQC4W3BFKWPBVD4MT3QP7WM",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "FKNJH8XY2F4GP59M8FEPD7C7Z3"
+    },
+    {
+      "tile_id": "37RD0C64ERGMSNZYQR23CKDZTV",
+      "title": "Recent Turn Traces",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, \"conversation.id\" AS conversation_id,\n  model, \"codex.turn.reasoning_effort\" AS reasoning_effort,\n  ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s,\n  CAST(\"codex.turn.token_usage.total_tokens\" AS DOUBLE) AS total_tokens,\n  CAST(\"codex.turn.token_usage.cached_input_tokens\" AS DOUBLE) AS cached_input_tokens,\n  CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE) AS output_tokens,\n  span_status_code, \"error.type\" AS error_type\nFROM $traces_dataset WHERE span_name = 'session_task.turn' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "37RD0C64ERGMSNZYQR23CKDZTV",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WGPBQN680BPB9A7X50AWY12P5S"
+    },
+    {
+      "tile_id": "2P708KG7MX8GR4CC6F1D6JZJFD",
+      "title": "Error Spans",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, span_parent_span_id,\n  span_name, span_kind_description, span_status_code, span_status_message,\n  \"error.type\" AS error_type, COALESCE(model, event_model) AS model,\n  ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms\nFROM $traces_dataset\nWHERE (span_status_code = 2 OR \"error.type\" IS NOT NULL) AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')\nORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "duration_ms",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2P708KG7MX8GR4CC6F1D6JZJFD",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "WGPBQN680BPB9A7X50AWY12P5S"
+    },
+    {
+      "tile_id": "3BK2WFT015W1GEZG583RWXKMMW",
+      "title": "Total Estimated Cost",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 0), 6) AS total_cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_cost_usd",
+            "title": "total_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3BK2WFT015W1GEZG583RWXKMMW",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "6VNCA47AZ8FNM00A22H1S2Y4P9",
+      "title": "Average Cost per Turn",
+      "chartQuery": "SELECT ROUND(AVG(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS avg_cost_per_turn_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_cost_per_turn_usd",
+            "title": "avg_cost_per_turn_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6VNCA47AZ8FNM00A22H1S2Y4P9",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "75D1BTDH34B7Y7YNECMFA146NH",
+      "title": "P95 Cost per Turn",
+      "chartQuery": "SELECT ROUND(APPROX_PERCENTILE_CONT(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp), 0.95), 6) AS p95_cost_per_turn_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_cost_per_turn_usd",
+            "title": "p95_cost_per_turn_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "75D1BTDH34B7Y7YNECMFA146NH",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "0KG47SSBHTWC7AJFK1VXGDJ76Q",
+      "title": "Pricing Coverage",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS pricing_coverage_pct FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "pricing_coverage_pct",
+            "title": "pricing_coverage_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0KG47SSBHTWC7AJFK1VXGDJ76Q",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "3G082300VE1RN922AHCM019AAF",
+      "title": "Cost Over Time",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') GROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "cost_usd"
+            ],
+            "title": "cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3G082300VE1RN922AHCM019AAF",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "0EWV6X0SMTS29FSBTV3ESHXSGE",
+      "title": "Cumulative Cost",
+      "chartQuery": "WITH buckets AS (SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') GROUP BY time_bin) SELECT time_bin, ROUND(SUM(cost_usd) OVER (ORDER BY time_bin ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 6) AS cumulative_cost_usd FROM buckets ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "cumulative_cost_usd"
+            ],
+            "title": "cumulative_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0EWV6X0SMTS29FSBTV3ESHXSGE",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "2AGVGVM43EHWQDPXNR276TS6W7",
+      "title": "Cost by Model",
+      "chartQuery": "SELECT model, COUNT(*) AS turns, ROUND(SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') GROUP BY model ORDER BY cost_usd DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2AGVGVM43EHWQDPXNR276TS6W7",
+        "x": 0,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "4BSB7TDVNDT4K17BKGVHFXDYQ3",
+      "title": "Cost per Turn Over Time",
+      "chartQuery": "WITH turn_costs AS (SELECT p_timestamp, agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp) AS turn_cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')) SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(turn_cost_usd), 6) AS avg_cost_per_turn_usd, ROUND(APPROX_PERCENTILE_CONT(turn_cost_usd, 0.95), 6) AS p95_cost_per_turn_usd FROM turn_costs WHERE turn_cost_usd IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_cost_per_turn_usd",
+              "p95_cost_per_turn_usd"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4BSB7TDVNDT4K17BKGVHFXDYQ3",
+        "x": 6,
+        "y": 13,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "0RA3MVBD92VM8YQX63RA2C40KP",
+      "title": "Model Cost Efficiency",
+      "chartQuery": "SELECT model, COUNT(*) AS turns, SUM(CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE)) AS input_tokens, SUM(CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE)) AS output_tokens, ROUND(SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd, ROUND(AVG(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS avg_cost_per_turn_usd, ROUND(1000.0 * SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)) / NULLIF(SUM(CAST(\"codex.turn.token_usage.total_tokens\" AS DOUBLE)), 0), 6) AS cost_per_1k_tokens_usd, ROUND(1000.0 * SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)) / NULLIF(SUM(CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE)), 0), 6) AS cost_per_1k_output_tokens_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') GROUP BY model ORDER BY cost_usd DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "0RA3MVBD92VM8YQX63RA2C40KP",
+        "x": 0,
+        "y": 21,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "40TP3X6V70FTQF8YA6NG3WWBME",
+      "title": "Most Expensive Turns",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, \"conversation.id\" AS conversation_id, \"service.name\" AS service, COALESCE(\"event_app.version\", \"service.version\") AS app_version, model, \"codex.turn.reasoning_effort\" AS reasoning_effort, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE) AS input_tokens, CAST(\"codex.turn.token_usage.cached_input_tokens\" AS DOUBLE) AS cached_input_tokens, CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE) AS output_tokens, CAST(\"codex.turn.token_usage.total_tokens\" AS DOUBLE) AS total_tokens, ROUND(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp), 6) AS estimated_cost_usd, ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') AND agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL ORDER BY estimated_cost_usd DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "estimated_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "40TP3X6V70FTQF8YA6NG3WWBME",
+        "x": 0,
+        "y": 30,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4"
+    },
+    {
+      "tile_id": "4F8YYESRBA641DQRJWQ5NFCJ5P",
+      "title": "Total Estimated Cost",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 0), 6) AS total_cost_usd\nFROM $traces_dataset\nWHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_cost_usd",
+            "title": "total_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4F8YYESRBA641DQRJWQ5NFCJ5P",
+        "x": 0,
+        "y": 10,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "6RY4176N3PADHSAGED98R0BH7Z"
+    }
+  ]
+}

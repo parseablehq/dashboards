@@ -224,6 +224,23 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "MySQL Monitoring",
+      "dirName": "mysql-monitoring",
+      "fileName": "mysql-monitoring-mixed.json",
+      "description": "Monitor MySQL availability, connections, query throughput, InnoDB storage, locks, table and index I/O, query performance, logs, traces, and telemetry health.",
+      "source": "Mixed",
+      "tags": [
+        "mysql",
+        "database",
+        "opentelemetry",
+        "metrics",
+        "logs",
+        "traces",
+        "observability",
+        "promql"
+      ]
+    },
+    {
       "name": "MongoDB Monitoring",
       "dirName": "mongodb-monitoring",
       "fileName": "mongodb-monitoring-mixed.json",

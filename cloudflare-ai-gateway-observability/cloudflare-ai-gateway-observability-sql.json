@@ -1,0 +1,2112 @@
+{
+  "sections": [
+    {
+      "sectionId": "01KZ4CF0000000000000000001",
+      "title": "Overview",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01KZ4CF0000000000000000002",
+      "title": "Traffic & Reliability",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KZ4CF0000000000000000003",
+      "title": "Performance & Latency",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KZ4CF0000000000000000004",
+      "title": "Tokens & Cost",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KZ4CF0000000000000000005",
+      "title": "Models & Workloads",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KZ4CF0000000000000000006",
+      "title": "Trace Explorer",
+      "isExpanded": false
+    }
+  ],
+  "variables": [
+    {
+      "name": "traces_dataset",
+      "label": "Trace Dataset",
+      "type": "dataset",
+      "defaultValue": "cf-ai-gateway-traces"
+    }
+  ],
+  "tags": [
+    "cloudflare",
+    "ai-gateway",
+    "openai",
+    "genai",
+    "opentelemetry",
+    "traces",
+    "cost",
+    "observability"
+  ],
+  "tiles": [
+    {
+      "tile_id": "01KZ4CG0000000000000000001",
+      "title": "Requests",
+      "chartQuery": "SELECT COUNT(*) AS requests FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000001",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000002",
+      "title": "Success Rate",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE COALESCE(span_status_code, 0) <> 2) / NULLIF(COUNT(*), 0), 2) AS success_rate_pct FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "success_rate_pct",
+            "title": "success_rate_pct",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000002",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000003",
+      "title": "Errors",
+      "chartQuery": "SELECT COUNT(*) FILTER (WHERE span_status_code = 2) AS errors FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "errors",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000003",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000004",
+      "title": "Total Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS total_tokens FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_tokens",
+            "title": "total_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000004",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000005",
+      "title": "Recorded Cost",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(CAST(\"gen_ai.usage.cost\" AS DOUBLE)), 0), 8) AS cost_usd FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000005",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000006",
+      "title": "Average Latency",
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_latency_s FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_latency_s",
+            "title": "avg_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000006",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000007",
+      "title": "P95 Latency",
+      "chartQuery": "SELECT ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_latency_s FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "p95_latency_s",
+            "title": "p95_latency_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000007",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000008",
+      "title": "Active Models",
+      "chartQuery": "SELECT COUNT(DISTINCT \"gen_ai.request.model\") AS active_models FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "active_models",
+            "title": "active_models",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000008",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000009",
+      "title": "Requests and Errors Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'requests' AS series, COUNT(*) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'errors' AS series, COUNT(*) FILTER (WHERE span_status_code = 2) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "timeseries",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "series"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000009",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000001"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000010",
+      "title": "Request Volume by Model",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"gen_ai.request.model\", 'unknown') AS model, COUNT(*) AS requests FROM $traces_dataset WHERE 1=1 GROUP BY time_bin, COALESCE(\"gen_ai.request.model\", 'unknown') ORDER BY time_bin, model",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "timeseries",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "model"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000010",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000002"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000011",
+      "title": "Requests by Provider",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') AS provider, COUNT(*) AS requests FROM $traces_dataset WHERE 1=1 GROUP BY COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000011",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000002"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000012",
+      "title": "Errors by Provider",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') AS provider, COUNT(*) FILTER (WHERE span_status_code = 2) AS errors FROM $traces_dataset WHERE 1=1 GROUP BY COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') ORDER BY errors DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "errors",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000012",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000002"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000013",
+      "title": "Reliability by Workload",
+      "chartQuery": "SELECT COALESCE(workload, 'unclassified') AS workload, COUNT(*) AS requests, COUNT(*) FILTER (WHERE span_status_code = 2) AS errors, ROUND(100.0 * COUNT(*) FILTER (WHERE COALESCE(span_status_code, 0) <> 2) / NULLIF(COUNT(*), 0), 2) AS success_rate_pct FROM $traces_dataset WHERE 1=1 GROUP BY workload ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workload",
+            "title": "workload",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000013",
+        "x": 0,
+        "y": 15,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000002"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000014",
+      "title": "Latency Percentiles Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p50' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p95' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p99' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "timeseries",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "series"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000014",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000003"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000015",
+      "title": "Latency by Model",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", 'unknown') AS model, ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_s, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s FROM $traces_dataset WHERE 1=1 GROUP BY COALESCE(\"gen_ai.request.model\", 'unknown') ORDER BY p95_s DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "p95_s",
+            "title": "p95_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000015",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000003"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000016",
+      "title": "Latency by Workload",
+      "chartQuery": "SELECT COALESCE(workload, 'unclassified') AS workload, ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_s, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s FROM $traces_dataset WHERE 1=1 GROUP BY workload ORDER BY p95_s DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workload",
+            "title": "workload",
+            "display": true
+          },
+          "y": {
+            "field": "p95_s",
+            "title": "p95_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000016",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000003"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000017",
+      "title": "Slowest Requests",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_name, \"gen_ai.request.model\" AS model, COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') AS provider, workload, complexity, ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS total_tokens FROM $traces_dataset WHERE 1=1 ORDER BY span_duration_ns DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000017",
+        "x": 0,
+        "y": 15,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000003"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000018",
+      "title": "Input Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0) AS input_tokens FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "input_tokens",
+            "title": "input_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000018",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000004"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000019",
+      "title": "Output Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS output_tokens FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "output_tokens",
+            "title": "output_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000019",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000004"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000020",
+      "title": "Avg Tokens / Request",
+      "chartQuery": "SELECT ROUND(AVG(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 2) AS avg_tokens FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_tokens",
+            "title": "avg_tokens",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000020",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000004"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000021",
+      "title": "Avg Cost / Request",
+      "chartQuery": "SELECT ROUND(AVG(CAST(\"gen_ai.usage.cost\" AS DOUBLE)), 8) AS avg_cost_usd FROM $traces_dataset WHERE 1=1",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_cost_usd",
+            "title": "avg_cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000021",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000004"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000022",
+      "title": "Token Usage Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'input_tokens' AS series, COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'output_tokens' AS series, COALESCE(SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "timeseries",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "series"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000022",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000004"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000023",
+      "title": "Cost Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'cost_usd' AS series, ROUND(COALESCE(SUM(CAST(\"gen_ai.usage.cost\" AS DOUBLE)), 0), 8) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "timeseries",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": [
+              "series"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000023",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000004"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000024",
+      "title": "Tokens and Cost by Model",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", 'unknown') AS model, COUNT(*) AS requests, COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0) AS input_tokens, COALESCE(SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS output_tokens, ROUND(COALESCE(SUM(CAST(\"gen_ai.usage.cost\" AS DOUBLE)), 0), 8) AS cost_usd, ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_latency_s FROM $traces_dataset WHERE 1=1 GROUP BY COALESCE(\"gen_ai.request.model\", 'unknown') ORDER BY cost_usd DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 8,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "cost_usd",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000024",
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000004"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000025",
+      "title": "Model Distribution",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", 'unknown') AS model, COUNT(*) AS requests FROM $traces_dataset WHERE 1=1 GROUP BY COALESCE(\"gen_ai.request.model\", 'unknown') ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000025",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000005"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000026",
+      "title": "Provider Distribution",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') AS provider, COUNT(*) AS requests FROM $traces_dataset WHERE 1=1 GROUP BY COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "provider",
+            "title": "provider",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000026",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000005"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000027",
+      "title": "Workload Distribution",
+      "chartQuery": "SELECT COALESCE(workload, 'unclassified') AS workload, COUNT(*) AS requests FROM $traces_dataset WHERE 1=1 GROUP BY workload ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workload",
+            "title": "workload",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000027",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000005"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000028",
+      "title": "Complexity Distribution",
+      "chartQuery": "SELECT COALESCE(complexity, 'unclassified') AS complexity, COUNT(*) AS requests FROM $traces_dataset WHERE 1=1 GROUP BY complexity ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "complexity",
+            "title": "complexity",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000028",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000005"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000029",
+      "title": "Model Performance",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", 'unknown') AS model, COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') AS provider, COUNT(*) AS requests, ROUND(100.0 * COUNT(*) FILTER (WHERE COALESCE(span_status_code, 0) <> 2) / NULLIF(COUNT(*), 0), 2) AS success_rate_pct, ROUND(AVG(span_duration_ns / 1000000000.0), 3) AS avg_latency_s, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_latency_s, ROUND(AVG(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) + CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 2) AS avg_tokens FROM $traces_dataset WHERE 1=1 GROUP BY COALESCE(\"gen_ai.request.model\", 'unknown'), COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') ORDER BY requests DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "model",
+            "display": true
+          },
+          "y": {
+            "field": "requests",
+            "title": "requests",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000029",
+        "x": 0,
+        "y": 14,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000005"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000030",
+      "title": "Recent AI Gateway Requests",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_span_id, span_name, \"gen_ai.request.model\" AS model, COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') AS provider, workload, complexity, source, ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS input_tokens, CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS output_tokens, ROUND(CAST(\"gen_ai.usage.cost\" AS DOUBLE), 8) AS cost_usd, span_status_code FROM $traces_dataset WHERE 1=1 ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000030",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000006"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000031",
+      "title": "Recent Errors",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_name, \"gen_ai.request.model\" AS model, COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider, 'unknown') AS provider, workload, complexity, span_status_message, ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s FROM $traces_dataset WHERE span_status_code = 2 AND 1=1 ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "duration_s",
+            "title": "duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000031",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000006"
+    },
+    {
+      "tile_id": "01KZ4CG0000000000000000032",
+      "title": "Trace Summary",
+      "chartQuery": "SELECT span_trace_id, MIN(p_timestamp) AS started_at, COUNT(*) AS spans, ROUND(SUM(span_duration_ns) / 1000000000.0, 3) AS summed_duration_s, MAX(\"gen_ai.request.model\") AS model, MAX(COALESCE(\"gen_ai.model.provider\", \"gen_ai.provider.name\", provider)) AS provider, MAX(workload) AS workload, MAX(span_status_code) AS max_status_code FROM $traces_dataset WHERE 1=1 GROUP BY span_trace_id ORDER BY started_at DESC LIMIT 100",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "started_at",
+            "title": "started_at",
+            "display": true
+          },
+          "y": {
+            "field": "summed_duration_s",
+            "title": "summed_duration_s",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01KZ4CG0000000000000000032",
+        "x": 0,
+        "y": 19,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KZ4CF0000000000000000006"
+    }
+  ]
+}

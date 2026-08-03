@@ -1,0 +1,3750 @@
+{
+  "tags": [
+    "temporal",
+    "workflows",
+    "activities",
+    "opentelemetry",
+    "logs",
+    "traces",
+    "reliability",
+    "metrics",
+    "promql"
+  ],
+  "variables": [
+    {
+      "name": "traces_dataset",
+      "label": "Temporal Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "temporal-traces"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "Temporal Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "temporal-logs"
+    },
+    {
+      "name": "metrics_dataset",
+      "label": "Temporal Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "temporal-metrics"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "GA431BC04N4K0RBXDQHC7SXTYW",
+      "title": "Workflows & Reliability",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "B70RVPHNBMBZENR25YD7BY73VG",
+      "title": "Activities",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "QC1NQ117K56279WRPSMD5AP8A2",
+      "title": "Task Queues & Runtime",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "G7V7KMQYP8T3QDT22EXDBGDD0J",
+      "title": "Event Performance & Traces",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "KRWR8BG7C36T6G9NEV3BJ888R5",
+      "title": "Logs & Errors",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "title": "Temporal Metrics Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "title": "Workers, Task Queues & Server Metrics",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "6K9M5BDY9X1Q6XSG83THWGZRZ7",
+      "title": "Workflow Executions",
+      "chartQuery": "SELECT COUNT(DISTINCT \"temporal.workflow.id\") AS workflow_executions\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL AND \"temporal.status\" = 'started'",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "layout": {
+        "i": "6K9M5BDY9X1Q6XSG83THWGZRZ7",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "workflow_executions",
+            "title": "workflow_executions",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "66FCQ8B0K4YEN8TCX4C2PHDKHV",
+      "title": "Completed Workflows",
+      "chartQuery": "SELECT COUNT(DISTINCT \"temporal.workflow.id\") AS completed_workflows\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL AND \"temporal.status\" = 'completed'",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "layout": {
+        "i": "66FCQ8B0K4YEN8TCX4C2PHDKHV",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "completed_workflows",
+            "title": "completed_workflows",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7MTZ4N3HX8PREAAD2Y9HDMD48Z",
+      "title": "Failed Workflows",
+      "chartQuery": "SELECT COUNT(DISTINCT \"temporal.workflow.id\") AS failed_workflows\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL AND \"temporal.status\" = 'failed'",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "layout": {
+        "i": "7MTZ4N3HX8PREAAD2Y9HDMD48Z",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "failed_workflows",
+            "title": "failed_workflows",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01NCKX30SVZH8E0SN4W2WQP2Q5",
+      "title": "Workflow Success Rate",
+      "chartQuery": "SELECT ROUND(\n  100.0 * COUNT(DISTINCT CASE WHEN \"temporal.status\" = 'completed' THEN \"temporal.workflow.id\" END)\n  / NULLIF(COUNT(DISTINCT CASE WHEN \"temporal.status\" = 'started' THEN \"temporal.workflow.id\" END), 0), 2\n) AS success_rate_pct\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "layout": {
+        "i": "01NCKX30SVZH8E0SN4W2WQP2Q5",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "success_rate_pct",
+            "title": "success_rate_pct",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5H2R0458E4YKKCW7T6J8AV9BJJ",
+      "title": "Activity Executions",
+      "chartQuery": "SELECT COUNT(*) AS activity_executions\nFROM $traces_dataset\nWHERE \"temporal.activity.type\" IS NOT NULL AND \"temporal.status\" = 'started'",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "layout": {
+        "i": "5H2R0458E4YKKCW7T6J8AV9BJJ",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "activity_executions",
+            "title": "activity_executions",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5MG02182C7X01HP8R0ZK17EC9H",
+      "title": "Workflow Failure Events",
+      "chartQuery": "SELECT COUNT(*) AS failure_events\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL AND span_status_code = 2",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "layout": {
+        "i": "5MG02182C7X01HP8R0ZK17EC9H",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "failure_events",
+            "title": "failure_events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "71GQWV1EEX5A8G59NM49HZXPEV",
+      "title": "Workflow Types",
+      "chartQuery": "SELECT COUNT(DISTINCT \"temporal.workflow.type\") AS workflow_types\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "layout": {
+        "i": "71GQWV1EEX5A8G59NM49HZXPEV",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "workflow_types",
+            "title": "workflow_types",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2C2GEETC18FXTRZJYHKQQ75TFS",
+      "title": "Task Queues",
+      "chartQuery": "SELECT COUNT(DISTINCT \"temporal.task_queue\") AS task_queues\nFROM $traces_dataset\nWHERE \"temporal.task_queue\" IS NOT NULL",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "HT7HCZNMPEXB5CFC32MD4WTGR3",
+      "layout": {
+        "i": "2C2GEETC18FXTRZJYHKQQ75TFS",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "task_queues",
+            "title": "task_queues",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4HXHGCPZ295B7K7KS5DSN7V4JG",
+      "title": "Workflow Events Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL\nGROUP BY time_bin, workflow_type, status\nORDER BY time_bin, workflow_type, status",
+      "dbName": "$traces_dataset",
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "GA431BC04N4K0RBXDQHC7SXTYW",
+      "layout": {
+        "i": "4HXHGCPZ295B7K7KS5DSN7V4JG",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "workflow_type",
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6YTAKR9KNK1B2SY98ZN89BSC5B",
+      "title": "Workflows by Type & Outcome",
+      "chartQuery": "SELECT \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.status\" AS status,\n  COUNT(DISTINCT \"temporal.workflow.id\") AS workflows\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL\nGROUP BY workflow_type, status\nORDER BY workflow_type, status",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "GA431BC04N4K0RBXDQHC7SXTYW",
+      "layout": {
+        "i": "6YTAKR9KNK1B2SY98ZN89BSC5B",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workflow_type",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "workflows",
+            "title": "workflows",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3GGFXQ42K33T4AFK17VFP180ZD",
+      "title": "Workflow Execution Summary",
+      "chartQuery": "SELECT \"temporal.workflow.id\" AS workflow_id,\n  MAX(\"temporal.workflow.type\") AS workflow_type,\n  COUNT(*) FILTER (WHERE \"temporal.status\" = 'started') AS start_events,\n  COUNT(*) FILTER (WHERE \"temporal.status\" = 'completed') AS completed_events,\n  COUNT(*) FILTER (WHERE \"temporal.status\" = 'failed') AS failed_events,\n  CASE\n    WHEN COUNT(*) FILTER (WHERE \"temporal.status\" = 'failed') > 0 THEN 'failed'\n    WHEN COUNT(*) FILTER (WHERE \"temporal.status\" = 'completed') > 0 THEN 'completed'\n    ELSE 'running'\n  END AS outcome,\n  MIN(p_timestamp) AS first_seen,\n  MAX(p_timestamp) AS last_seen\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL\nGROUP BY workflow_id\nORDER BY last_seen DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "GA431BC04N4K0RBXDQHC7SXTYW",
+      "layout": {
+        "i": "3GGFXQ42K33T4AFK17VFP180ZD",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workflow_id",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "start_events",
+            "title": "start_events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2V98EC5H1WVX7NYP56DD493GCV",
+      "title": "Workflow Failures & Retries",
+      "chartQuery": "SELECT \"temporal.workflow.id\" AS workflow_id,\n  \"temporal.workflow.type\" AS workflow_type,\n  COUNT(*) AS failure_events,\n  MIN(p_timestamp) AS first_failure,\n  MAX(p_timestamp) AS latest_failure,\n  MAX(COALESCE(\"error.message\", span_status_message)) AS latest_error\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL AND \"temporal.status\" = 'failed'\nGROUP BY workflow_id, workflow_type\nORDER BY failure_events DESC, latest_failure DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "GA431BC04N4K0RBXDQHC7SXTYW",
+      "layout": {
+        "i": "2V98EC5H1WVX7NYP56DD493GCV",
+        "x": 0,
+        "y": 17,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workflow_id",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "failure_events",
+            "title": "failure_events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3BVENXFGP2AZ9QXNS4GTHBM8G0",
+      "title": "Workflow Event Span Duration",
+      "chartQuery": "SELECT \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events,\n  ROUND(AVG(span_duration_ns / 1000000.0), 4) AS avg_ms,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 4) AS p95_ms\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL\nGROUP BY workflow_type, status\nORDER BY p95_ms DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "GA431BC04N4K0RBXDQHC7SXTYW",
+      "layout": {
+        "i": "3BVENXFGP2AZ9QXNS4GTHBM8G0",
+        "x": 6,
+        "y": 17,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workflow_type",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "p95_ms",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "38QGRDYW336R3CYTVD8V2PXRBJ",
+      "title": "Workflow State Transition Log",
+      "chartQuery": "SELECT p_timestamp,\n  \"temporal.workflow.id\" AS workflow_id,\n  \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.status\" AS status,\n  severity_text,\n  body,\n  \"error.message\" AS error\nFROM $logs_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL\nORDER BY p_timestamp DESC\nLIMIT 100",
+      "dbName": "$logs_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "GA431BC04N4K0RBXDQHC7SXTYW",
+      "layout": {
+        "i": "38QGRDYW336R3CYTVD8V2PXRBJ",
+        "x": 0,
+        "y": 26,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "status",
+            "title": "status",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7K8FV4J6CJC6TGTG2MSJ1B28RV",
+      "title": "Activity Events Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"temporal.activity.type\" AS activity_type,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.activity.type\" IS NOT NULL\nGROUP BY time_bin, activity_type, status\nORDER BY time_bin, activity_type, status",
+      "dbName": "$traces_dataset",
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "B70RVPHNBMBZENR25YD7BY73VG",
+      "layout": {
+        "i": "7K8FV4J6CJC6TGTG2MSJ1B28RV",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "activity_type",
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "10MBA3TJ2J4PMMMB4NJ6D7J8YE",
+      "title": "Activity Outcomes by Type",
+      "chartQuery": "SELECT \"temporal.activity.type\" AS activity_type,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.activity.type\" IS NOT NULL\nGROUP BY activity_type, status\nORDER BY activity_type, status",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "B70RVPHNBMBZENR25YD7BY73VG",
+      "layout": {
+        "i": "10MBA3TJ2J4PMMMB4NJ6D7J8YE",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "activity_type",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6H1YR1HDBZQJA9Z66C0CVM77XH",
+      "title": "Activity Summary",
+      "chartQuery": "SELECT \"temporal.activity.type\" AS activity_type,\n  COUNT(*) FILTER (WHERE \"temporal.status\" = 'started') AS started,\n  COUNT(*) FILTER (WHERE \"temporal.status\" = 'completed') AS completed,\n  COUNT(*) FILTER (WHERE \"temporal.status\" = 'failed') AS failed,\n  ROUND(AVG(span_duration_ns / 1000000.0), 4) AS avg_event_ms,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 4) AS p95_event_ms\nFROM $traces_dataset\nWHERE \"temporal.activity.type\" IS NOT NULL\nGROUP BY activity_type\nORDER BY started DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "B70RVPHNBMBZENR25YD7BY73VG",
+      "layout": {
+        "i": "6H1YR1HDBZQJA9Z66C0CVM77XH",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "activity_type",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "started",
+            "title": "started",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "649W4YS3RTYFB6227NJV4FB85C",
+      "title": "Activity Event Details",
+      "chartQuery": "SELECT p_timestamp,\n  \"temporal.workflow.id\" AS workflow_id,\n  \"temporal.activity.type\" AS activity_type,\n  \"temporal.status\" AS status,\n  ROUND(span_duration_ns / 1000000.0, 4) AS event_span_ms,\n  span_status_description,\n  COALESCE(\"error.message\", span_status_message) AS error,\n  span_trace_id,\n  span_span_id\nFROM $traces_dataset\nWHERE \"temporal.activity.type\" IS NOT NULL\nORDER BY p_timestamp DESC\nLIMIT 100",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "B70RVPHNBMBZENR25YD7BY73VG",
+      "layout": {
+        "i": "649W4YS3RTYFB6227NJV4FB85C",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "event_span_ms",
+            "title": "event_span_ms",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "30DGJ2RKVRMT3VYQRCZ1J96B6W",
+      "title": "Events by Task Queue",
+      "chartQuery": "SELECT \"temporal.task_queue\" AS task_queue,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.task_queue\" IS NOT NULL\nGROUP BY task_queue, status\nORDER BY task_queue, status",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "QC1NQ117K56279WRPSMD5AP8A2",
+      "layout": {
+        "i": "30DGJ2RKVRMT3VYQRCZ1J96B6W",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "task_queue",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "54H15H91VRRPP32CH58GSSWJP3",
+      "title": "Namespace Activity",
+      "chartQuery": "SELECT \"temporal.namespace\" AS namespace,\n  CASE WHEN \"temporal.workflow.type\" IS NOT NULL THEN 'workflow' ELSE 'activity' END AS event_kind,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.namespace\" IS NOT NULL\nGROUP BY \"temporal.namespace\", CASE WHEN \"temporal.workflow.type\" IS NOT NULL THEN 'workflow' ELSE 'activity' END\nORDER BY namespace, event_kind",
+      "dbName": "$traces_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "QC1NQ117K56279WRPSMD5AP8A2",
+      "layout": {
+        "i": "54H15H91VRRPP32CH58GSSWJP3",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "namespace",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "event_kind"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "48XBPRRWKZ9XD37G796TNAQCX8",
+      "title": "Service & SDK Inventory",
+      "chartQuery": "SELECT \"service.name\" AS service,\n  \"temporal.plugin.sdk\" AS temporal_sdk,\n  \"temporal.plugin.version\" AS plugin_version,\n  scope_name,\n  scope_version,\n  COUNT(*) AS events,\n  MIN(p_timestamp) AS first_seen,\n  MAX(p_timestamp) AS last_seen\nFROM $traces_dataset\nGROUP BY service, temporal_sdk, plugin_version, scope_name, scope_version\nORDER BY events DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "QC1NQ117K56279WRPSMD5AP8A2",
+      "layout": {
+        "i": "48XBPRRWKZ9XD37G796TNAQCX8",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "events",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3Z2VHVKAENAA82XW8V6XHWZC1J",
+      "title": "Task Queue Inventory",
+      "chartQuery": "SELECT \"temporal.namespace\" AS namespace,\n  \"temporal.task_queue\" AS task_queue,\n  COUNT(DISTINCT \"temporal.workflow.id\") AS workflow_ids,\n  COUNT(DISTINCT \"temporal.workflow.type\") AS workflow_types,\n  COUNT(DISTINCT \"temporal.activity.type\") AS activity_types,\n  COUNT(*) FILTER (WHERE span_status_code = 2) AS error_events,\n  MIN(p_timestamp) AS first_seen,\n  MAX(p_timestamp) AS last_seen\nFROM $traces_dataset\nWHERE \"temporal.task_queue\" IS NOT NULL\nGROUP BY \"temporal.namespace\", \"temporal.task_queue\"\nORDER BY workflow_ids DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "QC1NQ117K56279WRPSMD5AP8A2",
+      "layout": {
+        "i": "3Z2VHVKAENAA82XW8V6XHWZC1J",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "task_queue",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "workflow_ids",
+            "title": "workflow_ids",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4SJWWV1BFQ1JFHA1RQ3PCPDF2A",
+      "title": "Span Events Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  CASE WHEN span_status_code = 2 THEN 'error' ELSE 'ok' END AS outcome,\n  COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, outcome\nORDER BY time_bin, outcome",
+      "dbName": "$traces_dataset",
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "G7V7KMQYP8T3QDT22EXDBGDD0J",
+      "layout": {
+        "i": "4SJWWV1BFQ1JFHA1RQ3PCPDF2A",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "outcome"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6KK1YCC4PHNR12VJ6837ZB4VVJ",
+      "title": "Event Span Duration Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(AVG(span_duration_ns / 1000000.0), 4) AS avg_ms,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 4) AS p95_ms\nFROM $traces_dataset\nGROUP BY time_bin\nORDER BY time_bin",
+      "dbName": "$traces_dataset",
+      "chartType": "line",
+      "tileType": "code",
+      "sectionId": "G7V7KMQYP8T3QDT22EXDBGDD0J",
+      "layout": {
+        "i": "6KK1YCC4PHNR12VJ6837ZB4VVJ",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": [
+              "avg_ms",
+              "p95_ms"
+            ],
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4RHS03VE77HGNTBY349794G95M",
+      "title": "Event Span Duration by Operation",
+      "chartQuery": "SELECT span_name,\n  COUNT(*) AS spans,\n  ROUND(AVG(span_duration_ns / 1000000.0), 4) AS avg_ms,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.50), 4) AS p50_ms,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 4) AS p95_ms,\n  MAX(span_status_description) AS span_status\nFROM $traces_dataset\nGROUP BY span_name\nORDER BY p95_ms DESC",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "G7V7KMQYP8T3QDT22EXDBGDD0J",
+      "layout": {
+        "i": "4RHS03VE77HGNTBY349794G95M",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "span_name",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "p95_ms",
+            "title": "p95_ms",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "600ZPYGSWCX429BGRAPJ2D8YHP",
+      "title": "Span Status by Operation",
+      "chartQuery": "SELECT span_name,\n  CASE WHEN span_status_code = 2 THEN 'error' ELSE 'ok' END AS outcome,\n  COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY span_name, outcome\nORDER BY spans DESC",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "G7V7KMQYP8T3QDT22EXDBGDD0J",
+      "layout": {
+        "i": "600ZPYGSWCX429BGRAPJ2D8YHP",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 9,
+        "moved": true,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "span_name",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "spans",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "outcome"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2HZ6PAF2RAR7Q99RV265AK2SSV",
+      "title": "Recent Span Events",
+      "chartQuery": "SELECT p_timestamp,\n  span_name,\n  \"temporal.workflow.id\" AS workflow_id,\n  \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.activity.type\" AS activity_type,\n  \"temporal.status\" AS temporal_status,\n  span_status_description,\n  ROUND(span_duration_ns / 1000000.0, 4) AS event_span_ms,\n  COALESCE(\"error.message\", span_status_message) AS error,\n  span_trace_id,\n  span_span_id\nFROM $traces_dataset\nORDER BY p_timestamp DESC\nLIMIT 100",
+      "dbName": "$traces_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "G7V7KMQYP8T3QDT22EXDBGDD0J",
+      "layout": {
+        "i": "2HZ6PAF2RAR7Q99RV265AK2SSV",
+        "x": 0,
+        "y": 17,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "event_span_ms",
+            "title": "event_span_ms",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "03YZ1084JK5H59HJE1NVT88HAT",
+      "title": "Logs Over Time",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(severity_text, p_log_category, 'UNSPECIFIED') AS severity,\n  COUNT(*) AS records\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin, severity",
+      "dbName": "$logs_dataset",
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "KRWR8BG7C36T6G9NEV3BJ888R5",
+      "layout": {
+        "i": "03YZ1084JK5H59HJE1NVT88HAT",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "records",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "severity"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "27EF9V3JZW7JT9N6RSFEPYKT5D",
+      "title": "Log Severity Distribution",
+      "chartQuery": "SELECT COALESCE(severity_text, p_log_category, 'UNSPECIFIED') AS severity,\n  COUNT(*) AS records\nFROM $logs_dataset\nGROUP BY severity\nORDER BY records DESC",
+      "dbName": "$logs_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "KRWR8BG7C36T6G9NEV3BJ888R5",
+      "layout": {
+        "i": "27EF9V3JZW7JT9N6RSFEPYKT5D",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "severity",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "records",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4N70MRQQMTPWY55PBKXHTZEYQC",
+      "title": "Error Volume by Workflow Type",
+      "chartQuery": "SELECT COALESCE(\"temporal.workflow.type\", 'unknown') AS workflow_type,\n  COUNT(*) AS errors\nFROM $logs_dataset\nWHERE COALESCE(severity_text, p_log_category) IN ('ERROR', 'FATAL')\nGROUP BY workflow_type\nORDER BY errors DESC",
+      "dbName": "$logs_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "KRWR8BG7C36T6G9NEV3BJ888R5",
+      "layout": {
+        "i": "4N70MRQQMTPWY55PBKXHTZEYQC",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "workflow_type",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "errors",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3F220SMAHPHEB26K3F814FVBQ7",
+      "title": "Temporal Log Event Distribution",
+      "chartQuery": "SELECT body AS event,\n  \"temporal.status\" AS status,\n  COUNT(*) AS records\nFROM $logs_dataset\nGROUP BY body, \"temporal.status\"\nORDER BY records DESC",
+      "dbName": "$logs_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "KRWR8BG7C36T6G9NEV3BJ888R5",
+      "layout": {
+        "i": "3F220SMAHPHEB26K3F814FVBQ7",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "event",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "records",
+            "title": "records",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "22TMHY0QHH36TJGTQEK5YRYSCH",
+      "title": "Error Details",
+      "chartQuery": "SELECT p_timestamp,\n  severity_text,\n  \"temporal.workflow.id\" AS workflow_id,\n  \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.status\" AS status,\n  body,\n  \"error.message\" AS error,\n  \"temporal.namespace\" AS namespace,\n  \"temporal.task_queue\" AS task_queue\nFROM $logs_dataset\nWHERE COALESCE(severity_text, p_log_category) IN ('ERROR', 'FATAL')\nORDER BY p_timestamp DESC\nLIMIT 100",
+      "dbName": "$logs_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "KRWR8BG7C36T6G9NEV3BJ888R5",
+      "layout": {
+        "i": "22TMHY0QHH36TJGTQEK5YRYSCH",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "status",
+            "title": "status",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5RPXTW1XC6TE1XP764AXVB2A37",
+      "title": "Recent Temporal Logs",
+      "chartQuery": "SELECT p_timestamp,\n  COALESCE(severity_text, p_log_category) AS severity,\n  body,\n  \"temporal.workflow.id\" AS workflow_id,\n  \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.activity.type\" AS activity_type,\n  \"temporal.status\" AS status,\n  \"temporal.namespace\" AS namespace,\n  \"temporal.task_queue\" AS task_queue,\n  \"service.name\" AS service\nFROM $logs_dataset\nORDER BY p_timestamp DESC\nLIMIT 100",
+      "dbName": "$logs_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "KRWR8BG7C36T6G9NEV3BJ888R5",
+      "layout": {
+        "i": "5RPXTW1XC6TE1XP764AXVB2A37",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "status",
+            "title": "status",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "79CN8MY2BHA2CRG6RJ32NJGDRH",
+      "title": "Scrape Targets Up",
+      "chartQuery": [
+        "min(up)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "layout": {
+        "i": "79CN8MY2BHA2CRG6RJ32NJGDRH",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1RG3SXYTAFYBQ4MG2AQX57WWEE",
+      "title": "Workflows Completed (5m)",
+      "chartQuery": [
+        "sum(increase(temporal_workflow_completed[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "layout": {
+        "i": "1RG3SXYTAFYBQ4MG2AQX57WWEE",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0H7F9HEG1R4TBHPRXY9AD466TV",
+      "title": "P95 Workflow E2E Latency",
+      "chartQuery": [
+        "histogram_quantile(0.95, sum by (le) (temporal_workflow_endtoend_latency_bucket))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "layout": {
+        "i": "0H7F9HEG1R4TBHPRXY9AD466TV",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "49A28NGPWAH0MBCQBW0VCP6E0Z",
+      "title": "Successful Activities (5m)",
+      "chartQuery": [
+        "sum(increase(activity_success[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "layout": {
+        "i": "49A28NGPWAH0MBCQBW0VCP6E0Z",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7CXRHF5CPYQAA8N1VX7DMHTPC6",
+      "title": "Used Worker Slots",
+      "chartQuery": [
+        "sum(temporal_worker_task_slots_used)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "layout": {
+        "i": "7CXRHF5CPYQAA8N1VX7DMHTPC6",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "10QGMRG7KFEJCJN7NNP99ZC7A2",
+      "title": "Total Task Backlog",
+      "chartQuery": [
+        "sum(approximate_backlog_count)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "layout": {
+        "i": "10QGMRG7KFEJCJN7NNP99ZC7A2",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7KBKKBKTD2K47FYT02H7V5BQSE",
+      "title": "Max Backlog Age",
+      "chartQuery": [
+        "max(approximate_backlog_age_seconds)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "layout": {
+        "i": "7KBKKBKTD2K47FYT02H7V5BQSE",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "78G703PA92JJN7EJ3RCEEEX2M2",
+      "title": "Poll Timeouts (5m)",
+      "chartQuery": [
+        "sum(increase(poll_timeouts[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "72BQJXPAK3WR2XRZTJ0Z406CY6",
+      "layout": {
+        "i": "78G703PA92JJN7EJ3RCEEEX2M2",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1S534YCJ9FXYEP1QHQQNF8GMBD",
+      "title": "Worker Slots Used",
+      "chartQuery": [
+        "sum by (worker_type) (temporal_worker_task_slots_used)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "1S534YCJ9FXYEP1QHQQNF8GMBD",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5J5F4X9KB2BW49KPTMA5SBR4H0",
+      "title": "Worker Slots Available",
+      "chartQuery": [
+        "sum by (worker_type) (temporal_worker_task_slots_available)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "5J5F4X9KB2BW49KPTMA5SBR4H0",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0895GZEMRFVXDNGSEQV7FAGPKX",
+      "title": "Pollers by Worker Type",
+      "chartQuery": [
+        "sum by (worker_type) (temporal_num_pollers)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "0895GZEMRFVXDNGSEQV7FAGPKX",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7B9ABFT6RZ80EP0NNAVAYY2TRE",
+      "title": "Poll Success Rate",
+      "chartQuery": [
+        "sum by (task_type) (rate(poll_success[1m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "7B9ABFT6RZ80EP0NNAVAYY2TRE",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6X64X3GV6FJX1VNGTN3VTBE58E",
+      "title": "Synchronous Poll Success Rate",
+      "chartQuery": [
+        "sum by (task_type) (rate(poll_success_sync[1m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "6X64X3GV6FJX1VNGTN3VTBE58E",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2HB4ZWFWKZ1FT6BYRYPHJPPW6D",
+      "title": "Poll Timeout Rate by Task Type",
+      "chartQuery": [
+        "sum by (task_type) (rate(poll_timeouts[1m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "2HB4ZWFWKZ1FT6BYRYPHJPPW6D",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7EXCGX5GH5WN6W77SDEG9SS0FW",
+      "title": "Task Queue Backlog",
+      "chartQuery": [
+        "topk(10, max by (taskqueue, task_type) (approximate_backlog_count))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "7EXCGX5GH5WN6W77SDEG9SS0FW",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6RKX92XTA4FM8YN7K9FKB04XZH",
+      "title": "Task Queue Backlog Age",
+      "chartQuery": [
+        "topk(10, max by (taskqueue, task_type) (approximate_backlog_age_seconds))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "6RKX92XTA4FM8YN7K9FKB04XZH",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7WET2ETK3XQ8GEBHJVJTQ4X4ZW",
+      "title": "Service Request Rate",
+      "chartQuery": [
+        "sum by (service_name) (rate(service_requests[1m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "7WET2ETK3XQ8GEBHJVJTQ4X4ZW",
+        "x": 0,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "req/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0HS9PCBQV3BX0WZ17GGZ96DD5B",
+      "title": "P95 Service Latency",
+      "chartQuery": [
+        "histogram_quantile(0.95, sum by (le, service_name) (rate(service_latency_bucket[1m])))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "0HS9PCBQV3BX0WZ17GGZ96DD5B",
+        "x": 6,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "65EHGC1D39N49W1C6X1CWJGGVX",
+      "title": "Persistence Request Rate",
+      "chartQuery": [
+        "topk(10, sum by (operation) (rate(persistence_requests[1m])))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "65EHGC1D39N49W1C6X1CWJGGVX",
+        "x": 0,
+        "y": 40,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ops/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "341RKAFWEYE56NNJHAX6PXHCH7",
+      "title": "Persistence Error Rate",
+      "chartQuery": [
+        "sum by (error_type) (rate(persistence_error_with_type[1m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "341RKAFWEYE56NNJHAX6PXHCH7",
+        "x": 6,
+        "y": 40,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "errors/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "23XS5XCHVQE0V2DK79XT0AMAKJ",
+      "title": "Heap Memory In Use",
+      "chartQuery": [
+        "sum(memory_heapinuse)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "23XS5XCHVQE0V2DK79XT0AMAKJ",
+        "x": 0,
+        "y": 48,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3TQS4GM62NHZEE9307NAZ4QDFR",
+      "title": "Go Runtime Goroutines",
+      "chartQuery": [
+        "sum(num_goroutines)"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "3TQS4GM62NHZEE9307NAZ4QDFR",
+        "x": 6,
+        "y": 48,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3VZHCNY8ZR0BTH444QR1B68AR7",
+      "title": "Temporal Metric Inventory",
+      "chartQuery": "SELECT metric_name,\n  metric_type,\n  metric_unit,\n  COUNT(*) AS samples,\n  COUNT(DISTINCT __series_hash_u64) AS series,\n  MIN(p_timestamp) AS first_seen,\n  MAX(p_timestamp) AS last_seen\nFROM $metrics_dataset\nGROUP BY metric_name, metric_type, metric_unit\nORDER BY samples DESC",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "3VZHCNY8ZR0BTH444QR1B68AR7",
+        "x": 0,
+        "y": 56,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7RMHTD86ECJD5QCJWYG68AW2RA",
+      "title": "Metrics by Service Instance",
+      "chartQuery": "SELECT \"service.name\" AS service,\n  \"service.instance.id\" AS instance,\n  COUNT(DISTINCT metric_name) AS metrics,\n  COUNT(DISTINCT __series_hash_u64) AS series,\n  COUNT(*) AS samples,\n  MIN(p_timestamp) AS first_seen,\n  MAX(p_timestamp) AS last_seen\nFROM $metrics_dataset\nWHERE \"service.name\" IS NOT NULL\nGROUP BY \"service.name\", \"service.instance.id\"\nORDER BY samples DESC",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "22WF41NSNF6D5C66E4GQM7ZJHP",
+      "layout": {
+        "i": "7RMHTD86ECJD5QCJWYG68AW2RA",
+        "x": 0,
+        "y": 66,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "metrics",
+            "title": "metrics",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

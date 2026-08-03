@@ -325,6 +325,25 @@
       "thumbnail": "assets/screenshot.png"
     },
     {
+      "name": "Temporal Workflow Observability",
+      "dirName": "temporal-workflow-observability",
+      "fileName": "temporal-workflow-observability-mixed.json",
+      "description": "Monitor Temporal workflows, activities, task queues, failures, traces, logs, workers, service requests, persistence, and runtime health.",
+      "source": "Mixed",
+      "tags": [
+        "temporal",
+        "workflows",
+        "activities",
+        "opentelemetry",
+        "logs",
+        "traces",
+        "metrics",
+        "promql",
+        "observability"
+      ],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
       "name": "Website Performance & Visits",
       "dirName": "website-performance-and-visits",
       "fileName": "website-performance-and-visits-mixed.json",

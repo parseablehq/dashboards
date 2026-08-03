@@ -150,6 +150,24 @@
       ]
     },
     {
+      "name": "Cloudflare AI Gateway Observability",
+      "dirName": "cloudflare-ai-gateway-observability",
+      "fileName": "cloudflare-ai-gateway-observability-sql.json",
+      "description": "Monitor Cloudflare AI Gateway requests, reliability, latency, tokens, cost, models, custom workloads, and native OpenTelemetry traces.",
+      "source": "SQL",
+      "tags": [
+        "cloudflare",
+        "ai-gateway",
+        "openai",
+        "genai",
+        "opentelemetry",
+        "traces",
+        "cost",
+        "observability"
+      ],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
       "name": "K8s Cluster Monitoring",
       "dirName": "k8s-cluster-monitoring",
       "fileName": "k8s-cluster-monitoring-mixed.json",

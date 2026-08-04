@@ -340,7 +340,6 @@
       "fileName": "parseable-audit-logs-sql.json",
       "description": "Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets.",
       "source": "SQL",
-      "icon": "assets/icon.svg",
       "tags": ["audit", "parseable", "logs", "azure"],
       "thumbnail": "assets/screenshot.png"
     },

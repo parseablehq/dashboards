@@ -25,6 +25,7 @@
       "fileName": "crewai-observability-sql.json",
       "description": "Monitor CrewAI crews, flows, agents, tasks, LLM calls, token usage, tools, latency, and errors from OpenInference traces.",
       "source": "SQL",
+      "icon": "assets/icon.svg",
       "tags": [
         "crewai",
         "agents",
@@ -41,6 +42,7 @@
       "fileName": "mastra-agent-observability-mixed.json",
       "description": "Monitor Mastra agent runs, model calls, tokens, estimated cost, tools, latency, correlated logs, traces, and native metrics.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "mastra",
         "agents",
@@ -98,6 +100,7 @@
       "fileName": "modal-observability-mixed.json",
       "description": "Monitor Modal application logs, traces, function and container capacity, CPU, memory, GPU, input events, latency, errors, and correlated telemetry.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "modal",
         "datadog",
@@ -114,6 +117,7 @@
       "fileName": "claude-code-usage-mixed.json",
       "description": "Monitor Claude Code sessions, model usage, request patterns, token consumption, and PromQL-backed runtime signals.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": ["claude-code", "usage", "genai"],
       "thumbnail": "assets/Overview.png"
     },
@@ -123,6 +127,7 @@
       "fileName": "codex-observability-sql.json",
       "description": "Monitor Codex sessions, turns, token and cache usage, estimated cost, latency, tools, MCP activity, approvals, errors, logs, and traces.",
       "source": "SQL",
+      "icon": "assets/icon.svg",
       "tags": [
         "codex",
         "openai",
@@ -140,6 +145,7 @@
       "fileName": "openrouter-observability-sql.json",
       "description": "Monitor OpenRouter requests, routing, reliability, provider attempts, retries, latency, tokens, cache usage, cost, models, and traces.",
       "source": "SQL",
+      "icon": "assets/icon.svg",
       "tags": [
         "openrouter",
         "llm",
@@ -155,6 +161,7 @@
       "fileName": "cloudflare-ai-gateway-observability-sql.json",
       "description": "Monitor Cloudflare AI Gateway requests, reliability, latency, tokens, cost, models, custom workloads, and native OpenTelemetry traces.",
       "source": "SQL",
+      "icon": "assets/icon.svg",
       "tags": [
         "cloudflare",
         "ai-gateway",
@@ -173,6 +180,7 @@
       "fileName": "k8s-cluster-monitoring-mixed.json",
       "description": "Monitor Kubernetes cluster health, nodes, pods, containers, workloads, logs, events, capacity, and kubelet/runtime signals.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": ["kubernetes", "k8s", "cluster", "metrics", "logs", "events"],
       "thumbnail": "assets/screenshot.png"
     },
@@ -182,6 +190,7 @@
       "fileName": "argo-cd-mixed.json",
       "description": "Monitor Argo CD applications, sync health, controller activity, Kubernetes API behavior, Redis/cache signals, metrics inventory, and Argo CD logs.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": ["argocd", "gitops", "kubernetes", "promql", "logs"],
       "thumbnail": "assets/screenshot.png"
     },
@@ -191,6 +200,7 @@
       "fileName": "traefik-monitoring-mixed.json",
       "description": "Monitor Traefik ingress traffic, entrypoints, services, latency, TLS certificates, runtime health, access logs, and metric inventory.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": ["traefik", "kubernetes", "ingress", "promql", "logs"],
       "thumbnail": "assets/screenshot.png"
     },
@@ -200,6 +210,7 @@
       "fileName": "postgres-monitoring-mixed.json",
       "description": "Monitor PostgreSQL health, connections, locks, database activity, storage, query performance, replication, WAL, logs, traces, and exporter inventory.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "postgres",
         "postgresql",
@@ -217,6 +228,7 @@
       "fileName": "redis-monitoring-mixed.json",
       "description": "Monitor Redis availability, clients, command throughput, memory, keyspace, persistence, replication, network, CPU, logs, traces, and exporter health.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "redis",
         "database",
@@ -234,6 +246,7 @@
       "fileName": "sql-server-monitoring-mixed.json",
       "description": "Monitor Microsoft SQL Server availability, batch requests, buffer cache, memory, database I/O, TempDB, locks, waits, deadlocks, query logs, traces, and metric inventory.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "sqlserver",
         "mssql",
@@ -251,6 +264,7 @@
       "fileName": "windows-server-monitoring-mixed.json",
       "description": "Monitor Windows Server host availability, CPU, memory, disk, network, TCP, services, processes, Windows events, traces, and exporter health.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "windows",
         "windows-server",
@@ -268,6 +282,7 @@
       "fileName": "mysql-monitoring-mixed.json",
       "description": "Monitor MySQL availability, connections, query throughput, InnoDB storage, locks, table and index I/O, query performance, logs, traces, and telemetry health.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "mysql",
         "database",
@@ -285,6 +300,7 @@
       "fileName": "mongodb-monitoring-mixed.json",
       "description": "Monitor MongoDB connections, operations, storage, collections, WiredTiger cache, replication, logs, traces, and exporter inventory.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": ["mongodb", "database", "metrics", "logs", "traces", "promql"],
       "thumbnail": "assets/Overview.png"
     },
@@ -294,6 +310,7 @@
       "fileName": "node-metrics-dashboard-promql.json",
       "description": "Monitor host-level CPU, memory, disk, network, filesystem, and load metrics from node exporter style PromQL data.",
       "source": "PromQL",
+      "icon": "assets/icon.svg",
       "tags": ["node", "promql"],
       "thumbnail": "assets/Overview.png"
     },
@@ -303,6 +320,7 @@
       "fileName": "otel-collector-metrics-mixed.json",
       "description": "Observe OpenTelemetry Collector throughput, receiver/exporter activity, queue behavior, dropped telemetry, and component inventory.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": ["otel", "opentelemetry", "collector", "metrics", "promql"],
       "thumbnail": "assets/Overview.png"
     },
@@ -312,6 +330,7 @@
       "fileName": "otel-demo-application-mixed.json",
       "description": "Explore application, service, and telemetry behavior for the OpenTelemetry Astronomy Shop demo application.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": ["otel-demo", "astronomy-shop", "observability"],
       "thumbnail": "assets/Overview.png"
     },
@@ -321,6 +340,7 @@
       "fileName": "parseable-audit-logs-sql.json",
       "description": "Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets.",
       "source": "SQL",
+      "icon": "assets/icon.svg",
       "tags": ["audit", "parseable", "logs", "azure"],
       "thumbnail": "assets/screenshot.png"
     },
@@ -348,6 +368,7 @@
       "fileName": "temporal-workflow-observability-mixed.json",
       "description": "Monitor Temporal workflows, activities, task queues, failures, traces, logs, workers, service requests, persistence, and runtime health.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "temporal",
         "workflows",
@@ -367,6 +388,7 @@
       "fileName": "website-performance-and-visits-mixed.json",
       "description": "Monitor frontend traffic, page activity, API performance, HTTP reliability, external dependencies, traces, and telemetry health.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "frontend",
         "website",

@@ -64,6 +64,7 @@
       "fileName": "litellm-proxy-observability-mixed.json",
       "description": "Monitor LiteLLM proxy traffic, reliability, latency, token usage, spend, model behavior, deployment health, and request traces.",
       "source": "Mixed",
+      "icon": "assets/icon.png",
       "tags": [
         "litellm",
         "llm",
@@ -81,6 +82,7 @@
       "fileName": "litellm-sdk-observability-sql.json",
       "description": "Monitor LiteLLM SDK calls, reliability, latency, TTFT, token usage, spend, models, providers, correlated logs, traces, and metric health.",
       "source": "SQL",
+      "icon": "assets/icon.png",
       "tags": [
         "litellm",
         "sdk",

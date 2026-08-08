@@ -1,0 +1,110 @@
+name: Publish dashboard CDN assets
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-dashboard-cdn
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate manifest references
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const manifest = JSON.parse(fs.readFileSync('templates.json', 'utf8'));
+          const missing = [];
+
+          if (manifest.schemaVersion !== 1 || !Array.isArray(manifest.templates)) {
+            throw new Error('templates.json must use schemaVersion 1 and contain a templates array');
+          }
+
+          for (const template of manifest.templates) {
+            for (const path of [template.fileName, 'README.md', template.icon, template.thumbnail].filter(Boolean)) {
+              const file = `${template.dirName}/${path}`;
+              if (!fs.existsSync(file)) missing.push(file);
+            }
+          }
+
+          if (missing.length) throw new Error(`Missing manifest files:\n${missing.join('\n')}`);
+          console.log(`Validated ${manifest.templates.length} dashboard templates`);
+          NODE
+
+      - name: Sign in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build CDN manifest
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const manifest = JSON.parse(fs.readFileSync('templates.json', 'utf8'));
+          const imagePattern = /\.(avif|gif|jpe?g|png|webp)$/i;
+
+          for (const template of manifest.templates) {
+            const assetsDirectory = path.join(template.dirName, 'assets');
+            template.images = fs.existsSync(assetsDirectory)
+              ? fs.readdirSync(assetsDirectory)
+                  .filter((file) => imagePattern.test(file))
+                  .map((file) => `assets/${file}`)
+              : [];
+          }
+
+          fs.writeFileSync(
+            path.join(process.env.RUNNER_TEMP, 'dashboard-templates.json'),
+            `${JSON.stringify(manifest, null, 2)}\n`,
+          );
+          NODE
+
+      - name: Upload dashboard assets
+        shell: bash
+        env:
+          AZURE_STORAGE_CONTAINER: $web
+        run: |
+          az storage blob upload-batch \
+            --account-name parseablewebsiteassets \
+            --auth-mode login \
+            --destination "$AZURE_STORAGE_CONTAINER" \
+            --destination-path dashboards \
+            --source . \
+            --exclude-pattern '.git/*;.github/*;templates.json' \
+            --overwrite true \
+            --content-cache-control 'public, max-age=3600' \
+            --only-show-errors \
+            --output none
+
+          az storage blob upload \
+            --account-name parseablewebsiteassets \
+            --auth-mode login \
+            --container-name "$AZURE_STORAGE_CONTAINER" \
+            --name dashboards/templates.json \
+            --file "$RUNNER_TEMP/dashboard-templates.json" \
+            --overwrite true \
+            --content-type application/json \
+            --content-cache-control 'public, max-age=300, must-revalidate' \
+            --only-show-errors \
+            --output none
+
+      - name: Verify published manifest
+        shell: bash
+        run: |
+          curl --fail --silent --show-error \
+            https://parseablewebsiteassets.z13.web.core.windows.net/dashboards/templates.json \
+            | jq -e '.schemaVersion == 1 and (.templates | length > 0)' >/dev/null

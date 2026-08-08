@@ -78,13 +78,17 @@ jobs:
         env:
           AZURE_STORAGE_CONTAINER: $web
         run: |
+          ASSET_STAGING="$RUNNER_TEMP/dashboard-assets"
+          mkdir -p "$ASSET_STAGING"
+          git archive HEAD | tar -x -C "$ASSET_STAGING"
+          rm -rf "$ASSET_STAGING/.github" "$ASSET_STAGING/templates.json"
+
           az storage blob upload-batch \
             --account-name parseablewebsiteassets \
             --auth-mode login \
             --destination "$AZURE_STORAGE_CONTAINER" \
             --destination-path dashboards \
-            --source . \
-            --exclude-pattern '.git/*;.github/*;templates.json' \
+            --source "$ASSET_STAGING" \
             --overwrite true \
             --content-cache-control 'public, max-age=3600' \
             --only-show-errors \

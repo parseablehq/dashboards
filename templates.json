@@ -376,6 +376,24 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "Go Runtime Metrics",
+      "dirName": "go-runtime-metrics",
+      "fileName": "go-runtime-metrics-mixed.json",
+      "description": "Monitor Go goroutines, processor limits, runtime memory, GC targets, allocations, configuration, and telemetry inventory.",
+      "source": "Mixed",
+      "icon": "assets/icon.svg",
+      "tags": [
+        "go",
+        "golang",
+        "runtime",
+        "opentelemetry",
+        "metrics",
+        "promql",
+        "applications"
+      ],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
       "name": "OTel Demo Application",
       "dirName": "otel-demo-application",
       "fileName": "otel-demo-application-mixed.json",

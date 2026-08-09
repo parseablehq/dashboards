@@ -1,0 +1,2351 @@
+{
+  "tags": [
+    "go",
+    "golang",
+    "runtime",
+    "opentelemetry",
+    "metrics",
+    "promql",
+    "applications"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Go Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "astronomy-shop-metrics"
+    },
+    {
+      "name": "service",
+      "label": "Service",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "metric": "go.goroutine.count",
+      "labelName": "service.name",
+      "labelFilters": [],
+      "defaultValue": ".*",
+      "includeAll": true
+    },
+    {
+      "name": "namespace",
+      "label": "Service Namespace",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "metric": "go.goroutine.count",
+      "labelName": "service.namespace",
+      "labelFilters": [],
+      "defaultValue": ".*",
+      "includeAll": true
+    },
+    {
+      "name": "host",
+      "label": "Host",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "metric": "go.goroutine.count",
+      "labelName": "host.name",
+      "labelFilters": [],
+      "defaultValue": ".*",
+      "includeAll": true
+    },
+    {
+      "name": "runtime_version",
+      "label": "Go Runtime Version",
+      "type": "promql",
+      "dataset": "$metrics_dataset",
+      "metric": "go.goroutine.count",
+      "labelName": "process.runtime.version",
+      "labelFilters": [],
+      "defaultValue": ".*",
+      "includeAll": true
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "6KD721G5NGRS36KPVVJSFR110V",
+      "title": "Concurrency & Scheduling",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "title": "Memory & GC Targets",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "2BCKC7ZN6WTYMR8137AG31YGK8",
+      "title": "Allocation Activity",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "77WH6PV61KJADQ44T0X7V8S6JT",
+      "title": "Runtime Configuration & Inventory",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "5FB40AGMBA0QDA7RRRJN7364ZH",
+      "title": "Go Services",
+      "chartQuery": [
+        "count(count by (\"service.name\") ({__name__=\"go.goroutine.count\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "layout": {
+        "i": "5FB40AGMBA0QDA7RRRJN7364ZH",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3PST50EBZMRS192Y3JHBER9SNR",
+      "title": "Live Goroutines",
+      "chartQuery": [
+        "sum({__name__=\"go.goroutine.count\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "layout": {
+        "i": "3PST50EBZMRS192Y3JHBER9SNR",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "goroutines",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5DGQW1RQ68XKXY1WQZ2RZ8H02Y",
+      "title": "Runtime Memory Used",
+      "chartQuery": [
+        "sum({__name__=\"go.memory.used\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "layout": {
+        "i": "5DGQW1RQ68XKXY1WQZ2RZ8H02Y",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6PCDESV2JMK1AZS6RW8KYDMWJN",
+      "title": "Allocation Throughput",
+      "chartQuery": [
+        "sum(rate({__name__=\"go.memory.allocated\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "layout": {
+        "i": "6PCDESV2JMK1AZS6RW8KYDMWJN",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6NQWSGB6HPYJZB9EZSBDTGWFE3",
+      "title": "Allocation Rate",
+      "chartQuery": [
+        "sum(rate({__name__=\"go.memory.allocations\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "layout": {
+        "i": "6NQWSGB6HPYJZB9EZSBDTGWFE3",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "allocations/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6GJ5DF0F2T2BT5G5W7VEN39NXG",
+      "title": "Processor Limit",
+      "chartQuery": [
+        "sum({__name__=\"go.processor.limit\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "layout": {
+        "i": "6GJ5DF0F2T2BT5G5W7VEN39NXG",
+        "x": 3,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "threads",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5MQRDPVQWDRA2YXE5P8P38BY3R",
+      "title": "GC Heap Goal",
+      "chartQuery": [
+        "sum({__name__=\"go.memory.gc.goal\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "layout": {
+        "i": "5MQRDPVQWDRA2YXE5P8P38BY3R",
+        "x": 6,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "49YENF4GW7YVVFDWBD6HDFRJ7C",
+      "title": "Average GOGC",
+      "chartQuery": [
+        "avg({__name__=\"go.config.gogc\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "2ZZ2VP96ZNYM9WB12WB86S3XNH",
+      "layout": {
+        "i": "49YENF4GW7YVVFDWBD6HDFRJ7C",
+        "x": 9,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5CCW4YNTE13J739DRE90GGBCJH",
+      "title": "Goroutines by Service",
+      "chartQuery": [
+        "sum by (\"service.name\") ({__name__=\"go.goroutine.count\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "6KD721G5NGRS36KPVVJSFR110V",
+      "layout": {
+        "i": "5CCW4YNTE13J739DRE90GGBCJH",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "goroutines",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0SSH7VRZHH9SPMQX2Y4DR588MB",
+      "title": "Goroutine Growth Rate",
+      "chartQuery": [
+        "sum by (\"service.name\") (deriv({__name__=\"go.goroutine.count\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "6KD721G5NGRS36KPVVJSFR110V",
+      "layout": {
+        "i": "0SSH7VRZHH9SPMQX2Y4DR588MB",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "goroutines/s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0PQ0SHR58066QESTY3678PM8RD",
+      "title": "Processor Limit by Service",
+      "chartQuery": [
+        "max by (\"service.name\") ({__name__=\"go.processor.limit\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "6KD721G5NGRS36KPVVJSFR110V",
+      "layout": {
+        "i": "0PQ0SHR58066QESTY3678PM8RD",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "threads",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "04E2KRJ35VWG0FFWW9MN27Q4M8",
+      "title": "Goroutines per Processor",
+      "chartQuery": [
+        "sum by (\"service.name\") ({__name__=\"go.goroutine.count\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}) / max by (\"service.name\") ({__name__=\"go.processor.limit\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "6KD721G5NGRS36KPVVJSFR110V",
+      "layout": {
+        "i": "04E2KRJ35VWG0FFWW9MN27Q4M8",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "goroutines/thread",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "661D9CSZ9PG47Q4VQ73RF8AEAK",
+      "title": "Goroutines vs Processor Limit",
+      "chartQuery": [
+        "sum by (\"service.name\") ({__name__=\"go.goroutine.count\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})",
+        "max by (\"service.name\") ({__name__=\"go.processor.limit\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "6KD721G5NGRS36KPVVJSFR110V",
+      "layout": {
+        "i": "661D9CSZ9PG47Q4VQ73RF8AEAK",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2X0WPEJAZDSFR7KFSJ4S4FCB75",
+      "title": "Runtime Memory by Service and Type",
+      "chartQuery": [
+        "sum by (\"service.name\", \"go.memory.type\") ({__name__=\"go.memory.used\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "2X0WPEJAZDSFR7KFSJ4S4FCB75",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2MT70A30XBD2X7TMR1EC5WKHSM",
+      "title": "Total Runtime Memory by Service",
+      "chartQuery": [
+        "sum by (\"service.name\") ({__name__=\"go.memory.used\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "2MT70A30XBD2X7TMR1EC5WKHSM",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2F5GWQPKJKQXN2F72FYAHQZ0Y1",
+      "title": "Stack Memory by Service",
+      "chartQuery": [
+        "sum by (\"service.name\") ({__name__=\"go.memory.used\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\",\"go.memory.type\"=\"stack\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "2F5GWQPKJKQXN2F72FYAHQZ0Y1",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5Q5SEMXF7A65J9GZ3H6BK8TWY8",
+      "title": "Other Runtime Memory by Service",
+      "chartQuery": [
+        "sum by (\"service.name\") ({__name__=\"go.memory.used\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\",\"go.memory.type\"=\"other\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "5Q5SEMXF7A65J9GZ3H6BK8TWY8",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7R2WJ8KPZAP4SWS9Q2AKVGSRTQ",
+      "title": "Runtime Memory Growth Rate",
+      "chartQuery": [
+        "sum by (\"service.name\") (deriv({__name__=\"go.memory.used\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "7R2WJ8KPZAP4SWS9Q2AKVGSRTQ",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3H44ZH33Z5BGTS963K3HW39A0R",
+      "title": "GC Heap Goal by Service",
+      "chartQuery": [
+        "max by (\"service.name\") ({__name__=\"go.memory.gc.goal\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "3H44ZH33Z5BGTS963K3HW39A0R",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "28QK2Z91KX1QQ2K0F4EBFHNJY9",
+      "title": "Configured Memory Limit",
+      "chartQuery": [
+        "max by (\"service.name\") ({__name__=\"go.memory.limit\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "28QK2Z91KX1QQ2K0F4EBFHNJY9",
+        "x": 6,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6VH1K81AEGFC5XX32AQ32F6P09",
+      "title": "Memory Used vs GC Goal",
+      "chartQuery": [
+        "sum by (\"service.name\") ({__name__=\"go.memory.used\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})",
+        "max by (\"service.name\") ({__name__=\"go.memory.gc.goal\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "6VH1K81AEGFC5XX32AQ32F6P09",
+        "x": 0,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "38T1AGE2ETKNG5F0XP79PYY7W8",
+      "title": "Runtime Memory per Goroutine",
+      "chartQuery": [
+        "sum by (\"service.name\") ({__name__=\"go.memory.used\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}) / sum by (\"service.name\") ({__name__=\"go.goroutine.count\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "27JEM09ZVX86XDH81QSBVM91QN",
+      "layout": {
+        "i": "38T1AGE2ETKNG5F0XP79PYY7W8",
+        "x": 6,
+        "y": 32,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4EE3B1VFZP3MAHBF7RF0Z4VDAT",
+      "title": "Allocated Bytes Total",
+      "chartQuery": [
+        "max by (\"service.name\") ({__name__=\"go.memory.allocated\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "2BCKC7ZN6WTYMR8137AG31YGK8",
+      "layout": {
+        "i": "4EE3B1VFZP3MAHBF7RF0Z4VDAT",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0A6YNCAP4EWDTDMTCTG1YYX0J6",
+      "title": "Allocation Throughput by Service",
+      "chartQuery": [
+        "sum by (\"service.name\") (rate({__name__=\"go.memory.allocated\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "2BCKC7ZN6WTYMR8137AG31YGK8",
+      "layout": {
+        "i": "0A6YNCAP4EWDTDMTCTG1YYX0J6",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3XS8V3QQZ8B78VBM461PHGHFJC",
+      "title": "Allocation Count Total",
+      "chartQuery": [
+        "max by (\"service.name\") ({__name__=\"go.memory.allocations\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "2BCKC7ZN6WTYMR8137AG31YGK8",
+      "layout": {
+        "i": "3XS8V3QQZ8B78VBM461PHGHFJC",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "allocations",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1Q4HTEHCRQV386QDV9RGVN0RCS",
+      "title": "Allocation Rate by Service",
+      "chartQuery": [
+        "sum by (\"service.name\") (rate({__name__=\"go.memory.allocations\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "2BCKC7ZN6WTYMR8137AG31YGK8",
+      "layout": {
+        "i": "1Q4HTEHCRQV386QDV9RGVN0RCS",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "allocations/s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2RDJN2RW704087EN0E3TPT3SWC",
+      "title": "Average Allocation Size",
+      "chartQuery": [
+        "sum by (\"service.name\") (rate({__name__=\"go.memory.allocated\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}[5m])) / sum by (\"service.name\") (rate({__name__=\"go.memory.allocations\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"}[5m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "2BCKC7ZN6WTYMR8137AG31YGK8",
+      "layout": {
+        "i": "2RDJN2RW704087EN0E3TPT3SWC",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes/allocation",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "62RH6SH60Z3XRQ3YJ6ZMHWCJ72",
+      "title": "GOGC by Service",
+      "chartQuery": [
+        "max by (\"service.name\") ({__name__=\"go.config.gogc\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "77WH6PV61KJADQ44T0X7V8S6JT",
+      "layout": {
+        "i": "62RH6SH60Z3XRQ3YJ6ZMHWCJ72",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "40YN09PMG6AXHVY018RGR2WGQF",
+      "title": "Go Memory Limit by Service",
+      "chartQuery": [
+        "max by (\"service.name\") ({__name__=\"go.memory.limit\",\"service.name\"=~\"$service\",\"service.namespace\"=~\"$namespace\",\"host.name\"=~\"$host\",\"process.runtime.version\"=~\"$runtime_version\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "77WH6PV61KJADQ44T0X7V8S6JT",
+      "layout": {
+        "i": "40YN09PMG6AXHVY018RGR2WGQF",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6YTRVP0T7T9G82XYZH54RY1S98",
+      "title": "Runtime Identity",
+      "chartQuery": "SELECT\n  \"service.name\" AS service,\n  \"service.namespace\" AS namespace,\n  \"service.version\" AS service_version,\n  \"host.name\" AS host,\n  \"process.runtime.version\" AS go_version,\n  \"process.executable.name\" AS executable,\n  scope_version AS instrumentation_version,\n  MAX(p_timestamp) AS latest\nFROM $metrics_dataset\nWHERE metric_name = 'go.goroutine.count'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\n  AND COALESCE(\"service.namespace\", 'unknown') ~ '$namespace'\n  AND COALESCE(\"host.name\", 'unknown') ~ '$host'\n  AND COALESCE(\"process.runtime.version\", 'unknown') ~ '$runtime_version'\nGROUP BY service, namespace, service_version, host, go_version, executable, instrumentation_version\nORDER BY service",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "77WH6PV61KJADQ44T0X7V8S6JT",
+      "layout": {
+        "i": "6YTRVP0T7T9G82XYZH54RY1S98",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "service",
+            "display": true
+          },
+          "y": {
+            "field": "latest",
+            "title": "latest",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1KX0BG2DGBG124J7AV309E9RWJ",
+      "title": "Go Service Inventory",
+      "chartQuery": "SELECT\n  \"service.name\" AS service,\n  COUNT(DISTINCT metric_name) AS metric_families,\n  COUNT(DISTINCT __series_hash_u64) AS series,\n  COUNT(*) AS points,\n  MIN(p_timestamp) AS first_seen,\n  MAX(p_timestamp) AS last_seen\nFROM $metrics_dataset\nWHERE metric_name LIKE 'go.%'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\n  AND COALESCE(\"service.namespace\", 'unknown') ~ '$namespace'\n  AND COALESCE(\"host.name\", 'unknown') ~ '$host'\n  AND COALESCE(\"process.runtime.version\", 'unknown') ~ '$runtime_version'\nGROUP BY service\nORDER BY service",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "77WH6PV61KJADQ44T0X7V8S6JT",
+      "layout": {
+        "i": "1KX0BG2DGBG124J7AV309E9RWJ",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "service",
+            "title": "service",
+            "display": true
+          },
+          "y": {
+            "field": "points",
+            "title": "points",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "46GGB768QFBCTNCWVK1J5PX58N",
+      "title": "Go Runtime Sample Volume",
+      "chartQuery": "SELECT\n  date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"service.name\" AS service,\n  COUNT(*) AS points\nFROM $metrics_dataset\nWHERE metric_name LIKE 'go.%'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\n  AND COALESCE(\"service.namespace\", 'unknown') ~ '$namespace'\n  AND COALESCE(\"host.name\", 'unknown') ~ '$host'\n  AND COALESCE(\"process.runtime.version\", 'unknown') ~ '$runtime_version'\nGROUP BY time_bin, service\nORDER BY time_bin, service",
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "code",
+      "sectionId": "77WH6PV61KJADQ44T0X7V8S6JT",
+      "layout": {
+        "i": "46GGB768QFBCTNCWVK1J5PX58N",
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "points",
+            "title": "points",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "service"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "176EE0WZTCB514EKYZE9CXWEZK",
+      "title": "Metric Freshness",
+      "chartQuery": "SELECT\n  metric_name,\n  \"service.name\" AS service,\n  COUNT(*) AS points,\n  MAX(p_timestamp) AS latest\nFROM $metrics_dataset\nWHERE metric_name LIKE 'go.%'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\n  AND COALESCE(\"service.namespace\", 'unknown') ~ '$namespace'\n  AND COALESCE(\"host.name\", 'unknown') ~ '$host'\n  AND COALESCE(\"process.runtime.version\", 'unknown') ~ '$runtime_version'\nGROUP BY metric_name, service\nORDER BY metric_name, service",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "77WH6PV61KJADQ44T0X7V8S6JT",
+      "layout": {
+        "i": "176EE0WZTCB514EKYZE9CXWEZK",
+        "x": 0,
+        "y": 32,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "points",
+            "title": "points",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "55KAHT30HX115JYPSFP9MVPVM3",
+      "title": "Go Metric Inventory",
+      "chartQuery": "SELECT\n  metric_name,\n  metric_type,\n  metric_unit,\n  metric_description,\n  COUNT(DISTINCT __series_hash_u64) AS series,\n  COUNT(*) AS points,\n  MIN(p_timestamp) AS first_seen,\n  MAX(p_timestamp) AS last_seen\nFROM $metrics_dataset\nWHERE metric_name LIKE 'go.%'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\n  AND COALESCE(\"service.namespace\", 'unknown') ~ '$namespace'\n  AND COALESCE(\"host.name\", 'unknown') ~ '$host'\n  AND COALESCE(\"process.runtime.version\", 'unknown') ~ '$runtime_version'\nGROUP BY metric_name, metric_type, metric_unit, metric_description\nORDER BY metric_name",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "77WH6PV61KJADQ44T0X7V8S6JT",
+      "layout": {
+        "i": "55KAHT30HX115JYPSFP9MVPVM3",
+        "x": 0,
+        "y": 41,
+        "w": 12,
+        "h": 11,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "points",
+            "title": "points",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

@@ -348,6 +348,24 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "Docker Monitoring",
+      "dirName": "docker-monitoring",
+      "fileName": "docker-monitoring-mixed.json",
+      "description": "Monitor Docker container CPU, memory, network, storage, state, inventory, and cAdvisor scrape health.",
+      "source": "Mixed",
+      "icon": "assets/icon.svg",
+      "tags": [
+        "docker",
+        "containers",
+        "cadvisor",
+        "prometheus",
+        "metrics",
+        "promql",
+        "infrastructure"
+      ],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
       "name": "OTel Collector Metrics",
       "dirName": "otel-collector-metrics",
       "fileName": "otel-collector-metrics-mixed.json",

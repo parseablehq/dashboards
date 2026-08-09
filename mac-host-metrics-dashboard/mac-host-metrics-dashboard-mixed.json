@@ -1,0 +1,1646 @@
+{
+  "tags": [
+    "mac",
+    "host",
+    "metrics",
+    "opentelemetry",
+    "promql",
+    "infrastructure"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Mac Host Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "dataset-leog53o6"
+    },
+    {
+      "name": "host",
+      "label": "Host",
+      "type": "promql",
+      "defaultValue": ".*",
+      "labelName": "host.name",
+      "dataset": "$metrics_dataset",
+      "labelFilters": [],
+      "includeAll": true
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "7VDV756BM6H7PC5YJBAQPQFXJC",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "0BZTX1ED7RSXHBC50XYCAKYV42",
+      "title": "CPU & Load",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "4TP85GC4PAMW56876MW21RWZW9",
+      "title": "Storage & Filesystem",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "7SVZARRXJ3498ZZ0HHZ0TSC6A6",
+      "title": "Collector & Metric Inventory",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "33EV8HKNANSWV40M9PTABCCDC1",
+      "title": "Telemetry Coverage",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "08QS329YE1N9KKV8R8JR8XGKX4",
+      "title": "Uptime",
+      "chartQuery": [
+        "max({__name__=\"system.uptime\",\"host.name\"=~\"$host\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "7VDV756BM6H7PC5YJBAQPQFXJC",
+      "layout": {
+        "i": "08QS329YE1N9KKV8R8JR8XGKX4",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2EB9P96VK6SHFRP544N1HTFM17",
+      "title": "Load Average 1m",
+      "chartQuery": [
+        "max({__name__=\"system.cpu.load_average.1m\",\"host.name\"=~\"$host\"})"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "promql",
+      "sectionId": "7VDV756BM6H7PC5YJBAQPQFXJC",
+      "layout": {
+        "i": "2EB9P96VK6SHFRP544N1HTFM17",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "38NVDBGMGG25XPCE2WY18YNC80",
+      "title": "CPU Time Rate by State",
+      "chartQuery": [
+        "sum by (state) (rate({__name__=\"system.cpu.time\",\"host.name\"=~\"$host\"}[1m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "area",
+      "tileType": "promql",
+      "sectionId": "0BZTX1ED7RSXHBC50XYCAKYV42",
+      "layout": {
+        "i": "38NVDBGMGG25XPCE2WY18YNC80",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "cores",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "5P642Y9K5J3TD7396SVGXFB4DV",
+      "title": "Load Averages",
+      "chartQuery": [
+        "max({__name__=\"system.cpu.load_average.1m\",\"host.name\"=~\"$host\"})",
+        "max({__name__=\"system.cpu.load_average.5m\",\"host.name\"=~\"$host\"})",
+        "max({__name__=\"system.cpu.load_average.15m\",\"host.name\"=~\"$host\"})"
+      ],
+      "promqlQueryType": [
+        "range",
+        "range",
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "0BZTX1ED7RSXHBC50XYCAKYV42",
+      "layout": {
+        "i": "5P642Y9K5J3TD7396SVGXFB4DV",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2GNME32VDZY6VW7GZMZPPN73R7",
+      "title": "Disk Busy Time Rate",
+      "chartQuery": [
+        "sum by (device) (rate({__name__=\"system.disk.io_time\",\"host.name\"=~\"$host\"}[1m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "4TP85GC4PAMW56876MW21RWZW9",
+      "layout": {
+        "i": "2GNME32VDZY6VW7GZMZPPN73R7",
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": 3,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "Value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4BSKKF0QVAQTPDKZTAG30AHZMY",
+      "title": "Metric Families",
+      "chartQuery": "SELECT COUNT(DISTINCT metric_name) AS metric_families FROM $metrics_dataset",
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "7SVZARRXJ3498ZZ0HHZ0TSC6A6",
+      "layout": {
+        "i": "4BSKKF0QVAQTPDKZTAG30AHZMY",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "metric_families",
+            "title": "metric_families",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7D729BQSZXFN13HZ9T7MHV9CPG",
+      "title": "Active Series",
+      "chartQuery": "SELECT COUNT(DISTINCT __series_hash_u64) AS active_series FROM $metrics_dataset",
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "7SVZARRXJ3498ZZ0HHZ0TSC6A6",
+      "layout": {
+        "i": "7D729BQSZXFN13HZ9T7MHV9CPG",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "active_series",
+            "title": "active_series",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3Q3D22ZRGZKPKF2X9K3Q6R1XDC",
+      "title": "Metric Samples",
+      "chartQuery": "SELECT COUNT(*) AS samples FROM $metrics_dataset",
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "7SVZARRXJ3498ZZ0HHZ0TSC6A6",
+      "layout": {
+        "i": "3Q3D22ZRGZKPKF2X9K3Q6R1XDC",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "2JSBRM0B2MHTGNP4HR7S1RHDM2",
+      "title": "Hosts Reporting",
+      "chartQuery": "SELECT COUNT(DISTINCT \"host.name\") AS hosts FROM $metrics_dataset",
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "7SVZARRXJ3498ZZ0HHZ0TSC6A6",
+      "layout": {
+        "i": "2JSBRM0B2MHTGNP4HR7S1RHDM2",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "hosts",
+            "title": "hosts",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4DHV40GA0TJZB9P6M1T2YXQ1FY",
+      "title": "Sample Volume Over Time",
+      "chartQuery": "SELECT date_bin('15 seconds', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS samples\nFROM $metrics_dataset\nGROUP BY time_bin\nORDER BY time_bin",
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "code",
+      "sectionId": "7SVZARRXJ3498ZZ0HHZ0TSC6A6",
+      "layout": {
+        "i": "4DHV40GA0TJZB9P6M1T2YXQ1FY",
+        "x": 0,
+        "y": 5,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1YQDKV306P6Q3FHW79Y5BPT2V5",
+      "title": "Metric Inventory",
+      "chartQuery": "SELECT metric_name,\n  metric_type,\n  metric_unit,\n  COUNT(*) AS samples,\n  COUNT(data_point_value) AS value_samples,\n  COUNT(DISTINCT __series_hash_u64) AS series,\n  MIN(p_timestamp) AS first_seen,\n  MAX(p_timestamp) AS last_seen\nFROM $metrics_dataset\nGROUP BY metric_name, metric_type, metric_unit\nORDER BY samples DESC",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "7SVZARRXJ3498ZZ0HHZ0TSC6A6",
+      "layout": {
+        "i": "1YQDKV306P6Q3FHW79Y5BPT2V5",
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "09BP5EV6BHB5HMNVPM5M85T7GC",
+      "title": "Host Collector Inventory",
+      "chartQuery": "SELECT COALESCE(\"host.name\", 'unknown') AS host_name,\n  COALESCE(scope_name, 'unknown') AS scope_name,\n  COALESCE(scope_version, 'unknown') AS scope_version,\n  COUNT(DISTINCT metric_name) AS metric_families,\n  COUNT(DISTINCT __series_hash_u64) AS series,\n  MAX(p_timestamp) AS latest\nFROM $metrics_dataset\nGROUP BY host_name, scope_name, scope_version\nORDER BY host_name",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "7SVZARRXJ3498ZZ0HHZ0TSC6A6",
+      "layout": {
+        "i": "09BP5EV6BHB5HMNVPM5M85T7GC",
+        "x": 0,
+        "y": 23,
+        "w": 12,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "host_name",
+            "title": "host_name",
+            "display": true
+          },
+          "y": {
+            "field": "metric_families",
+            "title": "metric_families",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "1D0G2SSF9PCJAFSTRGAEGJQ5PV",
+      "title": "Host Count",
+      "chartQuery": "SELECT COUNT(DISTINCT \"host.name\") AS value FROM $metrics_dataset",
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "7VDV756BM6H7PC5YJBAQPQFXJC",
+      "layout": {
+        "i": "1D0G2SSF9PCJAFSTRGAEGJQ5PV",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0TZ47FJJC0YDKD201AMQ7A3NCA",
+      "title": "Average CPU Used",
+      "chartQuery": "WITH samples AS (\n  SELECT date_bin('15 seconds', time_unix_nano, '1970-01-01T00:00:00Z') AS time_bin, state,\n    data_point_value - LAG(data_point_value) OVER (PARTITION BY \"host.name\", state ORDER BY time_unix_nano) AS delta\n  FROM $metrics_dataset\n  WHERE metric_name = 'system.cpu.time'\n), utilization AS (\n  SELECT time_bin, 100.0 * (1.0 - SUM(CASE WHEN state = 'idle' AND delta >= 0 THEN delta ELSE 0 END) / NULLIF(SUM(CASE WHEN delta >= 0 THEN delta ELSE 0 END), 0)) AS cpu_used_pct\n  FROM samples WHERE delta IS NOT NULL GROUP BY time_bin\n) SELECT ROUND(AVG(cpu_used_pct), 2) AS value FROM utilization",
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "7VDV756BM6H7PC5YJBAQPQFXJC",
+      "layout": {
+        "i": "0TZ47FJJC0YDKD201AMQ7A3NCA",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0BJKJ05ECJD2GPTEN1F1VJA902",
+      "title": "Value-bearing Metrics",
+      "chartQuery": "SELECT COUNT(DISTINCT metric_name) AS value FROM $metrics_dataset WHERE data_point_value IS NOT NULL",
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "7VDV756BM6H7PC5YJBAQPQFXJC",
+      "layout": {
+        "i": "0BJKJ05ECJD2GPTEN1F1VJA902",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6FTXQDKV2T0Y5Z9ENY8TVM399T",
+      "title": "Value Coverage",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(data_point_value) / NULLIF(COUNT(*), 0), 2) AS value FROM $metrics_dataset",
+      "dbName": "$metrics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "7VDV756BM6H7PC5YJBAQPQFXJC",
+      "layout": {
+        "i": "6FTXQDKV2T0Y5Z9ENY8TVM399T",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6E4J4MCKWZKHGKVWWTDFHBQD7N",
+      "title": "CPU Utilization",
+      "chartQuery": "WITH samples AS (\n  SELECT date_bin('15 seconds', time_unix_nano, '1970-01-01T00:00:00Z') AS time_bin, state,\n    data_point_value - LAG(data_point_value) OVER (PARTITION BY \"host.name\", state ORDER BY time_unix_nano) AS delta\n  FROM $metrics_dataset\n  WHERE metric_name = 'system.cpu.time'\n), utilization AS (\n  SELECT time_bin, 100.0 * (1.0 - SUM(CASE WHEN state = 'idle' AND delta >= 0 THEN delta ELSE 0 END) / NULLIF(SUM(CASE WHEN delta >= 0 THEN delta ELSE 0 END), 0)) AS cpu_used_pct\n  FROM samples WHERE delta IS NOT NULL GROUP BY time_bin\n) SELECT time_bin, ROUND(cpu_used_pct, 2) AS cpu_used_pct FROM utilization ORDER BY time_bin",
+      "dbName": [
+        "$metrics_dataset",
+        "samples",
+        "utilization"
+      ],
+      "chartType": "area",
+      "tileType": "code",
+      "sectionId": "0BZTX1ED7RSXHBC50XYCAKYV42",
+      "layout": {
+        "i": "6E4J4MCKWZKHGKVWWTDFHBQD7N",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "cpu_used_pct",
+            "title": "cpu_used_pct",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7ZACAR6ASQNEQEP3TXWZMSECSR",
+      "title": "Disk Operation Time Rate",
+      "chartQuery": [
+        "sum by (device, direction) (rate({__name__=\"system.disk.operation_time\",\"host.name\"=~\"$host\"}[1m]))"
+      ],
+      "promqlQueryType": [
+        "range"
+      ],
+      "dbName": "$metrics_dataset",
+      "chartType": "line",
+      "tileType": "promql",
+      "sectionId": "4TP85GC4PAMW56876MW21RWZW9",
+      "layout": {
+        "i": "7ZACAR6ASQNEQEP3TXWZMSECSR",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "line",
+        "colourScheme": "yellow",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s/s",
+          "precision": 4,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "time_bin",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "value",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0YKZF2Y22JSF3STQAFSB7ZJS2R",
+      "title": "Disk Telemetry Inventory",
+      "chartQuery": "SELECT COALESCE(device, 'unknown') AS device, COALESCE(direction, 'n/a') AS direction, metric_name, COUNT(*) AS samples, COUNT(data_point_value) AS value_samples, MAX(p_timestamp) AS latest FROM $metrics_dataset WHERE metric_name LIKE 'system.disk.%' GROUP BY device, direction, metric_name ORDER BY metric_name, device",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "4TP85GC4PAMW56876MW21RWZW9",
+      "layout": {
+        "i": "0YKZF2Y22JSF3STQAFSB7ZJS2R",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "device",
+            "title": "device",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "426BA8S78GAZGPWQHBYWPTBZHF",
+      "title": "Value Availability by Metric",
+      "chartQuery": "SELECT metric_name, metric_type, metric_unit, COUNT(*) AS samples, COUNT(data_point_value) AS value_samples, ROUND(100.0 * COUNT(data_point_value) / NULLIF(COUNT(*), 0), 2) AS value_coverage_pct, MAX(p_timestamp) AS latest FROM $metrics_dataset GROUP BY metric_name, metric_type, metric_unit ORDER BY value_coverage_pct DESC, metric_name",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "33EV8HKNANSWV40M9PTABCCDC1",
+      "layout": {
+        "i": "426BA8S78GAZGPWQHBYWPTBZHF",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "value_coverage_pct",
+            "title": "value_coverage_pct",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "0TG164WHVJ3XBE9965FFZPJ7NS",
+      "title": "Samples by Component",
+      "chartQuery": "SELECT CASE WHEN metric_name LIKE 'system.cpu.%' THEN 'CPU' WHEN metric_name LIKE 'system.memory.%' THEN 'Memory' WHEN metric_name LIKE 'system.disk.%' THEN 'Disk' WHEN metric_name LIKE 'system.filesystem.%' THEN 'Filesystem' WHEN metric_name LIKE 'system.network.%' THEN 'Network' WHEN metric_name LIKE 'system.paging.%' THEN 'Paging' WHEN metric_name LIKE 'system.processes.%' THEN 'Processes' ELSE 'Other' END AS component, COUNT(*) AS samples FROM $metrics_dataset GROUP BY component ORDER BY samples DESC",
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "33EV8HKNANSWV40M9PTABCCDC1",
+      "layout": {
+        "i": "0TG164WHVJ3XBE9965FFZPJ7NS",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "component",
+            "title": "component",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "4G8CYTTFYW4VHASQ3WDWEZZRXM",
+      "title": "Missing-value Metric Families",
+      "chartQuery": "SELECT metric_name, COUNT(*) AS samples, COUNT(DISTINCT __series_hash_u64) AS series, MAX(p_timestamp) AS latest FROM $metrics_dataset GROUP BY metric_name HAVING COUNT(data_point_value) = 0 ORDER BY samples DESC",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "33EV8HKNANSWV40M9PTABCCDC1",
+      "layout": {
+        "i": "4G8CYTTFYW4VHASQ3WDWEZZRXM",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "metric_name",
+            "title": "metric_name",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "3VA5471DHRNM8S5RSKVS5XWK1H",
+      "title": "Memory State Telemetry",
+      "chartQuery": "SELECT COALESCE(state, 'unknown') AS state, COUNT(*) AS samples, COUNT(DISTINCT __series_hash_u64) AS series, MAX(p_timestamp) AS latest FROM $metrics_dataset WHERE metric_name = 'system.memory.usage' GROUP BY state ORDER BY state",
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "33EV8HKNANSWV40M9PTABCCDC1",
+      "layout": {
+        "i": "3VA5471DHRNM8S5RSKVS5XWK1H",
+        "x": 0,
+        "y": 18,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "state",
+            "title": "state",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "7869Z9CQ4R7C8DH6ET0RQ6WHG9",
+      "title": "Network Interface Telemetry",
+      "chartQuery": "SELECT COALESCE(device, 'unknown') AS device, COUNT(*) AS samples, COUNT(DISTINCT metric_name) AS metric_families, MAX(p_timestamp) AS latest FROM $metrics_dataset WHERE metric_name LIKE 'system.network.%' GROUP BY device ORDER BY samples DESC",
+      "dbName": "$metrics_dataset",
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "33EV8HKNANSWV40M9PTABCCDC1",
+      "layout": {
+        "i": "7869Z9CQ4R7C8DH6ET0RQ6WHG9",
+        "x": 6,
+        "y": 18,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "device",
+            "title": "device",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "6HTMEX8B8VTZWXQ5Q0NFH9JP5D",
+      "title": "Filesystem Label Inventory",
+      "chartQuery": "SELECT COALESCE(mountpoint, 'unknown') AS mountpoint, COALESCE(device, 'unknown') AS device, COALESCE(type, 'unknown') AS filesystem_type, COALESCE(mode, 'unknown') AS mode, COUNT(DISTINCT state) AS states, COUNT(*) AS samples, MAX(p_timestamp) AS latest FROM $metrics_dataset WHERE metric_name = 'system.filesystem.usage' GROUP BY mountpoint, device, filesystem_type, mode ORDER BY mountpoint",
+      "dbName": "$metrics_dataset",
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "33EV8HKNANSWV40M9PTABCCDC1",
+      "layout": {
+        "i": "6HTMEX8B8VTZWXQ5Q0NFH9JP5D",
+        "x": 0,
+        "y": 26,
+        "w": 12,
+        "h": 10,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "gray",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "mountpoint",
+            "title": "mountpoint",
+            "display": true
+          },
+          "y": {
+            "field": "samples",
+            "title": "samples",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}
+

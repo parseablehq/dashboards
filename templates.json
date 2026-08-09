@@ -279,6 +279,36 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "Windows Host Metrics Dashboard",
+      "dirName": "windows-host-metrics-dashboard",
+      "fileName": "windows-host-metrics-dashboard-mixed.json",
+      "description": "Monitor Windows host CPU, load, uptime, disk timing, collector inventory, and OpenTelemetry metric value coverage.",
+      "source": "Mixed",
+      "icon": "assets/icon.svg",
+      "tags": ["windows", "host", "opentelemetry", "metrics", "promql", "infrastructure"],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
+      "name": "Mac Host Metrics Dashboard",
+      "dirName": "mac-host-metrics-dashboard",
+      "fileName": "mac-host-metrics-dashboard-mixed.json",
+      "description": "Monitor macOS host CPU, load, uptime, disk timing, collector inventory, and OpenTelemetry metric value coverage.",
+      "source": "Mixed",
+      "icon": "assets/icon.svg",
+      "tags": ["macos", "host", "opentelemetry", "metrics", "promql", "infrastructure"],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
+      "name": "Linux Host Metrics Dashboard",
+      "dirName": "linux-host-metrics-dashboard",
+      "fileName": "linux-host-metrics-dashboard-mixed.json",
+      "description": "Monitor Linux host CPU, load, uptime, disk timing, collector inventory, and OpenTelemetry metric value coverage.",
+      "source": "Mixed",
+      "icon": "assets/icon.svg",
+      "tags": ["linux", "host", "opentelemetry", "metrics", "promql", "infrastructure"],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
       "name": "MySQL Monitoring",
       "dirName": "mysql-monitoring",
       "fileName": "mysql-monitoring-mixed.json",
@@ -294,7 +324,8 @@
         "traces",
         "observability",
         "promql"
-      ]
+      ],
+      "thumbnail": "assets/Overview.png"
     },
     {
       "name": "MongoDB Monitoring",
@@ -334,6 +365,16 @@
       "source": "Mixed",
       "icon": "assets/icon.svg",
       "tags": ["otel-demo", "astronomy-shop", "observability"],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
+      "name": "Demo Data Dashboard",
+      "dirName": "demo-data-dashboard",
+      "fileName": "demo-data-dashboard-mixed.json",
+      "description": "Explore sample OpenTelemetry logs, traces, metrics, service health, HTTP, databases, dependencies, errors, and runtime behavior.",
+      "source": "Mixed",
+      "icon": "assets/icon.svg",
+      "tags": ["opentelemetry", "demo", "logs", "traces", "metrics", "promql", "services"],
       "thumbnail": "assets/Overview.png"
     },
     {

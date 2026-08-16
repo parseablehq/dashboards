@@ -531,7 +531,7 @@
       "fileName": "vercel-integration-observability-mixed.json",
       "description": "Monitor logs, traces, Speed Insights web vitals, and Web Analytics pageviews delivered through the Parseable Vercel integration.",
       "source": "SQL",
-      "icon": "assets/screenshot.svg",
+      "icon": "assets/icon.svg",
       "tags": [
         "vercel",
         "frontend",

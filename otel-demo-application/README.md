@@ -33,8 +33,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **37 tiles** across **8 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`otel-demo-application-mixed.json`](otel-demo-application-mixed.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/otel-demo-application/assets)
+- Importable template: [`otel-demo-application-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/otel-demo-application/otel-demo-application-mixed.json)
 
 ## Import
 

@@ -31,8 +31,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **28 tiles** across **7 collapsible sections**
 - SQL panels over Parseable datasets
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`parseable-audit-logs-sql.json`](parseable-audit-logs-sql.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/parseable-audit-logs/assets)
+- Importable template: [`parseable-audit-logs-sql.json`](https://github.com/parseablehq/dashboards/blob/main/parseable-audit-logs/parseable-audit-logs-sql.json)
 
 ## Import
 

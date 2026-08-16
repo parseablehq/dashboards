@@ -35,8 +35,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **57 tiles** across **9 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`postgres-monitoring-mixed.json`](postgres-monitoring-mixed.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/postgres-monitoring/assets)
+- Importable template: [`postgres-monitoring-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/postgres-monitoring/postgres-monitoring-mixed.json)
 
 ## Import
 

@@ -32,8 +32,8 @@ The metric panels expect `page_views`, `api_calls`, and `api_duration_ms` teleme
 
 - **44 tiles** across **7 collapsible sections**
 - **9 PromQL metric tiles** and **35 SQL trace/metric tiles**
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`website-performance-and-visits-mixed.json`](website-performance-and-visits-mixed.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/website-performance-and-visits/assets)
+- Importable template: [`website-performance-and-visits-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/website-performance-and-visits/website-performance-and-visits-mixed.json)
 
 ## Import
 

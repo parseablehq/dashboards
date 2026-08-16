@@ -35,8 +35,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **50 tiles** across **9 collapsible sections**
 - SQL panels over Parseable datasets
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`litellm-sdk-observability-sql.json`](litellm-sdk-observability-sql.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/litellm-sdk-observability/assets)
+- Importable template: [`litellm-sdk-observability-sql.json`](https://github.com/parseablehq/dashboards/blob/main/litellm-sdk-observability/litellm-sdk-observability-sql.json)
 
 ## Import
 

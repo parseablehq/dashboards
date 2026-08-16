@@ -33,8 +33,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **40 tiles** across **8 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`modal-observability-mixed.json`](modal-observability-mixed.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/modal-observability/assets)
+- Importable template: [`modal-observability-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/modal-observability/modal-observability-mixed.json)
 
 ## Import
 

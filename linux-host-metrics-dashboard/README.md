@@ -26,8 +26,8 @@ Expected fields follow OpenTelemetry host metrics conventions, including `metric
 ## Dashboard contents
 
 - **26 tiles** across **5 collapsible sections**
-- Importable template: [`linux-host-metrics-dashboard-mixed.json`](linux-host-metrics-dashboard-mixed.json)
-- Dashboard assets: [`assets/`](assets/)
+- Importable template: [`linux-host-metrics-dashboard-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/linux-host-metrics-dashboard/linux-host-metrics-dashboard-mixed.json)
+- Dashboard assets: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/linux-host-metrics-dashboard/assets)
 
 ## Import
 

@@ -31,8 +31,8 @@ Dataset names can be changed after import through the dashboard variable.
 
 - **50 tiles** across **7 collapsible sections**
 - **46 PromQL tiles** and **4 SQL inventory tiles**
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`docker-monitoring-mixed.json`](docker-monitoring-mixed.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/docker-monitoring/assets)
+- Importable template: [`docker-monitoring-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/docker-monitoring/docker-monitoring-mixed.json)
 
 ## Import
 

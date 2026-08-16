@@ -27,7 +27,7 @@ The dashboard expects Cloudflare fields including `gen_ai.request.model`, `gen_a
 
 - **32 tiles** across **6 collapsible sections**
 - SQL-only dashboard backed by native OTLP traces
-- Importable template: [`cloudflare-ai-gateway-observability-sql.json`](cloudflare-ai-gateway-observability-sql.json)
+- Importable template: [`cloudflare-ai-gateway-observability-sql.json`](https://github.com/parseablehq/dashboards/blob/main/cloudflare-ai-gateway-observability/cloudflare-ai-gateway-observability-sql.json)
 
 ## Cloudflare exporter configuration
 

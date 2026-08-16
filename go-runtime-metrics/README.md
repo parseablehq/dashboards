@@ -31,8 +31,8 @@ Dataset names can be changed after import through the dashboard variable.
 
 - **34 tiles** across **5 collapsible sections**
 - **29 PromQL tiles** and **5 SQL inventory tiles**
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`go-runtime-metrics-mixed.json`](go-runtime-metrics-mixed.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/go-runtime-metrics/assets)
+- Importable template: [`go-runtime-metrics-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/go-runtime-metrics/go-runtime-metrics-mixed.json)
 
 ## Import
 

@@ -31,8 +31,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **21 tiles** across **7 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`claude-code-usage-mixed.json`](claude-code-usage-mixed.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/claude-code-usage/assets)
+- Importable template: [`claude-code-usage-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/claude-code-usage/claude-code-usage-mixed.json)
 
 ## Import
 

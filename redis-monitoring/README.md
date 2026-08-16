@@ -34,8 +34,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **57 tiles** across **8 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`redis-monitoring-mixed.json`](redis-monitoring-mixed.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/redis-monitoring/assets)
+- Importable template: [`redis-monitoring-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/redis-monitoring/redis-monitoring-mixed.json)
 
 ## Import
 

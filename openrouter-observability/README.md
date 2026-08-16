@@ -31,8 +31,8 @@ The dataset name can be changed after import through the dashboard variable.
 
 - **40 tiles** across **7 collapsible sections**
 - SQL panels over OpenTelemetry traces
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`openrouter-observability-sql.json`](openrouter-observability-sql.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/openrouter-observability/assets)
+- Importable template: [`openrouter-observability-sql.json`](https://github.com/parseablehq/dashboards/blob/main/openrouter-observability/openrouter-observability-sql.json)
 
 ## Import
 

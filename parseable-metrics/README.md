@@ -32,8 +32,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **66 tiles** across **8 collapsible sections**
 - PromQL panels over metric datasets
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`parseable-metrics-promql.json`](parseable-metrics-promql.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/parseable-metrics/assets)
+- Importable template: [`parseable-metrics-promql.json`](https://github.com/parseablehq/dashboards/blob/main/parseable-metrics/parseable-metrics-promql.json)
 
 ## Import
 

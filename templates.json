@@ -415,6 +415,24 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": ".NET Application Observability",
+      "dirName": "dotnet-application-observability",
+      "fileName": "dotnet-application-observability-mixed.json",
+      "description": "Monitor ASP.NET Core traffic, reliability, latency, .NET runtime health, GC, memory, thread pool activity, exceptions, logs, traces, and telemetry inventory.",
+      "source": "Mixed",
+      "icon": "assets/icon.svg",
+      "tags": [
+        "dotnet",
+        "aspnet-core",
+        "opentelemetry",
+        "metrics",
+        "logs",
+        "traces",
+        "promql"
+      ],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
       "name": "OTel Demo Application",
       "dirName": "otel-demo-application",
       "fileName": "otel-demo-application-mixed.json",

@@ -1,0 +1,1434 @@
+{
+  "tags": [
+    "vercel",
+    "frontend",
+    "logs",
+    "traces",
+    "web-vitals",
+    "analytics",
+    "sql"
+  ],
+  "variables": [
+    {
+      "name": "logs_dataset",
+      "label": "Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "vercel_logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "vercel_traces"
+    },
+    {
+      "name": "speed_insights_dataset",
+      "label": "Speed Insights Dataset",
+      "type": "dataset",
+      "defaultValue": "vercel_speed_insights"
+    },
+    {
+      "name": "analytics_dataset",
+      "label": "Web Analytics Dataset",
+      "type": "dataset",
+      "defaultValue": "vercel_analytics"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01M04EK4P5S1H3A1RJYZ995RX4",
+      "title": "Overview",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M04EK4P55NVAHRB7T18ZMZ5G",
+      "title": "Logs",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01M04EK4P5XDQJ74ZS237KM9MF",
+      "title": "Traces",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01M04EK4P52H8F0R2XS5XMHM2H",
+      "title": "Speed Insights (Web Vitals)",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01M04EK4P5BSSP8E3P4GRA7S3T",
+      "title": "Web Analytics",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01M04EK4P5X48GD3HVQ5M5ZXTS",
+      "title": "Total Log Events",
+      "chartQuery": "SELECT COUNT(*) AS count FROM $logs_dataset",
+      "dbName": "$logs_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5S1H3A1RJYZ995RX4",
+      "layout": {
+        "i": "01M04EK4P5X48GD3HVQ5M5ZXTS",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P5ZT9Y3B0CY0NACSHJ",
+      "title": "Total Spans",
+      "chartQuery": "SELECT COUNT(*) AS count FROM $traces_dataset",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5S1H3A1RJYZ995RX4",
+      "layout": {
+        "i": "01M04EK4P5ZT9Y3B0CY0NACSHJ",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseablePurple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P57PQ0Q297ZS1G52A5",
+      "title": "Total Speed Insights Events",
+      "chartQuery": "SELECT COUNT(*) AS count FROM $speed_insights_dataset",
+      "dbName": "$speed_insights_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5S1H3A1RJYZ995RX4",
+      "layout": {
+        "i": "01M04EK4P57PQ0Q297ZS1G52A5",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseableGreen",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P58Z5RPXMEQXHE7VSQ",
+      "title": "Total Pageviews",
+      "chartQuery": "SELECT COUNT(*) AS count FROM $analytics_dataset",
+      "dbName": "$analytics_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5S1H3A1RJYZ995RX4",
+      "layout": {
+        "i": "01M04EK4P58Z5RPXMEQXHE7VSQ",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P558A1TK5VH9SEVC55",
+      "title": "Error Log Rate",
+      "chartQuery": "SELECT ROUND(100.0 * SUM(CASE WHEN LOWER(level) = 'error' THEN 1 ELSE 0 END) / COUNT(*), 2) AS error_rate_pct FROM $logs_dataset",
+      "dbName": "$logs_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5S1H3A1RJYZ995RX4",
+      "layout": {
+        "i": "01M04EK4P558A1TK5VH9SEVC55",
+        "x": 0,
+        "y": 5,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "error_rate_pct",
+            "title": "Error rate",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P5QYJWTW0938VT05D5",
+      "title": "Recent Logs",
+      "chartQuery": "SELECT p_timestamp, level, source, path, \"statusCode\" AS status_code, message FROM $logs_dataset ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01M04EK4P55NVAHRB7T18ZMZ5G",
+      "layout": {
+        "i": "01M04EK4P5QYJWTW0938VT05D5",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P5M90EN7CK9Y04JRH8",
+      "title": "Recent Error Logs",
+      "chartQuery": "SELECT p_timestamp, source, path, \"statusCode\" AS status_code, message FROM $logs_dataset WHERE LOWER(level) = 'error' ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01M04EK4P55NVAHRB7T18ZMZ5G",
+      "layout": {
+        "i": "01M04EK4P5M90EN7CK9Y04JRH8",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P5KMXVEZGVZD22AZ6Q",
+      "title": "Log Volume by Level",
+      "chartQuery": "SELECT level AS label, COUNT(*) AS count FROM $logs_dataset GROUP BY level ORDER BY count DESC",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01M04EK4P55NVAHRB7T18ZMZ5G",
+      "layout": {
+        "i": "01M04EK4P5KMXVEZGVZD22AZ6Q",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "label",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P5Q1HFMQDPDSTD485V",
+      "title": "Requests by Status Code",
+      "chartQuery": "SELECT \"statusCode\" AS label, COUNT(*) AS count FROM $logs_dataset GROUP BY \"statusCode\" ORDER BY count DESC LIMIT 20",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01M04EK4P55NVAHRB7T18ZMZ5G",
+      "layout": {
+        "i": "01M04EK4P5Q1HFMQDPDSTD485V",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "parseablePurple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "label",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P57GK3G52A280TDEC9",
+      "title": "Recent Spans",
+      "chartQuery": "SELECT p_timestamp, span_name, \"http.method\" AS http_method, \"http.route\" AS route, \"http.status_code\" AS status_code, span_duration_ns FROM $traces_dataset ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5XDQJ74ZS237KM9MF",
+      "layout": {
+        "i": "01M04EK4P57GK3G52A280TDEC9",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P56AYCR8B4TXA98MR1",
+      "title": "Slowest Spans (>1s)",
+      "chartQuery": "SELECT p_timestamp, span_name, \"http.route\" AS route, span_duration_ns FROM $traces_dataset WHERE span_duration_ns > 1000000000 ORDER BY span_duration_ns DESC LIMIT 50",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5XDQJ74ZS237KM9MF",
+      "layout": {
+        "i": "01M04EK4P56AYCR8B4TXA98MR1",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P5H5TR5Y2ZTATP806X",
+      "title": "Avg Span Duration (ms)",
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns) / 1000000.0, 2) AS avg_duration_ms FROM $traces_dataset",
+      "dbName": "$traces_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5XDQJ74ZS237KM9MF",
+      "layout": {
+        "i": "01M04EK4P5H5TR5Y2ZTATP806X",
+        "x": 0,
+        "y": 7,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseablePurple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_duration_ms",
+            "title": "Average duration",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P5PEB9YX7BZHRBKEVS",
+      "title": "Spans by Route",
+      "chartQuery": "SELECT \"http.route\" AS label, COUNT(*) AS count FROM $traces_dataset GROUP BY \"http.route\" ORDER BY count DESC LIMIT 20",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5XDQJ74ZS237KM9MF",
+      "layout": {
+        "i": "01M04EK4P5PEB9YX7BZHRBKEVS",
+        "x": 3,
+        "y": 7,
+        "w": 9,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "parseablePurple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "label",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P6XQ78JMZAVKW5QNRM",
+      "title": "Avg LCP (ms)",
+      "chartQuery": "SELECT ROUND(AVG(value), 2) AS avg_lcp FROM $speed_insights_dataset WHERE \"metricType\" = 'LCP'",
+      "dbName": "$speed_insights_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P52H8F0R2XS5XMHM2H",
+      "layout": {
+        "i": "01M04EK4P6XQ78JMZAVKW5QNRM",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "parseableGreen",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_lcp",
+            "title": "Average LCP",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P6VSB77BT4T47P7KZ2",
+      "title": "Avg CLS",
+      "chartQuery": "SELECT ROUND(AVG(value), 4) AS avg_cls FROM $speed_insights_dataset WHERE \"metricType\" = 'CLS'",
+      "dbName": "$speed_insights_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P52H8F0R2XS5XMHM2H",
+      "layout": {
+        "i": "01M04EK4P6VSB77BT4T47P7KZ2",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 4
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_cls",
+            "title": "Average CLS",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P68AWE8KSQ37390HAK",
+      "title": "Avg INP (ms)",
+      "chartQuery": "SELECT ROUND(AVG(value), 2) AS avg_inp FROM $speed_insights_dataset WHERE \"metricType\" = 'INP'",
+      "dbName": "$speed_insights_dataset",
+      "chartType": "query-value",
+      "tileType": "code",
+      "sectionId": "01M04EK4P52H8F0R2XS5XMHM2H",
+      "layout": {
+        "i": "01M04EK4P68AWE8KSQ37390HAK",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_inp",
+            "title": "Average INP",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P65WZ0S8NQS7Z2EB1K",
+      "title": "Events by Rating",
+      "chartQuery": "SELECT CASE WHEN (\"metricType\" = 'LCP' AND value <= 2500) OR (\"metricType\" = 'CLS' AND value <= 0.1) OR (\"metricType\" = 'INP' AND value <= 200) THEN 'good' WHEN (\"metricType\" = 'LCP' AND value <= 4000) OR (\"metricType\" = 'CLS' AND value <= 0.25) OR (\"metricType\" = 'INP' AND value <= 500) THEN 'needs-improvement' ELSE 'poor' END AS label, COUNT(*) AS count FROM $speed_insights_dataset GROUP BY label ORDER BY count DESC",
+      "dbName": [
+        "$speed_insights_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01M04EK4P52H8F0R2XS5XMHM2H",
+      "layout": {
+        "i": "01M04EK4P65WZ0S8NQS7Z2EB1K",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "parseableGreen",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "label",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P680TMKHGQNYKY5X4E",
+      "title": "Web Vitals by Route",
+      "chartQuery": "SELECT path AS label, \"metricType\" AS metric, ROUND(AVG(value), 2) AS avg_value, COUNT(*) AS samples FROM $speed_insights_dataset GROUP BY path, \"metricType\" ORDER BY samples DESC LIMIT 50",
+      "dbName": [
+        "$speed_insights_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01M04EK4P52H8F0R2XS5XMHM2H",
+      "layout": {
+        "i": "01M04EK4P680TMKHGQNYKY5X4E",
+        "x": 0,
+        "y": 5,
+        "w": 12,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "parseableGreen",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "label",
+            "title": "path",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P6Q2GSWYMHEM75019P",
+      "title": "Pageviews (Recent)",
+      "chartQuery": "SELECT p_timestamp, path, \"eventType\" AS event_type, origin FROM $analytics_dataset ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": [
+        "$analytics_dataset"
+      ],
+      "chartType": "table",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5BSSP8E3P4GRA7S3T",
+      "layout": {
+        "i": "01M04EK4P6Q2GSWYMHEM75019P",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "table",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": -1
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "p_timestamp",
+            "display": true
+          },
+          "y": {
+            "field": "COUNT_STAR",
+            "title": "Rows",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P6FR3B4C4PRV716DRY",
+      "title": "Pageviews by Path",
+      "chartQuery": "SELECT path AS label, COUNT(*) AS count FROM $analytics_dataset GROUP BY path ORDER BY count DESC LIMIT 20",
+      "dbName": [
+        "$analytics_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5BSSP8E3P4GRA7S3T",
+      "layout": {
+        "i": "01M04EK4P6FR3B4C4PRV716DRY",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 7,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "label",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P65C9R0TP5Y8SAWW19",
+      "title": "Events by Type",
+      "chartQuery": "SELECT \"eventType\" AS label, COUNT(*) AS count FROM $analytics_dataset GROUP BY \"eventType\" ORDER BY count DESC LIMIT 20",
+      "dbName": [
+        "$analytics_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5BSSP8E3P4GRA7S3T",
+      "layout": {
+        "i": "01M04EK4P65C9R0TP5Y8SAWW19",
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "label",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    },
+    {
+      "tile_id": "01M04EK4P68JNVSCK9S5HJDQJX",
+      "title": "Pageviews by Origin",
+      "chartQuery": "SELECT origin AS label, COUNT(*) AS count FROM $analytics_dataset GROUP BY origin ORDER BY count DESC LIMIT 20",
+      "dbName": [
+        "$analytics_dataset"
+      ],
+      "chartType": "bar",
+      "tileType": "code",
+      "sectionId": "01M04EK4P5BSSP8E3P4GRA7S3T",
+      "layout": {
+        "i": "01M04EK4P68JNVSCK9S5HJDQJX",
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      },
+      "config": {
+        "type": "bar",
+        "colourScheme": "parseablePurple",
+        "layout": {
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0
+        },
+        "axes": {
+          "x": {
+            "field": "label",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "count",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      }
+    }
+  ]
+}

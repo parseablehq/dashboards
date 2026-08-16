@@ -285,7 +285,14 @@
       "description": "Monitor Windows host CPU, load, uptime, disk timing, collector inventory, and OpenTelemetry metric value coverage.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": ["windows", "host", "opentelemetry", "metrics", "promql", "infrastructure"],
+      "tags": [
+        "windows",
+        "host",
+        "opentelemetry",
+        "metrics",
+        "promql",
+        "infrastructure"
+      ],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -295,7 +302,14 @@
       "description": "Monitor macOS host CPU, load, uptime, disk timing, collector inventory, and OpenTelemetry metric value coverage.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": ["macos", "host", "opentelemetry", "metrics", "promql", "infrastructure"],
+      "tags": [
+        "macos",
+        "host",
+        "opentelemetry",
+        "metrics",
+        "promql",
+        "infrastructure"
+      ],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -305,7 +319,14 @@
       "description": "Monitor Linux host CPU, load, uptime, disk timing, collector inventory, and OpenTelemetry metric value coverage.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": ["linux", "host", "opentelemetry", "metrics", "promql", "infrastructure"],
+      "tags": [
+        "linux",
+        "host",
+        "opentelemetry",
+        "metrics",
+        "promql",
+        "infrastructure"
+      ],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -410,7 +431,15 @@
       "description": "Explore sample OpenTelemetry logs, traces, metrics, service health, HTTP, databases, dependencies, errors, and runtime behavior.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": ["opentelemetry", "demo", "logs", "traces", "metrics", "promql", "services"],
+      "tags": [
+        "opentelemetry",
+        "demo",
+        "logs",
+        "traces",
+        "metrics",
+        "promql",
+        "services"
+      ],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -477,6 +506,23 @@
         "promql"
       ],
       "thumbnail": "assets/Overview.png"
+    },
+    {
+      "name": "Vercel Integration Observability",
+      "dirName": "vercel-integration-observability",
+      "fileName": "vercel-integration-observability-mixed.json",
+      "description": "Monitor logs, traces, Speed Insights web vitals, and Web Analytics pageviews delivered through the Parseable Vercel integration.",
+      "source": "SQL",
+      "icon": "assets/screenshot.svg",
+      "tags": [
+        "vercel",
+        "frontend",
+        "logs",
+        "traces",
+        "web-vitals",
+        "analytics",
+        "sql"
+      ]
     }
   ]
 }

@@ -35,8 +35,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **74 tiles** across **9 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`k8s-cluster-monitoring-mixed.json`](k8s-cluster-monitoring-mixed.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/k8s-cluster-monitoring/assets)
+- Importable template: [`k8s-cluster-monitoring-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/k8s-cluster-monitoring/k8s-cluster-monitoring-mixed.json)
 
 ## Import
 

@@ -39,8 +39,8 @@ Eight dashboard variables let users scope every relevant panel:
 
 - **62 tiles** across **9 collapsible sections**
 - Metrics, logs, and traces in one mixed-source dashboard
-- Overview and section-specific screenshots in [`assets/`](assets/)
-- Importable template: [`windows-server-monitoring-mixed.json`](windows-server-monitoring-mixed.json)
+- Overview and section-specific screenshots in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/windows-server-monitoring/assets)
+- Importable template: [`windows-server-monitoring-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/windows-server-monitoring/windows-server-monitoring-mixed.json)
 
 ## Import
 

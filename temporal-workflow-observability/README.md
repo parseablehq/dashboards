@@ -33,8 +33,8 @@ Monitor Temporal workflow executions, activities, task queues, failures, traces,
 
 - **57 tiles** across **8 collapsible sections**
 - **35 SQL tiles** and **22 PromQL tiles**
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`temporal-workflow-observability-mixed.json`](temporal-workflow-observability-mixed.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/temporal-workflow-observability/assets)
+- Importable template: [`temporal-workflow-observability-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/temporal-workflow-observability/temporal-workflow-observability-mixed.json)
 
 ## Import
 

@@ -26,8 +26,8 @@ Expected fields follow OpenTelemetry host metrics conventions, including `metric
 ## Dashboard contents
 
 - **25 tiles** across **5 collapsible sections**
-- Importable template: [`windows-host-metrics-dashboard-mixed.json`](windows-host-metrics-dashboard-mixed.json)
-- Dashboard assets: [`assets/`](assets/)
+- Importable template: [`windows-host-metrics-dashboard-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/windows-host-metrics-dashboard/windows-host-metrics-dashboard-mixed.json)
+- Dashboard assets: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/windows-host-metrics-dashboard/assets)
 
 ## Import
 

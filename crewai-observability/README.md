@@ -37,8 +37,8 @@ Scenario-specific panels use the optional `load_test.*` attributes from the acco
 
 - **38 tiles** across **6 collapsible sections**
 - SQL panels over OpenInference and OpenTelemetry trace fields
-- Dashboard preview images in [`assets/`](assets/)
-- Importable template: [`crewai-observability-sql.json`](crewai-observability-sql.json)
+- Dashboard preview images in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/crewai-observability/assets)
+- Importable template: [`crewai-observability-sql.json`](https://github.com/parseablehq/dashboards/blob/main/crewai-observability/crewai-observability-sql.json)
 
 ## Import
 

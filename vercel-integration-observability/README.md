@@ -31,8 +31,8 @@ Queries match the live Vercel drain schemas: traces use `span_name` and `span_du
 
 - **22 tiles** across **5 collapsible sections**
 - All tiles are SQL-based
-- Icon asset: [`assets/icon.svg`](assets/icon.svg)
-- Importable template: [`vercel-integration-observability-mixed.json`](vercel-integration-observability-mixed.json)
+- Icon asset: [`assets/icon.svg`](https://github.com/parseablehq/dashboards/blob/main/vercel-integration-observability/assets/icon.svg)
+- Importable template: [`vercel-integration-observability-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/vercel-integration-observability/vercel-integration-observability-mixed.json)
 
 ## Import
 

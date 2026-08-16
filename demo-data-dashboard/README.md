@@ -32,8 +32,8 @@ Expected fields and labels follow the dashboard queries and OpenTelemetry semant
 ## Dashboard contents
 
 - **56 tiles** across **8 collapsible sections**
-- Importable template: [`demo-data-dashboard-mixed.json`](demo-data-dashboard-mixed.json)
-- Dashboard assets: [`assets/`](assets/)
+- Importable template: [`demo-data-dashboard-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/demo-data-dashboard/demo-data-dashboard-mixed.json)
+- Dashboard assets: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/demo-data-dashboard/assets)
 
 ## Import
 

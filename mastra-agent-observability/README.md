@@ -35,8 +35,8 @@ Estimated-cost panels use Parseable's `agent_cost()` UDF with provider and model
 
 - **39 tiles** across **8 collapsible sections**
 - **35 SQL tiles** and **4 PromQL tiles**
-- Dashboard preview images can be placed in [`assets/`](assets/)
-- Importable template: [`mastra-agent-observability-mixed.json`](mastra-agent-observability-mixed.json)
+- Dashboard preview images can be placed in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/mastra-agent-observability/assets)
+- Importable template: [`mastra-agent-observability-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/mastra-agent-observability/mastra-agent-observability-mixed.json)
 
 ## Import
 

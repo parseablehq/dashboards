@@ -35,8 +35,8 @@ Dataset names can be changed after import through dashboard variables.
 
 - **47 tiles** across **9 collapsible sections**
 - SQL panels over Parseable datasets
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`codex-observability-sql.json`](codex-observability-sql.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/codex-observability/assets)
+- Importable template: [`codex-observability-sql.json`](https://github.com/parseablehq/dashboards/blob/main/codex-observability/codex-observability-sql.json)
 
 ## Import
 

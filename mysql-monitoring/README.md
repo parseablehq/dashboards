@@ -36,8 +36,8 @@ Dataset names can be changed after import through dashboard variables. The defau
 
 - **60 tiles** across **10 collapsible sections**
 - **44 PromQL metric tiles** and **16 SQL log/trace tiles**
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`mysql-monitoring-mixed.json`](mysql-monitoring-mixed.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/mysql-monitoring/assets)
+- Importable template: [`mysql-monitoring-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/mysql-monitoring/mysql-monitoring-mixed.json)
 
 ## Import
 

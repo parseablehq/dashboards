@@ -29,8 +29,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **30 tiles** across **6 collapsible sections**
 - SQL panels over Parseable datasets
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`agent-cost-analysis-sql.json`](agent-cost-analysis-sql.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/agent-cost-analysis/assets)
+- Importable template: [`agent-cost-analysis-sql.json`](https://github.com/parseablehq/dashboards/blob/main/agent-cost-analysis/agent-cost-analysis-sql.json)
 
 ## Import
 

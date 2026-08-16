@@ -32,8 +32,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **77 tiles** across **9 collapsible sections**
 - SQL panels over Parseable datasets
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`agent-observability-sql.json`](agent-observability-sql.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/agent-observability/assets)
+- Importable template: [`agent-observability-sql.json`](https://github.com/parseablehq/dashboards/blob/main/agent-observability/agent-observability-sql.json)
 
 ## Import
 

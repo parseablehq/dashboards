@@ -32,8 +32,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **38 tiles** across **7 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
-- Dashboard screenshot in [`assets/`](assets/)
-- Importable template: [`traefik-monitoring-mixed.json`](traefik-monitoring-mixed.json)
+- Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/traefik-monitoring/assets)
+- Importable template: [`traefik-monitoring-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/traefik-monitoring/traefik-monitoring-mixed.json)
 
 ## Import
 

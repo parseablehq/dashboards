@@ -31,8 +31,8 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 - **52 tiles** across **7 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
-- Screenshot assets directory: [`assets/`](assets/)
-- Importable template: [`litellm-proxy-observability-mixed.json`](litellm-proxy-observability-mixed.json)
+- Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/litellm-proxy-observability/assets)
+- Importable template: [`litellm-proxy-observability-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/litellm-proxy-observability/litellm-proxy-observability-mixed.json)
 
 ## Import
 

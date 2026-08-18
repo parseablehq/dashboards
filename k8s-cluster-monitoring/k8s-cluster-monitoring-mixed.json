@@ -163,6 +163,16 @@
           "groupBy": {
             "field": []
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -213,6 +223,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -265,6 +285,16 @@
           "groupBy": {
             "field": []
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -316,6 +346,16 @@
           "groupBy": {
             "field": []
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -366,6 +406,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -463,7 +513,8 @@
         "type": "area",
         "colourScheme": "yellow",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -474,6 +525,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -504,7 +565,8 @@
         "type": "area",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -515,6 +577,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -611,7 +683,8 @@
         "type": "area",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -622,6 +695,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -652,7 +735,8 @@
         "type": "area",
         "colourScheme": "gray",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -663,6 +747,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -693,7 +787,8 @@
         "type": "area",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -704,6 +799,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -734,7 +839,8 @@
         "type": "area",
         "colourScheme": "teal",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -745,6 +851,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -907,7 +1023,8 @@
         "type": "area",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -918,6 +1035,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1275,7 +1402,8 @@
         "type": "area",
         "colourScheme": "red",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -1286,6 +1414,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1378,7 +1516,24 @@
         "type": "table",
         "colourScheme": "teal",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "axes": {
+          "y": {},
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -1405,7 +1560,24 @@
         "type": "table",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "axes": {
+          "y": {},
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -1432,7 +1604,24 @@
         "type": "table",
         "colourScheme": "teal",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "axes": {
+          "y": {},
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -1459,7 +1648,24 @@
         "type": "table",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "axes": {
+          "y": {},
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -1510,6 +1716,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1562,6 +1778,16 @@
           "groupBy": {
             "field": []
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -1612,6 +1838,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1664,6 +1900,16 @@
           "groupBy": {
             "field": []
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -1690,7 +1936,8 @@
         "type": "area",
         "colourScheme": "parseableBlue",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -1701,6 +1948,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1728,7 +1985,8 @@
         "type": "area",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -1739,6 +1997,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2026,7 +2294,24 @@
         "type": "table",
         "colourScheme": "orange",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "axes": {
+          "y": {},
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -2053,7 +2338,24 @@
         "type": "table",
         "colourScheme": "yellow",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "axes": {
+          "y": {},
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
@@ -2061,6 +2363,9 @@
       "tile_id": "01KW4CJT7AFFZ5RVJ94H9C7RP1",
       "title": "Top Pod Errors",
       "chartQuery": "SELECT coalesce(body_error,body_err,body_msg,body_message,body,'unknown') e,count(*) n FROM $pod_logs_dataset WHERE (severity_text IN ('ERROR','FATAL') OR lower(coalesce(body_level,body_msg,body_message,body_error,body_err,body,'')) LIKE '%error%') AND ('$namespace'='.*' OR coalesce(\"k8s.namespace.name\",body_namespace,'')='$namespace') AND ('$pod'='.*' OR coalesce(\"k8s.pod.name\",body_name,'')='$pod') GROUP BY 1 ORDER BY 2 DESC LIMIT 20",
+      "dbName": [
+        "$pod_logs_dataset"
+      ],
       "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
       "layout": {
         "i": "01KW4CJT7AFFZ5RVJ94H9C7RP1",
@@ -2075,7 +2380,8 @@
         "type": "table",
         "colourScheme": "red",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2087,6 +2393,16 @@
           "groupBy": {
             "field": []
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       },
       "chartType": "table",
@@ -2096,6 +2412,9 @@
       "tile_id": "01KW4CJT7ABMH4NCN8C7GPZ3SK",
       "title": "Pod Errors Over Time",
       "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') time_bin,count(*) errors FROM $pod_logs_dataset WHERE (severity_text IN ('ERROR','FATAL') OR lower(coalesce(body_level,body_msg,body_error,body_err,body,'')) LIKE '%error%') AND ('$namespace'='.*' OR coalesce(\"k8s.namespace.name\",body_namespace,'')='$namespace') AND ('$pod'='.*' OR coalesce(\"k8s.pod.name\",body_name,'')='$pod') GROUP BY 1 ORDER BY 1",
+      "dbName": [
+        "$pod_logs_dataset"
+      ],
       "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
       "layout": {
         "i": "01KW4CJT7ABMH4NCN8C7GPZ3SK",
@@ -2110,7 +2429,8 @@
         "type": "area",
         "colourScheme": "greenYellowRed",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2121,6 +2441,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       },
@@ -2349,7 +2679,8 @@
         "type": "area",
         "colourScheme": "teal",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2360,6 +2691,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2462,7 +2803,8 @@
         "type": "area",
         "colourScheme": "gray",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2473,6 +2815,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2503,7 +2855,8 @@
         "type": "area",
         "colourScheme": "teal",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2514,6 +2867,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2544,7 +2907,8 @@
         "type": "area",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2555,6 +2919,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2585,7 +2959,8 @@
         "type": "area",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2596,6 +2971,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2626,7 +3011,8 @@
         "type": "area",
         "colourScheme": "gray",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2637,6 +3023,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2667,7 +3063,8 @@
         "type": "area",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2678,6 +3075,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2708,7 +3115,8 @@
         "type": "area",
         "colourScheme": "teal",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2719,6 +3127,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2881,7 +3299,8 @@
         "type": "area",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "humanize": true,
+          "legendPosition": "bottom"
         },
         "axes": {
           "x": {
@@ -2892,6 +3311,16 @@
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }

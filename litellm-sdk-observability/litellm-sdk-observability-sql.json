@@ -32,65 +32,55 @@
     {
       "name": "service",
       "label": "Service",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "litellm-sdk-app"
       ],
-      "defaultValue": "All",
-      "stream": "litellm-sdk-traces",
-      "labelName": "service.name"
+      "defaultValue": "All"
     },
     {
       "name": "environment",
       "label": "Environment",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "staging"
       ],
-      "defaultValue": "All",
-      "stream": "litellm-sdk-traces",
-      "labelName": "deployment.environment"
+      "defaultValue": "All"
     },
     {
       "name": "model",
       "label": "Request Model",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "gpt-4o-mini",
         "claude-3-5-haiku-latest"
       ],
-      "defaultValue": "All",
-      "stream": "litellm-sdk-traces",
-      "labelName": "gen_ai.request.model"
+      "defaultValue": "All"
     },
     {
       "name": "provider",
       "label": "Provider",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "openai",
         "anthropic"
       ],
-      "defaultValue": "All",
-      "stream": "litellm-sdk-traces",
-      "labelName": "gen_ai.provider.name"
+      "defaultValue": "All"
     },
     {
       "name": "severity",
       "label": "Log Level",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "INFO",
         "ERROR"
       ],
-      "defaultValue": "All",
-      "stream": "litellm-sdk-logs",
-      "labelName": "severity_text"
+      "defaultValue": "All"
     }
   ],
   "sections": [

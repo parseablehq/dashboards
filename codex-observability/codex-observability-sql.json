@@ -31,42 +31,36 @@
     {
       "name": "service",
       "label": "Client / Service",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "codex-app-server",
         "codex_cli_rs"
       ],
-      "defaultValue": "All",
-      "stream": "codex-metrics",
-      "labelName": "service.name"
+      "defaultValue": "All"
     },
     {
       "name": "model",
       "label": "Model",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "gpt-5.6-sol",
         "gpt-5.6-luna"
       ],
-      "defaultValue": "All",
-      "stream": "codex-metrics",
-      "labelName": "model"
+      "defaultValue": "All"
     },
     {
       "name": "app_version",
       "label": "App Version",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "0.145.0",
         "0.146.0",
         "0.146.0-alpha.9.2"
       ],
-      "defaultValue": "All",
-      "stream": "codex-metrics",
-      "labelName": "app.version"
+      "defaultValue": "All"
     }
   ],
   "sections": [

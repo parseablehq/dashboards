@@ -4,13 +4,13 @@ Monitor Kubernetes cluster health, nodes, pods, containers, workloads, logs, eve
 
 ## What the dashboard shows
 
-- **Overview:** panels include Nodes, Namespaces, Pods Seen, Containers Seen, Pod Log Events, and K8s Event Records, plus related signals.
+- **Overview:** panels include Nodes, Namespaces, Pods Seen, Containers Seen, Pod Log Events, K8s Event Records, Pods by Phase Over Time, and Namespaces by Phase Over Time.
 - **Node Metrics:** panels include Node CPU Usage %, Node Memory Working Set %, Node Filesystem Usage, Node Network IO Rate, Node Conditions, and Node Pressure Conditions, plus related signals.
 - **Pod and Container Metrics:** panels include Pod CPU by Namespace, Pod Memory by Namespace, Container CPU by Namespace, Container Memory by Namespace, Pod Network IO Rate, and Pod Network Error Rate, plus related signals.
 - **Workloads:** panels include Deployment Desired vs Available, Deployment Available, DaemonSet Desired vs Ready, DaemonSet Ready Nodes, StatefulSet Ready vs Desired, and ReplicaSet Available vs Desired, plus related signals.
-- **Pod logs:** panels include Pod Logs Over Time, Top Log Namespaces, and Top Log Pods.
-- **Pod Log Errors:** panels include Top Pod Errors, Pod Errors Over Time, Pod Log Errors by Pod, and Pod Log Errors by Namespace.
-- **K8s Events:** panels include Events Over Time, Warnings Over Time, Events by Type, Top Event Reasons, Top Event Namespaces, and Events by Component, plus related signals.
+- **Pod logs:** panels include Pod Logs Over Time, Log Volume by Namespace, and Top Log Pods.
+- **Pod Log Errors:** panels include Top Pod Errors, Pod Errors Over Time, Pod Log Errors by Pod Over Time, and Pod Log Errors by Namespace Over Time.
+- **K8s Events:** panels include Events Over Time, Warnings Over Time, Events by Type Over Time, Events by Reason Over Time, Events by Namespace Over Time, and Events by Component Over Time, plus related signals.
 - **Capacity and Limits:** panels include Node Allocatable CPU, Node Allocatable Memory, Container CPU Requests by Namespace, Container CPU Limits by Namespace, Container Memory Requests by Namespace, and Container Memory Limits by Namespace, plus related signals.
 - **Kubelet and Runtime:** panels include Kubelet Runtime Operation Errors and Kubelet HTTP Request Rate.
 
@@ -34,6 +34,7 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 ## Dashboard contents
 
 - **74 tiles** across **9 collapsible sections**
+- **47 time-series panels** with no pie or donut visualizations
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
 - Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/k8s-cluster-monitoring/assets)
 - Importable template: [`k8s-cluster-monitoring-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/k8s-cluster-monitoring/k8s-cluster-monitoring-mixed.json)

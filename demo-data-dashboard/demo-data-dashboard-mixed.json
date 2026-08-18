@@ -1518,7 +1518,7 @@
     {
       "tile_id": "617XW2XSHJ48TZQQJ53RSMMN0F",
       "title": "Database Errors by Operation",
-      "chartQuery": "SELECT COALESCE(\"db.operation\", 'unknown') AS db_operation,\n  COUNT(*) FILTER (WHERE span_status_code = 2 OR \"event_db.error_message\" IS NOT NULL) AS errors\nFROM $traces_dataset\nWHERE \"db.operation\" IS NOT NULL\nGROUP BY db_operation\nORDER BY errors DESC",
+      "chartQuery": "SELECT COALESCE(\"db.operation\", 'unknown') AS db_operation,\n  COUNT(*) FILTER (WHERE span_status_code = 2) AS errors\nFROM $traces_dataset\nWHERE \"db.operation\" IS NOT NULL\nGROUP BY db_operation\nORDER BY errors DESC",
       "dbName": "$traces_dataset",
       "chartType": "bar",
       "tileType": "code",
@@ -2561,68 +2561,6 @@
           "y": {
             "field": "severity",
             "title": "severity",
-            "display": true,
-            "beginAtZero": true
-          },
-          "groupBy": {
-            "field": []
-          }
-        },
-        "advanced": {
-          "dataLabels": {
-            "enabled": false
-          },
-          "tooltip": {
-            "enabled": true,
-            "mode": "index",
-            "intersect": false
-          }
-        }
-      }
-    },
-    {
-      "tile_id": "2DXM78616V6YMKAPVJM5PCVXPK",
-      "title": "Log Code Locations",
-      "chartQuery": "SELECT COALESCE(\"code.function.name\", 'unknown') AS function_name,\n  COALESCE(\"code.file.path\", 'unknown') AS file_path,\n  COALESCE(\"code.line.number\", 'unknown') AS line_number,\n  COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY function_name, file_path, line_number\nORDER BY logs DESC\nLIMIT 50",
-      "dbName": "$logs_dataset",
-      "chartType": "table",
-      "tileType": "code",
-      "sectionId": "1GTF6AAHXCBH8YZVMF8GD8EXJD",
-      "layout": {
-        "i": "2DXM78616V6YMKAPVJM5PCVXPK",
-        "x": 0,
-        "y": 24,
-        "w": 12,
-        "h": 9,
-        "moved": false,
-        "static": false
-      },
-      "config": {
-        "type": "table",
-        "colourScheme": "classic",
-        "layout": {
-          "segments": {
-            "value": [
-              10,
-              90
-            ],
-            "isPercent": true
-          },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": 2,
-          "humanize": true
-        },
-        "axes": {
-          "x": {
-            "field": "function_name",
-            "title": "function_name",
-            "display": true
-          },
-          "y": {
-            "field": "logs",
-            "title": "logs",
             "display": true,
             "beginAtZero": true
           },

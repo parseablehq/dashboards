@@ -377,7 +377,7 @@
         "(avg({\"k8s.node.cpu.usage\"}) by (\"k8s.node.name\") / avg({\"k8s.node.allocatable_cpu\"}) by (\"k8s.node.name\")) * 100"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
       "promqlQueryType": [
@@ -393,22 +393,46 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.node.name",
-            "title": "k8s.node.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.node.name",
-            "title": "k8s.node.name"
+            "field": "COUNT_STAR",
+            "title": "CPU Usage (%)",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -502,7 +526,7 @@
         "sum(rate({\"k8s.node.network.io\"}[5m])) by (\"k8s.node.name\", direction)"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
       "promqlQueryType": [
@@ -518,22 +542,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "yellow",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.node.name",
-            "title": "k8s.node.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.node.name",
-            "title": "k8s.node.name"
+            "field": "COUNT_STAR",
+            "title": "Network I/O Rate",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -709,7 +756,7 @@
         "sum(rate({\"k8s.pod.network.io\"}[5m])) by (\"k8s.namespace.name\", direction)"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
       "promqlQueryType": [
@@ -725,22 +772,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "gray",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "B",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.namespace.name",
-            "title": "k8s.namespace.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.namespace.name",
-            "title": "k8s.namespace.name"
+            "field": "COUNT_STAR",
+            "title": "Network I/O Rate",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -752,7 +822,7 @@
         "sum(rate({\"k8s.pod.network.errors\"}[5m])) by (\"k8s.namespace.name\", direction)"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW97P7KF26VNV0XY3SNWQ3YT",
       "promqlQueryType": [
@@ -768,22 +838,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "parseableBlue",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.namespace.name",
-            "title": "k8s.namespace.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.namespace.name",
-            "title": "k8s.namespace.name"
+            "field": "COUNT_STAR",
+            "title": "Errors/s",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -836,7 +929,7 @@
         "sum({\"k8s.node.condition_ready\"}) by (\"k8s.node.name\", status)"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
       "promqlQueryType": [
@@ -852,22 +945,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "status",
-            "title": "status"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "status",
-            "title": "status"
+            "field": "COUNT_STAR",
+            "title": "Ready Condition",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -879,7 +995,7 @@
         "sum({\"k8s.deployment.desired\"}) by (\"k8s.namespace.name\")"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
       "promqlQueryType": [
@@ -895,22 +1011,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.deployment.name",
-            "title": "k8s.deployment.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.deployment.name",
-            "title": "k8s.deployment.name"
+            "field": "COUNT_STAR",
+            "title": "Desired Pods",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -922,7 +1061,7 @@
         "sum({\"k8s.deployment.available\"}) by (\"k8s.namespace.name\")"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
       "promqlQueryType": [
@@ -938,22 +1077,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "purple",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.deployment.name",
-            "title": "k8s.deployment.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.deployment.name",
-            "title": "k8s.deployment.name"
+            "field": "COUNT_STAR",
+            "title": "Available Pods",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -965,7 +1127,7 @@
         "sum({\"k8s.daemonset.desired_scheduled_nodes\"}) by (\"k8s.namespace.name\", \"k8s.daemonset.name\")"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
       "promqlQueryType": [
@@ -981,22 +1143,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "orange",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.daemonset.name",
-            "title": "k8s.daemonset.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.daemonset.name",
-            "title": "k8s.daemonset.name"
+            "field": "COUNT_STAR",
+            "title": "Desired Nodes",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1008,7 +1193,7 @@
         "sum({\"k8s.daemonset.ready_nodes\"}) by (\"k8s.namespace.name\", \"k8s.daemonset.name\")"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
       "promqlQueryType": [
@@ -1024,22 +1209,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "yellow",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.daemonset.name",
-            "title": "k8s.daemonset.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.daemonset.name",
-            "title": "k8s.daemonset.name"
+            "field": "COUNT_STAR",
+            "title": "Ready Nodes",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1084,12 +1292,12 @@
     },
     {
       "tile_id": "01KW477E0D7C1AF8EAFGRDR8M2",
-      "title": "Top Log Namespaces",
-      "chartQuery": "SELECT COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace, COUNT(*) AS logs FROM $pod_logs_dataset GROUP BY COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') ORDER BY logs DESC LIMIT 15",
+      "title": "Log Volume by Namespace",
+      "chartQuery": "WITH top_namespaces AS (\n  SELECT COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace\n  FROM $pod_logs_dataset\n  GROUP BY namespace\n  ORDER BY COUNT(*) DESC\n  LIMIT 15\n)\nSELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace,\n       COUNT(*) AS logs\nFROM $pod_logs_dataset\nWHERE COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') IN (SELECT namespace FROM top_namespaces)\nGROUP BY time_bucket, namespace\nORDER BY time_bucket ASC",
       "dbName": [
         "$pod_logs_dataset"
       ],
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "code",
       "sectionId": "01KW9MKMHNDS0DY10G6NCTQE5W",
       "layout": {
@@ -1102,24 +1310,47 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "namespace",
-            "title": "namespace"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "namespace",
-            "title": "namespace"
+            "field": "logs",
+            "title": "Logs",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": [
               "namespace"
             ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1514,12 +1745,12 @@
     },
     {
       "tile_id": "01KW4BQA5DR0M2N5WWFBM8BVFP",
-      "title": "Events by Type",
-      "chartQuery": "SELECT COALESCE(type, p_log_category, 'unknown') AS event_type, COUNT(*) AS events FROM $events_dataset GROUP BY COALESCE(type, p_log_category, 'unknown') ORDER BY events DESC",
+      "title": "Events by Type Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(type, p_log_category, 'unknown') AS event_type,\n       COUNT(*) AS events\nFROM $events_dataset\nGROUP BY time_bucket, event_type\nORDER BY time_bucket ASC",
       "dbName": [
         "$events_dataset"
       ],
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "code",
       "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
       "layout": {
@@ -1532,34 +1763,59 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "purple",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "event_type",
-            "title": "event_type"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "event_type",
-            "title": "event_type"
+            "field": "events",
+            "title": "Events",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
-            "field": []
+            "field": [
+              "event_type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
     },
     {
       "tile_id": "01KW4BQA5D5WT9YX0X830SRZZD",
-      "title": "Top Event Reasons",
-      "chartQuery": "SELECT COALESCE(reason, 'unknown') AS reason, COUNT(*) AS events, COALESCE(SUM(CAST(count AS DOUBLE)), COUNT(*)) AS occurrences FROM $events_dataset GROUP BY COALESCE(reason, 'unknown') ORDER BY events DESC LIMIT 15",
+      "title": "Events by Reason Over Time",
+      "chartQuery": "WITH top_reasons AS (\n  SELECT COALESCE(reason, 'unknown') AS reason\n  FROM $events_dataset\n  GROUP BY reason\n  ORDER BY COUNT(*) DESC\n  LIMIT 15\n)\nSELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(reason, 'unknown') AS reason,\n       COUNT(*) AS events\nFROM $events_dataset\nWHERE COALESCE(reason, 'unknown') IN (SELECT reason FROM top_reasons)\nGROUP BY time_bucket, reason\nORDER BY time_bucket ASC",
       "dbName": [
         "$events_dataset"
       ],
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "code",
       "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
       "layout": {
@@ -1572,36 +1828,59 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "reason",
-            "title": "reason"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "reason",
-            "title": "reason"
+            "field": "events",
+            "title": "Events",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": [
               "reason"
             ]
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
     {
       "tile_id": "01KW4BQA5DTF8AEYCHE3YBGH55",
-      "title": "Top Event Namespaces",
-      "chartQuery": "SELECT COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name, COUNT(*) AS events, COALESCE(SUM(CAST(count AS DOUBLE)), COUNT(*)) AS occurrences FROM $events_dataset GROUP BY COALESCE(\"k8s.namespace.name\", namespace, 'unknown') ORDER BY events DESC LIMIT 15",
+      "title": "Events by Namespace Over Time",
+      "chartQuery": "WITH top_namespaces AS (\n  SELECT COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name\n  FROM $events_dataset\n  GROUP BY namespace_name\n  ORDER BY COUNT(*) DESC\n  LIMIT 15\n)\nSELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name,\n       COUNT(*) AS events\nFROM $events_dataset\nWHERE COALESCE(\"k8s.namespace.name\", namespace, 'unknown') IN (SELECT namespace_name FROM top_namespaces)\nGROUP BY time_bucket, namespace_name\nORDER BY time_bucket ASC",
       "dbName": [
         "$events_dataset"
       ],
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "code",
       "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
       "layout": {
@@ -1614,36 +1893,59 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "gray",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "namespace_name",
-            "title": "namespace_name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "namespace_name",
-            "title": "namespace_name"
+            "field": "events",
+            "title": "Events",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": [
               "namespace_name"
             ]
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       }
     },
     {
       "tile_id": "01KW4BQA5DEVRV3DMZ3204A63F",
-      "title": "Events by Component",
-      "chartQuery": "SELECT COALESCE(component, \"reportingComponent\", 'unknown') AS component_name, COUNT(*) AS events, COALESCE(SUM(CAST(count AS DOUBLE)), COUNT(*)) AS occurrences FROM $events_dataset GROUP BY COALESCE(component, \"reportingComponent\", 'unknown') ORDER BY events DESC LIMIT 15",
+      "title": "Events by Component Over Time",
+      "chartQuery": "WITH top_components AS (\n  SELECT COALESCE(component, \"reportingComponent\", 'unknown') AS component_name\n  FROM $events_dataset\n  GROUP BY component_name\n  ORDER BY COUNT(*) DESC\n  LIMIT 15\n)\nSELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(component, \"reportingComponent\", 'unknown') AS component_name,\n       COUNT(*) AS events\nFROM $events_dataset\nWHERE COALESCE(component, \"reportingComponent\", 'unknown') IN (SELECT component_name FROM top_components)\nGROUP BY time_bucket, component_name\nORDER BY time_bucket ASC",
       "dbName": [
         "$events_dataset"
       ],
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "code",
       "sectionId": "01KW922RK8RGQ217MDHXCMMEN9",
       "layout": {
@@ -1656,24 +1958,47 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "parseableBlue",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "component_name",
-            "title": "component_name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "component_name",
-            "title": "component_name"
+            "field": "events",
+            "title": "Events",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": [
               "component_name"
             ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1804,8 +2129,8 @@
     },
     {
       "tile_id": "01KW4CJT7AYDFXM0509FB033QN",
-      "title": "Pod Log Errors by Pod",
-      "chartQuery": "SELECT COALESCE(\"k8s.pod.name\", body_name, 'unknown') AS pod, COUNT(*) AS errors FROM $pod_logs_dataset WHERE (severity_text IN ('ERROR','FATAL') OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%') GROUP BY COALESCE(\"k8s.pod.name\", body_name, 'unknown') ORDER BY errors DESC LIMIT 25",
+      "title": "Pod Log Errors by Pod Over Time",
+      "chartQuery": "WITH top_pods AS (\n  SELECT COALESCE(\"k8s.pod.name\", body_name, 'unknown') AS pod\n  FROM $pod_logs_dataset\n  WHERE severity_text IN ('ERROR', 'FATAL')\n     OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%'\n  GROUP BY pod\n  ORDER BY COUNT(*) DESC\n  LIMIT 25\n)\nSELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(\"k8s.pod.name\", body_name, 'unknown') AS pod,\n       COUNT(*) AS errors\nFROM $pod_logs_dataset\nWHERE (severity_text IN ('ERROR', 'FATAL')\n    OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%')\n  AND COALESCE(\"k8s.pod.name\", body_name, 'unknown') IN (SELECT pod FROM top_pods)\nGROUP BY time_bucket, pod\nORDER BY time_bucket ASC",
       "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
       "layout": {
         "i": "01KW4CJT7AYDFXM0509FB033QN",
@@ -1817,28 +2142,51 @@
         "static": false
       },
       "config": {
-        "type": "pie",
+        "type": "area",
         "colourScheme": "teal",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "pod",
-            "title": "pod"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "pod",
-            "title": "pod"
+            "field": "errors",
+            "title": "Errors",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": [
               "pod"
             ]
           }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
         }
       },
-      "chartType": "pie",
+      "chartType": "timeseries",
       "tileType": "code",
       "dbName": [
         "$pod_logs_dataset"
@@ -1846,12 +2194,12 @@
     },
     {
       "tile_id": "01KW4CJT7AE5XF7CPEB7PZCNH4",
-      "title": "Pod Log Errors by Namespace",
-      "chartQuery": "SELECT COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace_name, COUNT(*) AS errors FROM $pod_logs_dataset WHERE (severity_text IN ('ERROR','FATAL') OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%') GROUP BY COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') ORDER BY errors DESC LIMIT 20",
+      "title": "Pod Log Errors by Namespace Over Time",
+      "chartQuery": "WITH top_namespaces AS (\n  SELECT COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace_name\n  FROM $pod_logs_dataset\n  WHERE severity_text IN ('ERROR', 'FATAL')\n     OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%'\n  GROUP BY namespace_name\n  ORDER BY COUNT(*) DESC\n  LIMIT 20\n)\nSELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace_name,\n       COUNT(*) AS errors\nFROM $pod_logs_dataset\nWHERE (severity_text IN ('ERROR', 'FATAL')\n    OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%')\n  AND COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') IN (SELECT namespace_name FROM top_namespaces)\nGROUP BY time_bucket, namespace_name\nORDER BY time_bucket ASC",
       "dbName": [
         "$pod_logs_dataset"
       ],
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "code",
       "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
       "layout": {
@@ -1864,24 +2212,47 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "green",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "namespace_name",
-            "title": "namespace_name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "namespace_name",
-            "title": "namespace_name"
+            "field": "errors",
+            "title": "Errors",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": [
               "namespace_name"
             ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1893,7 +2264,7 @@
         "sum({\"k8s.node.allocatable_cpu\"}) by (\"k8s.node.name\")"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW991GJRB275JXGGV67KVEW4",
       "promqlQueryType": [
@@ -1909,22 +2280,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "blue",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.node.name",
-            "title": "k8s.node.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.node.name",
-            "title": "k8s.node.name"
+            "field": "COUNT_STAR",
+            "title": "CPU Cores",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -1980,7 +2374,7 @@
         "sum({\"k8s.node.condition_network_unavailable\"}) by (\"k8s.node.name\", status)"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW94ED0RC9AKXVCH96MNY9H5",
       "promqlQueryType": [
@@ -1999,22 +2393,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "purple",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.node.name",
-            "title": "k8s.node.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.node.name",
-            "title": "k8s.node.name"
+            "field": "COUNT_STAR",
+            "title": "Pressure Condition",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2313,7 +2730,7 @@
         "sum(rate({\"kubelet_runtime_operations_errors_total\"}[5m])) by (operation_type)"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW9ZD7VRAMN1Y0QGJR19J7ZC",
       "promqlQueryType": [
@@ -2329,22 +2746,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "orange",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "operation_type",
-            "title": "operation_type"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "operation_type",
-            "title": "operation_type"
+            "field": "COUNT_STAR",
+            "title": "Errors/s",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2356,7 +2796,7 @@
         "sum(rate({\"kubelet_http_requests_total\"}[5m])) by (method, status)"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW9ZD7VRAMN1Y0QGJR19J7ZC",
       "promqlQueryType": [
@@ -2372,22 +2812,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "yellow",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "status",
-            "title": "status"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "status",
-            "title": "status"
+            "field": "COUNT_STAR",
+            "title": "Requests/s",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2441,7 +2904,7 @@
         "sum({\"k8s.statefulset.desired_pods\"}) by (\"k8s.namespace.name\", \"k8s.statefulset.name\")"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
       "promqlQueryType": [
@@ -2458,22 +2921,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "red",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.statefulset.name",
-            "title": "k8s.statefulset.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.statefulset.name",
-            "title": "k8s.statefulset.name"
+            "field": "COUNT_STAR",
+            "title": "Pods",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2486,7 +2972,7 @@
         "sum({\"k8s.replicaset.desired\"}) by (\"k8s.namespace.name\", \"k8s.replicaset.name\")"
       ],
       "dbName": "$cluster_metrics_dataset",
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "promql",
       "sectionId": "01KW97A6WXTYRMYEKB5G6YZR09",
       "promqlQueryType": [
@@ -2503,22 +2989,45 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "purple",
         "layout": {
-          "humanize": true
+          "legendPosition": "bottom",
+          "unit": "",
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "k8s.replicaset.name",
-            "title": "k8s.replicaset.name"
+            "field": "time_bucket",
+            "title": "Time",
+            "display": true
           },
           "y": {
-            "field": "k8s.replicaset.name",
-            "title": "k8s.replicaset.name"
+            "field": "COUNT_STAR",
+            "title": "Replicas",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
             "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
           }
         }
       }
@@ -2785,12 +3294,12 @@
     },
     {
       "tile_id": "01KXQDE68QEJB9QJ0EFJMNAQ05",
-      "title": "Pods by Phase",
-      "chartQuery": "SELECT CASE CAST(data_point_value AS INT) WHEN 1 THEN 'Pending' WHEN 2 THEN 'Running' WHEN 3 THEN 'Succeeded' WHEN 4 THEN 'Failed' WHEN 5 THEN 'Unknown' ELSE CAST(data_point_value AS VARCHAR) END AS pod_phase, COUNT(DISTINCT \"k8s.pod.name\") AS pods FROM $cluster_metrics_dataset WHERE metric_name='k8s.pod.phase' GROUP BY pod_phase ORDER BY pods DESC",
+      "title": "Pods by Phase Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       CASE CAST(data_point_value AS INT)\n         WHEN 1 THEN 'Pending'\n         WHEN 2 THEN 'Running'\n         WHEN 3 THEN 'Succeeded'\n         WHEN 4 THEN 'Failed'\n         WHEN 5 THEN 'Unknown'\n         ELSE CAST(data_point_value AS VARCHAR)\n       END AS pod_phase,\n       COUNT(DISTINCT \"k8s.pod.name\") AS pods\nFROM $cluster_metrics_dataset\nWHERE metric_name = 'k8s.pod.phase'\nGROUP BY time_bucket, pod_phase\nORDER BY time_bucket ASC",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
-      "chartType": "donut",
+      "chartType": "timeseries",
       "tileType": "code",
       "sectionId": "01KW951NT32CY7J896FDG4FYRX",
       "layout": {
@@ -2803,9 +3312,11 @@
         "static": false
       },
       "config": {
-        "type": "donut",
+        "type": "area",
         "colourScheme": "blue",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
           "humanize": true,
           "segments": {
             "value": [
@@ -2814,24 +3325,24 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "pod_phase",
-            "title": "Pod Phase",
+            "field": "time_bucket",
+            "title": "Time",
             "display": true
           },
           "y": {
-            "field": "pod_phase",
-            "title": "Pod Phase",
-            "display": true
+            "field": "pods",
+            "title": "Pods",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
-            "field": []
+            "field": [
+              "pod_phase"
+            ]
           }
         },
         "advanced": {
@@ -2848,12 +3359,12 @@
     },
     {
       "tile_id": "01KXQDE68Q7243QPR6EHNAXZTY",
-      "title": "Namespaces by Phase",
-      "chartQuery": "SELECT CASE CAST(data_point_value AS INT) WHEN 1 THEN 'Active' WHEN 2 THEN 'Terminating' ELSE CAST(data_point_value AS VARCHAR) END AS namespace_phase, COUNT(DISTINCT \"k8s.namespace.name\") AS namespaces FROM $cluster_metrics_dataset WHERE metric_name='k8s.namespace.phase' GROUP BY namespace_phase ORDER BY namespaces DESC",
+      "title": "Namespaces by Phase Over Time",
+      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       CASE CAST(data_point_value AS INT)\n         WHEN 1 THEN 'Active'\n         WHEN 2 THEN 'Terminating'\n         ELSE CAST(data_point_value AS VARCHAR)\n       END AS namespace_phase,\n       COUNT(DISTINCT \"k8s.namespace.name\") AS namespaces\nFROM $cluster_metrics_dataset\nWHERE metric_name = 'k8s.namespace.phase'\nGROUP BY time_bucket, namespace_phase\nORDER BY time_bucket ASC",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
-      "chartType": "pie",
+      "chartType": "timeseries",
       "tileType": "code",
       "sectionId": "01KW951NT32CY7J896FDG4FYRX",
       "layout": {
@@ -2866,9 +3377,11 @@
         "static": false
       },
       "config": {
-        "type": "pie",
+        "type": "area",
         "colourScheme": "teal",
         "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
           "humanize": true,
           "segments": {
             "value": [
@@ -2877,24 +3390,24 @@
             ],
             "isPercent": true
           },
-          "legendPosition": "bottom",
-          "label": false,
-          "unit": "",
-          "precision": -1
+          "label": false
         },
         "axes": {
           "x": {
-            "field": "namespace_phase",
-            "title": "Namespace Phase",
+            "field": "time_bucket",
+            "title": "Time",
             "display": true
           },
           "y": {
-            "field": "namespace_phase",
-            "title": "Namespace Phase",
-            "display": true
+            "field": "namespaces",
+            "title": "Namespaces",
+            "display": true,
+            "beginAtZero": false
           },
           "groupBy": {
-            "field": []
+            "field": [
+              "namespace_phase"
+            ]
           }
         },
         "advanced": {

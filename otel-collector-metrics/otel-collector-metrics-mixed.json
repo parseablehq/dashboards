@@ -2227,7 +2227,7 @@
           "legendPosition": "bottom",
           "label": false,
           "unit": "",
-          "precision": "0",
+          "precision": 0,
           "humanize": true
         },
         "axes": {
@@ -2291,7 +2291,7 @@
           "legendPosition": "bottom",
           "label": false,
           "unit": "",
-          "precision": "0",
+          "precision": 0,
           "humanize": true
         },
         "axes": {
@@ -4073,7 +4073,7 @@
           "legendPosition": "bottom",
           "label": false,
           "unit": "",
-          "precision": "0",
+          "precision": 0,
           "humanize": true
         },
         "axes": {
@@ -4137,7 +4137,7 @@
           "legendPosition": "bottom",
           "label": false,
           "unit": "",
-          "precision": "0",
+          "precision": 0,
           "humanize": true
         },
         "axes": {
@@ -4201,7 +4201,7 @@
           "legendPosition": "bottom",
           "label": false,
           "unit": "",
-          "precision": "0",
+          "precision": 0,
           "humanize": true
         },
         "axes": {
@@ -4265,7 +4265,7 @@
           "legendPosition": "bottom",
           "label": false,
           "unit": "",
-          "precision": "0",
+          "precision": 0,
           "humanize": true
         },
         "axes": {

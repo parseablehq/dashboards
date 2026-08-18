@@ -17,7 +17,7 @@
     {
       "name": "model",
       "label": "Model",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "openai/gpt-3.5-turbo",
@@ -26,39 +26,33 @@
         "openai/gpt-4o-mini",
         "openai/o4-mini"
       ],
-      "defaultValue": "All",
-      "stream": "openrouter-traces",
-      "labelName": "gen_ai.request.model"
+      "defaultValue": "All"
     },
     {
       "name": "provider",
       "label": "Provider",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "OpenAI",
         "Azure"
       ],
-      "defaultValue": "All",
-      "stream": "openrouter-traces",
-      "labelName": "trace.metadata.openrouter.provider_name"
+      "defaultValue": "All"
     },
     {
       "name": "api_key",
       "label": "API Key",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "Default key"
       ],
-      "defaultValue": "All",
-      "stream": "openrouter-traces",
-      "labelName": "trace.metadata.openrouter.api_key_name"
+      "defaultValue": "All"
     },
     {
       "name": "finish_reason",
       "label": "Finish Reason",
-      "type": "custom",
+      "type": "list",
       "options": [
         "All",
         "completed",
@@ -66,9 +60,7 @@
         "max_output_tokens",
         "stop"
       ],
-      "defaultValue": "All",
-      "stream": "openrouter-traces",
-      "labelName": "trace.metadata.openrouter.finish_reason"
+      "defaultValue": "All"
     }
   ],
   "sections": [

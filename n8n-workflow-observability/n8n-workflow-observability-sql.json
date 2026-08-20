@@ -1,0 +1,624 @@
+{
+  "version": "v1",
+  "title": "n8n Workflow Observability",
+  "tags": [
+    "n8n",
+    "opentelemetry",
+    "traces",
+    "workflows",
+    "observability"
+  ],
+  "dashboardType": "Dashboard",
+  "tiles": [
+    {
+      "tile_id": "5F8DQ39D7PM0NP3BGWFWP8E8CJ",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT COUNT(*) AS total_executions FROM $traces_dataset WHERE span_name = 'workflow.execute'",
+      "dbName": "$traces_dataset",
+      "title": "Total Executions",
+      "tileType": "code",
+      "chartType": "query-value",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "total_executions",
+            "title": "Total Executions",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5
+      }
+    },
+    {
+      "tile_id": "1X38ZS7W0WG2V6TDZ5B614DGHJ",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE \"n8n.execution.status\" = 'success') / NULLIF(COUNT(*), 0), 2) AS success_rate_pct FROM $traces_dataset WHERE span_name = 'workflow.execute'",
+      "dbName": "$traces_dataset",
+      "title": "Success Rate",
+      "tileType": "code",
+      "chartType": "query-value",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 2,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "success_rate_pct",
+            "title": "Success Rate",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5
+      }
+    },
+    {
+      "tile_id": "0K42GCG8K0080FVC9N9BW75YXP",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT COUNT(*) AS failed_executions FROM $traces_dataset WHERE span_name = 'workflow.execute' AND \"n8n.execution.status\" != 'success'",
+      "dbName": "$traces_dataset",
+      "title": "Failed Executions",
+      "tileType": "code",
+      "chartType": "query-value",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "failed_executions",
+            "title": "Failed Executions",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5
+      }
+    },
+    {
+      "tile_id": "26CE49E4TC9Q0E6234W710TCVF",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns) / 1e6, 2) AS avg_duration_ms FROM $traces_dataset WHERE span_name = 'workflow.execute'",
+      "dbName": "$traces_dataset",
+      "title": "Avg Workflow Duration (ms)",
+      "tileType": "code",
+      "chartType": "query-value",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "avg_duration_ms",
+            "title": "Avg Workflow Duration (ms)",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5
+      }
+    },
+    {
+      "tile_id": "6C5KBX0SWJT5JZCNXAAH138SSD",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"n8n.workflow.name\" AS workflow_name, \"n8n.execution.status\" AS status, COUNT(*) AS executions FROM $traces_dataset WHERE span_name = 'workflow.execute' GROUP BY time_bin, workflow_name, status ORDER BY time_bin",
+      "dbName": "$traces_dataset",
+      "title": "Executions Over Time",
+      "tileType": "code",
+      "chartType": "area",
+      "config": {
+        "type": "area",
+        "colourScheme": "classic",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "executions",
+            "title": "Executions Over Time",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "workflow_name",
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "tile_id": "1HYVDGQDVKDMG334EMPDJ7G727",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT \"n8n.workflow.name\" AS workflow_name, \"n8n.execution.status\" AS status, COUNT(*) AS executions FROM $traces_dataset WHERE span_name = 'workflow.execute' GROUP BY workflow_name, status ORDER BY workflow_name",
+      "dbName": "$traces_dataset",
+      "title": "Workflows by Name & Outcome",
+      "tileType": "code",
+      "chartType": "bar",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "workflow_name",
+            "title": "Workflow",
+            "display": true
+          },
+          "y": {
+            "field": "executions",
+            "title": "Workflows by Name & Outcome",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": [
+              "status"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "tile_id": "477KQ55XENE3T7WBA1HZJQMQV3",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT \"n8n.node.name\" AS node_name, \"n8n.node.type\" AS node_type, ROUND(AVG(span_duration_ns) / 1e6, 2) AS avg_duration_ms, COUNT(*) AS executions FROM $traces_dataset WHERE span_name = 'node.execute' GROUP BY node_name, node_type ORDER BY avg_duration_ms DESC",
+      "dbName": "$traces_dataset",
+      "title": "Slowest Nodes (avg duration)",
+      "tileType": "code",
+      "chartType": "bar",
+      "config": {
+        "type": "bar",
+        "colourScheme": "purple",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "node_name",
+            "title": "Node",
+            "display": true
+          },
+          "y": {
+            "field": "avg_duration_ms",
+            "title": "avg_duration_ms",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 13,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "tile_id": "6EY99WPNR4H1PYN1VJQBCZ99FG",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT \"n8n.node.type\" AS node_type, COUNT(*) AS executions FROM $traces_dataset WHERE span_name = 'node.execute' GROUP BY node_type ORDER BY executions DESC",
+      "dbName": "$traces_dataset",
+      "title": "Node Execution Count by Type",
+      "tileType": "code",
+      "chartType": "bar",
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "node_type",
+            "title": "Node Type",
+            "display": true
+          },
+          "y": {
+            "field": "executions",
+            "title": "Node Execution Count by Type",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 6,
+        "y": 13,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "tile_id": "5CT520F15RKPMS3WSP4M52JZD9",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT \"n8n.execution.id\" AS execution_id, MAX(\"n8n.workflow.name\") AS workflow_name, MAX(\"n8n.execution.status\") AS status, MAX(\"n8n.execution.mode\") AS mode, ROUND(MAX(span_duration_ns) / 1e6, 2) AS duration_ms, MAX(p_timestamp) AS last_seen FROM $traces_dataset WHERE span_name = 'workflow.execute' GROUP BY execution_id ORDER BY last_seen DESC",
+      "dbName": "$traces_dataset",
+      "title": "Workflow Execution Summary",
+      "tileType": "code",
+      "chartType": "table",
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "execution_id",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "duration_ms",
+            "title": "Workflow Execution Summary",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 21,
+        "w": 12,
+        "h": 6
+      }
+    },
+    {
+      "tile_id": "53626S41H9DV3KR9QTN461AST6",
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "chartQuery": "SELECT \"n8n.execution.id\" AS execution_id, \"n8n.workflow.name\" AS workflow_name, \"n8n.node.name\" AS node_name, span_status_description, span_status_message, p_timestamp FROM $traces_dataset WHERE span_status_code = 2 ORDER BY p_timestamp DESC",
+      "dbName": "$traces_dataset",
+      "title": "Recent Errors",
+      "tileType": "code",
+      "chartType": "table",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "label": false
+        },
+        "axes": {
+          "x": {
+            "field": "execution_id",
+            "title": "Category",
+            "display": true
+          },
+          "y": {
+            "field": "span_status_description",
+            "title": "Recent Errors",
+            "display": true,
+            "beginAtZero": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 27,
+        "w": 12,
+        "h": 8
+      }
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "X4N0PZRP56SMXKGAJ1J3MDFZRM",
+      "title": "Overview",
+      "isExpanded": true
+    }
+  ],
+  "variables": [
+    {
+      "name": "traces_dataset",
+      "label": "n8n Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "n8n-traces"
+    }
+  ]
+}

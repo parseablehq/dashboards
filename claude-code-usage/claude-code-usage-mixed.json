@@ -21,13 +21,18 @@
       "isExpanded": false
     },
     {
-      "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
-      "title": "Cost & Tokens",
+      "sectionId": "01KW92CW9GQZ7CJTAWATCE5N9N",
+      "title": "Usage & Activity",
       "isExpanded": false
     },
     {
       "sectionId": "01KW97A21BXVRR2S4MA69Q2B7A",
-      "title": "Models & Requests",
+      "title": "Models & Tokens",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
+      "title": "Cost",
       "isExpanded": false
     },
     {
@@ -36,18 +41,13 @@
       "isExpanded": false
     },
     {
-      "sectionId": "01KW92CW9GQZ7CJTAWATCE5N9N",
-      "title": "Activity & Code Changes",
-      "isExpanded": false
-    },
-    {
       "sectionId": "01KW9RV1BHWP1N73SV4GYPEEV6",
-      "title": "Errors",
+      "title": "Performance & Reliability",
       "isExpanded": false
     },
     {
       "sectionId": "01KW9D7SARCEC4JPRNW8RMN0N5",
-      "title": "Sessions",
+      "title": "Sessions & Users",
       "isExpanded": false
     }
   ],
@@ -398,7 +398,7 @@
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
+      "sectionId": "01KW97A21BXVRR2S4MA69Q2B7A",
       "promqlQueryType": ["range"]
     },
     {
@@ -406,10 +406,10 @@
       "chartQuery": ["sum by (type) ({__name__=\"claude_code.token.usage\"})"],
       "dbName": "$metrics_dataset",
       "title": "Token Usage by Type",
-      "chartType": "donut",
+      "chartType": "bar",
       "tileType": "promql",
       "config": {
-        "type": "donut",
+        "type": "bar",
         "colourScheme": "blue",
         "layout": {
           "segments": {
@@ -424,17 +424,17 @@
         },
         "axes": {
           "x": {
-            "field": "tokens",
-            "title": "Type",
+            "field": "time",
+            "title": "Time",
             "display": true
           },
           "y": {
-            "field": "token_type",
+            "field": "value",
             "title": "Tokens",
             "display": true
           },
           "groupBy": {
-            "field": []
+            "field": ["type"]
           }
         },
         "advanced": {
@@ -452,12 +452,12 @@
         "i": "01KW44V4B2H4VQWSBWNSZYXH3A",
         "x": 0,
         "y": 8,
-        "w": 4,
+        "w": 12,
         "h": 8,
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
+      "sectionId": "01KW97A21BXVRR2S4MA69Q2B7A",
       "promqlQueryType": ["range"]
     },
     {
@@ -465,10 +465,10 @@
       "chartQuery": "SELECT COALESCE(model, 'unknown') AS model, COUNT(*) AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY model\nORDER BY cost_usd DESC",
       "dbName": ["$logs_dataset"],
       "title": "Cost by Model",
-      "chartType": "donut",
+      "chartType": "bar",
       "tileType": "code",
       "config": {
-        "type": "donut",
+        "type": "bar",
         "colourScheme": "classic",
         "layout": {
           "segments": {
@@ -488,12 +488,12 @@
             "display": true
           },
           "y": {
-            "field": "model",
-            "title": "model",
+            "field": "cost_usd",
+            "title": "cost_usd",
             "display": true
           },
           "groupBy": {
-            "field": ["model"]
+            "field": []
           }
         },
         "advanced": {
@@ -509,9 +509,9 @@
       },
       "layout": {
         "i": "01KW44V4B2TW3C07X6M4MMGGE3",
-        "x": 4,
-        "y": 8,
-        "w": 8,
+        "x": 6,
+        "y": 0,
+        "w": 6,
         "h": 8,
         "moved": false,
         "static": false
@@ -569,7 +569,7 @@
         "i": "01KW44V4B22WGDZK462D8S7A8B",
         "x": 0,
         "y": 0,
-        "w": 4,
+        "w": 6,
         "h": 8,
         "moved": false,
         "static": false
@@ -625,14 +625,14 @@
       },
       "layout": {
         "i": "01KW44V4B2B2DE8334PYFBKS3W",
-        "x": 4,
+        "x": 6,
         "y": 0,
-        "w": 8,
+        "w": 6,
         "h": 8,
         "moved": false,
         "static": false
       },
-      "sectionId": "01KW97A21BXVRR2S4MA69Q2B7A"
+      "sectionId": "01KW92CW9GQZ7CJTAWATCE5N9N"
     },
     {
       "tile_id": "01KW44V4B21WYTVFR26JAF6KAK",
@@ -993,10 +993,10 @@
       "chartQuery": "SELECT COALESCE(error_name, error_type, error_code, error, 'unknown') AS error_label, COUNT(*) AS errors\nFROM $logs_dataset\nWHERE error IS NOT NULL OR error_name IS NOT NULL OR error_type IS NOT NULL OR error_code IS NOT NULL\nGROUP BY error_label\nORDER BY errors DESC\nLIMIT 20",
       "dbName": ["$logs_dataset"],
       "title": "Errors by Type",
-      "chartType": "donut",
+      "chartType": "bar",
       "tileType": "code",
       "config": {
-        "type": "donut",
+        "type": "bar",
         "colourScheme": "red",
         "layout": {
           "segments": {
@@ -1016,12 +1016,12 @@
             "display": true
           },
           "y": {
-            "field": "error_label",
-            "title": "error_label",
+            "field": "errors",
+            "title": "Errors",
             "display": true
           },
           "groupBy": {
-            "field": ["error_label"]
+            "field": []
           }
         },
         "advanced": {
@@ -1228,10 +1228,10 @@
       ],
       "dbName": "$metrics_dataset",
       "title": "Code Edit Decisions",
-      "chartType": "timeseries",
+      "chartType": "bar",
       "tileType": "promql",
       "config": {
-        "type": "line",
+        "type": "bar",
         "colourScheme": "yellow",
         "layout": {
           "segments": {
@@ -1252,7 +1252,7 @@
           },
           "y": {
             "field": "value",
-            "title": "Value",
+            "title": "Count",
             "display": true
           },
           "groupBy": {
@@ -1339,6 +1339,124 @@
         "static": false
       },
       "sectionId": "01KW9D7SARCEC4JPRNW8RMN0N5"
+    },
+    {
+      "tile_id": "01M0HRTDZ2JZWCGH9GPHZ2AN10",
+      "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
+      "title": "Cost per user",
+      "chartQuery": "SELECT \"user.email\" AS user_email, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nGROUP BY user_email",
+      "dbName": ["$logs_dataset"],
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "stacked": false,
+          "unit": "$"
+        },
+        "axes": {
+          "x": {
+            "field": "user_email",
+            "title": "user_email",
+            "display": true
+          },
+          "y": {
+            "field": "user_email",
+            "title": "user_email",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": ["user_email"]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0HRTDZ2JZWCGH9GPHZ2AN10",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "tile_id": "01M0HS01NEPCEBHSNF276Z92FJ",
+      "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
+      "title": "Cost over time per user",
+      "chartQuery": "SELECT\n  DATE_BIN(INTERVAL '1 minute', \"p_timestamp\") AS \"date_bin\",\n  \"user.email\" AS \"user_email\",\n  ROUND(SUM(\"cost_usd\"), 4) AS \"cost_usd\"\nFROM $logs_dataset\nGROUP BY\n  DATE_BIN(INTERVAL '1 minute', \"p_timestamp\"),\n  \"user.email\"\nORDER BY\n  \"date_bin\" ASC,\n  \"user_email\" ASC",
+      "dbName": ["$logs_dataset"],
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "stacked": false,
+          "unit": "$",
+          "humanize": true,
+          "precision": 4
+        },
+        "axes": {
+          "x": {
+            "field": "date_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "cost_usd",
+            "title": "Cost",
+            "display": true,
+            "beginAtZero": false
+          },
+          "groupBy": {
+            "field": ["user_email"]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0HS01NEPCEBHSNF276Z92FJ",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      }
     }
   ]
 }

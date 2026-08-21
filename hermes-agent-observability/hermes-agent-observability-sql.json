@@ -9,9 +9,9 @@
     {"name": "metrics_dataset", "label": "Hermes Metrics", "type": "dataset", "defaultValue": "hermes-metrics"}
   ],
   "sections": [
-    {"sectionId": "00000000000000000000000001", "title": "Agent & Trace Overview", "isExpanded": true},
-    {"sectionId": "00000000000000000000000002", "title": "Logs & Errors", "isExpanded": true},
-    {"sectionId": "00000000000000000000000003", "title": "Metrics & Usage", "isExpanded": true}
+    {"sectionId": "00000000000000000000000001", "title": "Agent & Trace Overview", "isExpanded": false},
+    {"sectionId": "00000000000000000000000002", "title": "Logs & Errors", "isExpanded": false},
+    {"sectionId": "00000000000000000000000003", "title": "Metrics & Usage", "isExpanded": false}
   ],
   "tiles": [
     {

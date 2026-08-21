@@ -5,12 +5,12 @@ Monitor Claude Code sessions, model usage, request patterns, token consumption, 
 ## What the dashboard shows
 
 - **Overview:** panels include Total Cost, API Requests, Sessions, and Errors.
-- **Cost & Tokens:** panels include Cost and API Requests Over Time, Tokens Over Time, Token Usage by Type, and Cost by Model.
-- **Models & Requests:** panels include API Requests by Model and Events by Type.
+- **Usage & Activity:** API/event activity, active time, lines changed, and code-edit decisions.
+- **Models & Tokens:** token trends and breakdowns plus API requests by model.
+- **Cost:** cost trends and breakdowns by model and user.
 - **Tools & Commands:** panels include Top Tools, Top Hooks, Top Commands, and Plugins.
-- **Activity & Code Changes:** panels include Active Time Over Time, Lines Changed Over Time, and Code Edit Decisions.
-- **Errors:** panels include Errors by Type and Recent Errors.
-- **Sessions:** panels include Recent Sessions, Session Count Over Time, and Users.
+- **Performance & Reliability:** errors by type and recent errors.
+- **Sessions & Users:** recent sessions, session trends, and users.
 
 ## Data used
 
@@ -29,7 +29,7 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 ## Dashboard contents
 
-- **22 tiles** across **7 collapsible sections**
+- **24 tiles** across **7 shared coding-agent sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
 - Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/claude-code-usage/assets)
 - Importable template: [`claude-code-usage-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/claude-code-usage/claude-code-usage-mixed.json)

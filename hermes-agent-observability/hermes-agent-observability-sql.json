@@ -1,0 +1,102 @@
+{
+  "version": "v1",
+  "dashboardType": "Dashboard",
+  "title": "Hermes Agent Observability",
+  "tags": ["hermes", "agents", "genai", "opentelemetry", "logs", "metrics", "traces"],
+  "variables": [
+    {"name": "traces_dataset", "label": "Hermes Traces", "type": "dataset", "defaultValue": "hermes-traces"},
+    {"name": "logs_dataset", "label": "Hermes Logs", "type": "dataset", "defaultValue": "hermes-logs"},
+    {"name": "metrics_dataset", "label": "Hermes Metrics", "type": "dataset", "defaultValue": "hermes-metrics"}
+  ],
+  "sections": [
+    {"sectionId": "00000000000000000000000001", "title": "Agent & Trace Overview", "isExpanded": true},
+    {"sectionId": "00000000000000000000000002", "title": "Logs & Errors", "isExpanded": true},
+    {"sectionId": "00000000000000000000000003", "title": "Metrics & Usage", "isExpanded": true}
+  ],
+  "tiles": [
+    {
+      "tile_id": "00000000000000000000000011", "title": "Agent Invocations",
+      "chartQuery": "SELECT COUNT(*) AS invocations FROM $traces_dataset WHERE event_name IS NULL AND span_name = 'agent'",
+      "dbName": "$traces_dataset", "chartType": "query-value", "tileType": "code", "sectionId": "00000000000000000000000001",
+      "layout": {"i": "00000000000000000000000011", "x": 0, "y": 0, "w": 3, "h": 5, "moved": false, "static": false},
+      "config": {"type": "query-value", "colourScheme": "blue", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "invocations", "title": "invocations", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000012", "title": "Error Spans",
+      "chartQuery": "SELECT COUNT(*) AS errors FROM $traces_dataset WHERE event_name IS NULL AND span_status_code = 2",
+      "dbName": "$traces_dataset", "chartType": "query-value", "tileType": "code", "sectionId": "00000000000000000000000001",
+      "layout": {"i": "00000000000000000000000012", "x": 3, "y": 0, "w": 3, "h": 5, "moved": false, "static": false},
+      "config": {"type": "query-value", "colourScheme": "red", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "errors", "title": "errors", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000013", "title": "Total LLM Tokens",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.total_tokens\" AS DOUBLE)), 0) AS total_tokens FROM $traces_dataset WHERE event_name IS NULL AND span_name = 'agent'",
+      "dbName": "$traces_dataset", "chartType": "query-value", "tileType": "code", "sectionId": "00000000000000000000000001",
+      "layout": {"i": "00000000000000000000000013", "x": 6, "y": 0, "w": 3, "h": 5, "moved": false, "static": false},
+      "config": {"type": "query-value", "colourScheme": "purple", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "tokens", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "total_tokens", "title": "total_tokens", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000014", "title": "P95 Agent Latency",
+      "chartQuery": "SELECT ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms FROM $traces_dataset WHERE event_name IS NULL AND span_name = 'agent'",
+      "dbName": "$traces_dataset", "chartType": "query-value", "tileType": "code", "sectionId": "00000000000000000000000001",
+      "layout": {"i": "00000000000000000000000014", "x": 9, "y": 0, "w": 3, "h": 5, "moved": false, "static": false},
+      "config": {"type": "query-value", "colourScheme": "yellow", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "ms", "precision": 2, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "p95_ms", "title": "p95_ms", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000015", "title": "Model Calls",
+      "chartQuery": "SELECT COALESCE(\"llm.model_name\", \"gen_ai.request.model\") AS model, COUNT(*) AS calls FROM $traces_dataset WHERE event_name IS NULL AND span_name LIKE 'llm.%' GROUP BY model ORDER BY calls DESC",
+      "dbName": "$traces_dataset", "chartType": "bar", "tileType": "code", "sectionId": "00000000000000000000000001",
+      "layout": {"i": "00000000000000000000000015", "x": 0, "y": 5, "w": 6, "h": 8, "moved": false, "static": false},
+      "config": {"type": "bar", "colourScheme": "teal", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "model", "title": "Model", "display": true}, "y": {"field": "calls", "title": "Calls", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": true}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000016", "title": "Tool Calls by Outcome",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.tool.name\", \"tool.name\", span_name) AS tool, COALESCE(\"hermes.tool.outcome\", CASE WHEN span_status_code = 2 THEN 'error' ELSE 'success' END) AS outcome, COUNT(*) AS calls FROM $traces_dataset WHERE event_name IS NULL AND span_name LIKE 'tool.%' GROUP BY tool, outcome ORDER BY calls DESC",
+      "dbName": "$traces_dataset", "chartType": "bar", "tileType": "code", "sectionId": "00000000000000000000000001",
+      "layout": {"i": "00000000000000000000000016", "x": 6, "y": 5, "w": 6, "h": 8, "moved": false, "static": false},
+      "config": {"type": "bar", "colourScheme": "green", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "tool", "title": "Tool", "display": true}, "y": {"field": "calls", "title": "Calls", "display": true}, "groupBy": {"field": ["outcome"]}}, "advanced": {"dataLabels": {"enabled": true}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000017", "title": "Recent Agent Traces",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, \"gen_ai.request.model\" AS model, ROUND(span_duration_ns / 1000000000.0, 3) AS duration_s, CASE WHEN span_status_code = 2 THEN 'error' ELSE 'success' END AS outcome, \"hermes.turn.api_call_count\" AS api_calls, \"hermes.turn.tool_count\" AS tools, \"hermes.turn.final_status\" AS final_status FROM $traces_dataset WHERE event_name IS NULL AND span_name = 'agent' ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": "$traces_dataset", "chartType": "table", "tileType": "code", "sectionId": "00000000000000000000000001",
+      "layout": {"i": "00000000000000000000000017", "x": 0, "y": 13, "w": 12, "h": 9, "moved": false, "static": false},
+      "config": {"type": "table", "colourScheme": "blue", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "s", "precision": 3, "humanize": true}, "axes": {"x": {"field": "p_timestamp", "title": "Time", "display": true}, "y": {"field": "duration_s", "title": "Duration", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000018", "title": "Log Volume by Severity",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, severity_text, COUNT(*) AS records FROM $logs_dataset GROUP BY time_bin, severity_text ORDER BY time_bin, severity_text",
+      "dbName": "$logs_dataset", "chartType": "area", "tileType": "code", "sectionId": "00000000000000000000000002",
+      "layout": {"i": "00000000000000000000000018", "x": 0, "y": 0, "w": 6, "h": 8, "moved": false, "static": false},
+      "config": {"type": "area", "colourScheme": "sunset", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "time_bin", "title": "Time", "display": true}, "y": {"field": "records", "title": "Records", "display": true}, "groupBy": {"field": ["severity_text"]}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000019", "title": "Recent Error Logs",
+      "chartQuery": "SELECT p_timestamp, severity_text, scope_name, \"code.function.name\" AS function_name, body, trace_id, span_id FROM $logs_dataset WHERE severity_text IN ('ERROR', 'WARN') ORDER BY p_timestamp DESC LIMIT 100",
+      "dbName": "$logs_dataset", "chartType": "table", "tileType": "code", "sectionId": "00000000000000000000000002",
+      "layout": {"i": "00000000000000000000000019", "x": 6, "y": 0, "w": 6, "h": 8, "moved": false, "static": false},
+      "config": {"type": "table", "colourScheme": "red", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "p_timestamp", "title": "Time", "display": true}, "y": {"field": "severity_text", "title": "Severity", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000020", "title": "Metric Records by Instrument",
+      "chartQuery": "SELECT metric_name, COUNT(*) AS records FROM $metrics_dataset GROUP BY metric_name ORDER BY records DESC",
+      "dbName": "$metrics_dataset", "chartType": "bar", "tileType": "code", "sectionId": "00000000000000000000000003",
+      "layout": {"i": "00000000000000000000000020", "x": 0, "y": 0, "w": 6, "h": 8, "moved": false, "static": false},
+      "config": {"type": "bar", "colourScheme": "purple", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "metric_name", "title": "Metric", "display": true}, "y": {"field": "records", "title": "Records", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": true}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000021", "title": "Token Usage by Model",
+      "chartQuery": "SELECT COALESCE(model, \"gen_ai.request.model\", \"gen_ai.response.model\") AS model_name, COALESCE(token_type, \"gen_ai.token.type\") AS token_kind, SUM(COALESCE(data_point_value, data_point_sum, 0)) AS tokens FROM $metrics_dataset WHERE metric_name IN ('hermes.token.usage', 'gen_ai.agent.token.usage', 'gen_ai.client.token.usage') GROUP BY model_name, token_kind ORDER BY tokens DESC",
+      "dbName": "$metrics_dataset", "chartType": "bar", "tileType": "code", "sectionId": "00000000000000000000000003",
+      "layout": {"i": "00000000000000000000000021", "x": 6, "y": 0, "w": 6, "h": 8, "moved": false, "static": false},
+      "config": {"type": "bar", "colourScheme": "teal", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "tokens", "precision": 0, "humanize": true}, "axes": {"x": {"field": "model_name", "title": "Model", "display": true}, "y": {"field": "tokens", "title": "Tokens", "display": true}, "groupBy": {"field": ["token_kind"]}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    },
+    {
+      "tile_id": "00000000000000000000000022", "title": "LLM Duration by Model",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(model, \"gen_ai.request.model\", \"gen_ai.response.model\") AS model_name, ROUND(AVG(COALESCE(data_point_sum / NULLIF(data_point_count, 0), data_point_value)), 2) AS avg_duration FROM $metrics_dataset WHERE metric_name = 'gen_ai.client.operation.duration' GROUP BY time_bin, model_name ORDER BY time_bin, model_name",
+      "dbName": "$metrics_dataset", "chartType": "line", "tileType": "code", "sectionId": "00000000000000000000000003",
+      "layout": {"i": "00000000000000000000000022", "x": 0, "y": 8, "w": 12, "h": 8, "moved": false, "static": false},
+      "config": {"type": "line", "colourScheme": "blue", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "s", "precision": 2, "humanize": true}, "axes": {"x": {"field": "time_bin", "title": "Time", "display": true}, "y": {"field": "avg_duration", "title": "Average Duration", "display": true}, "groupBy": {"field": ["model_name"]}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+    }
+  ]
+}

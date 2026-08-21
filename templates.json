@@ -146,7 +146,7 @@
       "name": "GitHub Copilot Observability",
       "dirName": "github-copilot-observability",
       "fileName": "github-copilot-observability-sql.json",
-      "description": "Monitor GitHub Copilot traces, sessions, model and token usage, tools, latency, errors, repositories, and recent trace activity.",
+      "description": "Monitor GitHub Copilot traces, sessions, model and token usage, estimated cost, tools, latency, errors, repositories, and recent trace activity.",
       "source": "SQL",
       "thumbnail": "assets/Models&Tokens.png",
       "icon": "assets/icon.svg",

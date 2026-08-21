@@ -5,14 +5,12 @@ Monitor Codex sessions, conversation turns, token and cache usage, estimated cos
 ## What the dashboard shows
 
 - **Overview:** sessions, turns, tokens, tool calls, cache utilization, tool success, latency, time to first token, and total estimated cost.
-- **Adoption & Activity:** session and turn activity, active conversations, model adoption, client version, and terminal inventory.
-- **Tokens & Cache:** token composition, model usage, cache trends, and highest-token turns.
-- **Cost & FinOps:** total, average, and P95 estimated cost, pricing coverage, cost trends, cumulative cost, model efficiency, and expensive turns.
-- **Performance & Latency:** latency percentiles, time to first token, model performance, and slowest turns.
-- **Tools & MCP:** tool outcomes, reliability, latency, recent failures, and MCP activity.
-- **Safety & Approvals:** approval activity, tool decisions, sandbox policies, and sandbox outcomes.
-- **Logs & Errors:** structured events, event distribution, and recent errors.
-- **Trace Explorer:** recent turn traces and error spans.
+- **Usage & Activity:** session and turn activity, active conversations, model adoption, client version, and terminal inventory.
+- **Models & Tokens:** token composition, model usage, cache trends, and highest-token turns.
+- **Cost:** total, average, and P95 estimated cost, pricing coverage, cost trends, model efficiency, and expensive turns.
+- **Tools & Commands:** tool outcomes, MCP activity, approvals, tool decisions, and sandbox policies and outcomes.
+- **Performance & Reliability:** latency, structured events, event distribution, and recent errors.
+- **Sessions & Users:** recent turn traces and error spans.
 
 ## Data used
 
@@ -33,7 +31,7 @@ Dataset names can be changed after import through dashboard variables.
 
 ## Dashboard contents
 
-- **47 tiles** across **9 collapsible sections**
+- **47 tiles** across **7 shared coding-agent sections**
 - SQL panels over Parseable datasets
 - Screenshot assets directory: [`assets/`](https://github.com/parseablehq/dashboards/tree/main/codex-observability/assets)
 - Importable template: [`codex-observability-sql.json`](https://github.com/parseablehq/dashboards/blob/main/codex-observability/codex-observability-sql.json)

@@ -19,32 +19,32 @@
     {
       "sectionId": "01KYXZ7VVSPK9GZ5QSEM51WDZH",
       "title": "Overview",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
       "sectionId": "01KYXZ7VVSE0CVQFRR6GY8RDB9",
       "title": "Runs & Performance",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
       "sectionId": "01KYXZ7VVSBMQATYAJCZSH8MCE",
       "title": "Agents & Tasks",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
       "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
       "title": "LLM & Tokens",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
       "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
       "title": "Tools",
-      "isExpanded": true
+      "isExpanded": false
     },
     {
       "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
       "title": "Errors & Trace Detail",
-      "isExpanded": true
+      "isExpanded": false
     }
   ],
   "tiles": [

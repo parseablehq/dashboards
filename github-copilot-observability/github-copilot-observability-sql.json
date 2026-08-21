@@ -1,1 +1,1515 @@
-{"version":"v1","title":"GitHub Copilot Observability","author":"8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918","dashboardId":"01M0G21GF2WC25EDRGCBF6XHH6","created":"2026-08-20T17:03:32.834167689Z","modified":"2026-08-20T17:05:42.728302030Z","tags":["github-copilot","genai","opentelemetry","traces","observability"],"isFavorite":false,"dashboardType":"Dashboard","tiles":[{"tile_id":"1CGC01Y7R8DEVNQ3EE39G34968","chartQuery":"SELECT COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset","dbName":["$traces_dataset"],"title":"Traces","chartType":"query-value","tileType":"code","config":{"type":"query-value","colourScheme":"purple","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"","title":"Metric","display":true},"y":{"field":"traces","title":"Count","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"1CGC01Y7R8DEVNQ3EE39G34968","x":0,"y":0,"w":3,"h":5,"moved":false,"static":false},"sectionId":"8QVC2GNTZ24WSXKC75H65ZQTP9"},{"tile_id":"01THCDQDTQKAEHE6E72SKN0NNZ","chartQuery":"SELECT COUNT(DISTINCT span_span_id) AS spans FROM $traces_dataset","dbName":["$traces_dataset"],"title":"Spans","chartType":"query-value","tileType":"code","config":{"type":"query-value","colourScheme":"blue","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"","title":"Metric","display":true},"y":{"field":"spans","title":"Count","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"81THCDQDTQKAEHE6E72SKN0NNZ","x":3,"y":0,"w":3,"h":5,"moved":false,"static":false},"sectionId":"8QVC2GNTZ24WSXKC75H65ZQTP9"},{"tile_id":"79QTVDV69JGJSGE0FFFE5VMWCZ","chartQuery":"SELECT COUNT(DISTINCT COALESCE(\"session.id\", \"gen_ai.conversation.id\", \"copilot_chat.session_id\")) AS sessions FROM $traces_dataset","dbName":["$traces_dataset"],"title":"Sessions","chartType":"query-value","tileType":"code","config":{"type":"query-value","colourScheme":"orange","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"","title":"Metric","display":true},"y":{"field":"sessions","title":"Count","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"Z9QTVDV69JGJSGE0FFFE5VMWCZ","x":6,"y":0,"w":3,"h":5,"moved":false,"static":false},"sectionId":"8QVC2GNTZ24WSXKC75H65ZQTP9"},{"tile_id":"1GH2TD3TBFBW93X4C8HWNWZPYX","chartQuery":"SELECT COUNT(DISTINCT span_span_id) AS errors FROM $traces_dataset WHERE span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"event_exception.type\" IS NOT NULL","dbName":["$traces_dataset"],"title":"Errors","chartType":"query-value","tileType":"code","config":{"type":"query-value","colourScheme":"red","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"","title":"Metric","display":true},"y":{"field":"errors","title":"Count","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"9GH2TD3TBFBW93X4C8HWNWZPYX","x":9,"y":0,"w":3,"h":5,"moved":false,"static":false},"sectionId":"8QVC2GNTZ24WSXKC75H65ZQTP9"},{"tile_id":"2F0VAEXP52P16PN1H19876EE8X","chartQuery":"SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset GROUP BY time_bin ORDER BY time_bin ASC","dbName":["$traces_dataset"],"title":"Traces Over Time","chartType":"timeseries","tileType":"code","config":{"type":"line","colourScheme":"parseableBlue","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"time_bin","title":"Time","display":true},"y":{"field":["traces"],"title":"Traces","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"AF0VAEXP52P16PN1H19876EE8X","x":0,"y":0,"w":6,"h":8,"moved":false,"static":false},"sectionId":"R9HTQ9GJPHRHG4VCS47BGJG8ZK"},{"tile_id":"1WAHJ8T9EHS19WN1WKJWSDQSDN","chartQuery":"SELECT COALESCE(\"gen_ai.operation.name\", split_part(span_name, ' ', 1), 'unknown') AS operation, COUNT(DISTINCT span_span_id) AS spans FROM $traces_dataset GROUP BY operation ORDER BY spans DESC LIMIT 20","dbName":["$traces_dataset"],"title":"Spans by Operation","chartType":"bar","tileType":"code","config":{"type":"bar","colourScheme":"teal","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"operation","title":"Operation","display":true},"y":{"field":"spans","title":"Spans","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"HWAHJ8T9EHS19WN1WKJWSDQSDN","x":6,"y":0,"w":6,"h":8,"moved":false,"static":false},"sectionId":"R9HTQ9GJPHRHG4VCS47BGJG8ZK"},{"tile_id":"3ZXX2KRZQ394ZV7HHVMKC713AB","chartQuery":"SELECT COALESCE(SUM(CAST(NULLIF(\"gen_ai.usage.input_tokens\", '') AS BIGINT)), 0) AS input_tokens FROM $traces_dataset","dbName":["$traces_dataset"],"title":"Input Tokens","chartType":"query-value","tileType":"code","config":{"type":"query-value","colourScheme":"purple","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"tokens","precision":0,"humanize":true},"axes":{"x":{"field":"","title":"Metric","display":true},"y":{"field":"input_tokens","title":"Tokens","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"VZXX2KRZQ394ZV7HHVMKC713AB","x":0,"y":0,"w":3,"h":5,"moved":false,"static":false},"sectionId":"M8GB6075VPG2Z9CQFAY61JC3W0"},{"tile_id":"2QACEZ2JY4GVXYVKFTDJ6XC6BC","chartQuery":"SELECT COALESCE(SUM(CAST(NULLIF(\"gen_ai.usage.output_tokens\", '') AS BIGINT)), 0) AS output_tokens FROM $traces_dataset","dbName":["$traces_dataset"],"title":"Output Tokens","chartType":"query-value","tileType":"code","config":{"type":"query-value","colourScheme":"orange","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"tokens","precision":0,"humanize":true},"axes":{"x":{"field":"","title":"Metric","display":true},"y":{"field":"output_tokens","title":"Tokens","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"TQACEZ2JY4GVXYVKFTDJ6XC6BC","x":3,"y":0,"w":3,"h":5,"moved":false,"static":false},"sectionId":"M8GB6075VPG2Z9CQFAY61JC3W0"},{"tile_id":"50YSZ0PCYT58QNPAJS46M85X33","chartQuery":"SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COUNT(DISTINCT span_span_id) AS calls FROM $traces_dataset WHERE \"gen_ai.request.model\" IS NOT NULL OR \"gen_ai.response.model\" IS NOT NULL GROUP BY model ORDER BY calls DESC","dbName":["$traces_dataset"],"title":"Calls by Model","chartType":"donut","tileType":"code","config":{"type":"donut","colourScheme":"classic","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"model","title":"Model","display":true},"y":{"field":"model","title":"Model","display":true},"groupBy":{"field":["model"]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"50YSZ0PCYT58QNPAJS46M85X33","x":6,"y":0,"w":6,"h":8,"moved":false,"static":false},"sectionId":"M8GB6075VPG2Z9CQFAY61JC3W0"},{"tile_id":"1710GA78HKDHH21ABZHNZ1G4H8","chartQuery":"SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COALESCE(SUM(CAST(NULLIF(\"gen_ai.usage.input_tokens\", '') AS BIGINT)), 0) AS input_tokens, COALESCE(SUM(CAST(NULLIF(\"gen_ai.usage.output_tokens\", '') AS BIGINT)), 0) AS output_tokens FROM $traces_dataset WHERE \"gen_ai.request.model\" IS NOT NULL OR \"gen_ai.response.model\" IS NOT NULL GROUP BY model ORDER BY input_tokens DESC","dbName":["$traces_dataset"],"title":"Token Usage by Model","chartType":"bar","tileType":"code","config":{"type":"bar","colourScheme":"orange","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"tokens","precision":0,"humanize":true},"axes":{"x":{"field":"model","title":"Model","display":true},"y":{"field":["input_tokens","output_tokens"],"title":"Tokens","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"1710GA78HKDHH21ABZHNZ1G4H8","x":0,"y":8,"w":12,"h":8,"moved":false,"static":false},"sectionId":"M8GB6075VPG2Z9CQFAY61JC3W0"},{"tile_id":"33S8HNNE7VZC0T0PQ11EXHJBT0","chartQuery":"SELECT COUNT(DISTINCT span_span_id) AS tool_calls FROM $traces_dataset WHERE \"gen_ai.tool.name\" IS NOT NULL","dbName":["$traces_dataset"],"title":"Tool Calls","chartType":"query-value","tileType":"code","config":{"type":"query-value","colourScheme":"green","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"","title":"Metric","display":true},"y":{"field":"tool_calls","title":"Count","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"33S8HNNE7VZC0T0PQ11EXHJBT0","x":0,"y":0,"w":3,"h":8,"moved":false,"static":false},"sectionId":"DCC6Q019BV5MHKNKBC5NEE0HS6"},{"tile_id":"6MK9BN0X65ASVQCM7647NK6NTM","chartQuery":"SELECT COALESCE(\"gen_ai.tool.name\", 'unknown') AS tool, COUNT(DISTINCT span_span_id) AS calls FROM $traces_dataset WHERE \"gen_ai.tool.name\" IS NOT NULL GROUP BY tool ORDER BY calls DESC LIMIT 20","dbName":["$traces_dataset"],"title":"Top Tools","chartType":"bar","tileType":"code","config":{"type":"bar","colourScheme":"teal","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"tool","title":"Tool","display":true},"y":{"field":"calls","title":"Calls","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"PMK9BN0X65ASVQCM7647NK6NTM","x":3,"y":0,"w":9,"h":8,"moved":false,"static":false},"sectionId":"DCC6Q019BV5MHKNKBC5NEE0HS6"},{"tile_id":"4J39EFK7SYWWT9PGZX8HWQN5CR","chartQuery":"SELECT ROUND(AVG(span_duration_ns) / 1000000000, 2) AS avg_seconds FROM $traces_dataset WHERE span_parent_span_id IS NULL OR span_parent_span_id = ''","dbName":["$traces_dataset"],"title":"Average Trace Duration","chartType":"query-value","tileType":"code","config":{"type":"query-value","colourScheme":"purple","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"s","precision":2,"humanize":true},"axes":{"x":{"field":"","title":"Metric","display":true},"y":{"field":"avg_seconds","title":"Seconds","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"4J39EFK7SYWWT9PGZX8HWQN5CR","x":0,"y":0,"w":3,"h":8,"moved":false,"static":false},"sectionId":"ZGAXHNBD7N33HA2VY6D1AHF1AN"},{"tile_id":"2GBE47QNS0GWGA1G8A1A4RRDXR","chartQuery":"SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, ROUND(AVG(span_duration_ns) / 1000000, 2) AS avg_duration_ms FROM $traces_dataset WHERE \"gen_ai.request.model\" IS NOT NULL OR \"gen_ai.response.model\" IS NOT NULL GROUP BY model ORDER BY avg_duration_ms DESC","dbName":["$traces_dataset"],"title":"Model Latency","chartType":"bar","tileType":"code","config":{"type":"bar","colourScheme":"orange","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"ms","precision":2,"humanize":true},"axes":{"x":{"field":"model","title":"Model","display":true},"y":{"field":"avg_duration_ms","title":"Average Duration","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"TGBE47QNS0GWGA1G8A1A4RRDXR","x":3,"y":0,"w":9,"h":8,"moved":false,"static":false},"sectionId":"ZGAXHNBD7N33HA2VY6D1AHF1AN"},{"tile_id":"61TE97MF7X8WBV6KP4NFYHT92G","chartQuery":"SELECT COALESCE(\"error.type\", \"event_exception.type\", span_status_message, 'span error') AS error_type, COUNT(DISTINCT span_span_id) AS errors FROM $traces_dataset WHERE span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"event_exception.type\" IS NOT NULL GROUP BY error_type ORDER BY errors DESC","dbName":["$traces_dataset"],"title":"Errors by Type","chartType":"donut","tileType":"code","config":{"type":"donut","colourScheme":"red","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"error_type","title":"Error","display":true},"y":{"field":"error_type","title":"Error","display":true},"groupBy":{"field":["error_type"]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"P1TE97MF7X8WBV6KP4NFYHT92G","x":0,"y":8,"w":5,"h":8,"moved":false,"static":false},"sectionId":"ZGAXHNBD7N33HA2VY6D1AHF1AN"},{"tile_id":"7FT49JVR9S2EASKMNYZF05G1DD","chartQuery":"SELECT p_timestamp, span_trace_id, span_name, COALESCE(\"error.type\", \"event_exception.type\", span_status_message, 'span error') AS error_type, COALESCE(\"event_exception.message\", span_status_description, '') AS message FROM $traces_dataset WHERE span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"event_exception.type\" IS NOT NULL ORDER BY p_timestamp DESC LIMIT 50","dbName":["$traces_dataset"],"title":"Recent Errors","chartType":"table","tileType":"code","config":{"type":"table","colourScheme":"greenYellowRed","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"p_timestamp","title":"Records","display":true},"y":{"field":"error_type","title":"Error","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"ZFT49JVR9S2EASKMNYZF05G1DD","x":5,"y":8,"w":7,"h":8,"moved":false,"static":false},"sectionId":"ZGAXHNBD7N33HA2VY6D1AHF1AN"},{"tile_id":"5V7S9KJJ9FNFQBETGNAPYEKZSR","chartQuery":"SELECT COALESCE(\"github.copilot.git.repository\", \"copilot_chat.repo.remote_url\", 'unknown') AS repository, COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset WHERE \"github.copilot.git.repository\" IS NOT NULL OR \"copilot_chat.repo.remote_url\" IS NOT NULL GROUP BY repository ORDER BY traces DESC LIMIT 20","dbName":["$traces_dataset"],"title":"Repositories","chartType":"bar","tileType":"code","config":{"type":"bar","colourScheme":"blue","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"repository","title":"Repository","display":true},"y":{"field":"traces","title":"Traces","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"XV7S9KJJ9FNFQBETGNAPYEKZSR","x":0,"y":0,"w":5,"h":8,"moved":false,"static":false},"sectionId":"49FHV950RW6BXPZFQ9SCN77H73"},{"tile_id":"14ZVN842P8B8WX3XVPZS7YZ09J","chartQuery":"SELECT span_trace_id, MIN(p_timestamp) AS start_time, MAX(p_timestamp) AS end_time, COUNT(DISTINCT span_span_id) AS spans, MAX(COALESCE(\"session.id\", \"gen_ai.conversation.id\", \"copilot_chat.session_id\")) AS session_id, MAX(COALESCE(\"github.copilot.git.repository\", \"copilot_chat.repo.remote_url\")) AS repository, MAX(COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\")) AS model FROM $traces_dataset GROUP BY span_trace_id ORDER BY end_time DESC LIMIT 50","dbName":["$traces_dataset"],"title":"Recent Traces","chartType":"table","tileType":"code","config":{"type":"table","colourScheme":"green","layout":{"segments":{"value":[10,90],"isPercent":true},"legendPosition":"bottom","label":false,"unit":"","precision":0,"humanize":true},"axes":{"x":{"field":"end_time","title":"Records","display":true},"y":{"field":"spans","title":"Spans","display":true},"groupBy":{"field":[]}},"advanced":{"dataLabels":{"enabled":false},"tooltip":{"enabled":true,"mode":"index","intersect":false}}},"layout":{"i":"14ZVN842P8B8WX3XVPZS7YZ09J","x":5,"y":0,"w":7,"h":8,"moved":false,"static":false},"sectionId":"49FHV950RW6BXPZFQ9SCN77H73"}],"tenantId":null,"sections":[{"sectionId":"8QVC2GNTZ24WSXKC75H65ZQTP9","title":"Overview","isExpanded":true},{"sectionId":"R9HTQ9GJPHRHG4VCS47BGJG8ZK","title":"Trace Activity","isExpanded":true},{"sectionId":"M8GB6075VPG2Z9CQFAY61JC3W0","title":"Models & Tokens","isExpanded":true},{"sectionId":"DCC6Q019BV5MHKNKBC5NEE0HS6","title":"Tools","isExpanded":true},{"sectionId":"ZGAXHNBD7N33HA2VY6D1AHF1AN","title":"Latency & Reliability","isExpanded":true},{"sectionId":"49FHV950RW6BXPZFQ9SCN77H73","title":"Repositories & Sessions","isExpanded":true}],"variables":[{"name":"traces_dataset","label":"Traces Dataset","type":"dataset","defaultValue":"copilot-traces"}]}
+{
+  "version": "v1",
+  "title": "GitHub Copilot Observability",
+  "author": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+  "dashboardId": "01M0G21GF2WC25EDRGCBF6XHH6",
+  "created": "2026-08-20T17:03:32.834167689Z",
+  "modified": "2026-08-21T09:53:06.634999554Z",
+  "tags": [
+    "github-copilot",
+    "genai",
+    "opentelemetry",
+    "traces",
+    "observability"
+  ],
+  "isFavorite": false,
+  "dashboardType": "Dashboard",
+  "tiles": [
+    {
+      "tile_id": "1CGC01Y7R8DEVNQ3EE39G34968",
+      "chartQuery": "SELECT COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset",
+      "dbName": ["$traces_dataset"],
+      "title": "Traces",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "traces",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1CGC01Y7R8DEVNQ3EE39G34968",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8QVC2GNTZ24WSXKC75H65ZQTP9"
+    },
+    {
+      "tile_id": "01THCDQDTQKAEHE6E72SKN0NNZ",
+      "chartQuery": "SELECT COUNT(DISTINCT span_span_id) AS spans FROM $traces_dataset",
+      "dbName": ["$traces_dataset"],
+      "title": "Spans",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "81THCDQDTQKAEHE6E72SKN0NNZ",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8QVC2GNTZ24WSXKC75H65ZQTP9"
+    },
+    {
+      "tile_id": "79QTVDV69JGJSGE0FFFE5VMWCZ",
+      "chartQuery": "SELECT COUNT(DISTINCT COALESCE(\"session.id\", \"gen_ai.conversation.id\", \"copilot_chat.session_id\")) AS sessions FROM $traces_dataset",
+      "dbName": ["$traces_dataset"],
+      "title": "Sessions",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "sessions",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "Z9QTVDV69JGJSGE0FFFE5VMWCZ",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8QVC2GNTZ24WSXKC75H65ZQTP9"
+    },
+    {
+      "tile_id": "1GH2TD3TBFBW93X4C8HWNWZPYX",
+      "chartQuery": "SELECT COUNT(DISTINCT span_span_id) AS errors FROM $traces_dataset WHERE span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"event_exception.type\" IS NOT NULL",
+      "dbName": ["$traces_dataset"],
+      "title": "Errors",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "9GH2TD3TBFBW93X4C8HWNWZPYX",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "8QVC2GNTZ24WSXKC75H65ZQTP9"
+    },
+    {
+      "tile_id": "2F0VAEXP52P16PN1H19876EE8X",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset GROUP BY time_bin ORDER BY time_bin ASC",
+      "dbName": ["$traces_dataset"],
+      "title": "Traces Over Time",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": ["traces"],
+            "title": "Traces",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "AF0VAEXP52P16PN1H19876EE8X",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "R9HTQ9GJPHRHG4VCS47BGJG8ZK"
+    },
+    {
+      "tile_id": "1WAHJ8T9EHS19WN1WKJWSDQSDN",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.operation.name\", split_part(span_name, ' ', 1), 'unknown') AS operation, COUNT(DISTINCT span_span_id) AS spans FROM $traces_dataset GROUP BY operation ORDER BY spans DESC LIMIT 20",
+      "dbName": ["$traces_dataset"],
+      "title": "Spans by Operation",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "operation",
+            "title": "Operation",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "Spans",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "HWAHJ8T9EHS19WN1WKJWSDQSDN",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "R9HTQ9GJPHRHG4VCS47BGJG8ZK"
+    },
+    {
+      "tile_id": "3ZXX2KRZQ394ZV7HHVMKC713AB",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(NULLIF(\"gen_ai.usage.input_tokens\", '') AS BIGINT)), 0) AS input_tokens FROM $traces_dataset",
+      "dbName": ["$traces_dataset"],
+      "title": "Input Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "tokens",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "input_tokens",
+            "title": "Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "3ZXX2KRZQ394ZV7HHVMKC713AB",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "M8GB6075VPG2Z9CQFAY61JC3W0"
+    },
+    {
+      "tile_id": "2QACEZ2JY4GVXYVKFTDJ6XC6BC",
+      "chartQuery": "SELECT COALESCE(SUM(CAST(NULLIF(\"gen_ai.usage.output_tokens\", '') AS BIGINT)), 0) AS output_tokens FROM $traces_dataset",
+      "dbName": ["$traces_dataset"],
+      "title": "Output Tokens",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "tokens",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "output_tokens",
+            "title": "Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "2QACEZ2JY4GVXYVKFTDJ6XC6BC",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "M8GB6075VPG2Z9CQFAY61JC3W0"
+    },
+    {
+      "tile_id": "50YSZ0PCYT58QNPAJS46M85X33",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COUNT(DISTINCT span_span_id) AS calls FROM $traces_dataset WHERE \"gen_ai.request.model\" IS NOT NULL OR \"gen_ai.response.model\" IS NOT NULL GROUP BY model ORDER BY calls DESC",
+      "dbName": ["$traces_dataset"],
+      "title": "Calls by Model",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "Model",
+            "display": true
+          },
+          "y": {
+            "field": "model",
+            "title": "Model",
+            "display": true
+          },
+          "groupBy": {
+            "field": ["model"]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "50YSZ0PCYT58QNPAJS46M85X33",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "M8GB6075VPG2Z9CQFAY61JC3W0"
+    },
+    {
+      "tile_id": "1710GA78HKDHH21ABZHNZ1G4H8",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COALESCE(SUM(CAST(NULLIF(\"gen_ai.usage.input_tokens\", '') AS BIGINT)), 0) AS input_tokens, COALESCE(SUM(CAST(NULLIF(\"gen_ai.usage.output_tokens\", '') AS BIGINT)), 0) AS output_tokens FROM $traces_dataset WHERE \"gen_ai.request.model\" IS NOT NULL OR \"gen_ai.response.model\" IS NOT NULL GROUP BY model ORDER BY input_tokens DESC",
+      "dbName": ["$traces_dataset"],
+      "title": "Token Usage by Model",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "tokens",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "Model",
+            "display": true
+          },
+          "y": {
+            "field": ["input_tokens", "output_tokens"],
+            "title": "Tokens",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "1710GA78HKDHH21ABZHNZ1G4H8",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "M8GB6075VPG2Z9CQFAY61JC3W0"
+    },
+    {
+      "tile_id": "33S8HNNE7VZC0T0PQ11EXHJBT0",
+      "chartQuery": "SELECT COUNT(DISTINCT span_span_id) AS tool_calls FROM $traces_dataset WHERE \"gen_ai.tool.name\" IS NOT NULL",
+      "dbName": ["$traces_dataset"],
+      "title": "Tool Calls",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "tool_calls",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "33S8HNNE7VZC0T0PQ11EXHJBT0",
+        "x": 0,
+        "y": 0,
+        "w": 5,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "DCC6Q019BV5MHKNKBC5NEE0HS6"
+    },
+    {
+      "tile_id": "6MK9BN0X65ASVQCM7647NK6NTM",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.tool.name\", 'unknown') AS tool, COUNT(DISTINCT span_span_id) AS calls FROM $traces_dataset WHERE \"gen_ai.tool.name\" IS NOT NULL GROUP BY tool ORDER BY calls DESC LIMIT 20",
+      "dbName": ["$traces_dataset"],
+      "title": "Top Tools",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "teal",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "tool",
+            "title": "Tool",
+            "display": true
+          },
+          "y": {
+            "field": "calls",
+            "title": "Calls",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "6MK9BN0X65ASVQCM7647NK6NTM",
+        "x": 5,
+        "y": 0,
+        "w": 7,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "DCC6Q019BV5MHKNKBC5NEE0HS6"
+    },
+    {
+      "tile_id": "4J39EFK7SYWWT9PGZX8HWQN5CR",
+      "chartQuery": "SELECT ROUND(AVG(span_duration_ns) / 1000000000, 2) AS avg_seconds FROM $traces_dataset WHERE span_parent_span_id IS NULL OR span_parent_span_id = ''",
+      "dbName": ["$traces_dataset"],
+      "title": "Average Trace Duration",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "s",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_seconds",
+            "title": "Seconds",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "4J39EFK7SYWWT9PGZX8HWQN5CR",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "ZGAXHNBD7N33HA2VY6D1AHF1AN"
+    },
+    {
+      "tile_id": "2GBE47QNS0GWGA1G8A1A4RRDXR",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, ROUND(AVG(span_duration_ns) / 1000000, 2) AS avg_duration_ms FROM $traces_dataset WHERE \"gen_ai.request.model\" IS NOT NULL OR \"gen_ai.response.model\" IS NOT NULL GROUP BY model ORDER BY avg_duration_ms DESC",
+      "dbName": ["$traces_dataset"],
+      "title": "Model Latency",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "ms",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "Model",
+            "display": true
+          },
+          "y": {
+            "field": "avg_duration_ms",
+            "title": "Average Duration",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "TGBE47QNS0GWGA1G8A1A4RRDXR",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "ZGAXHNBD7N33HA2VY6D1AHF1AN"
+    },
+    {
+      "tile_id": "61TE97MF7X8WBV6KP4NFYHT92G",
+      "chartQuery": "SELECT COALESCE(\"error.type\", \"event_exception.type\", span_status_message, 'span error') AS error_type, COUNT(DISTINCT span_span_id) AS errors FROM $traces_dataset WHERE span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"event_exception.type\" IS NOT NULL GROUP BY error_type ORDER BY errors DESC",
+      "dbName": ["$traces_dataset"],
+      "title": "Errors by Type",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "error_type",
+            "title": "Error",
+            "display": true
+          },
+          "y": {
+            "field": "errors",
+            "title": "Errors",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "61TE97MF7X8WBV6KP4NFYHT92G",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "ZGAXHNBD7N33HA2VY6D1AHF1AN"
+    },
+    {
+      "tile_id": "7FT49JVR9S2EASKMNYZF05G1DD",
+      "chartQuery": "SELECT p_timestamp, span_trace_id, span_name, COALESCE(\"error.type\", \"event_exception.type\", span_status_message, 'span error') AS error_type, COALESCE(\"event_exception.message\", span_status_description, '') AS message FROM $traces_dataset WHERE span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"event_exception.type\" IS NOT NULL ORDER BY p_timestamp DESC LIMIT 50",
+      "dbName": ["$traces_dataset"],
+      "title": "Recent Errors",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "p_timestamp",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "error_type",
+            "title": "Error",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "7FT49JVR9S2EASKMNYZF05G1DD",
+        "x": 6,
+        "y": 9,
+        "w": 6,
+        "h": 9,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "ZGAXHNBD7N33HA2VY6D1AHF1AN"
+    },
+    {
+      "tile_id": "5V7S9KJJ9FNFQBETGNAPYEKZSR",
+      "chartQuery": "SELECT COALESCE(\"github.copilot.git.repository\", \"copilot_chat.repo.remote_url\", 'unknown') AS repository, COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset WHERE \"github.copilot.git.repository\" IS NOT NULL OR \"copilot_chat.repo.remote_url\" IS NOT NULL GROUP BY repository ORDER BY traces DESC LIMIT 20",
+      "dbName": ["$traces_dataset"],
+      "title": "Repositories",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "repository",
+            "title": "Repository",
+            "display": true
+          },
+          "y": {
+            "field": "traces",
+            "title": "Traces",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "XV7S9KJJ9FNFQBETGNAPYEKZSR",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "49FHV950RW6BXPZFQ9SCN77H73"
+    },
+    {
+      "tile_id": "14ZVN842P8B8WX3XVPZS7YZ09J",
+      "chartQuery": "SELECT span_trace_id, MIN(p_timestamp) AS start_time, MAX(p_timestamp) AS end_time, COUNT(DISTINCT span_span_id) AS spans, MAX(COALESCE(\"session.id\", \"gen_ai.conversation.id\", \"copilot_chat.session_id\")) AS session_id, MAX(COALESCE(\"github.copilot.git.repository\", \"copilot_chat.repo.remote_url\")) AS repository, MAX(COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\")) AS model FROM $traces_dataset GROUP BY span_trace_id ORDER BY end_time DESC LIMIT 50",
+      "dbName": ["$traces_dataset"],
+      "title": "Recent Traces",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "end_time",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "spans",
+            "title": "Spans",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "14ZVN842P8B8WX3XVPZS7YZ09J",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "49FHV950RW6BXPZFQ9SCN77H73"
+    },
+    {
+      "tile_id": "01M0JC05T0TA00000000000001",
+      "chartQuery": "SELECT ROUND(COALESCE(SUM(agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 0), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "dbName": ["$traces_dataset"],
+      "title": "Total Estimated Cost",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "Estimated Cost",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0JC05T0TA00000000000001",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0J000000000000000000001"
+    },
+    {
+      "tile_id": "01M0JC05TAVG00000000000002",
+      "chartQuery": "SELECT ROUND(COALESCE(AVG(agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 0), 6) AS avg_cost_per_call_usd FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "dbName": ["$traces_dataset"],
+      "title": "Average Cost per Call",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "orange",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "avg_cost_per_call_usd",
+            "title": "Average Cost",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0JC05TAVG00000000000002",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0J000000000000000000001"
+    },
+    {
+      "tile_id": "01M0JC05TC0V00000000000003",
+      "chartQuery": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS pricing_coverage_pct FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "dbName": ["$traces_dataset"],
+      "title": "Pricing Coverage",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "%",
+          "precision": 2,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "pricing_coverage_pct",
+            "title": "Coverage",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0JC05TC0V00000000000003",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0J000000000000000000001"
+    },
+    {
+      "tile_id": "01M0JC05TCAX00000000000004",
+      "chartQuery": "SELECT COUNT(*) FILTER (WHERE agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NOT NULL) AS priced_calls FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL",
+      "dbName": ["$traces_dataset"],
+      "title": "Priced Calls",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "priced_calls",
+            "title": "Calls",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0JC05TCAX00000000000004",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0J000000000000000000001"
+    },
+    {
+      "tile_id": "01M0JC05TTME00000000000005",
+      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "dbName": ["$traces_dataset"],
+      "title": "Estimated Cost Over Time",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "Estimated Cost",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0JC05TTME00000000000005",
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0J000000000000000000001"
+    },
+    {
+      "tile_id": "01M0JC05TMDX00000000000006",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COUNT(*) AS calls, ROUND(SUM(agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY model ORDER BY estimated_cost_usd DESC NULLS LAST",
+      "dbName": ["$traces_dataset"],
+      "title": "Estimated Cost by Model",
+      "chartType": "bar",
+      "tileType": "code",
+      "config": {
+        "type": "bar",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "$",
+          "precision": 6,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "Model",
+            "display": true
+          },
+          "y": {
+            "field": "estimated_cost_usd",
+            "title": "Estimated Cost",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0JC05TMDX00000000000006",
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0J000000000000000000001"
+    },
+    {
+      "tile_id": "01M0JC05TNPR00000000000007",
+      "chartQuery": "SELECT COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model, COALESCE(\"gen_ai.provider.name\", 'unknown') AS provider, COUNT(*) AS unpriced_calls, SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens, SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL AND agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp) IS NULL GROUP BY model, provider ORDER BY unpriced_calls DESC",
+      "dbName": ["$traces_dataset"],
+      "title": "Unpriced Models",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "model",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "unpriced_calls",
+            "title": "Calls",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0JC05TNPR00000000000007",
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0J000000000000000000001"
+    }
+  ],
+  "tenantId": null,
+  "sections": [
+    {
+      "sectionId": "8QVC2GNTZ24WSXKC75H65ZQTP9",
+      "title": "Overview",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "R9HTQ9GJPHRHG4VCS47BGJG8ZK",
+      "title": "Usage & Activity",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "M8GB6075VPG2Z9CQFAY61JC3W0",
+      "title": "Models & Tokens",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01M0J000000000000000000001",
+      "title": "Cost",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "DCC6Q019BV5MHKNKBC5NEE0HS6",
+      "title": "Tools & Commands",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "ZGAXHNBD7N33HA2VY6D1AHF1AN",
+      "title": "Performance & Reliability",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "49FHV950RW6BXPZFQ9SCN77H73",
+      "title": "Sessions & Users",
+      "isExpanded": false
+    }
+  ],
+  "variables": [
+    {
+      "name": "traces_dataset",
+      "label": "Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "copilot-traces"
+    }
+  ]
+}

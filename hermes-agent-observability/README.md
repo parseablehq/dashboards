@@ -28,7 +28,6 @@ Three dashboard variables select the telemetry datasets:
 
 - **12 SQL tiles** across **3 collapsible sections**
 - Importable template: [`hermes-agent-observability-sql.json`](https://github.com/parseablehq/dashboards/blob/main/hermes-agent-observability/hermes-agent-observability-sql.json)
-- Icon: [NousResearch (Hermes)](https://thesvg.org/icon/nousresearch-hermes), MIT licensed
 
 ## Import
 

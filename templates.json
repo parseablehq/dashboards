@@ -7,10 +7,7 @@
       "fileName": "agent-cost-analysis-sql.json",
       "description": "Analyze GenAI agent spend, token consumption, and cost distribution across models, services, tools, and sessions.",
       "source": "SQL",
-      "tags": [
-        "agent-observability",
-        "cost"
-      ],
+      "tags": ["agent-observability", "cost"],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -19,12 +16,7 @@
       "fileName": "agent-observability-sql.json",
       "description": "Track GenAI agent invocations, outcomes, latency, tools, tokens, cost, and request-level behavior.",
       "source": "SQL",
-      "tags": [
-        "swe-agent",
-        "genai",
-        "sql",
-        "agent-observability"
-      ],
+      "tags": ["swe-agent", "genai", "sql", "agent-observability"],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -65,6 +57,25 @@
         "cost"
       ],
       "thumbnail": "assets/Overview.png"
+    },
+    {
+      "name": "Hermes Agent Observability",
+      "dirName": "hermes-agent-observability",
+      "fileName": "hermes-agent-observability-sql.json",
+      "description": "Monitor Hermes Agent invocations, model and token usage, tools, latency, errors, logs, traces, and native OpenTelemetry metrics.",
+      "source": "SQL",
+      "thumbnail": "assets/Metrics&Usage.png",
+      "icon": "assets/icon.svg",
+      "tags": [
+        "hermes",
+        "agents",
+        "genai",
+        "opentelemetry",
+        "logs",
+        "metrics",
+        "traces",
+        "observability"
+      ]
     },
     {
       "name": "LiteLLM Proxy Observability",
@@ -128,11 +139,7 @@
       "description": "Monitor Claude Code sessions, model usage, request patterns, token consumption, and PromQL-backed runtime signals.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": [
-        "claude-code",
-        "usage",
-        "genai"
-      ],
+      "tags": ["claude-code", "usage", "genai"],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -141,6 +148,7 @@
       "fileName": "github-copilot-observability-sql.json",
       "description": "Monitor GitHub Copilot traces, sessions, model and token usage, tools, latency, errors, repositories, and recent trace activity.",
       "source": "SQL",
+      "thumbnail": "assets/Models&Tokens.png",
       "icon": "assets/icon.svg",
       "tags": [
         "github-copilot",
@@ -157,6 +165,7 @@
       "description": "Monitor Codex sessions, turns, token and cache usage, estimated cost, latency, tools, MCP activity, approvals, errors, logs, and traces.",
       "source": "SQL",
       "icon": "assets/icon.svg",
+      "thumbnail": "assets/CostAndFinOps.png",
       "tags": [
         "codex",
         "openai",
@@ -210,14 +219,7 @@
       "description": "Monitor Kubernetes cluster health, nodes, pods, containers, workloads, logs, events, capacity, and kubelet/runtime signals.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": [
-        "kubernetes",
-        "k8s",
-        "cluster",
-        "metrics",
-        "logs",
-        "events"
-      ],
+      "tags": ["kubernetes", "k8s", "cluster", "metrics", "logs", "events"],
       "thumbnail": "assets/screenshot.png"
     },
     {
@@ -227,13 +229,7 @@
       "description": "Monitor Argo CD applications, sync health, controller activity, Kubernetes API behavior, Redis/cache signals, metrics inventory, and Argo CD logs.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": [
-        "argocd",
-        "gitops",
-        "kubernetes",
-        "promql",
-        "logs"
-      ],
+      "tags": ["argocd", "gitops", "kubernetes", "promql", "logs"],
       "thumbnail": "assets/screenshot.png"
     },
     {
@@ -243,13 +239,7 @@
       "description": "Monitor Traefik ingress traffic, entrypoints, services, latency, TLS certificates, runtime health, access logs, and metric inventory.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": [
-        "traefik",
-        "kubernetes",
-        "ingress",
-        "promql",
-        "logs"
-      ],
+      "tags": ["traefik", "kubernetes", "ingress", "promql", "logs"],
       "thumbnail": "assets/screenshot.png"
     },
     {
@@ -401,14 +391,7 @@
       "description": "Monitor MongoDB connections, operations, storage, collections, WiredTiger cache, replication, logs, traces, and exporter inventory.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": [
-        "mongodb",
-        "database",
-        "metrics",
-        "logs",
-        "traces",
-        "promql"
-      ],
+      "tags": ["mongodb", "database", "metrics", "logs", "traces", "promql"],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -418,10 +401,7 @@
       "description": "Monitor host-level CPU, memory, disk, network, filesystem, and load metrics from node exporter style PromQL data.",
       "source": "PromQL",
       "icon": "assets/icon.svg",
-      "tags": [
-        "node",
-        "promql"
-      ],
+      "tags": ["node", "promql"],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -449,13 +429,7 @@
       "description": "Observe OpenTelemetry Collector throughput, receiver/exporter activity, queue behavior, dropped telemetry, and component inventory.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": [
-        "otel",
-        "opentelemetry",
-        "collector",
-        "metrics",
-        "promql"
-      ],
+      "tags": ["otel", "opentelemetry", "collector", "metrics", "promql"],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -501,11 +475,7 @@
       "description": "Explore application, service, and telemetry behavior for the OpenTelemetry Astronomy Shop demo application.",
       "source": "Mixed",
       "icon": "assets/icon.svg",
-      "tags": [
-        "otel-demo",
-        "astronomy-shop",
-        "observability"
-      ],
+      "tags": ["otel-demo", "astronomy-shop", "observability"],
       "thumbnail": "assets/Overview.png"
     },
     {
@@ -532,12 +502,7 @@
       "fileName": "parseable-audit-logs-sql.json",
       "description": "Review Parseable audit events, user activity, administrative actions, and access patterns from audit log datasets.",
       "source": "SQL",
-      "tags": [
-        "audit",
-        "parseable",
-        "logs",
-        "azure"
-      ],
+      "tags": ["audit", "parseable", "logs", "azure"],
       "thumbnail": "assets/screenshot.png"
     },
     {
@@ -546,11 +511,7 @@
       "fileName": "parseable-metrics-promql.json",
       "description": "Monitor Parseable service metrics including ingestion, query behavior, storage, runtime health, and system-level PromQL signals.",
       "source": "PromQL",
-      "tags": [
-        "metrics",
-        "parseable",
-        "promql"
-      ],
+      "tags": ["metrics", "parseable", "promql"],
       "thumbnail": "assets/screenshot.png"
     },
     {
@@ -559,12 +520,7 @@
       "fileName": "parseable-server-logs-sql.json",
       "description": "Analyze Parseable server logs, error patterns, request activity, status distribution, and runtime log trends.",
       "source": "SQL",
-      "tags": [
-        "server-logs",
-        "parseable",
-        "logs",
-        "azure"
-      ],
+      "tags": ["server-logs", "parseable", "logs", "azure"],
       "thumbnail": "assets/screenshot.png"
     },
     {
@@ -628,13 +584,7 @@
       "fileName": "n8n-workflow-observability-sql.json",
       "description": "Monitor n8n workflow and node executions, success rate, duration, and errors from OpenTelemetry traces.",
       "source": "SQL",
-      "tags": [
-        "n8n",
-        "workflows",
-        "opentelemetry",
-        "traces",
-        "observability"
-      ],
+      "tags": ["n8n", "workflows", "opentelemetry", "traces", "observability"],
       "icon": "assets/icon.svg",
       "thumbnail": "assets/screenshot.png"
     }

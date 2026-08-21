@@ -136,6 +136,21 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "GitHub Copilot Observability",
+      "dirName": "github-copilot-observability",
+      "fileName": "github-copilot-observability-sql.json",
+      "description": "Monitor GitHub Copilot traces, sessions, model and token usage, tools, latency, errors, repositories, and recent trace activity.",
+      "source": "SQL",
+      "icon": "assets/icon.svg",
+      "tags": [
+        "github-copilot",
+        "genai",
+        "opentelemetry",
+        "traces",
+        "observability"
+      ]
+    },
+    {
       "name": "Codex Observability",
       "dirName": "codex-observability",
       "fileName": "codex-observability-sql.json",

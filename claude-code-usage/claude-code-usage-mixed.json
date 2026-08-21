@@ -1,9 +1,5 @@
 {
-  "tags": [
-    "claude-code",
-    "usage",
-    "genai"
-  ],
+  "tags": ["claude-code", "usage", "genai"],
   "variables": [
     {
       "name": "logs_dataset",
@@ -59,9 +55,7 @@
     {
       "tile_id": "01KW44V4B2B0DPSAEMH2NKEH29",
       "chartQuery": "SELECT ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Total Cost",
       "chartType": "query-value",
       "tileType": "code",
@@ -70,10 +64,7 @@
         "colourScheme": "purple",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -122,9 +113,7 @@
     {
       "tile_id": "01KW44V4B2N265EFGAMM4SBVAY",
       "chartQuery": "SELECT COUNT(*) AS api_requests\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "API Requests",
       "chartType": "query-value",
       "tileType": "code",
@@ -133,10 +122,7 @@
         "colourScheme": "purple",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -185,9 +171,7 @@
     {
       "tile_id": "01KW44V4B2Q2WY81513A1KR8TV",
       "chartQuery": "SELECT COUNT(DISTINCT \"session.id\") AS sessions\nFROM $logs_dataset",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Sessions",
       "chartType": "query-value",
       "tileType": "code",
@@ -196,10 +180,7 @@
         "colourScheme": "orange",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -248,9 +229,7 @@
     {
       "tile_id": "01KW44V4B20EXJSH0W4W5WKS0F",
       "chartQuery": "SELECT COUNT(*) AS errors\nFROM $logs_dataset\nWHERE error IS NOT NULL OR error_name IS NOT NULL OR error_type IS NOT NULL OR error_code IS NOT NULL",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Errors",
       "chartType": "query-value",
       "tileType": "code",
@@ -259,10 +238,7 @@
         "colourScheme": "red",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -311,9 +287,7 @@
     {
       "tile_id": "01KW44V4B237NS8QFF23W4QHAX",
       "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY time_bin\nORDER BY time_bin ASC",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Cost and API Requests Over Time",
       "chartType": "timeseries",
       "tileType": "code",
@@ -322,10 +296,7 @@
         "colourScheme": "classic",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -341,10 +312,7 @@
             "display": true
           },
           "y": {
-            "field": [
-              "api_requests",
-              "cost_usd"
-            ],
+            "field": ["api_requests", "cost_usd"],
             "title": "Cost",
             "display": true
           },
@@ -376,9 +344,7 @@
     },
     {
       "tile_id": "01KW44V4B2F0QK4CYQAME633W6",
-      "chartQuery": [
-        "sum by (type) ({__name__=\"claude_code.token.usage\"})"
-      ],
+      "chartQuery": ["sum by (type) ({__name__=\"claude_code.token.usage\"})"],
       "dbName": "$metrics_dataset",
       "title": "Tokens Over Time",
       "chartType": "timeseries",
@@ -388,10 +354,7 @@
         "colourScheme": "orange",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -412,9 +375,7 @@
             "display": true
           },
           "groupBy": {
-            "field": [
-              "token_type"
-            ]
+            "field": ["token_type"]
           }
         },
         "advanced": {
@@ -438,15 +399,11 @@
         "static": false
       },
       "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
-      "promqlQueryType": [
-        "range"
-      ]
+      "promqlQueryType": ["range"]
     },
     {
       "tile_id": "01KW44V4B2H4VQWSBWNSZYXH3A",
-      "chartQuery": [
-        "sum by (type) ({__name__=\"claude_code.token.usage\"})"
-      ],
+      "chartQuery": ["sum by (type) ({__name__=\"claude_code.token.usage\"})"],
       "dbName": "$metrics_dataset",
       "title": "Token Usage by Type",
       "chartType": "donut",
@@ -456,10 +413,7 @@
         "colourScheme": "blue",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -504,28 +458,21 @@
         "static": false
       },
       "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
-      "promqlQueryType": [
-        "range"
-      ]
+      "promqlQueryType": ["range"]
     },
     {
       "tile_id": "01KW44V4B2TW3C07X6M4MMGGE3",
       "chartQuery": "SELECT COALESCE(model, 'unknown') AS model, COUNT(*) AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY model\nORDER BY cost_usd DESC",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Cost by Model",
       "chartType": "donut",
       "tileType": "code",
       "config": {
         "type": "donut",
-        "colourScheme": "parseableBlue",
+        "colourScheme": "classic",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -546,9 +493,7 @@
             "display": true
           },
           "groupBy": {
-            "field": [
-              "model"
-            ]
+            "field": ["model"]
           }
         },
         "advanced": {
@@ -576,9 +521,7 @@
     {
       "tile_id": "01KW44V4B22WGDZK462D8S7A8B",
       "chartQuery": "SELECT COALESCE(model, 'unknown') AS model, COUNT(*) AS api_requests\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY model\nORDER BY api_requests DESC",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "API Requests by Model",
       "chartType": "donut",
       "tileType": "code",
@@ -587,10 +530,7 @@
         "colourScheme": "parseableBlue",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -611,9 +551,7 @@
             "display": true
           },
           "groupBy": {
-            "field": [
-              "model"
-            ]
+            "field": ["model"]
           }
         },
         "advanced": {
@@ -641,21 +579,16 @@
     {
       "tile_id": "01KW44V4B2B2DE8334PYFBKS3W",
       "chartQuery": "SELECT COALESCE(\"event.name\", body, event_type, 'unknown') AS event_name, COUNT(*) AS events\nFROM $logs_dataset\nGROUP BY event_name\nORDER BY events DESC\nLIMIT 20",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Events by Type",
-      "chartType": "donut",
+      "chartType": "bar",
       "tileType": "code",
       "config": {
-        "type": "donut",
+        "type": "bar",
         "colourScheme": "teal",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -671,14 +604,12 @@
             "display": true
           },
           "y": {
-            "field": "event_name",
-            "title": "event_name",
+            "field": "events",
+            "title": "events",
             "display": true
           },
           "groupBy": {
-            "field": [
-              "event_name"
-            ]
+            "field": []
           }
         },
         "advanced": {
@@ -706,21 +637,16 @@
     {
       "tile_id": "01KW44V4B21WYTVFR26JAF6KAK",
       "chartQuery": "SELECT COALESCE(tool_name, \"mcp_tool.name\", 'unknown') AS tool, COUNT(*) AS uses\nFROM $logs_dataset\nWHERE tool_name IS NOT NULL OR \"mcp_tool.name\" IS NOT NULL\nGROUP BY tool\nORDER BY uses DESC\nLIMIT 20",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Top Tools",
-      "chartType": "donut",
+      "chartType": "bar",
       "tileType": "code",
       "config": {
-        "type": "donut",
+        "type": "bar",
         "colourScheme": "teal",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -736,14 +662,12 @@
             "display": true
           },
           "y": {
-            "field": "tool",
-            "title": "tool",
+            "field": "uses",
+            "title": "uses",
             "display": true
           },
           "groupBy": {
-            "field": [
-              "tool"
-            ]
+            "field": []
           }
         },
         "advanced": {
@@ -771,21 +695,16 @@
     {
       "tile_id": "01KW44V4B2ZEWACGH2NFQ3RJE2",
       "chartQuery": "SELECT COALESCE(hook_event, hook_name, 'unknown') AS hook, COUNT(*) AS events\nFROM $logs_dataset\nWHERE hook_event IS NOT NULL OR hook_name IS NOT NULL\nGROUP BY hook\nORDER BY events DESC\nLIMIT 20",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Top Hooks",
-      "chartType": "donut",
+      "chartType": "bar",
       "tileType": "code",
       "config": {
-        "type": "donut",
+        "type": "bar",
         "colourScheme": "green",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -801,14 +720,12 @@
             "display": true
           },
           "y": {
-            "field": "hook",
-            "title": "hook",
+            "field": "events",
+            "title": "events",
             "display": true
           },
           "groupBy": {
-            "field": [
-              "hook"
-            ]
+            "field": []
           }
         },
         "advanced": {
@@ -836,21 +753,16 @@
     {
       "tile_id": "01KW44V4B2HBCFMYKRZR6Q7R6K",
       "chartQuery": "SELECT COALESCE(command_name, 'unknown') AS command, COUNT(*) AS uses\nFROM $logs_dataset\nWHERE command_name IS NOT NULL\nGROUP BY command\nORDER BY uses DESC\nLIMIT 20",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Top Commands",
-      "chartType": "donut",
+      "chartType": "bar",
       "tileType": "code",
       "config": {
-        "type": "donut",
+        "type": "bar",
         "colourScheme": "orange",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -866,14 +778,12 @@
             "display": true
           },
           "y": {
-            "field": "command",
-            "title": "command",
+            "field": "uses",
+            "title": "uses",
             "display": true
           },
           "groupBy": {
-            "field": [
-              "command"
-            ]
+            "field": []
           }
         },
         "advanced": {
@@ -901,21 +811,16 @@
     {
       "tile_id": "01KW44V4B2SSQEVQAK7D3H87ZB",
       "chartQuery": "SELECT COALESCE(\"plugin.name\", \"marketplace.name\", 'unknown') AS plugin, COUNT(*) AS events\nFROM $logs_dataset\nWHERE \"plugin.name\" IS NOT NULL OR \"marketplace.name\" IS NOT NULL\nGROUP BY plugin\nORDER BY events DESC\nLIMIT 20",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Plugins",
-      "chartType": "donut",
+      "chartType": "bar",
       "tileType": "code",
       "config": {
-        "type": "donut",
+        "type": "bar",
         "colourScheme": "blue",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -931,14 +836,12 @@
             "display": true
           },
           "y": {
-            "field": "plugin",
-            "title": "plugin",
+            "field": "events",
+            "title": "events",
             "display": true
           },
           "groupBy": {
-            "field": [
-              "plugin"
-            ]
+            "field": []
           }
         },
         "advanced": {
@@ -977,10 +880,7 @@
         "colourScheme": "parseableBlue",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -1001,9 +901,7 @@
             "display": true
           },
           "groupBy": {
-            "field": [
-              "type"
-            ]
+            "field": ["type"]
           }
         },
         "advanced": {
@@ -1027,9 +925,7 @@
         "static": false
       },
       "sectionId": "01KW92CW9GQZ7CJTAWATCE5N9N",
-      "promqlQueryType": [
-        "range"
-      ]
+      "promqlQueryType": ["range"]
     },
     {
       "tile_id": "01KW44V4B2WVT1JG7JCM1RWKZY",
@@ -1045,10 +941,7 @@
         "colourScheme": "blue",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -1069,9 +962,7 @@
             "display": true
           },
           "groupBy": {
-            "field": [
-              "change_type"
-            ]
+            "field": ["change_type"]
           }
         },
         "advanced": {
@@ -1095,16 +986,12 @@
         "static": false
       },
       "sectionId": "01KW92CW9GQZ7CJTAWATCE5N9N",
-      "promqlQueryType": [
-        "range"
-      ]
+      "promqlQueryType": ["range"]
     },
     {
       "tile_id": "01KW44V4B2HGJGJ626HTT1A6SH",
       "chartQuery": "SELECT COALESCE(error_name, error_type, error_code, error, 'unknown') AS error_label, COUNT(*) AS errors\nFROM $logs_dataset\nWHERE error IS NOT NULL OR error_name IS NOT NULL OR error_type IS NOT NULL OR error_code IS NOT NULL\nGROUP BY error_label\nORDER BY errors DESC\nLIMIT 20",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Errors by Type",
       "chartType": "donut",
       "tileType": "code",
@@ -1113,10 +1000,7 @@
         "colourScheme": "red",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -1132,12 +1016,12 @@
             "display": true
           },
           "y": {
-            "field": "errors",
-            "title": "Errors",
+            "field": "error_label",
+            "title": "error_label",
             "display": true
           },
           "groupBy": {
-            "field": []
+            "field": ["error_label"]
           }
         },
         "advanced": {
@@ -1155,8 +1039,8 @@
         "i": "01KW44V4B2HGJGJ626HTT1A6SH",
         "x": 0,
         "y": 0,
-        "w": 12,
-        "h": 8,
+        "w": 6,
+        "h": 9,
         "moved": false,
         "static": false
       },
@@ -1165,9 +1049,7 @@
     {
       "tile_id": "01KW44V4B26EZ9SDNZY1MMJTY1",
       "chartQuery": "SELECT p_timestamp, \"event.name\" AS event_name, model, request_id, error_name, error_type, error_code, error\nFROM $logs_dataset\nWHERE error IS NOT NULL OR error_name IS NOT NULL OR error_type IS NOT NULL OR error_code IS NOT NULL\nORDER BY p_timestamp DESC\nLIMIT 50",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "dbName": ["$logs_dataset"],
       "title": "Recent Errors",
       "chartType": "table",
       "tileType": "code",
@@ -1176,10 +1058,7 @@
         "colourScheme": "greenYellowRed",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -1216,10 +1095,10 @@
       },
       "layout": {
         "i": "01KW44V4B26EZ9SDNZY1MMJTY1",
-        "x": 0,
-        "y": 8,
-        "w": 12,
-        "h": 8,
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 9,
         "moved": false,
         "static": false
       },
@@ -1227,10 +1106,8 @@
     },
     {
       "tile_id": "01KW44V4B23YAEMY1WEFVWAQNQ",
-      "chartQuery": "SELECT \"session.id\" AS session_id, MIN(p_timestamp) AS start_time, MAX(p_timestamp) AS end_time, COUNT(*) AS events, COUNT(*) FILTER (WHERE \"event.name\" = 'api_request') AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nGROUP BY session_id\nORDER BY end_time DESC\nLIMIT 50",
-      "dbName": [
-        "$logs_dataset"
-      ],
+      "chartQuery": "SELECT \"session.id\" AS session_id, \"user.email\" AS user_email, MIN(p_timestamp) AS start_time, MAX(p_timestamp) AS end_time, COUNT(*) AS events, COUNT(*) FILTER (WHERE \"event.name\" = 'api_request') AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nGROUP BY session_id, user_email\nORDER BY end_time DESC\nLIMIT 50",
+      "dbName": ["$logs_dataset"],
       "title": "Recent Sessions",
       "chartType": "table",
       "tileType": "code",
@@ -1239,10 +1116,7 @@
         "colourScheme": "green",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -1290,9 +1164,7 @@
     },
     {
       "tile_id": "01KW4516GSHD9GC4VQFE2M2QWP",
-      "chartQuery": [
-        "sum({__name__=\"claude_code.session.count\"})"
-      ],
+      "chartQuery": ["sum({__name__=\"claude_code.session.count\"})"],
       "dbName": "$metrics_dataset",
       "title": "Session Count Over Time",
       "chartType": "timeseries",
@@ -1302,10 +1174,7 @@
         "colourScheme": "orange",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -1350,9 +1219,7 @@
         "static": false
       },
       "sectionId": "01KW9D7SARCEC4JPRNW8RMN0N5",
-      "promqlQueryType": [
-        "range"
-      ]
+      "promqlQueryType": ["range"]
     },
     {
       "tile_id": "01KW4516GS0P7HD3MGRN808F5E",
@@ -1368,10 +1235,7 @@
         "colourScheme": "yellow",
         "layout": {
           "segments": {
-            "value": [
-              10,
-              90
-            ],
+            "value": [10, 90],
             "isPercent": true
           },
           "legendPosition": "bottom",
@@ -1392,9 +1256,7 @@
             "display": true
           },
           "groupBy": {
-            "field": [
-              "decision"
-            ]
+            "field": ["decision"]
           }
         },
         "advanced": {
@@ -1418,9 +1280,65 @@
         "static": false
       },
       "sectionId": "01KW92CW9GQZ7CJTAWATCE5N9N",
-      "promqlQueryType": [
-        "range"
-      ]
+      "promqlQueryType": ["range"]
+    },
+    {
+      "tile_id": "06G1ZNSGX92ZJ7CFR4MR6NDZVM",
+      "chartQuery": "SELECT \"user.email\" AS user_email, \"organization.id\" AS organization_id, COUNT(DISTINCT \"session.id\") AS sessions, COUNT(*) AS events, ROUND(SUM(cost_usd), 4) AS cost_usd, MAX(p_timestamp) AS last_seen\nFROM $logs_dataset\nGROUP BY user_email, organization_id\nORDER BY last_seen DESC",
+      "dbName": ["$logs_dataset"],
+      "title": "Users",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [10, 90],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "last_seen",
+            "title": "Records",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "Count",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "06G1ZNSGX92ZJ7CFR4MR6NDZVM",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01KW9D7SARCEC4JPRNW8RMN0N5"
     }
   ]
 }

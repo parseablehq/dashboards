@@ -10,7 +10,7 @@ Monitor Claude Code sessions, model usage, request patterns, token consumption, 
 - **Tools & Commands:** panels include Top Tools, Top Hooks, Top Commands, and Plugins.
 - **Activity & Code Changes:** panels include Active Time Over Time, Lines Changed Over Time, and Code Edit Decisions.
 - **Errors:** panels include Errors by Type and Recent Errors.
-- **Sessions:** panels include Recent Sessions and Session Count Over Time.
+- **Sessions:** panels include Recent Sessions, Session Count Over Time, and Users.
 
 ## Data used
 
@@ -29,7 +29,7 @@ Expected fields and labels follow the panel queries and the relevant OpenTelemet
 
 ## Dashboard contents
 
-- **21 tiles** across **7 collapsible sections**
+- **22 tiles** across **7 collapsible sections**
 - PromQL metrics and SQL telemetry in one mixed-source dashboard
 - Dashboard screenshot in [`assets/`](https://github.com/parseablehq/dashboards/tree/main/claude-code-usage/assets)
 - Importable template: [`claude-code-usage-mixed.json`](https://github.com/parseablehq/dashboards/blob/main/claude-code-usage/claude-code-usage-mixed.json)

@@ -11,7 +11,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": "Agent Observability",
+      "name": "Agent",
       "dirName": "agent-observability",
       "fileName": "agent-observability-sql.json",
       "description": "Track GenAI agent invocations, outcomes, latency, tools, tokens, cost, and request-level behavior.",
@@ -20,7 +20,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": "CrewAI Observability",
+      "name": "CrewAI",
       "dirName": "crewai-observability",
       "fileName": "crewai-observability-sql.json",
       "description": "Monitor CrewAI crews, flows, agents, tasks, LLM calls, token usage, tools, latency, and errors from OpenInference traces.",
@@ -37,7 +37,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": "Mastra Agent Observability",
+      "name": "Mastra Agent",
       "dirName": "mastra-agent-observability",
       "fileName": "mastra-agent-observability-mixed.json",
       "description": "Monitor Mastra agent runs, model calls, tokens, estimated cost, tools, latency, correlated logs, traces, and native metrics.",
@@ -59,7 +59,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": "Hermes Agent Observability",
+      "name": "Hermes Agent",
       "dirName": "hermes-agent-observability",
       "fileName": "hermes-agent-observability-sql.json",
       "description": "Monitor Hermes Agent invocations, model and token usage, tools, latency, errors, logs, traces, and native OpenTelemetry metrics.",
@@ -78,7 +78,7 @@
       ]
     },
     {
-      "name": "LiteLLM Proxy Observability",
+      "name": "LiteLLM Proxy",
       "dirName": "litellm-proxy-observability",
       "fileName": "litellm-proxy-observability-mixed.json",
       "description": "Monitor LiteLLM proxy traffic, reliability, latency, token usage, spend, model behavior, deployment health, and request traces.",
@@ -96,7 +96,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": "LiteLLM SDK Observability",
+      "name": "LiteLLM SDK",
       "dirName": "litellm-sdk-observability",
       "fileName": "litellm-sdk-observability-sql.json",
       "description": "Monitor LiteLLM SDK calls, reliability, latency, TTFT, token usage, spend, models, providers, correlated logs, traces, and metric health.",
@@ -116,7 +116,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": "Modal Observability",
+      "name": "Modal",
       "dirName": "modal-observability",
       "fileName": "modal-observability-mixed.json",
       "description": "Monitor Modal application logs, traces, function and container capacity, CPU, memory, GPU, input events, latency, errors, and correlated telemetry.",
@@ -143,7 +143,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": "GitHub Copilot Observability",
+      "name": "GitHub Copilot",
       "dirName": "github-copilot-observability",
       "fileName": "github-copilot-observability-sql.json",
       "description": "Monitor GitHub Copilot traces, sessions, model and token usage, estimated cost, tools, latency, errors, repositories, and recent trace activity.",
@@ -159,7 +159,7 @@
       ]
     },
     {
-      "name": "Codex Observability",
+      "name": "Codex",
       "dirName": "codex-observability",
       "fileName": "codex-observability-sql.json",
       "description": "Monitor Codex sessions, turns, token and cache usage, estimated cost, latency, tools, MCP activity, approvals, errors, logs, and traces.",
@@ -178,7 +178,7 @@
       ]
     },
     {
-      "name": "OpenRouter Observability",
+      "name": "OpenRouter",
       "dirName": "openrouter-observability",
       "fileName": "openrouter-observability-sql.json",
       "description": "Monitor OpenRouter requests, routing, reliability, provider attempts, retries, latency, tokens, cache usage, cost, models, and traces.",
@@ -194,7 +194,7 @@
       ]
     },
     {
-      "name": "Cloudflare AI Gateway Observability",
+      "name": "Cloudflare AI Gateway",
       "dirName": "cloudflare-ai-gateway-observability",
       "fileName": "cloudflare-ai-gateway-observability-sql.json",
       "description": "Monitor Cloudflare AI Gateway requests, reliability, latency, tokens, cost, models, custom workloads, and native OpenTelemetry traces.",
@@ -451,7 +451,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": ".NET Application Observability",
+      "name": ".NET Application",
       "dirName": "dotnet-application-observability",
       "fileName": "dotnet-application-observability-mixed.json",
       "description": "Monitor ASP.NET Core traffic, reliability, latency, .NET runtime health, GC, memory, thread pool activity, exceptions, logs, traces, and telemetry inventory.",
@@ -524,7 +524,7 @@
       "thumbnail": "assets/screenshot.png"
     },
     {
-      "name": "Temporal Workflow Observability",
+      "name": "Temporal Workflow",
       "dirName": "temporal-workflow-observability",
       "fileName": "temporal-workflow-observability-mixed.json",
       "description": "Monitor Temporal workflows, activities, task queues, failures, traces, logs, workers, service requests, persistence, and runtime health.",
@@ -562,7 +562,7 @@
       "thumbnail": "assets/Overview.png"
     },
     {
-      "name": "Vercel Integration Observability",
+      "name": "Vercel Integration",
       "dirName": "vercel-integration-observability",
       "fileName": "vercel-integration-observability-mixed.json",
       "description": "Monitor logs, traces, Speed Insights web vitals, and Web Analytics pageviews delivered through the Parseable Vercel integration.",
@@ -579,7 +579,7 @@
       ]
     },
     {
-      "name": "n8n Workflow Observability",
+      "name": "n8n Workflow",
       "dirName": "n8n-workflow-observability",
       "fileName": "n8n-workflow-observability-sql.json",
       "description": "Monitor n8n workflow and node executions, success rate, duration, and errors from OpenTelemetry traces.",

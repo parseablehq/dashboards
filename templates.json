@@ -506,6 +506,16 @@
       "thumbnail": "assets/screenshot.png"
     },
     {
+      "name": "Auth0 Security Overview",
+      "dirName": "auth0-security-overview",
+      "fileName": "auth0-security-overview-sql.json",
+      "description": "Monitor Auth0 authentication activity, failures, user lifecycle changes, source IPs, and security events from webhook logs.",
+      "source": "SQL",
+      "icon": "assets/icon.svg",
+      "thumbnail": "assets/Overview.png",
+      "tags": ["auth0", "identity", "security", "logs"]
+    },
+    {
       "name": "Parseable Metrics",
       "dirName": "parseable-metrics",
       "fileName": "parseable-metrics-promql.json",

@@ -13,6 +13,18 @@
       "label": "Trace Dataset",
       "type": "dataset",
       "defaultValue": "crewai-traces"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -560,7 +572,7 @@
       "dbName": [
         "$trace_dataset"
       ],
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"load_test.scenario\",'manual') AS scenario, COUNT(*) AS runs FROM $trace_dataset WHERE span_name='load_test.scenario' GROUP BY time_bin,scenario ORDER BY time_bin,scenario",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"load_test.scenario\",'manual') AS scenario, COUNT(*) AS runs FROM $trace_dataset WHERE span_name='load_test.scenario' GROUP BY time_bin,scenario ORDER BY time_bin,scenario",
       "sectionId": "01KYXZ7VVSE0CVQFRR6GY8RDB9",
       "layout": {
         "i": "01KYXZ7VVSRXVQXQ6FFMQ816QV",
@@ -1384,7 +1396,7 @@
       "dbName": [
         "$trace_dataset"
       ],
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, SUM(CAST(\"llm.token_count.prompt\" AS BIGINT)) AS input_tokens, SUM(CAST(\"llm.token_count.completion\" AS BIGINT)) AS output_tokens FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM' GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, SUM(CAST(\"llm.token_count.prompt\" AS BIGINT)) AS input_tokens, SUM(CAST(\"llm.token_count.completion\" AS BIGINT)) AS output_tokens FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM' GROUP BY time_bin ORDER BY time_bin",
       "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
       "layout": {
         "i": "01KYXZ7VVS2WBYQPW8BXT63APJ",
@@ -1513,7 +1525,7 @@
       "dbName": [
         "$trace_dataset"
       ],
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(span_duration_ns)/1000000000.0,2) AS avg_s, ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),2) AS p95_s FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM' GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(span_duration_ns)/1000000000.0,2) AS avg_s, ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),2) AS p95_s FROM $trace_dataset WHERE \"openinference.span.kind\"='LLM' GROUP BY time_bin ORDER BY time_bin",
       "sectionId": "01KYXZ7VVS51WSB4TTEZ5715B9",
       "layout": {
         "i": "01KYXZ7VVS18KQ6YYAVPSCWPM8",
@@ -2020,7 +2032,7 @@
       "dbName": [
         "$trace_dataset"
       ],
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE span_status_code<>2) AS successful, COUNT(*) FILTER (WHERE span_status_code=2) AS failed FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL' GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE span_status_code<>2) AS successful, COUNT(*) FILTER (WHERE span_status_code=2) AS failed FROM $trace_dataset WHERE \"openinference.span.kind\"='TOOL' GROUP BY time_bin ORDER BY time_bin",
       "sectionId": "01KYXZ7VVSWYS7E568Y9DNBEBR",
       "layout": {
         "i": "01KYXZ7VVSEWTY2GHNBDPBKHF4",
@@ -2275,7 +2287,7 @@
       "dbName": [
         "$trace_dataset"
       ],
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"openinference.span.kind\",'ROOT') AS kind, COUNT(*) AS errors FROM $trace_dataset WHERE span_status_code=2 GROUP BY time_bin,kind ORDER BY time_bin,kind",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"openinference.span.kind\",'ROOT') AS kind, COUNT(*) AS errors FROM $trace_dataset WHERE span_status_code=2 GROUP BY time_bin,kind ORDER BY time_bin,kind",
       "sectionId": "01KYXZ7VVSCBWVNBGAFXYCCS3Y",
       "layout": {
         "i": "01KYXZ7VVSX7RHZHA3M0EF7BND",

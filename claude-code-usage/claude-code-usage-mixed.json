@@ -12,6 +12,18 @@
       "label": "Metrics Dataset",
       "type": "dataset",
       "defaultValue": "claudecode-metrics"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -286,7 +298,7 @@
     },
     {
       "tile_id": "01KW44V4B237NS8QFF23W4QHAX",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS api_requests, ROUND(SUM(cost_usd), 4) AS cost_usd\nFROM $logs_dataset\nWHERE \"event.name\" = 'api_request'\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": ["$logs_dataset"],
       "title": "Cost and API Requests Over Time",
       "chartType": "timeseries",
@@ -1402,7 +1414,7 @@
       "tile_id": "01M0HS01NEPCEBHSNF276Z92FJ",
       "sectionId": "01KW901AN8NSYVT2WBPJ43ESR6",
       "title": "Cost over time per user",
-      "chartQuery": "SELECT\n  DATE_BIN(INTERVAL '1 minute', \"p_timestamp\") AS \"date_bin\",\n  \"user.email\" AS \"user_email\",\n  ROUND(SUM(\"cost_usd\"), 4) AS \"cost_usd\"\nFROM $logs_dataset\nGROUP BY\n  DATE_BIN(INTERVAL '1 minute', \"p_timestamp\"),\n  \"user.email\"\nORDER BY\n  \"date_bin\" ASC,\n  \"user_email\" ASC",
+      "chartQuery": "SELECT\n  date_bin('$bucket_size', \"p_timestamp\") AS \"date_bin\",\n  \"user.email\" AS \"user_email\",\n  ROUND(SUM(\"cost_usd\"), 4) AS \"cost_usd\"\nFROM $logs_dataset\nGROUP BY\n  date_bin('$bucket_size', \"p_timestamp\"),\n  \"user.email\"\nORDER BY\n  \"date_bin\" ASC,\n  \"user_email\" ASC",
       "dbName": ["$logs_dataset"],
       "chartType": "timeseries",
       "tileType": "code",

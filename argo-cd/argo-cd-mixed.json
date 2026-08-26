@@ -78,6 +78,18 @@
       "labelFilters": [],
       "includeAll": true,
       "defaultValue": ".*"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -2548,7 +2560,7 @@
     {
       "tile_id": "01KXQB95A002DSPD400N3FG0HW",
       "title": "Argo CD Logs Over Time",
-      "chartQuery": "SELECT date_bin(INTERVAL '1 minute', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'argocd' GROUP BY time_bucket ORDER BY time_bucket",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket, COUNT(*) AS value FROM $logs_dataset WHERE \"k8s.namespace.name\" = 'argocd' GROUP BY time_bucket ORDER BY time_bucket",
       "dbName": [
         "$logs_dataset"
       ],

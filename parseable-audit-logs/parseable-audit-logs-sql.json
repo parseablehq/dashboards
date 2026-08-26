@@ -17,6 +17,18 @@
       "label": "Username",
       "type": "sql",
       "sqlQuery": "select distinct \"body_username\" from \"$dataset\""
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -276,7 +288,7 @@
     {
       "tile_id": "01KW448M65VWCZ8XJGNB0YB2TP",
       "title": "UI API Volume Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(body_method, 'unknown') AS method, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, COALESCE(body_method, 'unknown')\nORDER BY time_bin ASC, method ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(body_method, 'unknown') AS method, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, COALESCE(body_method, 'unknown')\nORDER BY time_bin ASC, method ASC",
       "dbName": [
         "$dataset"
       ],
@@ -332,7 +344,7 @@
     {
       "tile_id": "01KW448M65TJEFZV5J092BQT6N",
       "title": "UI API Error Trend",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE body_status_code >= 400 OR body_error IS NOT NULL) AS errors, COUNT(*) FILTER (WHERE body_status_code >= 500) AS server_errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE body_status_code >= 400 OR body_error IS NOT NULL) AS errors, COUNT(*) FILTER (WHERE body_status_code >= 500) AS server_errors\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$dataset"
       ],
@@ -1152,7 +1164,7 @@
     {
       "tile_id": "01KW768EJXBYFWG754B8FMVBN2",
       "title": "UI API Status Class Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, CASE WHEN body_status_code >= 500 THEN '5xx' WHEN body_status_code >= 400 THEN '4xx' WHEN body_status_code >= 300 THEN '3xx' WHEN body_status_code >= 200 THEN '2xx' ELSE 'unknown' END AS status_class, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, status_class\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, CASE WHEN body_status_code >= 500 THEN '5xx' WHEN body_status_code >= 400 THEN '4xx' WHEN body_status_code >= 300 THEN '3xx' WHEN body_status_code >= 200 THEN '2xx' ELSE 'unknown' END AS status_class, COUNT(*) AS requests\nFROM $dataset\nWHERE body_path NOT LIKE '%assets%'\nGROUP BY time_bin, status_class\nORDER BY time_bin ASC",
       "dbName": [
         "$dataset"
       ],

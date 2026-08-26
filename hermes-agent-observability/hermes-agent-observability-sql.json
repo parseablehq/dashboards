@@ -6,7 +6,19 @@
   "variables": [
     {"name": "traces_dataset", "label": "Hermes Traces", "type": "dataset", "defaultValue": "hermes-traces"},
     {"name": "logs_dataset", "label": "Hermes Logs", "type": "dataset", "defaultValue": "hermes-logs"},
-    {"name": "metrics_dataset", "label": "Hermes Metrics", "type": "dataset", "defaultValue": "hermes-metrics"}
+    {"name": "metrics_dataset", "label": "Hermes Metrics", "type": "dataset", "defaultValue": "hermes-metrics"},
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
+    }
   ],
   "sections": [
     {"sectionId": "00000000000000000000000001", "title": "Agent & Trace Overview", "isExpanded": false},
@@ -65,7 +77,7 @@
     },
     {
       "tile_id": "00000000000000000000000018", "title": "Log Volume by Severity",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, severity_text, COUNT(*) AS records FROM $logs_dataset GROUP BY time_bin, severity_text ORDER BY time_bin, severity_text",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, severity_text, COUNT(*) AS records FROM $logs_dataset GROUP BY time_bin, severity_text ORDER BY time_bin, severity_text",
       "dbName": "$logs_dataset", "chartType": "area", "tileType": "code", "sectionId": "00000000000000000000000002",
       "layout": {"i": "00000000000000000000000018", "x": 0, "y": 0, "w": 6, "h": 8, "moved": false, "static": false},
       "config": {"type": "area", "colourScheme": "sunset", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "time_bin", "title": "Time", "display": true}, "y": {"field": "records", "title": "Records", "display": true}, "groupBy": {"field": ["severity_text"]}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
@@ -93,7 +105,7 @@
     },
     {
       "tile_id": "00000000000000000000000022", "title": "LLM Duration by Model",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(model, \"gen_ai.request.model\", \"gen_ai.response.model\") AS model_name, ROUND(AVG(COALESCE(data_point_sum / NULLIF(data_point_count, 0), data_point_value)), 2) AS avg_duration FROM $metrics_dataset WHERE metric_name = 'gen_ai.client.operation.duration' GROUP BY time_bin, model_name ORDER BY time_bin, model_name",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(model, \"gen_ai.request.model\", \"gen_ai.response.model\") AS model_name, ROUND(AVG(COALESCE(data_point_sum / NULLIF(data_point_count, 0), data_point_value)), 2) AS avg_duration FROM $metrics_dataset WHERE metric_name = 'gen_ai.client.operation.duration' GROUP BY time_bin, model_name ORDER BY time_bin, model_name",
       "dbName": "$metrics_dataset", "chartType": "line", "tileType": "code", "sectionId": "00000000000000000000000003",
       "layout": {"i": "00000000000000000000000022", "x": 0, "y": 8, "w": 12, "h": 8, "moved": false, "static": false},
       "config": {"type": "line", "colourScheme": "blue", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "s", "precision": 2, "humanize": true}, "axes": {"x": {"field": "time_bin", "title": "Time", "display": true}, "y": {"field": "avg_duration", "title": "Average Duration", "display": true}, "groupBy": {"field": ["model_name"]}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}

@@ -81,6 +81,18 @@
       "labelFilters": [],
       "defaultValue": ".*",
       "includeAll": true
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -630,7 +642,7 @@
     {
       "tile_id": "62HKM0H3F4NG03MXKMB0KWRAZC",
       "title": "Traffic by Service",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, SUM(data_point_count) AS requests FROM $metrics_dataset WHERE metric_name = 'http.server.request.duration' AND COALESCE(\"service.name\", 'unknown') ~ '$service' AND COALESCE(\"deployment.environment.name\", 'unknown') ~ '$environment' AND COALESCE(\"http.request.method\", 'unknown') ~ '$method' AND COALESCE(\"http.route\", 'unknown') ~ '$route' AND COALESCE(CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') ~ '$status_code' GROUP BY time_bin, service ORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, SUM(data_point_count) AS requests FROM $metrics_dataset WHERE metric_name = 'http.server.request.duration' AND COALESCE(\"service.name\", 'unknown') ~ '$service' AND COALESCE(\"deployment.environment.name\", 'unknown') ~ '$environment' AND COALESCE(\"http.request.method\", 'unknown') ~ '$method' AND COALESCE(\"http.route\", 'unknown') ~ '$route' AND COALESCE(CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') ~ '$status_code' GROUP BY time_bin, service ORDER BY time_bin ASC, service ASC",
       "dbName": "$metrics_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -694,7 +706,7 @@
     {
       "tile_id": "59E6D2GA59F562VFKF1PHH4RF2",
       "title": "P95 Latency by Route",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"http.route\", 'unknown') AS route, ROUND(MAX(data_point_max) * 1000.0, 2) AS p95_ms FROM $metrics_dataset WHERE metric_name = 'http.server.request.duration' AND COALESCE(\"service.name\", 'unknown') ~ '$service' AND COALESCE(\"deployment.environment.name\", 'unknown') ~ '$environment' AND COALESCE(\"http.request.method\", 'unknown') ~ '$method' AND COALESCE(\"http.route\", 'unknown') ~ '$route' AND COALESCE(CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') ~ '$status_code' GROUP BY time_bin, route ORDER BY time_bin ASC, route ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"http.route\", 'unknown') AS route, ROUND(MAX(data_point_max) * 1000.0, 2) AS p95_ms FROM $metrics_dataset WHERE metric_name = 'http.server.request.duration' AND COALESCE(\"service.name\", 'unknown') ~ '$service' AND COALESCE(\"deployment.environment.name\", 'unknown') ~ '$environment' AND COALESCE(\"http.request.method\", 'unknown') ~ '$method' AND COALESCE(\"http.route\", 'unknown') ~ '$route' AND COALESCE(CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') ~ '$status_code' GROUP BY time_bin, route ORDER BY time_bin ASC, route ASC",
       "dbName": "$metrics_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -758,7 +770,7 @@
     {
       "tile_id": "27JHRGG1W0SEHKG9WVTNGS41J1",
       "title": "Errors by Status Code",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') AS status_code, SUM(data_point_count) AS requests FROM $metrics_dataset WHERE metric_name = 'http.server.request.duration' AND COALESCE(\"service.name\", 'unknown') ~ '$service' AND COALESCE(\"deployment.environment.name\", 'unknown') ~ '$environment' AND COALESCE(\"http.request.method\", 'unknown') ~ '$method' AND COALESCE(\"http.route\", 'unknown') ~ '$route' GROUP BY time_bin, status_code ORDER BY time_bin ASC, status_code ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') AS status_code, SUM(data_point_count) AS requests FROM $metrics_dataset WHERE metric_name = 'http.server.request.duration' AND COALESCE(\"service.name\", 'unknown') ~ '$service' AND COALESCE(\"deployment.environment.name\", 'unknown') ~ '$environment' AND COALESCE(\"http.request.method\", 'unknown') ~ '$method' AND COALESCE(\"http.route\", 'unknown') ~ '$route' GROUP BY time_bin, status_code ORDER BY time_bin ASC, status_code ASC",
       "dbName": "$metrics_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -1013,7 +1025,7 @@
     {
       "tile_id": "642WGGSG5SMPG596HFQGPRA1GT",
       "title": "Average Request Duration",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"http.route\", 'unknown') AS route, ROUND(1000.0 * SUM(data_point_sum) / NULLIF(SUM(data_point_count), 0), 2) AS avg_ms FROM $metrics_dataset WHERE metric_name = 'http.server.request.duration' AND COALESCE(\"service.name\", 'unknown') ~ '$service' AND COALESCE(\"deployment.environment.name\", 'unknown') ~ '$environment' AND COALESCE(\"http.request.method\", 'unknown') ~ '$method' AND COALESCE(\"http.route\", 'unknown') ~ '$route' AND COALESCE(CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') ~ '$status_code' GROUP BY time_bin, route ORDER BY time_bin ASC, route ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"http.route\", 'unknown') AS route, ROUND(1000.0 * SUM(data_point_sum) / NULLIF(SUM(data_point_count), 0), 2) AS avg_ms FROM $metrics_dataset WHERE metric_name = 'http.server.request.duration' AND COALESCE(\"service.name\", 'unknown') ~ '$service' AND COALESCE(\"deployment.environment.name\", 'unknown') ~ '$environment' AND COALESCE(\"http.request.method\", 'unknown') ~ '$method' AND COALESCE(\"http.route\", 'unknown') ~ '$route' AND COALESCE(CAST(\"http.response.status_code\" AS VARCHAR), 'unknown') ~ '$status_code' GROUP BY time_bin, route ORDER BY time_bin ASC, route ASC",
       "dbName": "$metrics_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -1943,7 +1955,7 @@
     {
       "tile_id": "26SSKYPA0SNGTJWXCXYPE9ZJPE",
       "title": "Log Volume by Severity",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, p_log_category, 'unknown') AS severity, COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin ASC, severity ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, p_log_category, 'unknown') AS severity, COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin ASC, severity ASC",
       "dbName": "$logs_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -2007,7 +2019,7 @@
     {
       "tile_id": "4B5SFDQS37K35PWTBA1N5J3RJH",
       "title": "Error Rate from Logs",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(100.0 * COUNT(*) FILTER (WHERE severity_text IN ('ERROR','FATAL') OR p_log_category IN ('ERROR','FATAL') OR \"exception.message\" IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $logs_dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(100.0 * COUNT(*) FILTER (WHERE severity_text IN ('ERROR','FATAL') OR p_log_category IN ('ERROR','FATAL') OR \"exception.message\" IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $logs_dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": "$logs_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -2193,7 +2205,7 @@
     {
       "tile_id": "4ZYSHS9SGWM5HSECS2YM9TVTWW",
       "title": "Trace Throughput by Service",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, COUNT(DISTINCT span_trace_id) AS traces\nFROM $traces_dataset\nWHERE COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, COUNT(DISTINCT span_trace_id) AS traces\nFROM $traces_dataset\nWHERE COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": "$traces_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -2257,7 +2269,7 @@
     {
       "tile_id": "7X1Q95E3KA7BHZ6QK8SJYWEY81",
       "title": "P95 Span Latency by Service",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": "$traces_dataset",
       "chartType": "line",
       "tileType": "code",

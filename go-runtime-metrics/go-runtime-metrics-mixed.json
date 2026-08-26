@@ -58,6 +58,18 @@
       "labelFilters": [],
       "defaultValue": ".*",
       "includeAll": true
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -2162,7 +2174,7 @@
     {
       "tile_id": "46GGB768QFBCTNCWVK1J5PX58N",
       "title": "Go Runtime Sample Volume",
-      "chartQuery": "SELECT\n  date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"service.name\" AS service,\n  COUNT(*) AS points\nFROM $metrics_dataset\nWHERE metric_name LIKE 'go.%'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\n  AND COALESCE(\"service.namespace\", 'unknown') ~ '$namespace'\n  AND COALESCE(\"host.name\", 'unknown') ~ '$host'\n  AND COALESCE(\"process.runtime.version\", 'unknown') ~ '$runtime_version'\nGROUP BY time_bin, service\nORDER BY time_bin, service",
+      "chartQuery": "SELECT\n  date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"service.name\" AS service,\n  COUNT(*) AS points\nFROM $metrics_dataset\nWHERE metric_name LIKE 'go.%'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\n  AND COALESCE(\"service.namespace\", 'unknown') ~ '$namespace'\n  AND COALESCE(\"host.name\", 'unknown') ~ '$host'\n  AND COALESCE(\"process.runtime.version\", 'unknown') ~ '$runtime_version'\nGROUP BY time_bin, service\nORDER BY time_bin, service",
       "dbName": "$metrics_dataset",
       "chartType": "line",
       "tileType": "code",

@@ -37,6 +37,18 @@
       "label": "Trace Dataset",
       "type": "dataset",
       "defaultValue": "cf-ai-gateway-traces"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "tags": [
@@ -565,7 +577,7 @@
     {
       "tile_id": "01KZ4CG0000000000000000009",
       "title": "Requests and Errors Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'requests' AS series, COUNT(*) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'errors' AS series, COUNT(*) FILTER (WHERE span_status_code = 2) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'requests' AS series, COUNT(*) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'errors' AS series, COUNT(*) FILTER (WHERE span_status_code = 2) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
       "dbName": [
         "$traces_dataset"
       ],
@@ -631,7 +643,7 @@
     {
       "tile_id": "01KZ4CG0000000000000000010",
       "title": "Request Volume by Model",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"gen_ai.request.model\", 'unknown') AS model, COUNT(*) AS requests FROM $traces_dataset WHERE 1=1 GROUP BY time_bin, COALESCE(\"gen_ai.request.model\", 'unknown') ORDER BY time_bin, model",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"gen_ai.request.model\", 'unknown') AS model, COUNT(*) AS requests FROM $traces_dataset WHERE 1=1 GROUP BY time_bin, COALESCE(\"gen_ai.request.model\", 'unknown') ORDER BY time_bin, model",
       "dbName": [
         "$traces_dataset"
       ],
@@ -889,7 +901,7 @@
     {
       "tile_id": "01KZ4CG0000000000000000014",
       "title": "Latency Percentiles Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p50' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p95' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p99' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p50' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p95' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'p99' AS series, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1403,7 +1415,7 @@
     {
       "tile_id": "01KZ4CG0000000000000000022",
       "title": "Token Usage Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'input_tokens' AS series, COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'output_tokens' AS series, COALESCE(SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'input_tokens' AS series, COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nUNION ALL\nSELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'output_tokens' AS series, COALESCE(SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)), 0) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1469,7 +1481,7 @@
     {
       "tile_id": "01KZ4CG0000000000000000023",
       "title": "Cost Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'cost_usd' AS series, ROUND(COALESCE(SUM(CAST(\"gen_ai.usage.cost\" AS DOUBLE)), 0), 8) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'cost_usd' AS series, ROUND(COALESCE(SUM(CAST(\"gen_ai.usage.cost\" AS DOUBLE)), 0), 8) AS value\nFROM $traces_dataset WHERE 1=1 GROUP BY time_bin\nORDER BY time_bin, series",
       "dbName": [
         "$traces_dataset"
       ],

@@ -58,6 +58,18 @@
       "labelFilters": [],
       "defaultValue": ".*",
       "includeAll": true
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -3337,7 +3349,7 @@
     {
       "tile_id": "20KEMTF0N0QYTKR615JW2ZWGEJ",
       "title": "Sample Volume Over Time",
-      "chartQuery": "SELECT date_bin('15 seconds', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS samples\nFROM $metrics_dataset\nGROUP BY time_bin\nORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS samples\nFROM $metrics_dataset\nGROUP BY time_bin\nORDER BY time_bin",
       "dbName": "$metrics_dataset",
       "chartType": "line",
       "tileType": "code",

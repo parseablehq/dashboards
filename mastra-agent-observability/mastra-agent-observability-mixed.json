@@ -28,6 +28,18 @@
       "label": "Mastra Metrics Dataset",
       "type": "dataset",
       "defaultValue": "mastra-metrics"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -383,7 +395,7 @@
     {
       "tile_id": "38VKMR8T8GD9VS1XRJ0ER9CJAD",
       "title": "Agent Runs Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.agent.name\" AS agent, COUNT(*) AS runs FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY time_bin, agent ORDER BY time_bin, agent",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.agent.name\" AS agent, COUNT(*) AS runs FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY time_bin, agent ORDER BY time_bin, agent",
       "dbName": "$traces_dataset",
       "chartType": "bar",
       "tileType": "code",
@@ -629,7 +641,7 @@
     {
       "tile_id": "3KDGE40CJSQZ199BEJ6QT5T10G",
       "title": "Token Usage Over Time",
-      "chartQuery": "SELECT time_bin, token_type, SUM(tokens) AS tokens FROM (\n          SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'input' AS token_type, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n          UNION ALL\n          SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'output' AS token_type, CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n          UNION ALL\n          SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'reasoning' AS token_type, CAST(\"gen_ai.usage.reasoning_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n        ) token_events GROUP BY time_bin, token_type ORDER BY time_bin, token_type",
+      "chartQuery": "SELECT time_bin, token_type, SUM(tokens) AS tokens FROM (\n          SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'input' AS token_type, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n          UNION ALL\n          SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'output' AS token_type, CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n          UNION ALL\n          SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, 'reasoning' AS token_type, CAST(\"gen_ai.usage.reasoning_tokens\" AS DOUBLE) AS tokens FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n        ) token_events GROUP BY time_bin, token_type ORDER BY time_bin, token_type",
       "dbName": "$traces_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -814,7 +826,7 @@
     {
       "tile_id": "79F90Z1CKMDGEW19V06EJR7P88",
       "title": "Agent Latency Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.agent.name\" AS agent, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY time_bin, agent ORDER BY time_bin, agent",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.agent.name\" AS agent, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms, ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms FROM $traces_dataset WHERE \"mastra.span.type\" = 'agent_run' GROUP BY time_bin, agent ORDER BY time_bin, agent",
       "dbName": "$traces_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -1128,7 +1140,7 @@
     {
       "tile_id": "58TBR8SWV43PP4A4FE5AAJ3J6F",
       "title": "Logs Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, p_log_category, 'UNSPECIFIED') AS severity, COUNT(*) AS records FROM $logs_dataset GROUP BY time_bin, severity ORDER BY time_bin, severity",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, p_log_category, 'UNSPECIFIED') AS severity, COUNT(*) AS records FROM $logs_dataset GROUP BY time_bin, severity ORDER BY time_bin, severity",
       "dbName": "$logs_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -1994,7 +2006,7 @@
     {
       "tile_id": "49RMNGD36EA3YHMFRM8R9VFVEW",
       "title": "Estimated Cost Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN \"gen_ai.provider.name\" LIKE 'openai%' THEN 'openai' ELSE \"gen_ai.provider.name\" END, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN \"gen_ai.provider.name\" LIKE 'openai%' THEN 'openai' ELSE \"gen_ai.provider.name\" END, COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\"), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $traces_dataset WHERE \"mastra.span.type\" = 'model_generation' AND \"gen_ai.usage.input_tokens\" IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
       "dbName": "$traces_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -2055,7 +2067,7 @@
     {
       "tile_id": "2180FBB1JEA7YER7E5Y6C3WS4D",
       "title": "Tool Calls Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.tool.name\" AS tool, COUNT(*) AS calls FROM $traces_dataset WHERE \"mastra.span.type\" = 'tool_call' GROUP BY time_bin, tool ORDER BY time_bin, tool",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, \"gen_ai.tool.name\" AS tool, COUNT(*) AS calls FROM $traces_dataset WHERE \"mastra.span.type\" = 'tool_call' GROUP BY time_bin, tool ORDER BY time_bin, tool",
       "dbName": "$traces_dataset",
       "chartType": "area",
       "tileType": "code",

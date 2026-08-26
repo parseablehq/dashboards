@@ -11,6 +11,18 @@
       "label": "Dataset",
       "type": "dataset",
       "defaultValue": "azure-prod-parseable-server"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -265,7 +277,7 @@
     {
       "tile_id": "01KW42803W0D1HB29S7J5THYGC",
       "title": "Log Volume Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(p_log_category, 'unknown') AS category, COUNT(*) AS logs\nFROM $dataset\nGROUP BY time_bin, category\nORDER BY time_bin ASC, category ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(p_log_category, 'unknown') AS category, COUNT(*) AS logs\nFROM $dataset\nGROUP BY time_bin, category\nORDER BY time_bin ASC, category ASC",
       "dbName": [
         "$dataset"
       ],
@@ -321,7 +333,7 @@
     {
       "tile_id": "01KW42803W0G6VYZJ29BZGDVYR",
       "title": "Error / Warning Trend",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE p_log_category = 'ERROR') AS errors, COUNT(*) FILTER (WHERE p_log_category = 'WARN') AS warnings\nFROM $dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE p_log_category = 'ERROR') AS errors, COUNT(*) FILTER (WHERE p_log_category = 'WARN') AS warnings\nFROM $dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$dataset"
       ],

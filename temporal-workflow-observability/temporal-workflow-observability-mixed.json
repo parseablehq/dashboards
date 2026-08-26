@@ -28,6 +28,18 @@
       "label": "Temporal Metrics Dataset",
       "type": "dataset",
       "defaultValue": "temporal-metrics"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -572,7 +584,7 @@
     {
       "tile_id": "4HXHGCPZ295B7K7KS5DSN7V4JG",
       "title": "Workflow Events Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL\nGROUP BY time_bin, workflow_type, status\nORDER BY time_bin, workflow_type, status",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"temporal.workflow.type\" AS workflow_type,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.workflow.type\" IS NOT NULL\nGROUP BY time_bin, workflow_type, status\nORDER BY time_bin, workflow_type, status",
       "dbName": "$traces_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -951,7 +963,7 @@
     {
       "tile_id": "7K8FV4J6CJC6TGTG2MSJ1B28RV",
       "title": "Activity Events Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"temporal.activity.type\" AS activity_type,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.activity.type\" IS NOT NULL\nGROUP BY time_bin, activity_type, status\nORDER BY time_bin, activity_type, status",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"temporal.activity.type\" AS activity_type,\n  \"temporal.status\" AS status,\n  COUNT(*) AS events\nFROM $traces_dataset\nWHERE \"temporal.activity.type\" IS NOT NULL\nGROUP BY time_bin, activity_type, status\nORDER BY time_bin, activity_type, status",
       "dbName": "$traces_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -1456,7 +1468,7 @@
     {
       "tile_id": "4SJWWV1BFQ1JFHA1RQ3PCPDF2A",
       "title": "Span Events Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  CASE WHEN span_status_code = 2 THEN 'error' ELSE 'ok' END AS outcome,\n  COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, outcome\nORDER BY time_bin, outcome",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  CASE WHEN span_status_code = 2 THEN 'error' ELSE 'ok' END AS outcome,\n  COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, outcome\nORDER BY time_bin, outcome",
       "dbName": "$traces_dataset",
       "chartType": "area",
       "tileType": "code",
@@ -1520,7 +1532,7 @@
     {
       "tile_id": "6KK1YCC4PHNR12VJ6837ZB4VVJ",
       "title": "Event Span Duration Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(AVG(span_duration_ns / 1000000.0), 4) AS avg_ms,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 4) AS p95_ms\nFROM $traces_dataset\nGROUP BY time_bin\nORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(AVG(span_duration_ns / 1000000.0), 4) AS avg_ms,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 4) AS p95_ms\nFROM $traces_dataset\nGROUP BY time_bin\nORDER BY time_bin",
       "dbName": "$traces_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -1775,7 +1787,7 @@
     {
       "tile_id": "03YZ1084JK5H59HJE1NVT88HAT",
       "title": "Logs Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(severity_text, p_log_category, 'UNSPECIFIED') AS severity,\n  COUNT(*) AS records\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin, severity",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(severity_text, p_log_category, 'UNSPECIFIED') AS severity,\n  COUNT(*) AS records\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin, severity",
       "dbName": "$logs_dataset",
       "chartType": "area",
       "tileType": "code",

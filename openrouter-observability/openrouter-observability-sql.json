@@ -61,6 +61,18 @@
         "stop"
       ],
       "defaultValue": "All"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -616,7 +628,7 @@
     {
       "tile_id": "5N8QHPVH19MCEZD79NHZMHC5WA",
       "title": "Requests & Final Outcomes",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS requests,\n  COUNT(*) FILTER (WHERE span_status_code <> 2 AND COALESCE(\"span.level\", 'DEFAULT') <> 'ERROR') AS successes,\n  COUNT(*) FILTER (WHERE span_status_code = 2 OR \"span.level\" = 'ERROR') AS final_errors\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS requests,\n  COUNT(*) FILTER (WHERE span_status_code <> 2 AND COALESCE(\"span.level\", 'DEFAULT') <> 'ERROR') AS successes,\n  COUNT(*) FILTER (WHERE span_status_code = 2 OR \"span.level\" = 'ERROR') AS final_errors\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -684,7 +696,7 @@
     {
       "tile_id": "7V7KZKWHY5PXYM1M0S5XYM965H",
       "title": "Requests by Model",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"gen_ai.request.model\" AS model, COUNT(*) AS requests\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin, model ORDER BY time_bin, model",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"gen_ai.request.model\" AS model, COUNT(*) AS requests\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin, model ORDER BY time_bin, model",
       "dbName": [
         "$traces_dataset"
       ],
@@ -752,7 +764,7 @@
     {
       "tile_id": "7YSQ334018P0ZHZSEJW6YFFMKJ",
       "title": "Finish Reasons",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"trace.metadata.openrouter.finish_reason\", 'unknown') AS finish_reason, COUNT(*) AS requests\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin, finish_reason ORDER BY time_bin, finish_reason",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"trace.metadata.openrouter.finish_reason\", 'unknown') AS finish_reason, COUNT(*) AS requests\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin, finish_reason ORDER BY time_bin, finish_reason",
       "dbName": [
         "$traces_dataset"
       ],
@@ -950,7 +962,7 @@
     {
       "tile_id": "62TN2P6STYV4PVZXQVEH258BWB",
       "title": "Request Latency Percentiles",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1210,7 +1222,7 @@
     {
       "tile_id": "1C35M6NNT9FVFWN3W43VJ6ANHF",
       "title": "Token Consumption",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens,\n  SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens,\n  SUM(CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE)) AS cached_input_tokens,\n  SUM(CAST(\"gen_ai.usage.output_tokens.reasoning\" AS DOUBLE)) AS reasoning_tokens\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)) AS input_tokens,\n  SUM(CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE)) AS output_tokens,\n  SUM(CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE)) AS cached_input_tokens,\n  SUM(CAST(\"gen_ai.usage.output_tokens.reasoning\" AS DOUBLE)) AS reasoning_tokens\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1279,7 +1291,7 @@
     {
       "tile_id": "0M16EVCFXJ9QMH4819HB2AGKSH",
       "title": "Cost Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(SUM(\"gen_ai.usage.total_cost\"), 8) AS total_cost_usd\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(SUM(\"gen_ai.usage.total_cost\"), 8) AS total_cost_usd\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1537,7 +1549,7 @@
     {
       "tile_id": "29XDMFZH8DGEMWBJ7PS8NE8AAB",
       "title": "Cache Utilization Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE)), 0) / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0), 2) AS cache_utilization_pct\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COALESCE(SUM(CAST(\"gen_ai.usage.input_tokens.cached\" AS DOUBLE)), 0) / NULLIF(SUM(CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE)), 0), 2) AS cache_utilization_pct\nFROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -2307,7 +2319,7 @@
     {
       "tile_id": "2YCNHJ5XWAF738P8DFXSZXGNVJ",
       "title": "Estimated Cost Over Time",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') GROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -2373,7 +2385,7 @@
     {
       "tile_id": "3FJ9VCRATP28HJ2BPZNXNS7F1B",
       "title": "Estimated vs Recorded Cost",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(SUM(COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE))), 6) AS resolved_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"gen_ai.usage.total_cost\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(SUM(COALESCE(agent_cost(CASE WHEN LOWER(\"trace.metadata.openrouter.provider_name\") = 'azure' THEN 'openai' ELSE LOWER(\"trace.metadata.openrouter.provider_name\") END, REPLACE(\"gen_ai.request.model\", 'openai/', ''), CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.usage.total_cost\" AS DOUBLE))), 6) AS resolved_cost_usd FROM $traces_dataset WHERE \"span.type\" = 'generation'\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$model' = 'All' OR \"gen_ai.request.model\" = '$model')\n  AND ('$provider' = 'All' OR \"trace.metadata.openrouter.provider_name\" = '$provider')\n  AND ('$api_key' = 'All' OR \"trace.metadata.openrouter.api_key_name\" = '$api_key')\n  AND ('$finish_reason' = 'All' OR \"trace.metadata.openrouter.finish_reason\" = '$finish_reason') GROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],

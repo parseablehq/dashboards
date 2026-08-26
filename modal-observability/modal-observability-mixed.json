@@ -25,6 +25,18 @@
       "label": "Metrics Dataset",
       "type": "dataset",
       "defaultValue": "modal-metrics"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -466,7 +478,7 @@
     {
       "tile_id": "3QPYD34YMAGK7SEJRPV55DXQGM",
       "title": "Logs and Traces Volume",
-      "chartQuery": "WITH l AS (SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') time_bin, COUNT(*) logs FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') GROUP BY time_bin),\ntr AS (SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') time_bin, COUNT(*) spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin)\nSELECT COALESCE(l.time_bin,tr.time_bin) AS time_bin, COALESCE(logs,0) AS logs, COALESCE(spans,0) AS spans FROM l FULL OUTER JOIN tr ON l.time_bin=tr.time_bin ORDER BY time_bin ASC",
+      "chartQuery": "WITH l AS (SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') time_bin, COUNT(*) logs FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') GROUP BY time_bin),\ntr AS (SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') time_bin, COUNT(*) spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin)\nSELECT COALESCE(l.time_bin,tr.time_bin) AS time_bin, COALESCE(logs,0) AS logs, COALESCE(spans,0) AS spans FROM l FULL OUTER JOIN tr ON l.time_bin=tr.time_bin ORDER BY time_bin ASC",
       "dbName": [
         "$logs_dataset",
         "$traces_dataset"
@@ -1809,7 +1821,7 @@
     {
       "tile_id": "18874BY9F8XJ2CVQMVTFWMS6JZ",
       "title": "Spans Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(span_name, 'unknown') AS span_name, COUNT(*) AS spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin, span_name ORDER BY time_bin ASC, span_name ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(span_name, 'unknown') AS span_name, COUNT(*) AS spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin, span_name ORDER BY time_bin ASC, span_name ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1875,7 +1887,7 @@
     {
       "tile_id": "2BMPE203D8TMZSBQFXWCVHMZY5",
       "title": "Trace Latency",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(span_duration_ns/1000000.0),2) AS avg_ms, ROUND(approx_percentile_cont(span_duration_ns/1000000.0,0.95),2) AS p95_ms FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin ORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(span_duration_ns/1000000.0),2) AS avg_ms, ROUND(approx_percentile_cont(span_duration_ns/1000000.0,0.95),2) AS p95_ms FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin ORDER BY time_bin ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1942,7 +1954,7 @@
     {
       "tile_id": "7R81C603KFNJ391GNSF5WHZK51",
       "title": "Trace Errors Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE span_status_code = 2) AS errors, COUNT(*) AS spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin ORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) FILTER (WHERE span_status_code = 2) AS errors, COUNT(*) AS spans FROM $traces_dataset WHERE ('All' = 'All' OR COALESCE(\"service.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(\"modal.function.kind\", 'unknown') = 'All') GROUP BY time_bin ORDER BY time_bin ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -2137,7 +2149,7 @@
     {
       "tile_id": "2K5NYMWW7M2MNR6E8NQZB8Z9JH",
       "title": "Logs by Level",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') AS log_level, COUNT(*) AS logs FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') GROUP BY time_bin, log_level ORDER BY time_bin ASC, log_level ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') AS log_level, COUNT(*) AS logs FROM $logs_dataset WHERE ('All' = 'All' OR COALESCE(app_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(function_name, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(workspace, 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(environment, \"deployment.environment.name\", 'unknown') = 'All')\n  AND ('All' = 'All' OR COALESCE(severity_text, level, file_descriptor, p_log_category, 'unknown') = 'All') GROUP BY time_bin, log_level ORDER BY time_bin ASC, log_level ASC",
       "dbName": [
         "$logs_dataset"
       ],

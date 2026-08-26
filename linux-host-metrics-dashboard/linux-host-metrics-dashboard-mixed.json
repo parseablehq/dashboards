@@ -23,6 +23,18 @@
       "dataset": "$metrics_dataset",
       "labelFilters": [],
       "includeAll": true
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -710,7 +722,7 @@
     {
       "tile_id": "0K4QPZRRCZS1NZ2EJQ73EJYTHK",
       "title": "Sample Volume Over Time",
-      "chartQuery": "SELECT date_bin('15 seconds', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS samples\nFROM $metrics_dataset\nGROUP BY time_bin\nORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS samples\nFROM $metrics_dataset\nGROUP BY time_bin\nORDER BY time_bin",
       "dbName": "$metrics_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -958,7 +970,7 @@
     {
       "tile_id": "18C8NNSQ49AWDM10GYH8N9479A",
       "title": "Average CPU Used",
-      "chartQuery": "WITH samples AS (\n  SELECT date_bin('15 seconds', time_unix_nano, '1970-01-01T00:00:00Z') AS time_bin, state,\n    data_point_value - LAG(data_point_value) OVER (PARTITION BY \"host.name\", state ORDER BY time_unix_nano) AS delta\n  FROM $metrics_dataset\n  WHERE metric_name = 'system.cpu.time'\n), utilization AS (\n  SELECT time_bin, 100.0 * (1.0 - SUM(CASE WHEN state = 'idle' AND delta >= 0 THEN delta ELSE 0 END) / NULLIF(SUM(CASE WHEN delta >= 0 THEN delta ELSE 0 END), 0)) AS cpu_used_pct\n  FROM samples WHERE delta IS NOT NULL GROUP BY time_bin\n) SELECT ROUND(AVG(cpu_used_pct), 2) AS value FROM utilization",
+      "chartQuery": "WITH samples AS (\n  SELECT date_bin('$bucket_size', time_unix_nano, '1970-01-01T00:00:00Z') AS time_bin, state,\n    data_point_value - LAG(data_point_value) OVER (PARTITION BY \"host.name\", state ORDER BY time_unix_nano) AS delta\n  FROM $metrics_dataset\n  WHERE metric_name = 'system.cpu.time'\n), utilization AS (\n  SELECT time_bin, 100.0 * (1.0 - SUM(CASE WHEN state = 'idle' AND delta >= 0 THEN delta ELSE 0 END) / NULLIF(SUM(CASE WHEN delta >= 0 THEN delta ELSE 0 END), 0)) AS cpu_used_pct\n  FROM samples WHERE delta IS NOT NULL GROUP BY time_bin\n) SELECT ROUND(AVG(cpu_used_pct), 2) AS value FROM utilization",
       "dbName": "$metrics_dataset",
       "chartType": "query-value",
       "tileType": "code",
@@ -1144,7 +1156,7 @@
     {
       "tile_id": "1WQXQ2M78GBJMWQ4T9XZ9GBXMH",
       "title": "CPU Utilization",
-      "chartQuery": "WITH samples AS (\n  SELECT date_bin('15 seconds', time_unix_nano, '1970-01-01T00:00:00Z') AS time_bin, state,\n    data_point_value - LAG(data_point_value) OVER (PARTITION BY \"host.name\", state ORDER BY time_unix_nano) AS delta\n  FROM $metrics_dataset\n  WHERE metric_name = 'system.cpu.time'\n), utilization AS (\n  SELECT time_bin, 100.0 * (1.0 - SUM(CASE WHEN state = 'idle' AND delta >= 0 THEN delta ELSE 0 END) / NULLIF(SUM(CASE WHEN delta >= 0 THEN delta ELSE 0 END), 0)) AS cpu_used_pct\n  FROM samples WHERE delta IS NOT NULL GROUP BY time_bin\n) SELECT time_bin, ROUND(cpu_used_pct, 2) AS cpu_used_pct FROM utilization ORDER BY time_bin",
+      "chartQuery": "WITH samples AS (\n  SELECT date_bin('$bucket_size', time_unix_nano, '1970-01-01T00:00:00Z') AS time_bin, state,\n    data_point_value - LAG(data_point_value) OVER (PARTITION BY \"host.name\", state ORDER BY time_unix_nano) AS delta\n  FROM $metrics_dataset\n  WHERE metric_name = 'system.cpu.time'\n), utilization AS (\n  SELECT time_bin, 100.0 * (1.0 - SUM(CASE WHEN state = 'idle' AND delta >= 0 THEN delta ELSE 0 END) / NULLIF(SUM(CASE WHEN delta >= 0 THEN delta ELSE 0 END), 0)) AS cpu_used_pct\n  FROM samples WHERE delta IS NOT NULL GROUP BY time_bin\n) SELECT time_bin, ROUND(cpu_used_pct, 2) AS cpu_used_pct FROM utilization ORDER BY time_bin",
       "dbName": [
         "$metrics_dataset",
         "samples",

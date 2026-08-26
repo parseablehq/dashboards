@@ -26,6 +26,18 @@
       "label": "Demo Metrics Dataset",
       "type": "dataset",
       "defaultValue": "otel-demo-metrics"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -570,7 +582,7 @@
     {
       "tile_id": "5203H3F6HTG429W59VPZ3W3CEB",
       "title": "Span Volume by Service",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", 'unknown') AS service_name,\n  COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", 'unknown') AS service_name,\n  COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
       "dbName": "$traces_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -634,7 +646,7 @@
     {
       "tile_id": "41ZKRWA9D9ZBTGY00YSP638QM3",
       "title": "Error Spans Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", 'unknown') AS service_name,\n  COUNT(*) FILTER (WHERE span_status_code = 2) AS errors\nFROM $traces_dataset\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", 'unknown') AS service_name,\n  COUNT(*) FILTER (WHERE span_status_code = 2) AS errors\nFROM $traces_dataset\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
       "dbName": "$traces_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -1266,7 +1278,7 @@
     {
       "tile_id": "0FZXJF0A6VA1GXX4XKEMVYMCF9",
       "title": "HTTP Server Throughput",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", 'unknown') AS service_name,\n  COUNT(*) AS requests\nFROM $traces_dataset\nWHERE span_kind_description = 'SERVER' AND \"http.method\" IS NOT NULL\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", 'unknown') AS service_name,\n  COUNT(*) AS requests\nFROM $traces_dataset\nWHERE span_kind_description = 'SERVER' AND \"http.method\" IS NOT NULL\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
       "dbName": "$traces_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -1392,7 +1404,7 @@
     {
       "tile_id": "2YXMM1PG8M8EG85R3WQ9RVCXF3",
       "title": "Database Calls Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"db.operation\", 'unknown') AS db_operation,\n  COUNT(*) AS calls\nFROM $traces_dataset\nWHERE \"db.operation\" IS NOT NULL\nGROUP BY time_bin, db_operation\nORDER BY time_bin, db_operation",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"db.operation\", 'unknown') AS db_operation,\n  COUNT(*) AS calls\nFROM $traces_dataset\nWHERE \"db.operation\" IS NOT NULL\nGROUP BY time_bin, db_operation\nORDER BY time_bin, db_operation",
       "dbName": "$traces_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -2207,7 +2219,7 @@
     {
       "tile_id": "24GA7B79FGRST4CFZW7GYRQ9TM",
       "title": "Log Volume by Service",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", service, 'unknown') AS service_name,\n  COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", service, 'unknown') AS service_name,\n  COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
       "dbName": "$logs_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -2333,7 +2345,7 @@
     {
       "tile_id": "3P1PP895CAG0GD23PXA8W2H54M",
       "title": "Error Logs Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", service, 'unknown') AS service_name,\n  COUNT(*) AS errors\nFROM $logs_dataset\nWHERE severity_text IN ('ERROR','WARN','WARNING') OR p_log_category IN ('ERROR','WARN','WARNING')\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"service.name\", service, 'unknown') AS service_name,\n  COUNT(*) AS errors\nFROM $logs_dataset\nWHERE severity_text IN ('ERROR','WARN','WARNING') OR p_log_category IN ('ERROR','WARN','WARNING')\nGROUP BY time_bin, service_name\nORDER BY time_bin, service_name",
       "dbName": "$logs_dataset",
       "chartType": "line",
       "tileType": "code",
@@ -2707,7 +2719,7 @@
     {
       "tile_id": "2H1D5TCBZR2D42E3V8ZFJ7SV6C",
       "title": "Trace Latency Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.50), 2) AS p50_ms,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nGROUP BY time_bin\nORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.50), 2) AS p50_ms,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nGROUP BY time_bin\nORDER BY time_bin",
       "dbName": "$traces_dataset",
       "chartType": "line",
       "tileType": "code",

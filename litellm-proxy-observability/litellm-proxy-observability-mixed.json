@@ -20,6 +20,18 @@
       "label": "Metrics Dataset",
       "type": "dataset",
       "defaultValue": "litellm-proxy-metrics"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -578,7 +590,7 @@
     {
       "tile_id": "04TT6RXVD8SRFGNCXTPTYVWC1Z",
       "title": "Request Volume by Model",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\", 'unknown') AS model,\n  COUNT(DISTINCT span_trace_id) AS requests\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\", 'unknown') AS model,\n  COUNT(DISTINCT span_trace_id) AS requests\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -916,7 +928,7 @@
     {
       "tile_id": "0J0G4PXZD8CR28T3RS5ZYNZYVM",
       "title": "Trace Errors Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"error.type\", span_status_description, 'unknown') AS error_type,\n  COUNT(*) AS errors\nFROM $trace_dataset\nWHERE (span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"error.message\" IS NOT NULL)\nGROUP BY time_bin, error_type\nORDER BY time_bin ASC, error_type ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"error.type\", span_status_description, 'unknown') AS error_type,\n  COUNT(*) AS errors\nFROM $trace_dataset\nWHERE (span_status_code = 2 OR \"error.type\" IS NOT NULL OR \"error.message\" IS NOT NULL)\nGROUP BY time_bin, error_type\nORDER BY time_bin ASC, error_type ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1339,7 +1351,7 @@
     {
       "tile_id": "0HEHNWFYRAYYHZKGQ8CY3ZV386",
       "title": "Trace Request Latency",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(approx_percentile_cont(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $trace_dataset\nWHERE (\"gen_ai.request.model\" IS NOT NULL)\n  AND (\"http.route\" IS NOT NULL OR \"http.target\" IS NOT NULL)\n  AND (span_parent_span_id IS NULL OR span_parent_span_id = '')\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1863,7 +1875,7 @@
     {
       "tile_id": "0RYSQTC457G2XHWZMVGMGDM1EV",
       "title": "Token Consumption Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\", '0') AS DOUBLE)) AS input_tokens,\n  SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\", '0') AS DOUBLE)) AS output_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\", '0') AS DOUBLE)) AS input_tokens,\n  SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\", '0') AS DOUBLE)) AS output_tokens\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat'\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1930,7 +1942,7 @@
     {
       "tile_id": "05QKKE086P2HWW34RA7AQH75NB",
       "title": "Cost by Model Over Time",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n  ROUND(SUM(\"litellm.cost.total\"), 8) AS cost_usd\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat' AND \"litellm.cost.total\" IS NOT NULL\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') AS model,\n  ROUND(SUM(\"litellm.cost.total\"), 8) AS cost_usd\nFROM $trace_dataset\nWHERE \"gen_ai.operation.name\" = 'chat' AND \"litellm.cost.total\" IS NOT NULL\nGROUP BY time_bin, model\nORDER BY time_bin ASC, model ASC",
       "dbName": [
         "$trace_dataset"
       ],
@@ -3099,7 +3111,7 @@
     {
       "tile_id": "73WWTZC8HNEWNVN2F5PS7NEZW2",
       "title": "Estimated Cost Over Time",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$trace_dataset"
       ],
@@ -3165,7 +3177,7 @@
     {
       "tile_id": "6R3CWCJ2VRYRMG9GQY9FBGJASS",
       "title": "Estimated vs Recorded Cost",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"litellm.cost.total\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(SUM(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE))), 6) AS resolved_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"litellm.cost.total\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(SUM(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") AS DOUBLE), CAST(COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") AS DOUBLE), p_timestamp), CAST(\"litellm.cost.total\" AS DOUBLE))), 6) AS resolved_cost_usd FROM $trace_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.input_tokens\", \"gen_ai.usage.prompt_tokens\") IS NOT NULL\n  AND COALESCE(\"gen_ai.usage.output_tokens\", \"gen_ai.usage.completion_tokens\") IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$trace_dataset"
       ],

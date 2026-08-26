@@ -48,6 +48,18 @@
       "type": "list",
       "options": ["All", "0.145.0", "0.146.0", "0.146.0-alpha.9.2"],
       "defaultValue": "All"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -555,7 +567,7 @@
     {
       "tile_id": "01M0CDC93VGFD22C6G3GB6Q2TR",
       "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(data_point_value) AS sessions\nFROM $metrics_dataset WHERE metric_name = 'codex.thread.started' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(data_point_value) AS sessions\nFROM $metrics_dataset WHERE metric_name = 'codex.thread.started' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$metrics_dataset"],
       "title": "Sessions Started",
       "tileType": "code",
@@ -613,7 +625,7 @@
     {
       "tile_id": "01M0CDC93VK9N6TW8DBFEH656M",
       "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS turns\nFROM $logs_dataset WHERE \"event.name\" = 'codex.user_prompt' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS turns\nFROM $logs_dataset WHERE \"event.name\" = 'codex.user_prompt' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$logs_dataset"],
       "title": "Conversation Turns",
       "tileType": "code",
@@ -671,7 +683,7 @@
     {
       "tile_id": "01M0CDC93VSQ1AWX7T0D4MBFSA",
       "sectionId": "G41BCYKR35N3Z8745YYMPJQPAP",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(DISTINCT \"conversation.id\") AS active_conversations\nFROM $logs_dataset WHERE \"conversation.id\" IS NOT NULL AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(DISTINCT \"conversation.id\") AS active_conversations\nFROM $logs_dataset WHERE \"conversation.id\" IS NOT NULL AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$logs_dataset"],
       "title": "Active Conversations",
       "tileType": "code",
@@ -1018,7 +1030,7 @@
     {
       "tile_id": "01M0CDC93VXQ19PB9E812AWS7V",
       "sectionId": "136P9XD2AWN1QA3WWDXBKGAQPX",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COALESCE(SUM(data_point_sum) FILTER (WHERE token_type = 'cached_input'), 0) / NULLIF(SUM(data_point_sum) FILTER (WHERE token_type = 'input'), 0), 2) AS cache_utilization_pct\nFROM $metrics_dataset WHERE metric_name = 'codex.turn.token_usage' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COALESCE(SUM(data_point_sum) FILTER (WHERE token_type = 'cached_input'), 0) / NULLIF(SUM(data_point_sum) FILTER (WHERE token_type = 'input'), 0), 2) AS cache_utilization_pct\nFROM $metrics_dataset WHERE metric_name = 'codex.turn.token_usage' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$metrics_dataset"],
       "title": "Cache Utilization Over Time",
       "tileType": "code",
@@ -1134,7 +1146,7 @@
     {
       "tile_id": "01M0CDC93V59QT6GTT7Y2J647F",
       "sectionId": "VK73CHZ0WXYYG8ZMA8PFZH5AF7",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $traces_dataset WHERE span_name = 'session_task.turn' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.95), 3) AS p95_s,\n  ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000000.0, 0.99), 3) AS p99_s\nFROM $traces_dataset WHERE span_name = 'session_task.turn' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, event_model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$traces_dataset"],
       "title": "Turn Latency Percentiles",
       "tileType": "code",
@@ -1192,7 +1204,7 @@
     {
       "tile_id": "01M0CDC93VSV5S4HNPR9RWVRTQ",
       "sectionId": "VK73CHZ0WXYYG8ZMA8PFZH5AF7",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(CAST(duration_ms AS DOUBLE) / 1000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(CAST(duration_ms AS DOUBLE) / 1000.0, 0.95), 3) AS p95_s\nFROM $logs_dataset WHERE \"event.name\" = 'codex.turn_ttft' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(APPROX_PERCENTILE_CONT(CAST(duration_ms AS DOUBLE) / 1000.0, 0.50), 3) AS p50_s,\n  ROUND(APPROX_PERCENTILE_CONT(CAST(duration_ms AS DOUBLE) / 1000.0, 0.95), 3) AS p95_s\nFROM $logs_dataset WHERE \"event.name\" = 'codex.turn_ttft' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$logs_dataset"],
       "title": "Time to First Token",
       "tileType": "code",
@@ -1366,7 +1378,7 @@
     {
       "tile_id": "01M0CDC93VC3TX5HSSK70EDHDB",
       "sectionId": "3YMTX45Q7YCFBHQ0CQH2V7YSMT",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(data_point_value) AS tool_calls,\n  SUM(data_point_value) FILTER (WHERE success = 'false') AS failures\nFROM $metrics_dataset WHERE metric_name = 'codex.tool.call' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  SUM(data_point_value) AS tool_calls,\n  SUM(data_point_value) FILTER (WHERE success = 'false') AS failures\nFROM $metrics_dataset WHERE metric_name = 'codex.tool.call' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$metrics_dataset"],
       "title": "Tool Calls & Failures",
       "tileType": "code",
@@ -1656,7 +1668,7 @@
     {
       "tile_id": "01M0CDC93WZAF6PXFE4NRBD569",
       "sectionId": "3YMTX45Q7YCFBHQ0CQH2V7YSMT",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(approved, 'unknown') AS outcome, SUM(data_point_value) AS approvals\nFROM $metrics_dataset WHERE metric_name = 'codex.approval.requested' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin, approved ORDER BY time_bin, approved",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(approved, 'unknown') AS outcome, SUM(data_point_value) AS approvals\nFROM $metrics_dataset WHERE metric_name = 'codex.approval.requested' AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin, approved ORDER BY time_bin, approved",
       "dbName": ["$metrics_dataset"],
       "title": "Approval Activity",
       "tileType": "code",
@@ -1888,7 +1900,7 @@
     {
       "tile_id": "01M0CDC93W7P1WM2GZTNMV0JP5",
       "sectionId": "VK73CHZ0WXYYG8ZMA8PFZH5AF7",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"event.name\" AS event_name, COUNT(*) AS events\nFROM $logs_dataset WHERE \"event.name\" IS NOT NULL AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin, event_name ORDER BY time_bin, event_name",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"event.name\" AS event_name, COUNT(*) AS events\nFROM $logs_dataset WHERE \"event.name\" IS NOT NULL AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR COALESCE(model, 'unknown') = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"app.version\", 'unknown') = '$app_version')\nGROUP BY time_bin, event_name ORDER BY time_bin, event_name",
       "dbName": ["$logs_dataset"],
       "title": "Structured Events",
       "tileType": "code",
@@ -2410,7 +2422,7 @@
     {
       "tile_id": "01M0CDC93WZ68VJH0VYQHBDT85",
       "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') GROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$traces_dataset"],
       "title": "Cost Over Time",
       "tileType": "code",
@@ -2468,7 +2480,7 @@
     {
       "tile_id": "01M0CDC93W8B4CKTRA2WDMG07F",
       "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4",
-      "chartQuery": "WITH buckets AS (SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') GROUP BY time_bin) SELECT time_bin, ROUND(SUM(cost_usd) OVER (ORDER BY time_bin ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 6) AS cumulative_cost_usd FROM buckets ORDER BY time_bin",
+      "chartQuery": "WITH buckets AS (SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, SUM(agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp)) AS cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version') GROUP BY time_bin) SELECT time_bin, ROUND(SUM(cost_usd) OVER (ORDER BY time_bin ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 6) AS cumulative_cost_usd FROM buckets ORDER BY time_bin",
       "dbName": ["$traces_dataset"],
       "title": "Cumulative Cost",
       "tileType": "code",
@@ -2584,7 +2596,7 @@
     {
       "tile_id": "01M0CDC93WRE8RCZAXF9BTEGF6",
       "sectionId": "6TZPD5VQ8QFC61EFAH35NXG6T4",
-      "chartQuery": "WITH turn_costs AS (SELECT p_timestamp, agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp) AS turn_cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')) SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(turn_cost_usd), 6) AS avg_cost_per_turn_usd, ROUND(APPROX_PERCENTILE_CONT(turn_cost_usd, 0.95), 6) AS p95_cost_per_turn_usd FROM turn_costs WHERE turn_cost_usd IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "WITH turn_costs AS (SELECT p_timestamp, agent_cost('openai', model, CAST(\"codex.turn.token_usage.input_tokens\" AS DOUBLE), CAST(\"codex.turn.token_usage.output_tokens\" AS DOUBLE), p_timestamp) AS turn_cost_usd FROM $traces_dataset WHERE span_name = 'session_task.turn'\n  AND \"codex.turn.token_usage.input_tokens\" IS NOT NULL\n  AND \"codex.turn.token_usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR \"service.name\" = '$service')\n  AND ('$model' = 'All' OR model = '$model')\n  AND ('$app_version' = 'All' OR COALESCE(\"event_app.version\", \"service.version\", 'unknown') = '$app_version')) SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(AVG(turn_cost_usd), 6) AS avg_cost_per_turn_usd, ROUND(APPROX_PERCENTILE_CONT(turn_cost_usd, 0.95), 6) AS p95_cost_per_turn_usd FROM turn_costs WHERE turn_cost_usd IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$traces_dataset"],
       "title": "Cost per Turn Over Time",
       "tileType": "code",

@@ -22,6 +22,18 @@
       "label": "Metrics Dataset",
       "type": "dataset",
       "defaultValue": "astronomy-shop-metrics"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -573,7 +585,7 @@
     },
     {
       "tile_id": "01KW45FT88XCYW46DSPQYY4ZC0",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, COUNT(*) AS spans\nFROM $traces_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -638,7 +650,7 @@
     },
     {
       "tile_id": "01KW45FT882WCSBS9H45Z8RRZH",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, ROUND(approx_percentile_cont(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms\nFROM $traces_dataset\nWHERE span_duration_ns IS NOT NULL\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -703,7 +715,7 @@
     },
     {
       "tile_id": "01KW45FT88WPZYYSWPEJC0FVJM",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, COUNT(*) FILTER (WHERE span_status_code = 2 OR \"error\" = 'true' OR \"error.type\" IS NOT NULL OR \"exception.type\" IS NOT NULL) AS errors\nFROM $traces_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", 'unknown') AS service, COUNT(*) FILTER (WHERE span_status_code = 2 OR \"error\" = 'true' OR \"error.type\" IS NOT NULL OR \"exception.type\" IS NOT NULL) AS errors\nFROM $traces_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -768,7 +780,7 @@
     },
     {
       "tile_id": "01KW45FT88KJWBST3BF2X4K119",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, p_log_category, 'unknown') AS severity, COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin ASC, severity ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(severity_text, p_log_category, 'unknown') AS severity, COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, severity\nORDER BY time_bin ASC, severity ASC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1352,7 +1364,7 @@
     },
     {
       "tile_id": "01KW45FT88FC1HAGYYDX84XABN",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(DISTINCT \"app.order.id\") AS orders, ROUND(SUM(\"app.order.amount\"), 2) AS revenue\nFROM $traces_dataset\nWHERE \"app.order.id\" IS NOT NULL OR \"app.order.amount\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(DISTINCT \"app.order.id\") AS orders, ROUND(SUM(\"app.order.amount\"), 2) AS revenue\nFROM $traces_dataset\nWHERE \"app.order.id\" IS NOT NULL OR \"app.order.amount\" IS NOT NULL\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1544,7 +1556,7 @@
     },
     {
       "tile_id": "01KXCYTG4V5GKEPY2KHMKMF5YQ",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service, COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", \"otelServiceName\", 'unknown') AS service, COUNT(*) AS logs\nFROM $logs_dataset\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1610,7 +1622,7 @@
     },
     {
       "tile_id": "01KXCYTG4VQJG3HQ650ZJTBC98",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(100.0 * COUNT(*) FILTER (WHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.type\" IS NOT NULL OR \"exception.message\" IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $logs_dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(100.0 * COUNT(*) FILTER (WHERE severity_text IN ('ERROR','WARN') OR p_log_category IN ('ERROR','WARN') OR \"exception.type\" IS NOT NULL OR \"exception.message\" IS NOT NULL) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $logs_dataset\nGROUP BY time_bin\nORDER BY time_bin ASC",
       "dbName": [
         "$logs_dataset"
       ],
@@ -1802,7 +1814,7 @@
     },
     {
       "tile_id": "01KXCYTG4VW44PVAKHXQQ1AYZM",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, metric_family, COUNT(*) AS samples\nFROM $metrics_dataset\nWHERE metric_family IS NOT NULL\nGROUP BY time_bin, metric_family\nORDER BY time_bin ASC, metric_family ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, metric_family, COUNT(*) AS samples\nFROM $metrics_dataset\nWHERE metric_family IS NOT NULL\nGROUP BY time_bin, metric_family\nORDER BY time_bin ASC, metric_family ASC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1868,7 +1880,7 @@
     },
     {
       "tile_id": "01KXCYTG4VXMEQJ7HJD20BZEFV",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", \"metric_service.name\", 'unknown') AS service, ROUND(SUM(data_point_value) / 1048576.0, 2) AS memory_mib\nFROM $metrics_dataset\nWHERE metric_name = 'jvm.memory.used'\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COALESCE(\"service.name\", \"metric_service.name\", 'unknown') AS service, ROUND(SUM(data_point_value) / 1048576.0, 2) AS memory_mib\nFROM $metrics_dataset\nWHERE metric_name = 'jvm.memory.used'\nGROUP BY time_bin, service\nORDER BY time_bin ASC, service ASC",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1999,7 +2011,7 @@
     },
     {
       "tile_id": "01KXCYTG4V1JBQZTW5PAX9Y984",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, metric_name, SUM(data_point_value) AS value\nFROM $metrics_dataset\nWHERE metric_name IN ('jvm.thread.count', 'go.goroutine.count')\nGROUP BY time_bin, metric_name\nORDER BY time_bin ASC, metric_name ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, metric_name, SUM(data_point_value) AS value\nFROM $metrics_dataset\nWHERE metric_name IN ('jvm.thread.count', 'go.goroutine.count')\nGROUP BY time_bin, metric_name\nORDER BY time_bin ASC, metric_name ASC",
       "dbName": [
         "$metrics_dataset"
       ],

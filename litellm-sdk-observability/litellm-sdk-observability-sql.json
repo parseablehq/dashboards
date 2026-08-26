@@ -81,6 +81,18 @@
         "ERROR"
       ],
       "defaultValue": "All"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -646,7 +658,7 @@
     {
       "tile_id": "48J4BJGZH865NXVR91559JAKXX",
       "title": "LLM Calls by Model & Outcome",
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  CASE WHEN span_status_code=1 THEN 'success' WHEN span_status_code=2 THEN 'error' ELSE 'unset' END AS outcome,\n  COUNT(*) AS calls\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin,model,outcome ORDER BY time_bin,model,outcome",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  CASE WHEN span_status_code=1 THEN 'success' WHEN span_status_code=2 THEN 'error' ELSE 'unset' END AS outcome,\n  COUNT(*) AS calls\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin,model,outcome ORDER BY time_bin,model,outcome",
       "dbName": [
         "$traces_dataset"
       ],
@@ -715,7 +727,7 @@
     {
       "tile_id": "3A93V7MN7ET0RZ8CVDPHBPC4GW",
       "title": "Calls, Successes & Errors",
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS calls,\n  COUNT(*) FILTER (WHERE span_status_code=1) AS successes,\n  COUNT(*) FILTER (WHERE span_status_code=2 OR \"error.type\" IS NOT NULL) AS errors\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS calls,\n  COUNT(*) FILTER (WHERE span_status_code=1) AS successes,\n  COUNT(*) FILTER (WHERE span_status_code=2 OR \"error.type\" IS NOT NULL) AS errors\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -783,7 +795,7 @@
     {
       "tile_id": "4SP490NR9F6QA5FFBQP6T97RWC",
       "title": "Errors by Type",
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"error.type\",\"event_exception.type\",span_status_description,'unknown') AS error_type,\n  COUNT(*) AS errors\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT' AND (span_status_code=2 OR \"error.type\" IS NOT NULL)\nGROUP BY time_bin,error_type ORDER BY time_bin,error_type",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"error.type\",\"event_exception.type\",span_status_description,'unknown') AS error_type,\n  COUNT(*) AS errors\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT' AND (span_status_code=2 OR \"error.type\" IS NOT NULL)\nGROUP BY time_bin,error_type ORDER BY time_bin,error_type",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1045,7 +1057,7 @@
     {
       "tile_id": "789TATAX6JVVYP4TYA9JHZ1YD9",
       "title": "Latency Percentiles",
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.50),3) AS p50_s,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),3) AS p95_s,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.99),3) AS p99_s\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.50),3) AS p50_s,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.95),3) AS p95_s,\n  ROUND(approx_percentile_cont(span_duration_ns/1000000000.0,0.99),3) AS p99_s\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1113,7 +1125,7 @@
     {
       "tile_id": "5CTQERF8TQ2YYQ8ETYP7P8KH7F",
       "title": "SDK vs Provider Latency (Native Metrics)",
-      "chartQuery": "WITH base AS (\n  SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,p_timestamp,metric_name,\n    \"__series_hash\" AS series_hash,data_point_sum,data_point_count\n  FROM $metrics_dataset\n  WHERE metric_name IN ('gen_ai.client.operation.duration','gen_ai.client.response.duration') AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\n), latest AS (\n  SELECT time_bin,metric_name,series_hash,MAX(p_timestamp) AS latest_ts FROM base GROUP BY time_bin,metric_name,series_hash\n), points AS (\n  SELECT b.* FROM base b JOIN latest l ON b.time_bin=l.time_bin AND b.metric_name=l.metric_name\n    AND b.series_hash=l.series_hash AND b.p_timestamp=l.latest_ts\n)\nSELECT time_bin,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.operation.duration')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.operation.duration'),0),4) AS sdk_operation_s,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.duration')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.duration'),0),4) AS provider_response_s\nFROM points GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "WITH base AS (\n  SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,p_timestamp,metric_name,\n    \"__series_hash\" AS series_hash,data_point_sum,data_point_count\n  FROM $metrics_dataset\n  WHERE metric_name IN ('gen_ai.client.operation.duration','gen_ai.client.response.duration') AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\n), latest AS (\n  SELECT time_bin,metric_name,series_hash,MAX(p_timestamp) AS latest_ts FROM base GROUP BY time_bin,metric_name,series_hash\n), points AS (\n  SELECT b.* FROM base b JOIN latest l ON b.time_bin=l.time_bin AND b.metric_name=l.metric_name\n    AND b.series_hash=l.series_hash AND b.p_timestamp=l.latest_ts\n)\nSELECT time_bin,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.operation.duration')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.operation.duration'),0),4) AS sdk_operation_s,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.duration')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.duration'),0),4) AS provider_response_s\nFROM points GROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1180,7 +1192,7 @@
     {
       "tile_id": "18DV6W8K7KRR8NSGA8W32FTEB5",
       "title": "Streaming TTFT & Time per Output Token",
-      "chartQuery": "WITH base AS (\n  SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,p_timestamp,metric_name,\n    \"__series_hash\" AS series_hash,data_point_sum,data_point_count\n  FROM $metrics_dataset\n  WHERE metric_name IN ('gen_ai.client.response.time_to_first_token','gen_ai.client.response.time_per_output_token') AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\n), latest AS (\n  SELECT time_bin,metric_name,series_hash,MAX(p_timestamp) AS latest_ts FROM base GROUP BY time_bin,metric_name,series_hash\n), points AS (\n  SELECT b.* FROM base b JOIN latest l ON b.time_bin=l.time_bin AND b.metric_name=l.metric_name\n    AND b.series_hash=l.series_hash AND b.p_timestamp=l.latest_ts\n)\nSELECT time_bin,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.time_to_first_token')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.time_to_first_token'),0),4) AS avg_ttft_s,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.time_per_output_token')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.time_per_output_token'),0),4) AS avg_time_per_output_token_s\nFROM points GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "WITH base AS (\n  SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,p_timestamp,metric_name,\n    \"__series_hash\" AS series_hash,data_point_sum,data_point_count\n  FROM $metrics_dataset\n  WHERE metric_name IN ('gen_ai.client.response.time_to_first_token','gen_ai.client.response.time_per_output_token') AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\n), latest AS (\n  SELECT time_bin,metric_name,series_hash,MAX(p_timestamp) AS latest_ts FROM base GROUP BY time_bin,metric_name,series_hash\n), points AS (\n  SELECT b.* FROM base b JOIN latest l ON b.time_bin=l.time_bin AND b.metric_name=l.metric_name\n    AND b.series_hash=l.series_hash AND b.p_timestamp=l.latest_ts\n)\nSELECT time_bin,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.time_to_first_token')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.time_to_first_token'),0),4) AS avg_ttft_s,\n  ROUND(SUM(data_point_sum) FILTER (WHERE metric_name='gen_ai.client.response.time_per_output_token')/\n    NULLIF(SUM(data_point_count) FILTER (WHERE metric_name='gen_ai.client.response.time_per_output_token'),0),4) AS avg_time_per_output_token_s\nFROM points GROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -1375,7 +1387,7 @@
     {
       "tile_id": "37K8THMFPACQ7GA1C608GBVBMV",
       "title": "Token Consumption",
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\",'0') AS DOUBLE)) AS input_tokens,\n  SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\",'0') AS DOUBLE)) AS output_tokens\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  SUM(CAST(COALESCE(\"gen_ai.usage.input_tokens\",'0') AS DOUBLE)) AS input_tokens,\n  SUM(CAST(COALESCE(\"gen_ai.usage.output_tokens\",'0') AS DOUBLE)) AS output_tokens\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1508,7 +1520,7 @@
     {
       "tile_id": "26KC355NQ831RMJS9ZRG272H0R",
       "title": "Spend by Model Over Time",
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  ROUND(SUM(COALESCE(\"gen_ai.cost.total_cost\",0)),8) AS spend_usd\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin,model ORDER BY time_bin,model",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(\"gen_ai.request.model\",'unknown') AS model,\n  ROUND(SUM(COALESCE(\"gen_ai.cost.total_cost\",0)),8) AS spend_usd\nFROM $traces_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider')\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND span_kind_description = 'CLIENT'\nGROUP BY time_bin,model ORDER BY time_bin,model",
       "dbName": [
         "$traces_dataset"
       ],
@@ -1968,7 +1980,7 @@
     {
       "tile_id": "4ZXFXXZ0BMGXZJW6XR3SJC34BV",
       "title": "Logs by Severity",
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(severity_text,'unknown') AS severity,COUNT(*) AS logs\nFROM $logs_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$severity' = 'All' OR COALESCE(severity_text, 'unknown') = '$severity')\nGROUP BY time_bin,severity ORDER BY time_bin,severity",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  COALESCE(severity_text,'unknown') AS severity,COUNT(*) AS logs\nFROM $logs_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$severity' = 'All' OR COALESCE(severity_text, 'unknown') = '$severity')\nGROUP BY time_bin,severity ORDER BY time_bin,severity",
       "dbName": [
         "$logs_dataset"
       ],
@@ -2615,7 +2627,7 @@
     {
       "tile_id": "4YKEPYGFP70C4ZPQ04C9G9G58E",
       "title": "Metric Export Volume",
-      "chartQuery": "SELECT date_bin('1 minute',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  metric_name,COUNT(*) AS points\nFROM $metrics_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\nGROUP BY time_bin,metric_name ORDER BY time_bin,metric_name",
+      "chartQuery": "SELECT date_bin('$bucket_size',p_timestamp,'1970-01-01T00:00:00Z') AS time_bin,\n  metric_name,COUNT(*) AS points\nFROM $metrics_dataset WHERE ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.system\", 'unknown') = '$provider')\nGROUP BY time_bin,metric_name ORDER BY time_bin,metric_name",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -3003,7 +3015,7 @@
     {
       "tile_id": "3772D4S9V5CPDC045DE9C7694S",
       "title": "Estimated Cost Over Time",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider') GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider') GROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],
@@ -3069,7 +3081,7 @@
     {
       "tile_id": "0ZT302GRKEK3PWMRZCAX6R4TK6",
       "title": "Estimated vs Recorded Cost",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"gen_ai.cost.total_cost\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(SUM(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.cost.total_cost\" AS DOUBLE))), 6) AS resolved_cost_usd FROM $traces_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider') GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd, ROUND(SUM(CAST(\"gen_ai.cost.total_cost\" AS DOUBLE)), 6) AS recorded_cost_usd, ROUND(SUM(COALESCE(agent_cost(LOWER(\"gen_ai.provider.name\"), \"gen_ai.request.model\", CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp), CAST(\"gen_ai.cost.total_cost\" AS DOUBLE))), 6) AS resolved_cost_usd FROM $traces_dataset WHERE span_kind_description = 'CLIENT'\n  AND \"gen_ai.request.model\" IS NOT NULL\n  AND \"gen_ai.usage.input_tokens\" IS NOT NULL\n  AND \"gen_ai.usage.output_tokens\" IS NOT NULL\n  AND ('$service' = 'All' OR COALESCE(\"service.name\", 'unknown') = '$service')\n  AND ('$environment' = 'All' OR COALESCE(\"deployment.environment\", 'unknown') = '$environment')\n  AND ('$model' = 'All' OR COALESCE(\"gen_ai.request.model\", 'unknown') = '$model')\n  AND ('$provider' = 'All' OR COALESCE(\"gen_ai.provider.name\", 'unknown') = '$provider') GROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$traces_dataset"
       ],

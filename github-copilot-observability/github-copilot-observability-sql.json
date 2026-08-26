@@ -249,7 +249,7 @@
     },
     {
       "tile_id": "2F0VAEXP52P16PN1H19876EE8X",
-      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset GROUP BY time_bin ORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(DISTINCT span_trace_id) AS traces FROM $traces_dataset GROUP BY time_bin ORDER BY time_bin ASC",
       "dbName": ["$traces_dataset"],
       "title": "Traces Over Time",
       "chartType": "timeseries",
@@ -1293,7 +1293,7 @@
     },
     {
       "tile_id": "01M0JC05TTME00000000000005",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, ROUND(SUM(agent_cost(CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-%' THEN 'openai' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'claude-%' THEN 'anthropic' WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gemini-%' THEN 'google' ELSE LOWER(COALESCE(\"gen_ai.provider.name\", 'github')) END, CASE WHEN COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') LIKE 'gpt-4o-mini-%' THEN 'gpt-4o-mini' ELSE COALESCE(\"gen_ai.request.model\", \"gen_ai.response.model\", 'unknown') END, CAST(\"gen_ai.usage.input_tokens\" AS DOUBLE), CAST(\"gen_ai.usage.output_tokens\" AS DOUBLE), p_timestamp)), 6) AS estimated_cost_usd FROM $traces_dataset WHERE \"gen_ai.usage.input_tokens\" IS NOT NULL AND \"gen_ai.usage.output_tokens\" IS NOT NULL GROUP BY time_bin ORDER BY time_bin",
       "dbName": ["$traces_dataset"],
       "title": "Estimated Cost Over Time",
       "chartType": "timeseries",
@@ -1510,6 +1510,18 @@
       "label": "Traces Dataset",
       "type": "dataset",
       "defaultValue": "copilot-traces"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ]
 }

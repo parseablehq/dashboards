@@ -100,6 +100,18 @@
       "labelFilters": [],
       "includeAll": true,
       "defaultValue": ".*"
+    },
+    {
+      "name": "bucket_size",
+      "label": "bucket_size",
+      "type": "list",
+      "options": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ]
     }
   ],
   "sections": [
@@ -661,7 +673,7 @@
     {
       "tile_id": "33W1AGTQZ47YP39Q7W1AQB6B89",
       "title": "Page-context Requests Over Time",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS requests\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS requests\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1259,7 +1271,7 @@
     {
       "tile_id": "1GGCJHJ0HBJEP9CMET3WKS1EZP",
       "title": "Trace Latency Trend",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms,\n  ROUND(MAX(span_duration_ns / 1000000.0), 2) AS max_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms,\n  ROUND(MAX(span_duration_ns / 1000000.0), 2) AS max_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1518,7 +1530,7 @@
     {
       "tile_id": "1QCDF0P1D0RV6WGH82Z6BF3F55",
       "title": "Error Rate Over Time",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COUNT(*) FILTER (WHERE (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  ROUND(100.0 * COUNT(*) FILTER (WHERE (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)) / NULLIF(COUNT(*), 0), 2) AS error_rate_pct\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1584,7 +1596,7 @@
     {
       "tile_id": "0TA8ENXZX33M20PBQFP2HD9KAJ",
       "title": "Status Classes Over Time",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '2%') AS success_2xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '3%') AS redirect_3xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '4%') AS client_error_4xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '5%') AS server_error_5xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" = '0') AS network_error\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '2%') AS success_2xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '3%') AS redirect_3xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '4%') AS client_error_4xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" LIKE '5%') AS server_error_5xx,\n  COUNT(*) FILTER (WHERE \"http.status_code\" = '0') AS network_error\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$trace_dataset"
       ],
@@ -1974,7 +1986,7 @@
     {
       "tile_id": "3J6HMV0B36EWG9XAXA0V1GQ93W",
       "title": "Host Latency Trends",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"http.host\" AS host, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.host\" IS NOT NULL\nGROUP BY time_bin, host ORDER BY time_bin, host",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  \"http.host\" AS host, ROUND(AVG(span_duration_ns / 1000000.0), 2) AS avg_ms\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status'  AND \"http.host\" IS NOT NULL\nGROUP BY time_bin, host ORDER BY time_bin, host",
       "dbName": [
         "$trace_dataset"
       ],
@@ -2235,7 +2247,7 @@
     {
       "tile_id": "0DDQA4S6T2BNY1RB08SBQ01WDR",
       "title": "Trace Volume",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS spans, COUNT(*) FILTER (WHERE (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)) AS error_spans\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  COUNT(*) AS spans, COUNT(*) FILTER (WHERE (\n  \"http.status_code\" LIKE '4%'\n  OR \"http.status_code\" LIKE '5%'\n  OR \"http.status_code\" = '0'\n  OR span_status_code = 2\n)) AS error_spans\nFROM $trace_dataset WHERE \"deployment.environment\" ~ '$environment'\n  AND \"service.name\" ~ '$service'\n  AND \"page.path\" ~ '$page'\n  AND \"http.host\" ~ '$host'\n  AND \"http.method\" ~ '$method'\n  AND \"http.status_code\" ~ '$status' \nGROUP BY time_bin ORDER BY time_bin",
       "dbName": [
         "$trace_dataset"
       ],
@@ -2686,7 +2698,7 @@
     {
       "tile_id": "24CARN0RQM6F7B1Z8V0RG9XEAS",
       "title": "Metric Record Volume",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  metric_name, COUNT(*) AS points\nFROM $metrics_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin, metric_name ORDER BY time_bin, metric_name",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  metric_name, COUNT(*) AS points\nFROM $metrics_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin, metric_name ORDER BY time_bin, metric_name",
       "dbName": [
         "$metrics_dataset"
       ],
@@ -2945,7 +2957,7 @@
     {
       "tile_id": "6QV11ZW3QB44BX9NASMVHTDCTR",
       "title": "Telemetry Volume",
-      "chartQuery": "SELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  'traces' AS signal, COUNT(*) AS records\nFROM $trace_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin\nUNION ALL\nSELECT date_bin('5 minutes', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  'metrics' AS signal, COUNT(*) AS records\nFROM $metrics_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin\nORDER BY time_bin, signal",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  'traces' AS signal, COUNT(*) AS records\nFROM $trace_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin\nUNION ALL\nSELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin,\n  'metrics' AS signal, COUNT(*) AS records\nFROM $metrics_dataset\nWHERE COALESCE(\"deployment.environment\", 'unknown') ~ '$environment'\n  AND COALESCE(\"service.name\", 'unknown') ~ '$service'\nGROUP BY time_bin\nORDER BY time_bin, signal",
       "dbName": [
         "$trace_dataset",
         "$metrics_dataset"

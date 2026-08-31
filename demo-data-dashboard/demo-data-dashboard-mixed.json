@@ -1154,7 +1154,7 @@
     {
       "tile_id": "6WGZPWRPHYE3HNV381JRPSWM9D",
       "title": "HTTP Status Mix",
-      "chartQuery": "SELECT COALESCE(\"http.status_code\", 'unknown') AS status_code,\n  COUNT(*) AS spans\nFROM $traces_dataset\nWHERE \"http.status_code\" IS NOT NULL\nGROUP BY status_code\nORDER BY spans DESC",
+      "chartQuery": "SELECT COALESCE(\"http.response.status_code\", 'unknown') AS status_code,\n  COUNT(*) AS spans\nFROM $traces_dataset\nWHERE \"http.response.status_code\" IS NOT NULL\nGROUP BY status_code\nORDER BY spans DESC",
       "dbName": "$traces_dataset",
       "chartType": "bar",
       "tileType": "code",
@@ -1342,7 +1342,7 @@
     {
       "tile_id": "51R5HN0CQ9WVDPR3GM06NN9P04",
       "title": "Slow HTTP Spans",
-      "chartQuery": "SELECT p_timestamp,\n  COALESCE(\"service.name\", 'unknown') AS service_name,\n  \"http.method\" AS method,\n  \"http.target\" AS route,\n  \"http.status_code\" AS status_code,\n  ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms,\n  span_trace_id\nFROM $traces_dataset\nWHERE \"http.method\" IS NOT NULL\nORDER BY span_duration_ns DESC\nLIMIT 50",
+      "chartQuery": "SELECT p_timestamp,\n  COALESCE(\"service.name\", 'unknown') AS service_name,\n  \"http.method\" AS method,\n  \"http.target\" AS route,\n  \"http.response.status_code\" AS status_code,\n  ROUND(span_duration_ns / 1000000.0, 2) AS duration_ms,\n  span_trace_id\nFROM $traces_dataset\nWHERE \"http.method\" IS NOT NULL\nORDER BY span_duration_ns DESC\nLIMIT 50",
       "dbName": "$traces_dataset",
       "chartType": "table",
       "tileType": "code",

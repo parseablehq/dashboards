@@ -1,0 +1,543 @@
+{
+  "tags": [
+    "auth0",
+    "identity",
+    "security",
+    "logs"
+  ],
+  "variables": [
+    {
+      "name": "dataset",
+      "label": "Dataset",
+      "type": "dataset",
+      "defaultValue": "auth0_logs"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01M0W000000000000000000001",
+      "title": "Overview",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M0W000000000000000000002",
+      "title": "Authentication Trends",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M0W000000000000000000003",
+      "title": "Security Details",
+      "isExpanded": true
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01M0W000000000000000000011",
+      "chartQuery": "SELECT COUNT(DISTINCT log_id) AS total_events\nFROM $dataset",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Unique Auth0 Events",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "total_events",
+            "title": "Events",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0W000000000000000000011",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0W000000000000000000001"
+    },
+    {
+      "tile_id": "01M0W000000000000000000012",
+      "chartQuery": "SELECT COUNT(DISTINCT log_id) AS successful_logins\nFROM $dataset\nWHERE data_type = 's'",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Successful Logins",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "green",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "successful_logins",
+            "title": "Logins",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0W000000000000000000012",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0W000000000000000000001"
+    },
+    {
+      "tile_id": "01M0W000000000000000000013",
+      "chartQuery": "SELECT COUNT(DISTINCT log_id) AS failure_events\nFROM $dataset\nWHERE data_type LIKE 'f%'",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Failure Events",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "failure_events",
+            "title": "Failures",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0W000000000000000000013",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0W000000000000000000001"
+    },
+    {
+      "tile_id": "01M0W000000000000000000014",
+      "chartQuery": "SELECT COUNT(DISTINCT log_id) AS lifecycle_events\nFROM $dataset\nWHERE data_type IN ('ss', 'sdu')",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Signups & Deletions",
+      "chartType": "query-value",
+      "tileType": "code",
+      "config": {
+        "type": "query-value",
+        "colourScheme": "purple",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "",
+            "title": "Metric",
+            "display": true
+          },
+          "y": {
+            "field": "lifecycle_events",
+            "title": "Changes",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0W000000000000000000014",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 5,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0W000000000000000000001"
+    },
+    {
+      "tile_id": "01M0W000000000000000000015",
+      "chartQuery": "SELECT date_bin('1 minute', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, CASE WHEN data_type = 's' THEN 'Login success' WHEN data_type LIKE 'f%' THEN 'Failure' WHEN data_type IN ('ss', 'sdu') THEN 'User lifecycle' ELSE 'Other' END AS category, COUNT(DISTINCT log_id) AS events\nFROM $dataset\nGROUP BY time_bin, category\nORDER BY time_bin ASC, category ASC",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Auth0 Events Over Time",
+      "chartType": "timeseries",
+      "tileType": "code",
+      "config": {
+        "type": "area",
+        "colourScheme": "blue",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "time_bin",
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "field": "events",
+            "title": "Events",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "category"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0W000000000000000000015",
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0W000000000000000000002"
+    },
+    {
+      "tile_id": "01M0W000000000000000000016",
+      "chartQuery": "SELECT data_type, COUNT(DISTINCT log_id) AS events\nFROM $dataset\nGROUP BY data_type\nORDER BY events DESC\nLIMIT 15",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Event Codes",
+      "chartType": "donut",
+      "tileType": "code",
+      "config": {
+        "type": "donut",
+        "colourScheme": "classic",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "data_type",
+            "title": "Event code",
+            "display": true
+          },
+          "y": {
+            "field": "data_type",
+            "title": "data_type",
+            "display": true
+          },
+          "groupBy": {
+            "field": [
+              "data_type"
+            ]
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0W000000000000000000016",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0W000000000000000000002"
+    },
+    {
+      "tile_id": "01M0W000000000000000000017",
+      "chartQuery": "SELECT COALESCE(data_ip, data_client_ip, p_src_ip, 'unknown') AS source_ip, COUNT(DISTINCT log_id) AS failures\nFROM $dataset\nWHERE data_type LIKE 'f%'\nGROUP BY source_ip\nORDER BY failures DESC\nLIMIT 20",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Top Failure Source IPs",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "red",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "source_ip",
+            "title": "Source IP",
+            "display": true
+          },
+          "y": {
+            "field": "failures",
+            "title": "Failures",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0W000000000000000000017",
+        "x": 0,
+        "y": 0,
+        "w": 5,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0W000000000000000000003"
+    },
+    {
+      "tile_id": "01M0W000000000000000000018",
+      "chartQuery": "SELECT MAX(p_timestamp) AS event_time, data_type, COALESCE(data_description, '') AS description, COALESCE(data_client_name, '') AS client, COALESCE(data_user_name, data_user_id, '') AS user_ref, COALESCE(data_ip, data_client_ip, '') AS source_ip, COALESCE(data_location_info_country_code, '') AS country\nFROM $dataset\nWHERE data_type LIKE 'f%' OR data_type IN ('limit_wc', 'limit_mu', 'pwd_leak', 'sdu')\nGROUP BY log_id, data_type, data_description, data_client_name, data_user_name, data_user_id, data_ip, data_client_ip, data_location_info_country_code\nORDER BY event_time DESC\nLIMIT 50",
+      "dbName": [
+        "$dataset"
+      ],
+      "title": "Recent Security Events",
+      "chartType": "table",
+      "tileType": "code",
+      "config": {
+        "type": "table",
+        "colourScheme": "greenYellowRed",
+        "layout": {
+          "segments": {
+            "value": [
+              10,
+              90
+            ],
+            "isPercent": true
+          },
+          "legendPosition": "bottom",
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true
+        },
+        "axes": {
+          "x": {
+            "field": "event_time",
+            "title": "Events",
+            "display": true
+          },
+          "y": {
+            "field": "data_type",
+            "title": "Code",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M0W000000000000000000018",
+        "x": 5,
+        "y": 0,
+        "w": 7,
+        "h": 8,
+        "moved": false,
+        "static": false
+      },
+      "sectionId": "01M0W000000000000000000003"
+    }
+  ]
+}

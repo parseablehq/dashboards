@@ -191,7 +191,7 @@
     {
       "tile_id": "01KW477E0DS1GFH0HFA2AC7R8E",
       "title": "Namespaces",
-      "chartQuery": "SELECT COUNT(DISTINCT COALESCE(\"k8s.namespace.name\", namespace)) AS namespaces FROM $cluster_metrics_dataset WHERE COALESCE(\"k8s.namespace.name\", namespace) IS NOT NULL",
+      "chartQuery": "SELECT COUNT(DISTINCT \"k8s.namespace.name\") AS namespaces FROM $cluster_metrics_dataset WHERE \"k8s.namespace.name\" IS NOT NULL",
       "dbName": [
         "$cluster_metrics_dataset"
       ],
@@ -374,7 +374,7 @@
     {
       "tile_id": "01KW477E0DYDXF26A16PBT3FRG",
       "title": "Pod Log Events",
-      "chartQuery": "SELECT COUNT(*) AS logs FROM $pod_logs_dataset\nWHERE ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", body_namespace, '') = '$namespace') AND ('$pod' = '.*' OR COALESCE(\"k8s.pod.name\", body_name, '') = '$pod') AND ('$container' = '.*' OR COALESCE(\"k8s.container.name\", '') = '$container')",
+      "chartQuery": "SELECT COUNT(*) AS logs FROM $pod_logs_dataset\nWHERE ('$namespace' = '.*' OR \"k8s.namespace.name\" = '$namespace') AND ('$pod' = '.*' OR \"k8s.pod.name\" = '$pod') AND ('$container' = '.*' OR \"k8s.container.name\" = '$container')",
       "dbName": [
         "$pod_logs_dataset"
       ],
@@ -1394,7 +1394,7 @@
     {
       "tile_id": "01KW477E0D5E6WS6HT40EDDHQY",
       "title": "Pod Logs Over Time",
-      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS logs FROM $pod_logs_dataset\nWHERE ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", body_namespace, '') = '$namespace') AND ('$pod' = '.*' OR COALESCE(\"k8s.pod.name\", body_name, '') = '$pod') AND ('$container' = '.*' OR COALESCE(\"k8s.container.name\", '') = '$container') GROUP BY time_bin ORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS logs FROM $pod_logs_dataset\nWHERE ('$namespace' = '.*' OR \"k8s.namespace.name\" = '$namespace') AND ('$pod' = '.*' OR \"k8s.pod.name\" = '$pod') AND ('$container' = '.*' OR \"k8s.container.name\" = '$container') GROUP BY time_bin ORDER BY time_bin ASC",
       "dbName": [
         "$pod_logs_dataset"
       ],
@@ -1443,7 +1443,7 @@
     {
       "tile_id": "01KW477E0D7C1AF8EAFGRDR8M2",
       "title": "Log Volume by Namespace",
-      "chartQuery": "WITH top_namespaces AS (\n  SELECT COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace\n  FROM $pod_logs_dataset\n  GROUP BY namespace\n  ORDER BY COUNT(*) DESC\n  LIMIT 15\n)\nSELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace,\n       COUNT(*) AS logs\nFROM $pod_logs_dataset\nWHERE COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') IN (SELECT namespace FROM top_namespaces)\nGROUP BY time_bucket, namespace\nORDER BY time_bucket ASC",
+      "chartQuery": "WITH top_namespaces AS (\n  SELECT \"k8s.namespace.name\" AS namespace\n  FROM $pod_logs_dataset\n  GROUP BY namespace\n  ORDER BY COUNT(*) DESC\n  LIMIT 15\n)\nSELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       \"k8s.namespace.name\" AS namespace,\n       COUNT(*) AS logs\nFROM $pod_logs_dataset\nWHERE \"k8s.namespace.name\" IN (SELECT namespace FROM top_namespaces)\nGROUP BY time_bucket, namespace\nORDER BY time_bucket ASC",
       "dbName": [
         "$pod_logs_dataset"
       ],
@@ -1508,7 +1508,7 @@
     {
       "tile_id": "01KW477E0D0FWGSND2W6D011FN",
       "title": "Top Log Pods",
-      "chartQuery": "SELECT COALESCE(\"k8s.pod.name\", body_name, 'unknown') AS pod, COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace, COUNT(*) AS logs FROM $pod_logs_dataset GROUP BY COALESCE(\"k8s.pod.name\", body_name, 'unknown'), COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') ORDER BY logs DESC LIMIT 20",
+      "chartQuery": "SELECT \"k8s.pod.name\" AS pod, \"k8s.namespace.name\" AS namespace, COUNT(*) AS logs FROM $pod_logs_dataset GROUP BY \"k8s.pod.name\", \"k8s.namespace.name\" ORDER BY logs DESC LIMIT 20",
       "dbName": [
         "$pod_logs_dataset"
       ],
@@ -1928,7 +1928,7 @@
     {
       "tile_id": "01KW4BQA5DQ1H7YTHDT4H1J7PA",
       "title": "Events Over Time",
-      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS events FROM $events_dataset WHERE ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", namespace, '') = '$namespace') AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') GROUP BY time_bin ORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS events FROM $events_dataset WHERE ('$namespace' = '.*' OR (\"k8s.namespace.name\" = '$namespace' OR namespace = '$namespace' OR '' = '$namespace')) AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') GROUP BY time_bin ORDER BY time_bin ASC",
       "dbName": [
         "$events_dataset"
       ],
@@ -1977,7 +1977,7 @@
     {
       "tile_id": "01KW4BQA5DSGKMDAMYPZXYZXSF",
       "title": "Warnings Over Time",
-      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS warnings FROM $events_dataset WHERE (type = 'Warning' OR p_log_category = 'WARN') AND ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", namespace, '') = '$namespace') AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') GROUP BY time_bin ORDER BY time_bin ASC",
+      "chartQuery": "SELECT date_bin('$bucket_size', p_timestamp, '1970-01-01T00:00:00Z') AS time_bin, COUNT(*) AS warnings FROM $events_dataset WHERE (type = 'Warning' OR p_log_category = 'WARN') AND ('$namespace' = '.*' OR \"k8s.namespace.name\" = '$namespace') AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') GROUP BY time_bin ORDER BY time_bin ASC",
       "dbName": [
         "$events_dataset"
       ],
@@ -2156,7 +2156,7 @@
     {
       "tile_id": "01KW4BQA5DTF8AEYCHE3YBGH55",
       "title": "Events by Namespace Over Time",
-      "chartQuery": "WITH top_namespaces AS (\n  SELECT COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name\n  FROM $events_dataset\n  GROUP BY namespace_name\n  ORDER BY COUNT(*) DESC\n  LIMIT 15\n)\nSELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name,\n       COUNT(*) AS events\nFROM $events_dataset\nWHERE COALESCE(\"k8s.namespace.name\", namespace, 'unknown') IN (SELECT namespace_name FROM top_namespaces)\nGROUP BY time_bucket, namespace_name\nORDER BY time_bucket ASC",
+      "chartQuery": "WITH top_namespaces AS (\n  SELECT \"k8s.namespace.name\" AS namespace_name\n  FROM $events_dataset\n  GROUP BY namespace_name\n  ORDER BY COUNT(*) DESC\n  LIMIT 15\n)\nSELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       \"k8s.namespace.name\" AS namespace_name,\n       COUNT(*) AS events\nFROM $events_dataset\nWHERE \"k8s.namespace.name\" IN (SELECT namespace_name FROM top_namespaces)\nGROUP BY time_bucket, namespace_name\nORDER BY time_bucket ASC",
       "dbName": [
         "$events_dataset"
       ],
@@ -2286,7 +2286,7 @@
     {
       "tile_id": "01KW4BQA5DYN0CEF489DAK2Z6P",
       "title": "High Occurrence Warnings",
-      "chartQuery": "SELECT COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name, name, kind, reason, message, MAX(CAST(count AS DOUBLE)) AS occurrences, MAX(p_timestamp) AS last_seen FROM $events_dataset WHERE type = 'Warning' OR p_log_category = 'WARN' GROUP BY COALESCE(\"k8s.namespace.name\", namespace, 'unknown'), name, kind, reason, message ORDER BY occurrences DESC LIMIT 30",
+      "chartQuery": "SELECT \"k8s.namespace.name\" AS namespace_name, name, kind, reason, message, MAX(CAST(count AS DOUBLE)) AS occurrences, MAX(p_timestamp) AS last_seen FROM $events_dataset WHERE type = 'Warning' OR p_log_category = 'WARN' GROUP BY \"k8s.namespace.name\", name, kind, reason, message ORDER BY occurrences DESC LIMIT 30",
       "dbName": [
         "$events_dataset"
       ],
@@ -2330,7 +2330,7 @@
     {
       "tile_id": "01KW4BQA5D49CDQDH5KDT19W8J",
       "title": "Recent Warning Events",
-      "chartQuery": "SELECT p_timestamp, COALESCE(\"k8s.namespace.name\", namespace, 'unknown') AS namespace_name, COALESCE(host, \"reportingInstance\", '') AS node, name, kind, reason, message, CAST(count AS DOUBLE) AS occurrences FROM $events_dataset WHERE (type = 'Warning' OR p_log_category = 'WARN') AND ('$namespace' = '.*' OR COALESCE(\"k8s.namespace.name\", namespace, '') = '$namespace') AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') ORDER BY p_timestamp DESC LIMIT 50",
+      "chartQuery": "SELECT p_timestamp, \"k8s.namespace.name\" AS namespace_name, COALESCE(host, \"reportingInstance\", '') AS node, name, kind, reason, message, CAST(count AS DOUBLE) AS occurrences FROM $events_dataset WHERE (type = 'Warning' OR p_log_category = 'WARN') AND ('$namespace' = '.*' OR \"k8s.namespace.name\" = '$namespace') AND ('$node' = '.*' OR COALESCE(host, \"reportingInstance\", '') = '$node') ORDER BY p_timestamp DESC LIMIT 50",
       "dbName": [
         "$events_dataset"
       ],
@@ -2472,7 +2472,7 @@
     {
       "tile_id": "01KW4CJT7AYDFXM0509FB033QN",
       "title": "Pod Log Errors by Pod Over Time",
-      "chartQuery": "WITH top_pods AS (\n  SELECT COALESCE(\"k8s.pod.name\", body_name, 'unknown') AS pod\n  FROM $pod_logs_dataset\n  WHERE severity_text IN ('ERROR', 'FATAL')\n     OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%'\n  GROUP BY pod\n  ORDER BY COUNT(*) DESC\n  LIMIT 25\n)\nSELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(\"k8s.pod.name\", body_name, 'unknown') AS pod,\n       COUNT(*) AS errors\nFROM $pod_logs_dataset\nWHERE (severity_text IN ('ERROR', 'FATAL')\n    OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%')\n  AND COALESCE(\"k8s.pod.name\", body_name, 'unknown') IN (SELECT pod FROM top_pods)\nGROUP BY time_bucket, pod\nORDER BY time_bucket ASC",
+      "chartQuery": "WITH top_pods AS (\n  SELECT \"k8s.pod.name\" AS pod\n  FROM $pod_logs_dataset\n  WHERE severity_text IN ('ERROR', 'FATAL')\n     OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%'\n  GROUP BY pod\n  ORDER BY COUNT(*) DESC\n  LIMIT 25\n)\nSELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       \"k8s.pod.name\" AS pod,\n       COUNT(*) AS errors\nFROM $pod_logs_dataset\nWHERE (severity_text IN ('ERROR', 'FATAL')\n    OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%')\n  AND \"k8s.pod.name\" IN (SELECT pod FROM top_pods)\nGROUP BY time_bucket, pod\nORDER BY time_bucket ASC",
       "sectionId": "01KW9XG6GMEMEK24SWNV1Q415G",
       "layout": {
         "i": "01KW4CJT7AYDFXM0509FB033QN",
@@ -2537,7 +2537,7 @@
     {
       "tile_id": "01KW4CJT7AE5XF7CPEB7PZCNH4",
       "title": "Pod Log Errors by Namespace Over Time",
-      "chartQuery": "WITH top_namespaces AS (\n  SELECT COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace_name\n  FROM $pod_logs_dataset\n  WHERE severity_text IN ('ERROR', 'FATAL')\n     OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%'\n  GROUP BY namespace_name\n  ORDER BY COUNT(*) DESC\n  LIMIT 20\n)\nSELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') AS namespace_name,\n       COUNT(*) AS errors\nFROM $pod_logs_dataset\nWHERE (severity_text IN ('ERROR', 'FATAL')\n    OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%')\n  AND COALESCE(\"k8s.namespace.name\", body_namespace, 'unknown') IN (SELECT namespace_name FROM top_namespaces)\nGROUP BY time_bucket, namespace_name\nORDER BY time_bucket ASC",
+      "chartQuery": "WITH top_namespaces AS (\n  SELECT \"k8s.namespace.name\" AS namespace_name\n  FROM $pod_logs_dataset\n  WHERE severity_text IN ('ERROR', 'FATAL')\n     OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%'\n  GROUP BY namespace_name\n  ORDER BY COUNT(*) DESC\n  LIMIT 20\n)\nSELECT date_bin('$bucket_size', p_timestamp, TIMESTAMP '1970-01-01T00:00:00') AS time_bucket,\n       \"k8s.namespace.name\" AS namespace_name,\n       COUNT(*) AS errors\nFROM $pod_logs_dataset\nWHERE (severity_text IN ('ERROR', 'FATAL')\n    OR lower(COALESCE(body_level, body_msg, body_message, body_error, body_err, body, '')) LIKE '%error%')\n  AND \"k8s.namespace.name\" IN (SELECT namespace_name FROM top_namespaces)\nGROUP BY time_bucket, namespace_name\nORDER BY time_bucket ASC",
       "dbName": [
         "$pod_logs_dataset"
       ],

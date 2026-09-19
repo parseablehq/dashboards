@@ -22,6 +22,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "unit": "",
           "precision": 0,
@@ -81,6 +82,7 @@
         "type": "query-value",
         "colourScheme": "green",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "unit": "%",
           "precision": 2,
@@ -140,6 +142,7 @@
         "type": "query-value",
         "colourScheme": "red",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "unit": "",
           "precision": 0,
@@ -199,6 +202,7 @@
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "unit": "ms",
           "precision": 2,

@@ -129,6 +129,7 @@
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -187,6 +188,7 @@
         "type": "query-value",
         "colourScheme": "green",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -245,6 +247,7 @@
         "type": "query-value",
         "colourScheme": "purple",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -601,6 +604,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -661,6 +665,7 @@
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -723,6 +728,7 @@
         "type": "query-value",
         "colourScheme": "green",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -781,6 +787,7 @@
         "type": "query-value",
         "colourScheme": "purple",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -839,6 +846,7 @@
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -1400,6 +1408,7 @@
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "unit": "%",
           "precision": 1,
@@ -1460,6 +1469,7 @@
         "type": "query-value",
         "colourScheme": "yellow",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": 1,
           "humanize": true,
@@ -6236,6 +6246,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": 0,
           "humanize": true,
@@ -6295,6 +6306,7 @@
         "type": "query-value",
         "colourScheme": "parseableBlue",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": 0,
           "humanize": true,
@@ -7959,6 +7971,7 @@
         "type": "query-value",
         "colourScheme": "green",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,
@@ -8018,6 +8031,7 @@
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "precision": -1,
           "humanize": true,

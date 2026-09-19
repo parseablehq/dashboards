@@ -92,6 +92,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -146,6 +147,7 @@
         "type": "query-value",
         "colourScheme": "redYellowGreen",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -200,6 +202,7 @@
         "type": "query-value",
         "colourScheme": "greenYellowRed",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -254,6 +257,7 @@
         "type": "query-value",
         "colourScheme": "purple",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -968,6 +972,7 @@
         "type": "query-value",
         "colourScheme": "greenYellowRed",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -1022,6 +1027,7 @@
         "type": "query-value",
         "colourScheme": "parseableBlue",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -1076,6 +1082,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -1130,6 +1137,7 @@
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },

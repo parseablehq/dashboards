@@ -75,6 +75,7 @@
         "type": "query-value",
         "colourScheme": "purple",
         "layout": {
+          "sparkline": true,
           "segments": {
             "value": [10, 90],
             "isPercent": true
@@ -133,6 +134,7 @@
         "type": "query-value",
         "colourScheme": "purple",
         "layout": {
+          "sparkline": true,
           "segments": {
             "value": [10, 90],
             "isPercent": true
@@ -191,6 +193,7 @@
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "sparkline": true,
           "segments": {
             "value": [10, 90],
             "isPercent": true
@@ -249,6 +252,7 @@
         "type": "query-value",
         "colourScheme": "red",
         "layout": {
+          "sparkline": true,
           "segments": {
             "value": [10, 90],
             "isPercent": true

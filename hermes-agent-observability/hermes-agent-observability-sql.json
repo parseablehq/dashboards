@@ -31,28 +31,28 @@
       "chartQuery": "SELECT COUNT(*) AS invocations FROM $traces_dataset WHERE event_name IS NULL AND span_name = 'agent'",
       "dbName": "$traces_dataset", "chartType": "query-value", "tileType": "code", "sectionId": "00000000000000000000000001",
       "layout": {"i": "00000000000000000000000011", "x": 0, "y": 0, "w": 3, "h": 5, "moved": false, "static": false},
-      "config": {"type": "query-value", "colourScheme": "blue", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "invocations", "title": "invocations", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+      "config": {"type": "query-value", "colourScheme": "blue", "layout": {"sparkline": true, "segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "invocations", "title": "invocations", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
     },
     {
       "tile_id": "00000000000000000000000012", "title": "Error Spans",
       "chartQuery": "SELECT COUNT(*) AS errors FROM $traces_dataset WHERE event_name IS NULL AND span_status_code = 2",
       "dbName": "$traces_dataset", "chartType": "query-value", "tileType": "code", "sectionId": "00000000000000000000000001",
       "layout": {"i": "00000000000000000000000012", "x": 3, "y": 0, "w": 3, "h": 5, "moved": false, "static": false},
-      "config": {"type": "query-value", "colourScheme": "red", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "errors", "title": "errors", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+      "config": {"type": "query-value", "colourScheme": "red", "layout": {"sparkline": true, "segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "errors", "title": "errors", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
     },
     {
       "tile_id": "00000000000000000000000013", "title": "Total LLM Tokens",
       "chartQuery": "SELECT COALESCE(SUM(CAST(\"gen_ai.usage.total_tokens\" AS DOUBLE)), 0) AS total_tokens FROM $traces_dataset WHERE event_name IS NULL AND span_name = 'agent'",
       "dbName": "$traces_dataset", "chartType": "query-value", "tileType": "code", "sectionId": "00000000000000000000000001",
       "layout": {"i": "00000000000000000000000013", "x": 6, "y": 0, "w": 3, "h": 5, "moved": false, "static": false},
-      "config": {"type": "query-value", "colourScheme": "purple", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "tokens", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "total_tokens", "title": "total_tokens", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+      "config": {"type": "query-value", "colourScheme": "purple", "layout": {"sparkline": true, "segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "tokens", "precision": 0, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "total_tokens", "title": "total_tokens", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
     },
     {
       "tile_id": "00000000000000000000000014", "title": "P95 Agent Latency",
       "chartQuery": "SELECT ROUND(APPROX_PERCENTILE_CONT(span_duration_ns / 1000000.0, 0.95), 2) AS p95_ms FROM $traces_dataset WHERE event_name IS NULL AND span_name = 'agent'",
       "dbName": "$traces_dataset", "chartType": "query-value", "tileType": "code", "sectionId": "00000000000000000000000001",
       "layout": {"i": "00000000000000000000000014", "x": 9, "y": 0, "w": 3, "h": 5, "moved": false, "static": false},
-      "config": {"type": "query-value", "colourScheme": "yellow", "layout": {"segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "ms", "precision": 2, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "p95_ms", "title": "p95_ms", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
+      "config": {"type": "query-value", "colourScheme": "yellow", "layout": {"sparkline": true, "segments": {"value": [10,90], "isPercent": true}, "legendPosition": "bottom", "label": false, "unit": "ms", "precision": 2, "humanize": true}, "axes": {"x": {"field": "", "title": "", "display": true}, "y": {"field": "p95_ms", "title": "p95_ms", "display": true}, "groupBy": {"field": []}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}}
     },
     {
       "tile_id": "00000000000000000000000015", "title": "Model Calls",

@@ -148,6 +148,7 @@
         "type": "query-value",
         "colourScheme": "parseableBlue",
         "layout": {
+          "sparkline": true,
           "segments": {
             "value": [
               10,
@@ -212,6 +213,7 @@
         "type": "query-value",
         "colourScheme": "parseableBlue",
         "layout": {
+          "sparkline": true,
           "segments": {
             "value": [
               10,
@@ -276,6 +278,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "segments": {
             "value": [
               10,
@@ -340,6 +343,7 @@
         "type": "query-value",
         "colourScheme": "red",
         "layout": {
+          "sparkline": true,
           "segments": {
             "value": [
               10,

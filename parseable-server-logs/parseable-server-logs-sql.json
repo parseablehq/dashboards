@@ -81,6 +81,7 @@
         "type": "query-value",
         "colourScheme": "gray",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -135,6 +136,7 @@
         "type": "query-value",
         "colourScheme": "redYellowGreen",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -189,6 +191,7 @@
         "type": "query-value",
         "colourScheme": "redYellowGreen",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },
@@ -243,6 +246,7 @@
         "type": "query-value",
         "colourScheme": "red",
         "layout": {
+          "sparkline": true,
           "legendPosition": "bottom",
           "humanize": true
         },

@@ -136,6 +136,7 @@
         "type": "query-value",
         "colourScheme": "green",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -270,6 +271,7 @@
         "type": "query-value",
         "colourScheme": "red",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -337,6 +339,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -404,6 +407,7 @@
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -471,6 +475,7 @@
         "type": "query-value",
         "colourScheme": "purple",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -538,6 +543,7 @@
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -602,6 +608,7 @@
         "type": "query-value",
         "colourScheme": "red",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -2402,6 +2409,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -2466,6 +2474,7 @@
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -2530,6 +2539,7 @@
         "type": "query-value",
         "colourScheme": "red",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -2854,6 +2864,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -2918,6 +2929,7 @@
         "type": "query-value",
         "colourScheme": "orange",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -3306,6 +3318,7 @@
         "type": "query-value",
         "colourScheme": "blue",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [
@@ -3373,6 +3386,7 @@
         "type": "query-value",
         "colourScheme": "teal",
         "layout": {
+          "sparkline": true,
           "humanize": true,
           "segments": {
             "value": [

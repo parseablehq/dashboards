@@ -395,6 +395,16 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "NVIDIA GPU Monitoring",
+      "dirName": "nvidia-gpu-monitoring",
+      "fileName": "nvidia-gpu-monitoring-promql.json",
+      "description": "Monitor NVIDIA GPU utilization, memory, temperatures, power, execution engines, PCIe traffic, energy, and hardware reliability from DCGM Exporter metrics.",
+      "source": "PromQL",
+      "icon": "assets/icon.svg",
+      "tags": ["nvidia", "gpu", "dcgm", "prometheus", "metrics", "promql", "infrastructure"],
+      "thumbnail": "assets/cover.png"
+    },
+    {
       "name": "Node Metrics Dashboard - PromQL",
       "dirName": "node-metrics-dashboard",
       "fileName": "node-metrics-dashboard-promql.json",

@@ -1,0 +1,410 @@
+{
+  "title": "NVIDIA GPU Monitoring",
+  "tags": ["nvidia", "gpu", "dcgm", "metrics"],
+  "dashboardType": "Dashboard",
+  "version": "v1",
+  "timeRange": {
+    "startTime": "1h",
+    "endTime": "now",
+    "type": "fixed",
+    "interval": 3600000,
+    "label": "Last 1 hour"
+  },
+  "variables": [
+    {
+      "name": "dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "nvidia-gpu-metrics"
+    },
+    {
+      "name": "host",
+      "label": "Host",
+      "type": "promql",
+      "dataset": "$dataset",
+      "labelName": "hostname",
+      "metric": "DCGM_FI_DEV_GPU_UTIL",
+      "labelFilters": [],
+      "defaultValue": ".*",
+      "includeAll": true
+    },
+    {
+      "name": "gpu",
+      "label": "GPU",
+      "type": "promql",
+      "dataset": "$dataset",
+      "labelName": "gpu",
+      "metric": "DCGM_FI_DEV_GPU_UTIL",
+      "labelFilters": [],
+      "defaultValue": ".*",
+      "includeAll": true
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01M3GPV0000000000000000001",
+      "title": "Overview",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M3GPV0000000000000000002",
+      "title": "GPU telemetry",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M3GPV0000000000000000003",
+      "title": "Execution and I/O",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M3GPV0000000000000000004",
+      "title": "Energy and reliability",
+      "isExpanded": true
+    }
+  ],
+  "tiles": [
+    {
+      "tile_id": "01M3GPV0000000000000000011",
+      "sectionId": "01M3GPV0000000000000000001",
+      "chartQuery": ["count(DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\",gpu=~\"$gpu\"})"],
+      "promqlQueryType": ["range"],
+      "dbName": "$dataset",
+      "title": "GPUs reporting",
+      "tileType": "promql",
+      "chartType": "gauge",
+      "config": {
+        "type": "gauge",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "legendPosition": "bottom",
+          "precision": 0,
+          "humanize": true,
+          "rangeTo": 8,
+          "segments": {"value": [1, 8], "isPercent": false},
+          "label": false
+        },
+        "axes": {
+          "x": {"field": "", "title": "Metric", "display": true},
+          "y": {"field": "COUNT_STAR", "title": "GPUs", "display": true}
+        },
+        "advanced": {
+          "dataLabels": {"enabled": false},
+          "tooltip": {"enabled": true, "mode": "index", "intersect": false}
+        }
+      },
+      "layout": {"x": 0, "y": 0, "w": 3, "h": 5}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000012",
+      "sectionId": "01M3GPV0000000000000000001",
+      "chartQuery": ["avg(DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\",gpu=~\"$gpu\"})"],
+      "promqlQueryType": ["range"],
+      "dbName": "$dataset",
+      "title": "GPU utilization",
+      "tileType": "promql",
+      "chartType": "gauge",
+      "config": {
+        "type": "gauge",
+        "colourScheme": "green",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
+          "rangeTo": 100,
+          "segments": {"value": [20, 80], "isPercent": true},
+          "label": false
+        },
+        "axes": {
+          "x": {"field": "", "title": "Metric", "display": true},
+          "y": {"field": "COUNT_STAR", "title": "Utilization", "display": true}
+        },
+        "advanced": {
+          "dataLabels": {"enabled": false},
+          "tooltip": {"enabled": true, "mode": "index", "intersect": false}
+        }
+      },
+      "layout": {"x": 3, "y": 0, "w": 3, "h": 5}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000013",
+      "sectionId": "01M3GPV0000000000000000001",
+      "chartQuery": ["100 * sum(DCGM_FI_DEV_FB_USED{hostname=~\"$host\",gpu=~\"$gpu\"}) / sum(DCGM_FI_DEV_FB_USED{hostname=~\"$host\",gpu=~\"$gpu\"} + DCGM_FI_DEV_FB_FREE{hostname=~\"$host\",gpu=~\"$gpu\"})"],
+      "promqlQueryType": ["range"],
+      "dbName": "$dataset",
+      "title": "Framebuffer used",
+      "tileType": "promql",
+      "chartType": "gauge",
+      "config": {
+        "type": "gauge",
+        "colourScheme": "purple",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "precision": 1,
+          "humanize": true,
+          "rangeTo": 100,
+          "segments": {"value": [70, 90], "isPercent": true},
+          "label": false
+        },
+        "axes": {
+          "x": {"field": "", "title": "Metric", "display": true},
+          "y": {"field": "COUNT_STAR", "title": "Memory used", "display": true}
+        },
+        "advanced": {
+          "dataLabels": {"enabled": false},
+          "tooltip": {"enabled": true, "mode": "index", "intersect": false}
+        }
+      },
+      "layout": {"x": 6, "y": 0, "w": 3, "h": 5}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000014",
+      "sectionId": "01M3GPV0000000000000000001",
+      "chartQuery": ["sum(DCGM_FI_DEV_POWER_USAGE{hostname=~\"$host\",gpu=~\"$gpu\"})"],
+      "promqlQueryType": ["range"],
+      "dbName": "$dataset",
+      "title": "Power draw",
+      "tileType": "promql",
+      "chartType": "gauge",
+      "config": {
+        "type": "gauge",
+        "colourScheme": "orange",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "W",
+          "precision": 1,
+          "humanize": true,
+          "rangeTo": 450,
+          "segments": {"value": [100, 300], "isPercent": false},
+          "label": false
+        },
+        "axes": {
+          "x": {"field": "", "title": "Metric", "display": true},
+          "y": {"field": "COUNT_STAR", "title": "Watts", "display": true}
+        },
+        "advanced": {
+          "dataLabels": {"enabled": false},
+          "tooltip": {"enabled": true, "mode": "index", "intersect": false}
+        }
+      },
+      "layout": {"x": 9, "y": 0, "w": 3, "h": 5}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000021",
+      "sectionId": "01M3GPV0000000000000000002",
+      "chartQuery": ["DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range"],
+      "dbName": "$dataset",
+      "title": "GPU utilization by device",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {
+        "type": "area",
+        "colourScheme": "green",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "%",
+          "humanize": true,
+          "segments": {"value": [20, 80], "isPercent": true},
+          "label": false
+        },
+        "axes": {
+          "x": {"field": "time_bucket", "title": "Time"},
+          "y": {"field": "COUNT_STAR", "title": "Utilization (%)"}
+        },
+        "advanced": {
+          "dataLabels": {"enabled": false},
+          "tooltip": {"enabled": true, "mode": "index", "intersect": false}
+        }
+      },
+      "layout": {"x": 0, "y": 0, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000022",
+      "sectionId": "01M3GPV0000000000000000002",
+      "chartQuery": ["DCGM_FI_DEV_FB_USED{hostname=~\"$host\",gpu=~\"$gpu\"}", "DCGM_FI_DEV_FB_FREE{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range", "range"],
+      "dbName": "$dataset",
+      "title": "Framebuffer memory",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {
+        "type": "area",
+        "colourScheme": "purple",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "MiB",
+          "humanize": true,
+          "segments": {"value": [1024, 32768], "isPercent": false},
+          "label": false
+        },
+        "axes": {
+          "x": {"field": "time_bucket", "title": "Time"},
+          "y": {"field": "COUNT_STAR", "title": "Memory (MiB)"}
+        },
+        "advanced": {
+          "dataLabels": {"enabled": false},
+          "tooltip": {"enabled": true, "mode": "index", "intersect": false}
+        }
+      },
+      "layout": {"x": 6, "y": 0, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000023",
+      "sectionId": "01M3GPV0000000000000000002",
+      "chartQuery": ["DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\",gpu=~\"$gpu\"}", "DCGM_FI_DEV_MEMORY_TEMP{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range", "range"],
+      "dbName": "$dataset",
+      "title": "GPU and memory temperature",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "°C",
+          "humanize": true,
+          "segments": {"value": [60, 80], "isPercent": false},
+          "label": false
+        },
+        "axes": {
+          "x": {"field": "time_bucket", "title": "Time"},
+          "y": {"field": "COUNT_STAR", "title": "Temperature (°C)"}
+        },
+        "advanced": {
+          "dataLabels": {"enabled": false},
+          "tooltip": {"enabled": true, "mode": "index", "intersect": false}
+        }
+      },
+      "layout": {"x": 0, "y": 8, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000024",
+      "sectionId": "01M3GPV0000000000000000002",
+      "chartQuery": ["DCGM_FI_DEV_POWER_USAGE{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range"],
+      "dbName": "$dataset",
+      "title": "Board power draw",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {
+        "type": "area",
+        "colourScheme": "teal",
+        "layout": {
+          "legendPosition": "bottom",
+          "unit": "W",
+          "humanize": true,
+          "segments": {"value": [20, 80], "isPercent": false},
+          "label": false
+        },
+        "axes": {
+          "x": {"field": "time_bucket", "title": "Time"},
+          "y": {"field": "COUNT_STAR", "title": "Power (W)"}
+        },
+        "advanced": {
+          "dataLabels": {"enabled": false},
+          "tooltip": {"enabled": true, "mode": "index", "intersect": false}
+        }
+      },
+      "layout": {"x": 6, "y": 8, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000031",
+      "sectionId": "01M3GPV0000000000000000003",
+      "chartQuery": ["100 * DCGM_FI_PROF_GR_ENGINE_ACTIVE{hostname=~\"$host\",gpu=~\"$gpu\"}", "100 * DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{hostname=~\"$host\",gpu=~\"$gpu\"}", "100 * DCGM_FI_PROF_DRAM_ACTIVE{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range", "range", "range"],
+      "dbName": "$dataset",
+      "title": "Compute, tensor, and DRAM activity",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {"type": "area", "colourScheme": "green", "layout": {"legendPosition": "bottom", "unit": "%", "humanize": true, "segments": {"value": [20, 80], "isPercent": true}, "label": false}, "axes": {"x": {"field": "time_bucket", "title": "Time"}, "y": {"field": "COUNT_STAR", "title": "Activity (%)"}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}},
+      "layout": {"x": 0, "y": 0, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000032",
+      "sectionId": "01M3GPV0000000000000000003",
+      "chartQuery": ["DCGM_FI_DEV_MEM_COPY_UTIL{hostname=~\"$host\",gpu=~\"$gpu\"}", "DCGM_FI_DEV_ENC_UTIL{hostname=~\"$host\",gpu=~\"$gpu\"}", "DCGM_FI_DEV_DEC_UTIL{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range", "range", "range"],
+      "dbName": "$dataset",
+      "title": "Memory-copy, encode, and decode engines",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {"type": "area", "colourScheme": "purple", "layout": {"legendPosition": "bottom", "unit": "%", "humanize": true, "segments": {"value": [20, 80], "isPercent": true}, "label": false}, "axes": {"x": {"field": "time_bucket", "title": "Time"}, "y": {"field": "COUNT_STAR", "title": "Utilization (%)"}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}},
+      "layout": {"x": 6, "y": 0, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000033",
+      "sectionId": "01M3GPV0000000000000000003",
+      "chartQuery": ["DCGM_FI_DEV_SM_CLOCK{hostname=~\"$host\",gpu=~\"$gpu\"}", "DCGM_FI_DEV_MEM_CLOCK{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range", "range"],
+      "dbName": "$dataset",
+      "title": "SM and memory clocks",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {"type": "line", "colourScheme": "teal", "layout": {"legendPosition": "bottom", "unit": "MHz", "humanize": true, "segments": {"value": [500, 1500], "isPercent": false}, "label": false}, "axes": {"x": {"field": "time_bucket", "title": "Time"}, "y": {"field": "COUNT_STAR", "title": "Clock (MHz)"}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}},
+      "layout": {"x": 0, "y": 8, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000034",
+      "sectionId": "01M3GPV0000000000000000003",
+      "chartQuery": ["DCGM_FI_PROF_PCIE_TX_BYTES{hostname=~\"$host\",gpu=~\"$gpu\"}", "DCGM_FI_PROF_PCIE_RX_BYTES{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range", "range"],
+      "dbName": "$dataset",
+      "title": "PCIe transmit and receive throughput",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {"type": "line", "colourScheme": "parseableBlue", "layout": {"legendPosition": "bottom", "unit": "B/s", "humanize": true, "segments": {"value": [1048576, 1073741824], "isPercent": false}, "label": false}, "axes": {"x": {"field": "time_bucket", "title": "Time"}, "y": {"field": "COUNT_STAR", "title": "Throughput (B/s)"}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}},
+      "layout": {"x": 6, "y": 8, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000041",
+      "sectionId": "01M3GPV0000000000000000004",
+      "chartQuery": ["DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{hostname=~\"$host\",gpu=~\"$gpu\"} / 3600000"],
+      "promqlQueryType": ["range"],
+      "dbName": "$dataset",
+      "title": "Cumulative GPU energy",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {"type": "area", "colourScheme": "orange", "layout": {"legendPosition": "bottom", "unit": "kWh", "humanize": true, "segments": {"value": [1, 10], "isPercent": false}, "label": false}, "axes": {"x": {"field": "time_bucket", "title": "Time"}, "y": {"field": "COUNT_STAR", "title": "Energy (kWh)"}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}},
+      "layout": {"x": 0, "y": 0, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000042",
+      "sectionId": "01M3GPV0000000000000000004",
+      "chartQuery": ["DCGM_FI_DEV_PCIE_REPLAY_COUNTER{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range"],
+      "dbName": "$dataset",
+      "title": "PCIe replay counter",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {"type": "line", "colourScheme": "red", "layout": {"legendPosition": "bottom", "humanize": true, "segments": {"value": [1, 10], "isPercent": false}, "label": false}, "axes": {"x": {"field": "time_bucket", "title": "Time"}, "y": {"field": "COUNT_STAR", "title": "Replay count"}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}},
+      "layout": {"x": 6, "y": 0, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000043",
+      "sectionId": "01M3GPV0000000000000000004",
+      "chartQuery": ["DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS{hostname=~\"$host\",gpu=~\"$gpu\"}", "DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range", "range"],
+      "dbName": "$dataset",
+      "title": "Row remaps",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {"type": "line", "colourScheme": "red", "layout": {"legendPosition": "bottom", "humanize": true, "segments": {"value": [1, 10], "isPercent": false}, "label": false}, "axes": {"x": {"field": "time_bucket", "title": "Time"}, "y": {"field": "COUNT_STAR", "title": "Remapped rows"}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}},
+      "layout": {"x": 0, "y": 8, "w": 6, "h": 8}
+    },
+    {
+      "tile_id": "01M3GPV0000000000000000044",
+      "sectionId": "01M3GPV0000000000000000004",
+      "chartQuery": ["DCGM_FI_DEV_ROW_REMAP_FAILURE{hostname=~\"$host\",gpu=~\"$gpu\"}", "DCGM_FI_DEV_VGPU_LICENSE_STATUS{hostname=~\"$host\",gpu=~\"$gpu\"}"],
+      "promqlQueryType": ["range", "range"],
+      "dbName": "$dataset",
+      "title": "Hardware status flags",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "config": {"type": "line", "colourScheme": "orange", "layout": {"legendPosition": "bottom", "humanize": false, "segments": {"value": [0, 1], "isPercent": false}, "label": false}, "axes": {"x": {"field": "time_bucket", "title": "Time"}, "y": {"field": "COUNT_STAR", "title": "Status"}}, "advanced": {"dataLabels": {"enabled": false}, "tooltip": {"enabled": true, "mode": "index", "intersect": false}}},
+      "layout": {"x": 6, "y": 8, "w": 6, "h": 8}
+    }
+  ]
+}

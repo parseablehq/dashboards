@@ -138,6 +138,7 @@
       "fileName": "baseten-observability-mixed.json",
       "description": "Monitor Baseten Dedicated Inference request traffic, latency, concurrency, GPU capacity, pod readiness, logs, errors, and trace hotspots.",
       "source": "Mixed",
+      "icon": "assets/icon.svg",
       "tags": [
         "baseten",
         "inference",

@@ -1,0 +1,1006 @@
+{
+  "tags": [
+    "baseten",
+    "inference",
+    "observability",
+    "gpu"
+  ],
+  "variables": [
+    {
+      "name": "metrics_dataset",
+      "label": "Metrics Dataset",
+      "type": "dataset",
+      "defaultValue": "baseten-metrics"
+    },
+    {
+      "name": "logs_dataset",
+      "label": "Logs Dataset",
+      "type": "dataset",
+      "defaultValue": "baseten-logs"
+    },
+    {
+      "name": "traces_dataset",
+      "label": "Traces Dataset",
+      "type": "dataset",
+      "defaultValue": "baseten-traces"
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "01M4THD9MK1Y7W5SQC4A9PTN9N",
+      "title": "Requests",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M4THD9MKAM74TFET0VWKR76Q",
+      "title": "Latency & Concurrency",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M4THD9MKA257MRKNHBHFZ6P1",
+      "title": "Capacity & Health (GPU / Pod Readiness)",
+      "isExpanded": true
+    },
+    {
+      "sectionId": "01M4THD9MKSCYQAPQ2DDF9464M",
+      "title": "Trace Hotspots",
+      "isExpanded": false
+    },
+    {
+      "sectionId": "01M4THD9MKVN2HWXV2WPE2PDKW",
+      "title": "Logs & Errors Signals",
+      "isExpanded": false
+    }
+  ],
+  "tiles": [
+    {
+      "sectionId": "01M4THD9MK1Y7W5SQC4A9PTN9N",
+      "title": "Incoming inference request rate (all models)",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "chartQuery": "sum(rate(baseten_incoming_inference_requests_total[1m]))",
+      "dbName": "$metrics_dataset",
+      "promqlStep": "60s",
+      "promqlQueryType": "range",
+      "config": {
+        "type": "line",
+        "colourScheme": "agentObservability",
+        "layout": {
+          "legendPosition": "top",
+          "unit": "req/s",
+          "precision": 2,
+          "humanize": false,
+          "rangeFrom": 0
+        },
+        "axes": {
+          "x": {
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "title": "Requests per second",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "sectionId": "01M4THD9MK1Y7W5SQC4A9PTN9N",
+      "title": "Model API incoming inference request rate",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "chartQuery": "sum(rate(baseten_model_api_incoming_inference_requests_total[5m]))",
+      "dbName": "$metrics_dataset",
+      "promqlStep": "60s",
+      "promqlQueryType": "range",
+      "config": {
+        "type": "line",
+        "colourScheme": "blue",
+        "layout": {
+          "legendPosition": "top",
+          "unit": "req/s",
+          "precision": 2,
+          "humanize": false,
+          "rangeFrom": 0
+        },
+        "axes": {
+          "x": {
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "title": "Requests per second",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKAM74TFET0VWKR76Q",
+      "title": "End-to-end latency p95 (seconds)",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "chartQuery": "histogram_quantile(0.95, sum(rate(baseten_end_to_end_response_time_seconds_bucket[5m])) by (le))\nor\n(\n  (sum(rate(baseten_end_to_end_response_time_seconds_sum[5m])) / sum(rate(baseten_end_to_end_response_time_seconds_count[5m])))\n  and on() absent(sum(rate(baseten_end_to_end_response_time_seconds_bucket[5m])))\n)",
+      "dbName": "$metrics_dataset",
+      "promqlStep": "60s",
+      "promqlQueryType": "range",
+      "config": {
+        "type": "line",
+        "colourScheme": "purple",
+        "layout": {
+          "legendPosition": "top",
+          "unit": "s",
+          "precision": 3,
+          "humanize": false,
+          "rangeFrom": 0
+        },
+        "axes": {
+          "x": {
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "title": "p95 latency (s)",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKAM74TFET0VWKR76Q",
+      "title": "Time to first byte p95 (seconds)",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "chartQuery": "histogram_quantile(0.95, sum(rate(baseten_time_to_first_byte_seconds_bucket[5m])) by (le)) or (sum(rate(baseten_time_to_first_byte_seconds_sum[5m])) / sum(rate(baseten_time_to_first_byte_seconds_count[5m])))",
+      "dbName": "$metrics_dataset",
+      "promqlStep": "60s",
+      "promqlQueryType": "range",
+      "config": {
+        "type": "line",
+        "colourScheme": "teal",
+        "layout": {
+          "legendPosition": "top",
+          "unit": "s",
+          "precision": 3,
+          "humanize": false,
+          "rangeFrom": 0
+        },
+        "axes": {
+          "x": {
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "title": "p95 TTFB (s)",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4THG1ZD5KJGT6Z7NCWFEAQP",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 7,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKAM74TFET0VWKR76Q",
+      "title": "Concurrent inference requests",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "chartQuery": "sum(baseten_concurrent_requests)",
+      "dbName": "$metrics_dataset",
+      "promqlStep": "60s",
+      "promqlQueryType": "range",
+      "config": {
+        "type": "area",
+        "colourScheme": "orange",
+        "layout": {
+          "legendPosition": "top",
+          "unit": "requests",
+          "precision": 0,
+          "humanize": false,
+          "rangeFrom": 0
+        },
+        "axes": {
+          "x": {
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "title": "Concurrent requests",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4THG1ZDKABRDBDJV16T68M7",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKA257MRKNHBHFZ6P1",
+      "title": "Pod readiness (average)",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "chartQuery": "avg(baseten_pod_readiness)",
+      "dbName": "$metrics_dataset",
+      "promqlStep": "60s",
+      "promqlQueryType": "range",
+      "config": {
+        "type": "line",
+        "colourScheme": "green",
+        "layout": {
+          "legendPosition": "top",
+          "unit": "ready",
+          "precision": 3,
+          "humanize": false,
+          "rangeFrom": 0,
+          "rangeTo": 1
+        },
+        "axes": {
+          "x": {
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "title": "Readiness (0-1)",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4THG1ZD5TD01HGHZPTWPH35",
+        "x": 6,
+        "y": 1,
+        "w": 6,
+        "h": 8,
+        "moved": true,
+        "static": false
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKA257MRKNHBHFZ6P1",
+      "title": "GPU utilization (avg over time)",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "chartQuery": "avg_over_time(baseten_gpu_utilization[5m])",
+      "dbName": "$metrics_dataset",
+      "promqlStep": "60s",
+      "promqlQueryType": "range",
+      "config": {
+        "type": "line",
+        "colourScheme": "red",
+        "layout": {
+          "legendPosition": "top",
+          "unit": "%",
+          "precision": 2,
+          "humanize": false,
+          "rangeFrom": 0
+        },
+        "axes": {
+          "x": {
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "title": "GPU utilization",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4THG1ZD5YSH5YWN13F3ZZV0",
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKA257MRKNHBHFZ6P1",
+      "title": "GPU memory used (gauge)",
+      "tileType": "promql",
+      "chartType": "timeseries",
+      "chartQuery": "baseten_gpu_memory_used",
+      "dbName": "$metrics_dataset",
+      "promqlStep": "60s",
+      "promqlQueryType": "range",
+      "config": {
+        "type": "area",
+        "colourScheme": "gray",
+        "layout": {
+          "legendPosition": "top",
+          "unit": "bytes",
+          "precision": 0,
+          "humanize": true,
+          "rangeFrom": 0
+        },
+        "axes": {
+          "x": {
+            "title": "Time",
+            "display": true
+          },
+          "y": {
+            "title": "GPU memory used",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4THG1ZDP46SVBM8J95JGV10",
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 8,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKVN2HWXV2WPE2PDKW",
+      "title": "Request volume by model (top 10)",
+      "tileType": "code",
+      "chartType": "bar",
+      "chartQuery": "SELECT \"model_id\", count(\"request_id\") AS \"request_volume\"\nFROM $logs_dataset\nGROUP BY \"model_id\"\nORDER BY \"request_volume\" DESC\nLIMIT 10",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "config": {
+        "type": "bar",
+        "colourScheme": "parseableBlue",
+        "layout": {
+          "legendPosition": "bottom",
+          "precision": 0,
+          "humanize": false,
+          "label": true,
+          "barOrientation": "vertical"
+        },
+        "axes": {
+          "x": {
+            "field": "model_id",
+            "title": "Model ID",
+            "display": true
+          },
+          "y": {
+            "field": "request_volume",
+            "title": "Requests",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": true
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": true
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 32,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKVN2HWXV2WPE2PDKW",
+      "title": "Top log categories by volume (top 10)",
+      "tileType": "code",
+      "chartType": "bar",
+      "chartQuery": "SELECT\n  \"p_log_category\" AS \"p_log_category\",\n  count(*) AS \"log_volume\"\nFROM $logs_dataset\nGROUP BY \"p_log_category\"\nORDER BY \"log_volume\" DESC\nLIMIT 10",
+      "dbName": [
+        "$logs_dataset"
+      ],
+      "config": {
+        "type": "bar",
+        "colourScheme": "red",
+        "layout": {
+          "legendPosition": "bottom",
+          "precision": 0,
+          "humanize": false,
+          "label": true,
+          "barOrientation": "vertical"
+        },
+        "axes": {
+          "x": {
+            "field": "p_log_category",
+            "title": "Log category",
+            "display": true
+          },
+          "y": {
+            "field": "log_volume",
+            "title": "Log lines",
+            "display": true,
+            "beginAtZero": true
+          }
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": true
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": true
+          }
+        }
+      },
+      "layout": {
+        "x": 6,
+        "y": 32,
+        "w": 6,
+        "h": 8
+      }
+    },
+    {
+      "sectionId": "01M4THD9MKSCYQAPQ2DDF9464M",
+      "title": "Trace hotspots by span: top spans",
+      "tileType": "code",
+      "chartType": "table",
+      "chartQuery": "SELECT\n  \"span_name\",\n  count(\"span_span_id\") AS \"span_count\",\n  avg(\"span_duration_ns\") / 1000000000.0 AS \"avg_span_duration_sec\"\nFROM $traces_dataset\nGROUP BY \"span_name\"\nORDER BY \"span_count\" DESC\nLIMIT 10;",
+      "dbName": [
+        "$traces_dataset"
+      ],
+      "config": {
+        "type": "table",
+        "colourScheme": "classic",
+        "layout": {
+          "legendPosition": "top"
+        },
+        "axes": {
+          "x": {},
+          "y": {}
+        },
+        "advanced": {
+          "tooltip": {
+            "enabled": true,
+            "mode": "nearest",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4THG1ZDTYFEMS6AK9XQZTEM",
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 4,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "title": "baseten_request_size_bytes_bucket",
+      "chartQuery": "label_replace(histogram_quantile(0.5, sum by(le) (rate(baseten_request_size_bytes_bucket[1m]))), \"quantile\", \"p50\", \"\", \"\") or label_replace(histogram_quantile(0.75, sum by(le) (rate(baseten_request_size_bytes_bucket[1m]))), \"quantile\", \"p75\", \"\", \"\") or label_replace(histogram_quantile(0.9, sum by(le) (rate(baseten_request_size_bytes_bucket[1m]))), \"quantile\", \"p90\", \"\", \"\") or label_replace(histogram_quantile(0.95, sum by(le) (rate(baseten_request_size_bytes_bucket[1m]))), \"quantile\", \"p95\", \"\", \"\") or label_replace(histogram_quantile(0.99, sum by(le) (rate(baseten_request_size_bytes_bucket[1m]))), \"quantile\", \"p99\", \"\", \"\")",
+      "promqlQueryType": "range",
+      "tileType": "promql",
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "layout": {
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": 24,
+        "w": 6,
+        "h": 6
+      }
+    },
+    {
+      "title": "scrape_samples_post_metric_relabeling",
+      "chartQuery": "avg(scrape_samples_post_metric_relabeling)",
+      "promqlQueryType": "range",
+      "tileType": "promql",
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "layout": {
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4TJ6N8YGASR7P2XJMTA5Q9B",
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "title": "baseten_gpu_utilization_legacy",
+      "chartQuery": "avg(baseten_gpu_utilization_legacy)",
+      "promqlQueryType": "range",
+      "tileType": "promql",
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "layout": {
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": null,
+        "w": 6,
+        "h": 6
+      }
+    },
+    {
+      "title": "baseten_incoming_inference_requests_total",
+      "chartQuery": "avg(rate(baseten_incoming_inference_requests_total[1m]))",
+      "promqlQueryType": "range",
+      "tileType": "promql",
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "layout": {
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4TJ6JH0XAKEYG4QMR5E3VGV",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "title": "baseten_response_size_bytes_bucket",
+      "chartQuery": "label_replace(histogram_quantile(0.5, sum by(le) (rate(baseten_response_size_bytes_bucket[1m]))), \"quantile\", \"p50\", \"\", \"\") or label_replace(histogram_quantile(0.75, sum by(le) (rate(baseten_response_size_bytes_bucket[1m]))), \"quantile\", \"p75\", \"\", \"\") or label_replace(histogram_quantile(0.9, sum by(le) (rate(baseten_response_size_bytes_bucket[1m]))), \"quantile\", \"p90\", \"\", \"\") or label_replace(histogram_quantile(0.95, sum by(le) (rate(baseten_response_size_bytes_bucket[1m]))), \"quantile\", \"p95\", \"\", \"\") or label_replace(histogram_quantile(0.99, sum by(le) (rate(baseten_response_size_bytes_bucket[1m]))), \"quantile\", \"p99\", \"\", \"\")",
+      "promqlQueryType": "range",
+      "tileType": "promql",
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "layout": {
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": null,
+        "w": 6,
+        "h": 6
+      }
+    },
+    {
+      "title": "baseten_model_api_response_size_bytes_bucket",
+      "chartQuery": "label_replace(histogram_quantile(0.5, sum by(le) (rate(baseten_model_api_response_size_bytes_bucket[1m]))), \"quantile\", \"p50\", \"\", \"\") or label_replace(histogram_quantile(0.75, sum by(le) (rate(baseten_model_api_response_size_bytes_bucket[1m]))), \"quantile\", \"p75\", \"\", \"\") or label_replace(histogram_quantile(0.9, sum by(le) (rate(baseten_model_api_response_size_bytes_bucket[1m]))), \"quantile\", \"p90\", \"\", \"\") or label_replace(histogram_quantile(0.95, sum by(le) (rate(baseten_model_api_response_size_bytes_bucket[1m]))), \"quantile\", \"p95\", \"\", \"\") or label_replace(histogram_quantile(0.99, sum by(le) (rate(baseten_model_api_response_size_bytes_bucket[1m]))), \"quantile\", \"p99\", \"\", \"\")",
+      "promqlQueryType": "range",
+      "tileType": "promql",
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "layout": {
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4TJ6N8XHS67AHQ22HKYNRQZ",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      }
+    },
+    {
+      "title": "scrape_samples_scraped",
+      "chartQuery": "avg(scrape_samples_scraped)",
+      "promqlQueryType": "range",
+      "tileType": "promql",
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "layout": {
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "x": 0,
+        "y": null,
+        "w": 6,
+        "h": 6
+      }
+    },
+    {
+      "title": "baseten_gpu_utilization",
+      "chartQuery": "avg(baseten_gpu_utilization)",
+      "promqlQueryType": "range",
+      "tileType": "promql",
+      "dbName": "$metrics_dataset",
+      "chartType": "timeseries",
+      "config": {
+        "type": "line",
+        "colourScheme": "classic",
+        "axes": {
+          "x": {
+            "field": "time",
+            "title": "",
+            "display": true
+          },
+          "y": {
+            "field": "value",
+            "title": "",
+            "display": true
+          },
+          "groupBy": {
+            "field": []
+          }
+        },
+        "layout": {
+          "label": false,
+          "unit": "",
+          "precision": 0,
+          "humanize": true,
+          "legendPosition": "bottom"
+        },
+        "advanced": {
+          "dataLabels": {
+            "enabled": false
+          },
+          "tooltip": {
+            "enabled": true,
+            "mode": "index",
+            "intersect": false
+          }
+        }
+      },
+      "layout": {
+        "i": "01M4TJ6Q1BBK20BC024ZZYEJ8W",
+        "x": 6,
+        "y": 18,
+        "w": 6,
+        "h": 6,
+        "moved": false,
+        "static": false
+      }
+    }
+  ]
+}

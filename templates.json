@@ -133,6 +133,24 @@
       "thumbnail": "assets/Overview.png"
     },
     {
+      "name": "Baseten",
+      "dirName": "baseten-observability",
+      "fileName": "baseten-observability-mixed.json",
+      "description": "Monitor Baseten Dedicated Inference request traffic, latency, concurrency, GPU capacity, pod readiness, logs, errors, and trace hotspots.",
+      "source": "Mixed",
+      "tags": [
+        "baseten",
+        "inference",
+        "llm",
+        "gpu",
+        "metrics",
+        "logs",
+        "traces",
+        "observability"
+      ],
+      "thumbnail": "assets/Overview.png"
+    },
+    {
       "name": "Claude Code Usage",
       "dirName": "claude-code-usage",
       "fileName": "claude-code-usage-mixed.json",
